@@ -105,6 +105,26 @@
       background: linear-gradient(135deg, #2563eb, #22d3ee); border-color: transparent; color: #fff;
       box-shadow: var(--glow-primary);
     }
+    .pnum.flagged { border-color: rgba(245, 158, 11, 0.6); background: rgba(245, 158, 11, 0.1); color: #fbbf24; }
+    .pnum.done.flagged { background: rgba(56, 189, 248, 0.16); color: var(--cyan); }
+    .pnum.cur.flagged { box-shadow: var(--glow-primary), 0 0 0 2px rgba(245, 158, 11, 0.55); }
+    .flag-btn { font-size: 12.5px; padding: 7px 13px; border-radius: 12px; }
+    .flag-btn.on { border-color: rgba(245, 158, 11, 0.6); background: rgba(245, 158, 11, 0.12); color: #fbbf24; box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.3); }
+    .flag-btn.on svg { color: #fbbf24; }
+    #timerChip { transition: color .3s, border-color .3s; }
+    #timerChip.urgent { border-color: rgba(239, 68, 68, 0.6) !important; color: #f87171 !important; }
+    .resume-box {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+      max-width: 620px; margin: 22px auto 0; padding: 15px 19px;
+      border: 1px solid rgba(245, 158, 11, 0.45); border-radius: 16px;
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.04));
+      text-align: left; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    }
+    .resume-box[hidden] { display: none; }
+    .resume-box b { font-size: 15px; display: flex; align-items: center; gap: 8px; }
+    .resume-box p { font-size: 12.5px; color: var(--text-3); margin-top: 4px; line-height: 1.6; }
+    .resume-actions { display: flex; gap: 9px; }
+    .resume-actions .btn { display: inline-flex; align-items: center; gap: 7px; }
 
     /* --- Question card --- */
     .q-card .q-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -227,6 +247,41 @@
       .test-top a.back-link span.hide-xs { display: none; }
       .palette-bar .btn { font-size: 12.5px; padding: 8px 12px; }
     }
+    /* ===== Desktop-wide layout (≥1200px) — มือถือ/แท็บเล็ตไม่กระทบ ===== */
+@media (min-width: 1200px) {
+  .test-wrap { max-width: 1180px; }
+
+  #viewQuiz {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-template-rows: auto auto 1fr;
+    column-gap: 28px;
+  }
+  .quiz-progress-head { grid-column: 1; grid-row: 1; }
+  .palette-bar        { grid-column: 1; grid-row: 2; }
+  .q-card              { grid-column: 1; grid-row: 3; }
+
+  /* พาเลทข้อ กลายเป็นแถบข้างแบบ sticky แสดงตลอด */
+  #paletteToggle { display: none; } /* ไม่ต้องกดเปิด-ปิดแล้วบนจอใหญ่ */
+  .palette-panel {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    display: block !important;
+    position: sticky;
+    top: 84px;
+    align-self: start;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+
+  .test-intro .rules { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ===== Extra-wide (≥1600px) — ขยาย layout อีกนิดสำหรับจอใหญ่มาก ===== */
+@media (min-width: 1600px) {
+  .test-wrap { max-width: 1360px; }
+  #viewQuiz { grid-template-columns: 1fr 340px; }
+}
   </style>
 </head>
 <body data-page="test">
@@ -236,7 +291,7 @@
   <div class="cn-logo">CN</div>
   <div class="test-top-title">
     <b>คลังข้อสอบ 160 ข้อ</b>
-    <span>Computer Network and Internet · สุ่ม 80 ข้อต่อครั้ง</span>
+    <span>Computer Network and Internet · สุ่ม 80 ข้อ · จับเวลา 60 นาที</span>
   </div>
   <div class="spacer"></div>
   <span class="chip hide-xs" id="topChapterChip" style="display:none"></span>
@@ -253,16 +308,29 @@
     <p class="lead">
       อยากรู้ว่าตอนนี้ความรู้เครือข่ายคอมพิวเตอร์อยู่ระดับไหน? มาลองทำข้อสอบก่อนเรียนได้เลย —
       มีคลังข้อสอบ 160 ข้อ (ระดับกลาง-ยาก) ครอบคลุม 4 บท ในแต่ละครั้งระบบจะสุ่มมา 80 ข้อ
-      ลำดับข้อและตัวเลือกถูกสับใหม่ทุกครั้ง — กลับมาทำอีกรอบก็ได้ชุดคำถามใหม่ ไม่จำเจ
+      จับเวลา 60 นาทีเหมือนสอบจริง หมดเวลาแล้วส่งอัตโนมัติ — ลำดับข้อและตัวเลือกถูกสับใหม่ทุกครั้ง
+      กลับมาทำอีกรอบก็ได้ชุดคำถามใหม่ ไม่จำเจ
     </p>
     <div class="test-chips" id="introChips"></div>
     <div class="rules">
+      <div class="rule"><b><i data-lucide="clock"></i> จับเวลา 60 นาที</b><p>หมดเวลาแล้วระบบส่งข้อสอบอัตโนมัติ — เหมือนสอบจริง ต้องบริหารเวลาให้ดี</p></div>
+      <div class="rule"><b><i data-lucide="bookmark"></i> หมายไว้ทบทวน</b><p>ข้อไหนไม่แน่ใจ กด "หมายไว้" ปักธงสีเหลืองไว้ แล้วกลับมาทำทีหลังได้</p></div>
+      <div class="rule"><b><i data-lucide="save"></i> ต่อจากเดิมได้</b><p>ความคืบหน้าบันทึกอัตโนมัติ — ปิดแท็บหรือเน็ตหลุด กลับมา "ทำต่อ" ได้ ไม่ต้องเริ่มใหม่</p></div>
       <div class="rule"><b><i data-lucide="shuffle"></i> สุ่มจากคลัง 160 ข้อ</b><p>แต่ละครั้งได้ 80 ข้อจากคลัง 160 ข้อ คละทุกบท ระดับกลาง-ยาก — ครอบคลุม 47 หัวข้อ</p></div>
-      <div class="rule"><b><i data-lucide="skip-forward"></i> ข้ามข้อได้</b><p>ข้อไหนนึกไม่ออกกด "ข้ามข้อ" ไปทำข้ออื่นก่อน — ย้อนกลับมาทำทีหลังได้จนกว่าจะส่ง</p></div>
       <div class="rule"><b><i data-lucide="trophy"></i> สรุประดับ</b><p>ส่งข้อสอบแล้วได้คะแนน + ระดับความรู้ พร้อมทบทวนเฉลยทีละข้อแยกรายบท</p></div>
     </div>
     <button class="btn btn-primary btn-lg" id="startBtn">เริ่มทำข้อสอบ <i data-lucide="play"></i></button>
     <p class="test-best" id="bestIntro"></p>
+    <div class="resume-box" id="resumeBox" hidden>
+      <div>
+        <b>📝 มีข้อสอบค้างอยู่</b>
+        <p id="resumeInfo">คุณเคยเริ่มทำข้อสอบไว้ — กลับมาทำต่อได้เลย</p>
+      </div>
+      <div class="resume-actions">
+        <button class="btn btn-primary" id="resumeBtn">ทำต่อ <i data-lucide="play"></i></button>
+        <button class="btn btn-ghost" id="discardBtn">เริ่มใหม่ (ล้าง)</button>
+      </div>
+    </div>
   </section>
 
   <!-- ================= QUIZ ================= -->
@@ -270,6 +338,7 @@
     <div class="quiz-progress-head">
       <span class="chip" id="qCounter">ข้อที่ 1 / 80</span>
       <div class="progress-track"><div class="progress-fill" id="qProgress" style="width:0%"></div></div>
+      <span class="chip" id="timerChip" style="border-color:rgba(245,158,11,.4);color:#fbbf24">⏱ 60:00</span>
       <span class="chip" id="qAnswered" style="border-color:rgba(56,189,248,.4)">ตอบแล้ว 0 / 80</span>
     </div>
 
@@ -290,7 +359,10 @@
     <div class="card q-card fade-up" style="padding:26px">
       <div class="q-top">
         <span class="q-ch-badge" id="qChapter"><i data-lucide="book-open"></i><span id="qChapterName"></span></span>
-        <span class="q-num" id="qChapterNum"></span>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+          <button class="btn btn-ghost flag-btn" id="flagBtn"><i data-lucide="bookmark"></i> หมายไว้ทบทวน</button>
+          <span class="q-num" id="qChapterNum"></span>
+        </div>
       </div>
       <h3 class="q-text" id="qText"></h3>
       <div class="q-options" id="qOptions"></div>
@@ -336,6 +408,7 @@
           <button class="rf" data-f="good">ถูก</button>
           <button class="rf" data-f="bad">ผิด</button>
           <button class="rf" data-f="un">ไม่ได้ตอบ</button>
+          <button class="rf" data-f="flag">หมายไว้ 🔖</button>
         </div>
       </div>
       <div id="reviewList"></div>
@@ -402,7 +475,10 @@
 
   var POOL = collect();
   var EXAM_LEN = 80; // สุ่ม 80 ข้อ ต่อการสอบ 1 ครั้ง
+  var EXAM_MIN = 60; // จับเวลา 60 นาที
+  var SESSION_KEY = "cn_test_session_v1";
   var items = [], answers = [], cur = 0, total = EXAM_LEN, bestKey = "cn_test_best";
+  var flags = [], deadline = 0, timerInterval = null, warned1min = false;
 
   function show(id) {
     ["viewIntro", "viewQuiz", "viewResult"].forEach(function (v) { $(v).style.display = v === id ? "" : "none"; });
@@ -429,6 +505,66 @@
     toastTimer = setTimeout(function () { t.classList.remove("show"); }, ms || 2200);
   }
 
+  /* ---------- Timer (จับเวลา 60 นาที + auto-submit) ---------- */
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function updateTimer() {
+    var left = Math.max(0, deadline - Date.now());
+    var chip = $("timerChip");
+    chip.textContent = "⏱ " + pad2(Math.floor(left / 60000)) + ":" + pad2(Math.floor((left % 60000) / 1000));
+    chip.classList.toggle("urgent", left <= 60000);
+    return left;
+  }
+  function tick() {
+    var left = updateTimer();
+    if (left <= 60000 && !warned1min) { warned1min = true; toast("เหลืออีก 1 นาที — เตรียมส่งข้อสอบ ⏱", 4000); }
+    if (left <= 0) {
+      stopTimer();
+      toast("หมดเวลา — ส่งข้อสอบอัตโนมัติ ⏱", 3500);
+      clearSession();
+      finish();
+    }
+  }
+  function startTimer() {
+    stopTimer();
+    deadline = Date.now() + EXAM_MIN * 60000;
+    warned1min = false;
+    updateTimer();
+    timerInterval = setInterval(tick, 1000);
+  }
+  function resumeTimer() {
+    stopTimer();
+    warned1min = false;
+    updateTimer();
+    timerInterval = setInterval(tick, 1000);
+  }
+  function stopTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
+
+  /* ---------- Resume (บันทึก/กู้คืนความคืบหน้า) ---------- */
+  function saveSession() {
+    try {
+      localStorage.setItem(SESSION_KEY, JSON.stringify({
+        items: items, answers: answers, flags: flags, cur: cur, deadline: deadline, total: total
+      }));
+    } catch (e) {}
+  }
+  function clearSession() {
+    try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+  }
+  function hasSession() {
+    try { return !!localStorage.getItem(SESSION_KEY); } catch (e) { return false; }
+  }
+  function restoreSession() {
+    try {
+      var s = JSON.parse(localStorage.getItem(SESSION_KEY));
+      if (!s || !Array.isArray(s.items) || !s.items.length) { clearSession(); return false; }
+      items = s.items; answers = s.answers || []; flags = s.flags || [];
+      cur = (s.cur >= 0 && s.cur < items.length) ? s.cur : 0;
+      deadline = s.deadline || 0; total = s.total || items.length;
+      while (answers.length < items.length) answers.push(null);
+      return true;
+    } catch (e) { clearSession(); return false; }
+  }
+
   /* ---------- Intro ---------- */
   function renderIntro() {
     $("introChips").innerHTML = CHS.map(function (c) {
@@ -440,14 +576,48 @@
     $("bestIntro").innerHTML = b > 0
       ? "คะแนนดีที่สุดของคุณ: <b>" + b + " / " + total + "</b> (" + Math.round((b / total) * 100) + "%)"
       : "ยังไม่เคยทำ — เริ่มเลย!";
+
+    var rb = $("resumeBox");
+    if (hasSession()) {
+      var sess = null, done2 = 0, left2 = 0, tot2 = total;
+      try { sess = JSON.parse(localStorage.getItem(SESSION_KEY)); } catch (e) {}
+      if (sess) {
+        tot2 = sess.total || total;
+        (sess.answers || []).forEach(function (a) { if (a !== null) done2++; });
+        if (sess.deadline) left2 = Math.max(0, sess.deadline - Date.now());
+      }
+      $("resumeInfo").textContent =
+        "ตอบไปแล้ว " + done2 + " / " + tot2 + " ข้อ · เวลาเหลือ " +
+        pad2(Math.floor(left2 / 60000)) + ":" + pad2(Math.floor((left2 % 60000) / 1000)) +
+        " — กด \"ทำต่อ\" เพื่อกลับไปสอบต่อ";
+      rb.hidden = false;
+    } else {
+      rb.hidden = true;
+    }
   }
 
   function start() {
+    clearSession();
     items = shuffle(POOL.slice()).slice(0, EXAM_LEN);
     answers = new Array(items.length).fill(null);
+    flags = [];
     cur = 0;
     total = items.length;
     show("viewQuiz");
+    startTimer();
+    renderQuestion();
+  }
+
+  function resume() {
+    if (!restoreSession()) { $("resumeBox").hidden = true; return; }
+    $("resumeBox").hidden = true;
+    if (deadline - Date.now() <= 0) {
+      toast("หมดเวลาแล้ว — ส่งข้อสอบอัตโนมัติ ⏱", 3500);
+      finish();
+      return;
+    }
+    show("viewQuiz");
+    resumeTimer();
     renderQuestion();
   }
 
@@ -494,7 +664,15 @@
     $("qSkip").addEventListener("click", skip);
     $("qSubmit").addEventListener("click", trySubmit);
 
+    var flagged = flags.indexOf(cur) >= 0;
+    $("flagBtn").classList.toggle("on", flagged);
+    $("flagBtn").innerHTML = flagged
+      ? '<i data-lucide="bookmark-check"></i> ถอนหมายไว้'
+      : '<i data-lucide="bookmark"></i> หมายไว้ทบทวน';
+    icons();
+
     renderPalette();
+    saveSession();
   }
 
   function skip() {
@@ -503,11 +681,19 @@
     for (var j = 0; j < cur; j++) { if (answers[j] === null) { cur = j; renderQuestion(); return; } }
   }
 
+  function toggleFlag() {
+    var idx = flags.indexOf(cur);
+    if (idx >= 0) flags.splice(idx, 1); else flags.push(cur);
+    renderQuestion(); // renderPalette + saveSession ทำงานภายใน
+  }
+
   /* ---------- Palette ---------- */
   function renderPalette() {
     var grid = $("paletteGrid");
     grid.innerHTML = items.map(function (q, i) {
+      var flagged = flags.indexOf(i) >= 0;
       var cls = i === cur ? "pnum cur" : (answers[i] !== null ? "pnum done" : "pnum");
+      if (flagged) cls += " flagged";
       return '<button class="' + cls + '" data-i="' + i + '" aria-label="ข้อ ' + (i + 1) + '" aria-current="' + (i === cur) + '">' + (i + 1) + "</button>";
     }).join("");
     grid.querySelectorAll(".pnum").forEach(function (b) {
@@ -517,10 +703,11 @@
         renderQuestion();
       });
     });
-    $("paletteCount").textContent = answeredCount() + " / " + total;
+    $("paletteCount").textContent = answeredCount() + " / " + total + (flags.length ? " · หมายไว้ " + flags.length : "");
     $("paletteLegend").innerHTML =
       '<span class="chip" style="font-size:11px"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:rgba(56,189,248,.4);margin-right:4px"></span>ตอบแล้ว</span> ' +
-      '<span class="chip" style="font-size:11px"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:linear-gradient(135deg,#2563eb,#22d3ee);margin-right:4px"></span>ข้อปัจจุบัน</span>';
+      '<span class="chip" style="font-size:11px"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:linear-gradient(135deg,#2563eb,#22d3ee);margin-right:4px"></span>ข้อปัจจุบัน</span> ' +
+      '<span class="chip" style="font-size:11px"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;border:1px solid rgba(245,158,11,.6);background:rgba(245,158,11,.12);margin-right:4px"></span>หมายไว้ทบทวน</span>';
   }
   function closePalette() { $("palettePanel").classList.remove("open"); $("paletteToggle").querySelector("svg").setAttribute("data-lucide", "layout-grid"); icons(); }
   function togglePalette() { $("palettePanel").classList.toggle("open"); }
@@ -547,6 +734,9 @@
   function closeModal() { $("modalOverlay").hidden = true; }
 
   function finish() {
+    stopTimer();
+    clearSession();
+    closeModal();
     show("viewResult");
     var sc = scoreSoFar();
     var pct = Math.round((sc / total) * 100);
@@ -634,8 +824,10 @@
       var a = answers[i];
       var ok = a !== null && a === q.correct;
       var state = a === null ? "un" : (ok ? "good" : "bad");
-      if (reviewFilter !== "all" && reviewFilter !== state) return;
-      var badge = a === null ? "⚠️" : (ok ? "✅" : "❌");
+      var isFlag = flags.indexOf(i) >= 0;
+      if (reviewFilter === "flag") { if (!isFlag) return; }
+      else if (reviewFilter !== "all" && reviewFilter !== state) return;
+      var badge = (a === null ? "⚠️" : (ok ? "✅" : "❌")) + (isFlag ? " 🔖" : "");
       var yours = a === null ? '<span class="none">ไม่ได้ตอบ</span>' : (ok ? '<span class="right">' + q.options[a] + "</span>" : '<span class="wrong">' + q.options[a] + "</span>");
       rows +=
         '<div class="rev-item ' + state + '">' +
@@ -683,10 +875,18 @@
   $("submitBtn").addEventListener("click", trySubmit);
   $("modalCancel").addEventListener("click", closeModal);
   $("modalConfirm").addEventListener("click", function () { closeModal(); finish(); });
+  $("flagBtn").addEventListener("click", toggleFlag);
+  $("resumeBtn").addEventListener("click", resume);
+  $("discardBtn").addEventListener("click", function () {
+    clearSession();
+    $("resumeBox").hidden = true;
+    toast("ล้างความคืบหน้าเดิมแล้ว — กดเริ่มทำข้อสอบเพื่อเริ่มใหม่");
+  });
   $("reviewFilters").addEventListener("click", function (e) {
     var b = e.target.closest(".rf");
     if (b) renderReview(b.dataset.f);
   });
+  window.addEventListener("beforeunload", saveSession);
 
   renderIntro();
   icons();
