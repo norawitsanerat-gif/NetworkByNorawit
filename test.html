@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="ข้อสอบรวม 80 ข้อ จาก 4 บท — ทดสอบความรู้พื้นฐานเครือข่ายคอมพิวเตอร์ก่อนเรียน" />
+  <title>CN · ข้อสอบรวม 80 ข้อ — ทดสอบความรู้ก่อนเรียน</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <style>
+    /* ===== หน้า Test.html — ข้อสอบรวม 80 ข้อ ===== */
+    .test-top {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      background: rgba(8, 15, 31, 0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .test-top-title { min-width: 0; }
+    .test-top-title b { display: block; font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .test-top-title span { display: block; font-size: 11.5px; color: var(--text-3); }
+    .test-top .spacer { flex: 1; }
+    .test-top .chip { white-space: nowrap; }
+    .test-top a.back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 700; color: var(--text-2);
+      border: 1px solid var(--border); border-radius: 99px; padding: 7px 14px;
+      background: rgba(148, 163, 184, 0.08);
+      transition: border-color .2s, box-shadow .2s, color .2s;
+    }
+    .test-top a.back-link:hover { color: var(--cyan); border-color: rgba(56, 189, 248, 0.5); box-shadow: var(--glow-blue); }
+    .test-top a.back-link svg { width: 15px; height: 15px; }
+
+    .test-wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 26px 18px 60px;
+    }
+
+    /* --- Intro --- */
+    .test-intro { text-align: center; }
+    .test-intro .cn-logo { width: 78px; height: 78px; font-size: 30px; border-radius: 23px; margin: 0 auto 18px; }
+    .test-intro h1 { font-size: 34px; font-weight: 800; line-height: 1.2; margin-top: 10px; }
+    .test-intro h1 .grad-text {
+      background: linear-gradient(92deg, #60a5fa, #38bdf8 48%, #22d3ee);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .test-intro .lead { color: var(--text-3); font-size: 15px; max-width: 560px; margin: 14px auto 0; line-height: 1.8; }
+    .test-chips { display: flex; flex-wrap: wrap; gap: 9px; justify-content: center; margin: 22px 0 4px; }
+    .test-chips .chip {
+      display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 700;
+      padding: 8px 14px; border-radius: 99px;
+      background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); color: var(--text-2);
+    }
+    .test-chips .chip svg { width: 14px; height: 14px; color: var(--cyan); }
+    .test-intro .rules {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 26px; text-align: left;
+    }
+    .test-intro .rules .rule {
+      border: 1px solid var(--border); border-radius: 16px; padding: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+    }
+    .test-intro .rules .rule b { display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
+    .test-intro .rules .rule b svg { width: 16px; height: 16px; color: var(--cyan); }
+    .test-intro .rules .rule p { font-size: 12px; color: var(--text-3); margin-top: 6px; line-height: 1.6; }
+    .test-intro .btn-lg { margin-top: 30px; padding: 15px 36px; font-size: 16.5px; border-radius: 16px; box-shadow: var(--glow-primary), var(--shadow-md); }
+    .test-best { margin-top: 16px; font-size: 13px; color: var(--text-3); }
+    .test-best b { color: var(--cyan); }
+
+    /* --- Quiz --- */
+    .quiz-progress-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+    .quiz-progress-head .chip { font-size: 12px; }
+    .progress-track { flex: 1; min-width: 140px; height: 9px; }
+    .q-card .q-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .q-ch-badge {
+      display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 700; color: var(--cyan);
+      background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 5px 12px; border-radius: 99px;
+    }
+    .q-ch-badge svg { width: 13px; height: 13px; }
+    .q-num { font-size: 12.5px; font-weight: 700; color: var(--text-3); }
+    .q-text { font-size: 19px; font-weight: 700; line-height: 1.55; margin-bottom: 20px; }
+    .q-options { display: flex; flex-direction: column; gap: 11px; }
+    .quiz-option { width: 100%; justify-content: flex-start; }
+    .quiz-option .opt-key { flex-shrink: 0; }
+    .quiz-option span:last-child { text-align: left; }
+    .q-feedback { margin-top: 18px; }
+    .q-nav { margin-top: 22px; }
+    .key-hint {
+      display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; color: var(--text-3);
+      margin-top: 14px;
+    }
+    .key-hint kbd {
+      font-family: inherit; font-size: 10.5px; font-weight: 700; color: var(--text-2);
+      border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 6px; padding: 2px 7px;
+      background: rgba(148, 163, 184, 0.1);
+    }
+
+    /* --- Result --- */
+    .test-result { text-align: center; }
+    .test-result .score-ring { margin: 8px auto 0; }
+    .test-result .score-ring .ring-num { font-size: 34px; }
+    .test-result .level-tag {
+      display: inline-flex; align-items: center; gap: 9px; margin-top: 22px;
+      font-size: 16.5px; font-weight: 800; padding: 10px 20px; border-radius: 99px;
+      background: linear-gradient(120deg, rgba(37, 99, 235, 0.2), rgba(34, 211, 238, 0.12));
+      border: 1px solid rgba(56, 189, 248, 0.4); color: #fff; box-shadow: var(--glow-blue);
+    }
+    .test-result .level-tag .emoji { font-size: 21px; }
+    .test-result .level-msg { color: var(--text-3); font-size: 14px; margin-top: 12px; line-height: 1.7; }
+    .test-perch { margin-top: 30px; text-align: left; }
+    .test-perch h4 { font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: var(--text-2); margin-bottom: 14px; text-transform: uppercase; }
+    .perch-row { margin-bottom: 15px; }
+    .perch-row .perch-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13px; margin-bottom: 6px; }
+    .perch-row .perch-head b { font-size: 13.5px; }
+    .perch-row .perch-head span { font-weight: 700; color: var(--cyan); white-space: nowrap; }
+    .perch-bar { height: 8px; border-radius: 99px; background: rgba(148, 163, 184, 0.14); overflow: hidden; }
+    .perch-bar i {
+      display: block; height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, #2563eb, #22d3ee); box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+      width: 0; transition: width 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .test-result .result-actions { margin-top: 28px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .test-result .result-actions .btn { display: inline-flex; align-items: center; gap: 8px; }
+
+    @media (max-width: 640px) {
+      .test-intro h1 { font-size: 26px; }
+      .test-intro .rules { grid-template-columns: 1fr; }
+      .test-wrap { padding: 20px 14px 50px; }
+      .q-text { font-size: 17px; }
+      .test-top a.back-link span.hide-xs { display: none; }
+    }
+  </style>
+</head>
+<body data-page="test">
+
+<!-- ================= TOP BAR ================= -->
+<header class="test-top">
+  <div class="cn-logo">CN</div>
+  <div class="test-top-title">
+    <b>ข้อสอบรวม 80 ข้อ</b>
+    <span>Computer Network and Internet · ทดสอบความรู้ก่อนเรียน</span>
+  </div>
+  <div class="spacer"></div>
+  <span class="chip hide-xs" id="topChapterChip" style="display:none"></span>
+  <a class="back-link" href="index.html"><i data-lucide="arrow-left"></i><span class="hide-xs">กลับเมนู</span></a>
+</header>
+
+<main class="test-wrap">
+
+  <!-- ================= INTRO ================= -->
+  <section id="viewIntro" class="test-intro fade-up">
+    <div class="cn-logo">CN</div>
+    <p class="menu-kicker">PRE-TEST · ข้อสอบรวมทั้งหลักสูตร</p>
+    <h1>ข้อสอบรวม <span class="grad-text">80 ข้อ</span><br />จากทั้ง 4 บทเรียน</h1>
+    <p class="lead">
+      อยากรู้ว่าตอนนี้ความรู้เครือข่ายคอมพิวเตอร์อยู่ระดับไหน? มาลองทำข้อสอบรวมก่อนเรียนได้เลย —
+      คำถามถูกสุ่มคละจากทุกบท ครอบคลุมตั้งแต่พื้นฐานการสื่อสารข้อมูลไปจนถึง Transport Layer
+      ลำดับข้อและตัวเลือกจะถูกสับใหม่ทุกครั้งที่เริ่มสอบ
+    </p>
+    <div class="test-chips" id="introChips"></div>
+    <div class="rules">
+      <div class="rule"><b><i data-lucide="shuffle"></i> คละทุกบท</b><p>80 ข้อสุ่มปนกันหมด ครอบคลุม 47 หัวข้อจาก 4 บท — ไม่เรียงตามบทเรียน</p></div>
+      <div class="rule"><b><i data-lucide="lightbulb"></i> เฉลยทันที</b><p>ตอบแล้วเห็นคำอธิบายประกอบทันที — เรียนรู้จากข้อที่ผิดได้เลย</p></div>
+      <div class="rule"><b><i data-lucide="trophy"></i> สรุประดับ</b><p>เมื่อทำครบ ได้คะแนน + ระดับความรู้ของคุณ พร้อมแยกผลรายบท</p></div>
+    </div>
+    <button class="btn btn-primary btn-lg" id="startBtn">เริ่มทำข้อสอบ <i data-lucide="play"></i></button>
+    <p class="test-best" id="bestIntro"></p>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="viewQuiz" style="display:none">
+    <div class="quiz-progress-head">
+      <span class="chip" id="qCounter">ข้อที่ 1 / 80</span>
+      <div class="progress-track"><div class="progress-fill" id="qProgress" style="width:0%"></div></div>
+      <span class="chip" id="qScore" style="border-color:rgba(56,189,248,.4)">ถูก 0 / 0</span>
+    </div>
+    <div class="card q-card fade-up" style="padding:26px">
+      <div class="q-top">
+        <span class="q-ch-badge" id="qChapter"><i data-lucide="book-open"></i><span id="qChapterName"></span></span>
+        <span class="q-num" id="qChapterNum"></span>
+      </div>
+      <h3 class="q-text" id="qText"></h3>
+      <div class="q-options" id="qOptions"></div>
+      <div id="qFeedback"></div>
+      <div class="key-hint" id="keyHint"><kbd>1–4</kbd> หรือ <kbd>A–D</kbd> เลือกข้อ · <kbd>Enter</kbd> ไปข้อถัดไป</div>
+    </div>
+  </section>
+
+  <!-- ================= RESULT ================= -->
+  <section id="viewResult" style="display:none">
+    <div class="card center test-result fade-up" style="padding:36px 24px">
+      <p class="menu-kicker">ผลการสอบ · ข้อสอบรวม 80 ข้อ</p>
+      <div class="score-ring">
+        <svg width="160" height="160" viewBox="0 0 150 150">
+          <defs>
+            <linearGradient id="ringGradTest" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#22d3ee"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="75" cy="75" r="62" fill="none" stroke-width="12"/>
+          <circle class="ring-fill" id="ringTest" cx="75" cy="75" r="62" fill="none" stroke-width="12" stroke-linecap="round" stroke-dasharray="389.6" stroke-dashoffset="389.6"/>
+        </svg>
+        <div class="ring-num" id="resultNum">0 / 80</div>
+      </div>
+      <p style="margin-top:8px;font-weight:800;font-size:15px" id="resultPct"></p>
+      <div class="level-tag"><span class="emoji" id="levelEmoji"></span><span id="levelTitle"></span></div>
+      <p class="level-msg" id="levelMsg"></p>
+      <div class="test-perch">
+        <h4>ผลแยกตามบทเรียน</h4>
+        <div id="perchList"></div>
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-ghost" id="retryBtn"><i data-lucide="rotate-ccw"></i> ทำใหม่ (สุ่มใหม่)</button>
+        <button class="btn btn-primary" id="backBtn"><i data-lucide="arrow-left"></i> กลับเมนู</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  var CHS = [
+    { n: 1, th: "พื้นฐานการสื่อสารข้อมูลและเครือข่าย", en: "Fundamentals of Computer Network" },
+    { n: 2, th: "โมเดลเครือข่าย", en: "Network Models" },
+    { n: 3, th: "Application Layer", en: "ชั้นโปรแกรมประยุกต์" },
+    { n: 4, th: "Transport Layer", en: "ชั้นขนส่งข้อมูล" }
+  ];
+
+  function collect() {
+    var out = [];
+    function push(arr, ch) {
+      (arr || []).forEach(function (q) {
+        out.push({ q: q.q, options: q.options.slice(), correct: q.correct, explain: q.explain, ch: ch });
+      });
+    }
+    if (!window.DATA) return out;
+    push(window.DATA.quick, 1);
+    push(window.DATA.ch2 && window.DATA.ch2.exam, 2);
+    push(window.DATA.ch3 && window.DATA.ch3.exam, 3);
+    push(window.DATA.ch4 && window.DATA.ch4.exam, 4);
+    return out;
+  }
+
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  var RAW = collect();
+  var items = [], answers = [], cur = 0, total = RAW.length, bestKey = "cn_test_best";
+
+  function show(id) {
+    ["viewIntro", "viewQuiz", "viewResult"].forEach(function (v) { $(v).style.display = v === id ? "" : "none"; });
+  }
+
+  function icons() { if (window.lucide) { try { lucide.createIcons(); } catch (e) {} } }
+
+  /* ---------- Intro ---------- */
+  function renderIntro() {
+    var chipBox = $("introChips");
+    chipBox.innerHTML = CHS.map(function (c) {
+      return '<span class="chip"><i data-lucide="book-open"></i> บทที่ ' + c.n + ' · ' + c.th + "</span>";
+    }).join("");
+    icons();
+    var b = 0;
+    try { b = parseInt(localStorage.getItem(bestKey) || "0", 10) || 0; } catch (e) {}
+    $("bestIntro").innerHTML = b > 0
+      ? "คะแนนดีที่สุดของคุณ: <b>" + b + " / " + total + "</b> (" + Math.round((b / total) * 100) + "%)"
+      : "ยังไม่เคยทำ — เริ่มเลย!";
+  }
+
+  function start() {
+    items = shuffle(RAW.slice());
+    answers = new Array(items.length).fill(null);
+    cur = 0;
+    show("viewQuiz");
+    renderQuestion();
+  }
+
+  /* ---------- Question ---------- */
+  function renderQuestion() {
+    var q = items[cur];
+    var done = 0;
+    answers.forEach(function (a) { if (a !== null) done++; });
+
+    $("qCounter").textContent = "ข้อที่ " + (cur + 1) + " / " + total;
+    $("qProgress").style.width = Math.round((done / total) * 100) + "%";
+    $("qScore").textContent = "ถูก " + scoreSoFar() + " / " + done;
+    $("qChapterName").textContent = "บทที่ " + q.ch + " · " + CHS[q.ch - 1].th;
+    $("qChapterNum").textContent = "ข้อนี้มาจากบทที่ " + q.ch + " (" + CHS[q.ch - 1].en + ")";
+    $("topChapterChip").textContent = "ข้อ " + (cur + 1) + " / " + total;
+    $("topChapterChip").style.display = "";
+    $("qText").textContent = q.q;
+
+    q._order = shuffle([0, 1, 2, 3]);
+    var box = $("qOptions");
+    box.innerHTML = q._order.map(function (oi, k) {
+      return '<button class="quiz-option" data-k="' + k + '">' +
+        '<span class="opt-key">' + "ABCD"[k] + "</span><span>" + q.options[oi] + "</span></button>";
+    }).join("");
+
+    $("qFeedback").innerHTML = "";
+    $("keyHint").style.display = "";
+    bindOptions();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function scoreSoFar() {
+    var s = 0;
+    items.forEach(function (q, i) {
+      if (answers[i] !== null && answers[i] === q.correct) s++;
+    });
+    return s;
+  }
+
+  function bindOptions() {
+    $("qOptions").querySelectorAll(".quiz-option").forEach(function (b) {
+      b.addEventListener("click", function () { choose(parseInt(b.dataset.k, 10)); });
+    });
+  }
+
+  function choose(k) {
+    var q = items[cur];
+    if (answers[cur] !== null) return;
+    var oi = q._order[k];
+    var correct = oi === q.correct;
+    answers[cur] = oi;
+
+    var box = $("qOptions");
+    box.querySelectorAll(".quiz-option").forEach(function (b) {
+      var bi = parseInt(b.dataset.k, 10);
+      var oi2 = q._order[bi];
+      b.classList.add("locked");
+      b.setAttribute("disabled", "disabled");
+      if (oi2 === q.correct) b.classList.add("correct");
+      else if (bi === k) b.classList.add("incorrect");
+    });
+
+    var fb = $("qFeedback");
+    fb.innerHTML =
+      '<div class="quiz-explanation fade-up">' +
+      (correct ? "✅ ถูกต้อง! " : "❌ ยังไม่ถูกนะ ") +
+      "💡 " + q.explain + "</div>" +
+      '<div class="q-nav flex items-center gap-3 wrap">' +
+      (cur < total - 1
+        ? '<button class="btn btn-primary" id="nextBtn">ข้อถัดไป <i data-lucide="arrow-right"></i></button>'
+        : '<button class="btn btn-primary" id="finishBtn">ดูผลลัพธ์ <i data-lucide="flag"></i></button>') +
+      "</div>";
+    icons();
+
+    var done = answers.filter(function (a) { return a !== null; }).length;
+    $("qProgress").style.width = Math.round((done / total) * 100) + "%";
+    $("qScore").textContent = "ถูก " + scoreSoFar() + " / " + done;
+    $("keyHint").style.display = "none";
+
+    var nb = $("nextBtn"), fb2 = $("finishBtn");
+    if (nb) nb.addEventListener("click", function () { cur++; renderQuestion(); });
+    if (fb2) fb2.addEventListener("click", finish);
+  }
+
+  function finish() {
+    show("viewResult");
+    var sc = scoreSoFar();
+    var pct = Math.round((sc / total) * 100);
+
+    var ring = 2 * Math.PI * 62; // r=62 → 389.56
+    var offset = ring - (sc / total) * ring;
+    var rf = $("ringTest");
+    rf.setAttribute("stroke-dasharray", ring.toFixed(1));
+    rf.setAttribute("stroke-dashoffset", ring.toFixed(1));
+    setTimeout(function () { rf.style.strokeDashoffset = offset.toFixed(1); }, 150);
+
+    $("resultNum").textContent = sc + " / " + total;
+    $("resultPct").textContent = pct + "% · ตอบถูก " + sc + " ข้อ จากทั้งหมด " + total + " ข้อ";
+
+    var lv = level(pct);
+    $("levelEmoji").textContent = lv.emoji;
+    $("levelTitle").textContent = "ระดับความรู้ของคุณ: " + lv.title;
+    $("levelMsg").textContent = lv.msg;
+
+    // best
+    var best = 0;
+    try { best = parseInt(localStorage.getItem(bestKey) || "0", 10) || 0; } catch (e) {}
+    if (sc > best) {
+      best = sc;
+      try { localStorage.setItem(bestKey, String(sc)); } catch (e) {}
+    }
+    var bestEl = document.createElement("p");
+    bestEl.className = "test-best";
+    bestEl.style.marginTop = "10px";
+    bestEl.textContent = "คะแนนดีที่สุด: " + best + " / " + total + " (" + Math.round((best / total) * 100) + "%)";
+    $("levelMsg").after(bestEl);
+
+    // per-chapter
+    renderPerChapter();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function level(pct) {
+    if (pct >= 90) return {
+      emoji: "🏆",
+      title: "ผู้เชี่ยวชาญเครือข่าย",
+      msg: "90% ขึ้นไป! เข้าใจครบทุกบทแบบลึกซึ้ง — ระดับนี้สอบผ่านแบบสบาย ๆ เก่งมากครับ!"
+    };
+    if (pct >= 75) return {
+      emoji: "💪",
+      title: "แข็งแรงมาก",
+      msg: "75–89% — พื้นฐานแน่นมาก เหลืออีกนิดเดียวก็เต็ม! ลองทบทวนบทที่คะแนนน้อยเพื่อเก็บคะแนนที่หายไป"
+    };
+    if (pct >= 50) return {
+      emoji: "🌱",
+      title: "พอใช้ได้",
+      msg: "50–74% — เข้าใจภาพรวมแล้ว แต่ยังมีบางหัวข้อที่คลาดเคลื่อน ลองทบทวนบทที่ได้คะแนนน้อย แล้วกลับมาสอบใหม่ได้เลย"
+    };
+    return {
+      emoji: "📚",
+      title: "มือใหม่",
+      msg: "ต่ำกว่า 50% — ยังไงก็ไม่เป็นไรครับ นี่คือจุดเริ่มต้นที่ดี! แนะนำให้เข้าไปเรียนบทเรียนทั้ง 4 บทก่อน แล้วค่อยกลับมาลองใหม่"
+    };
+  }
+
+  function renderPerChapter() {
+    var box = $("perchList");
+    var rows = "";
+    CHS.forEach(function (c) {
+      var tot = 0, sc = 0;
+      items.forEach(function (q, i) {
+        if (q.ch === c.n) { tot++; if (answers[i] === q.correct) sc++; }
+      });
+      var pct = tot ? Math.round((sc / tot) * 100) : 0;
+      rows +=
+        '<div class="perch-row">' +
+        '<div class="perch-head"><b>บทที่ ' + c.n + ' · ' + c.th + "</b><span>" + sc + " / " + tot + " · " + pct + "%</span></div>" +
+        '<div class="perch-bar"><i data-w="' + pct + '"></i></div>' +
+        "</div>";
+    });
+    box.innerHTML = rows;
+    setTimeout(function () {
+      box.querySelectorAll(".perch-bar i").forEach(function (b) { b.style.width = b.getAttribute("data-w") + "%"; });
+    }, 200);
+  }
+
+  /* ---------- Keyboard ---------- */
+  document.addEventListener("keydown", function (e) {
+    if ($("viewQuiz").style.display !== "") return;
+    if (answers[cur] !== null) {
+      if (e.key === "Enter") {
+        var nb = $("nextBtn"), fb = $("finishBtn");
+        if (nb) { e.preventDefault(); nb.click(); }
+        else if (fb) { e.preventDefault(); fb.click(); }
+      }
+      return;
+    }
+    var k = -1;
+    if (e.key >= "1" && e.key <= "4") k = parseInt(e.key, 10) - 1;
+    else if (e.key >= "a" && e.key <= "d") k = e.key.charCodeAt(0) - 97;
+    else if (e.key >= "A" && e.key <= "D") k = e.key.charCodeAt(0) - 65;
+    if (k >= 0 && k <= 3) {
+      e.preventDefault();
+      var opt = $("qOptions").querySelector('.quiz-option[data-k="' + k + '"]');
+      if (opt) opt.click();
+    }
+  });
+
+  /* ---------- Buttons ---------- */
+  $("startBtn").addEventListener("click", start);
+  $("retryBtn").addEventListener("click", start);
+  $("backBtn").addEventListener("click", function () { window.location.href = "index.html"; });
+
+  renderIntro();
+  icons();
+})();
+</script>
+</body>
+</html>

@@ -1762,6 +1762,66 @@ body[data-page="menu"] #app { display: none; }
 }
 .menu-foot-badge svg { width: 14px; height: 14px; color: var(--cyan); }
 
+/* ---------- การ์ดข้อสอบรวม 80 ข้อ (Pre-Test) ---------- */
+.test-entry {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 26px auto 0;
+  max-width: 880px;
+  padding: 24px 28px;
+  border-radius: 22px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: linear-gradient(120deg, rgba(37, 99, 235, 0.16), rgba(34, 211, 238, 0.07) 55%, rgba(23, 32, 51, 0.4));
+  box-shadow: var(--glow-blue), var(--shadow-md);
+  text-align: left;
+  overflow: hidden;
+  transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+}
+.test-entry::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.95), transparent);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+.test-entry:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: var(--glow-blue), var(--shadow-lg);
+}
+.test-entry:hover::before { opacity: 1; }
+.test-entry-icon {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #7c3aed, #2563eb 55%, #22d3ee);
+  color: #fff;
+  box-shadow: 0 0 22px rgba(124, 58, 237, 0.45);
+}
+.test-entry-icon svg { width: 27px; height: 27px; }
+.test-entry-body { flex: 1; min-width: 0; }
+.test-entry-title { font-size: 18.5px; font-weight: 800; margin-top: 7px; }
+.test-entry-desc { font-size: 13px; color: var(--text-3); line-height: 1.65; margin-top: 5px; max-width: 560px; }
+.test-entry-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+@media (max-width: 700px) {
+  .test-entry { flex-direction: column; align-items: stretch; text-align: center; padding: 24px 20px; }
+  .test-entry-icon { margin: 0 auto; }
+  .test-entry-desc { margin-left: auto; margin-right: auto; }
+  .test-entry-btn { width: 100%; justify-content: center; }
+}
+
 @media (max-width: 640px) {
   .chapter-grid { grid-template-columns: 1fr; margin-top: 32px; }
   .menu-title { font-size: 28px; }
@@ -2048,4 +2108,3 @@ body.exam .quiz-slide.active { display: block; }
   #printArea .pp-card h4 { margin: 0 0 4px; font-size: 12.5px; }
   #printArea .pp-card p { margin: 0; line-height: 1.5; }
 }
-
