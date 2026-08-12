@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive Digital Textbook — Fundamentals of Computer Network / พื้นฐานการสื่อสารข้อมูลและเครือข่าย" />
+  <title>CN · บทที่ 1 — พื้นฐานการสื่อสารข้อมูลและเครือข่าย</title>
+
+  <!-- App styles — โหลดก่อนเสมอ (สำคัญต่อการแสดงผล) -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS (Play CDN) — defer: ไม่บล็อกการโหลดหน้าและ app.js -->
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide icons — defer: ไม่บล็อกการโหลดหน้าและ app.js -->
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body data-page="chapter" data-chapter="1">
+
+
+  <!-- ================= TOP HEADER ================= -->
+  <header id="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="เปิดเมนูบทเรียน" title="เมนู">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <div class="brand">
+      <div class="cn-logo" aria-hidden="true">CN</div>
+      <div class="brand-titles">
+        <h1>เครือข่ายคอมพิวเตอร์และอินเทอร์เน็ต</h1>
+        <p id="headerChapterLabel">พื้นฐานการสื่อสารข้อมูลและเครือข่าย · บทที่ 1</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn" id="homeBtn" aria-label="กลับไปเมนูหลัก" title="เมนูหลัก">
+        <i data-lucide="home"></i>
+      </button>
+      <button class="icon-btn" id="notesBtn" aria-label="เปิดบันทึกย่อ" title="บันทึกย่อ (Notes)">
+        <i data-lucide="notebook-pen"></i>
+      </button>
+
+      <div class="header-progress" aria-label="ความคืบหน้า">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="headerProgressBar">
+          <div class="progress-fill" id="headerProgressFill"></div>
+        </div>
+        <span class="progress-count" id="headerProgressCount">1 / 25</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SHELL ================= -->
+  <div class="shell">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside id="sidebar" aria-label="เมนูบทเรียน">
+      <div class="sidebar-head">
+        <div class="sidebar-head-title">
+          <h2 id="sidebarChapterTitle">เมนูบทที่ 1</h2>
+          <p id="sidebarChapterSub">หัวข้อในสัปดาห์นี้ · 26 หัวข้อ</p>
+        </div>
+        <button class="icon-btn sidebar-close" id="sidebarCloseBtn" aria-label="ปิดเมนูบทเรียน" title="ปิดเมนู">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-info">
+        <i data-lucide="info"></i>
+        <span>คลิกหัวข้อหรือสไลด์เพื่อข้ามไปได้เลย<br />เรียนทีละสไลด์เพื่อเก็บเนื้อหาให้ครบ</span>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav" aria-label="สารบัญสไลด์"></nav>
+      <div class="sidebar-foot">
+        <div class="sf-top"><span>ความคืบหน้า</span><b id="sidebarPct">0%</b></div>
+        <div class="progress-track"><div class="progress-fill" id="sidebarProgressFill"></div></div>
+        <p class="mt-2 text-3" style="font-size:12px" id="sidebarDone">ยังไม่ได้เรียนสไลด์ใดเลย — เริ่มที่ Cover ได้เลย!</p>
+      </div>
+    </aside>
+
+    <!-- ================= STAGE ================= -->
+    <main class="stage">
+
+      <div class="slide-viewport" id="viewport">
+        <!-- ============ SLIDE 1 · COVER ============ -->
+        <section class="slide-view" data-title="Cover" aria-label="สไลด์ 1: เปิดบทเรียน">
+          <div class="slide-inner">
+            <div class="center">
+              <div class="cn-logo float-y" style="width:74px;height:74px;font-size:28px;border-radius:22px;margin:0 auto 18px">CN</div>
+              <p class="slide-eyebrow" style="justify-content:center">COMPUTER NETWORK AND INTERNET</p>
+              <h2 class="slide-title" style="font-size:clamp(30px,5vw,54px);text-align:center">
+                Fundamentals of <span class="grad-text">Computer Network</span>
+              </h2>
+              <p class="slide-subtitle" style="text-align:center;margin:6px auto 0;max-width:640px">
+                พื้นฐานการสื่อสารข้อมูลและเครือข่าย · เรียน Network ตั้งแต่ศูนย์
+                เข้าใจง่ายด้วยภาพ ตัวอย่าง และแบบทดสอบ
+              </p>
+
+              <div class="net-svg-wrap" style="max-width:620px;margin:26px auto 0">
+                <svg viewBox="0 0 560 290" role="img" aria-label="แผนภาพเครือข่ายแบบเคลื่อนไหว">
+                  <defs>
+                    <linearGradient id="hubGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#2563eb" />
+                      <stop offset="100%" stop-color="#22d3ee" />
+                    </linearGradient>
+                    <marker id="arrowDot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7">
+                      <circle cx="5" cy="5" r="4" fill="#38bdf8" />
+                    </marker>
+                  </defs>
+                  <line class="net-edge" x1="280" y1="145" x2="85" y2="60" />
+                  <line class="net-edge" x1="280" y1="145" x2="150" y2="235" />
+                  <line class="net-edge" x1="280" y1="145" x2="335" y2="45" />
+                  <line class="net-edge" x1="280" y1="145" x2="455" y2="90" />
+                  <line class="net-edge" x1="280" y1="145" x2="468" y2="225" />
+                  <line class="net-edge" x1="280" y1="145" x2="210" y2="252" />
+                  <line class="net-edge hot" x1="335" y1="45" x2="455" y2="90" />
+
+                  <circle class="net-node hub" cx="280" cy="145" r="26" />
+                  <text class="net-label" x="280" y="120" text-anchor="middle">INTERNET</text>
+                  <circle class="net-node" cx="85" cy="60" r="20" />
+                  <text class="net-label" x="85" y="36" text-anchor="middle">PC</text>
+                  <circle class="net-node" cx="150" cy="235" r="20" />
+                  <text class="net-label" x="150" y="262" text-anchor="middle">LAPTOP</text>
+                  <circle class="net-node" cx="335" cy="45" r="20" />
+                  <text class="net-label" x="335" y="19" text-anchor="middle">SERVER</text>
+                  <circle class="net-node" cx="455" cy="90" r="20" />
+                  <text class="net-label" x="455" y="64" text-anchor="middle">ROUTER</text>
+                  <circle class="net-node" cx="468" cy="225" r="20" />
+                  <text class="net-label" x="468" y="252" text-anchor="middle">PHONE</text>
+                  <circle class="net-node" cx="210" cy="252" r="20" />
+                  <text class="net-label" x="210" y="279" text-anchor="middle">TABLET</text>
+
+                  <circle class="packet-anim" r="5" fill="#38bdf8">
+                    <animateMotion dur="3.2s" repeatCount="indefinite" path="M280,145 L85,60" />
+                  </circle>
+                  <circle class="packet-anim" r="5" fill="#22d3ee">
+                    <animateMotion dur="4s" repeatCount="indefinite" path="M280,145 L468,225" />
+                  </circle>
+                  <circle class="packet-anim" r="5" fill="#818cf8">
+                    <animateMotion dur="3.6s" repeatCount="indefinite" path="M335,45 L280,145 L150,235" />
+                  </circle>
+                </svg>
+              </div>
+
+              <div class="stat-chips" style="justify-content:center;margin-top:24px">
+                <span class="stat-chip"><i data-lucide="layers"></i> 26 Slides</span>
+                <span class="stat-chip"><i data-lucide="help-circle"></i> 30 Quiz</span>
+                <span class="stat-chip"><i data-lucide="square-stack"></i> 14 Flashcards</span>
+                <span class="stat-chip"><i data-lucide="book-marked"></i> 30+ Glossary</span>
+              </div>
+
+              <button class="btn btn-primary mt-6" id="startBtn" style="font-size:16px;padding:14px 30px">
+                Start Learning <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 2 · ROADMAP ============ -->
+        <section class="slide-view" data-title="เราจะเรียนอะไรบ้าง" aria-label="สไลด์ 2: สิ่งที่จะเรียน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">CHAPTER OVERVIEW</p>
+            <h2 class="slide-title">เราจะเรียนอะไรบ้างในบทนี้?</h2>
+            <p class="slide-subtitle">บทนี้ปูพื้นฐานครบทุกเรื่องของ Computer Network — จากคำนิยามพื้นฐาน ไปจนถึงโปรโตคอลและ Internet</p>
+            <div class="grid-2 mt-6" id="roadmapGrid"></div>
+            <div class="tip-box tip-note mt-6">
+              <i data-lucide="lightbulb"></i>
+              <div><b>วิธีเรียนที่แนะนำ</b>กด Next ไปทีละสไลด์ ลองกดปุ่มใน Diagram ดู และอย่าลืมทำ Quiz ตอนท้ายเพื่อตรวจความเข้าใจ</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 3 · WHAT IS NETWORK ============ -->
+        <section class="slide-view" data-title="Computer Network คืออะไร?" aria-label="สไลด์ 3: เครือข่ายคอมพิวเตอร์คืออะไร">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">NETWORK BASICS</p>
+            <h2 class="slide-title">Computer Network คืออะไร?</h2>
+            <p class="slide-subtitle">Computer Network คือการที่อุปกรณ์หลายเครื่องสามารถเชื่อมต่อและสื่อสารแลกเปลี่ยนข้อมูลกันได้</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">LIVE DEMO · กดปุ่มเพื่อทดลอง</span>
+                <svg viewBox="0 0 700 210" style="margin-top:14px" role="img" aria-label="การส่งข้อมูลจากมือถือไปยังเซิร์ฟเวอร์">
+                  <defs>
+                    <marker id="arrowMid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8">
+                      <path d="M0,0 L10,5 L0,10 Z" fill="#38bdf8" />
+                    </marker>
+                  </defs>
+                  <line x1="180" y1="124" x2="360" y2="124" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowMid)" opacity="0.6" />
+                  <line x1="360" y1="124" x2="540" y2="124" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowMid)" opacity="0.6" />
+                  <line x1="540" y1="124" x2="675" y2="124" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowMid)" opacity="0.6" />
+                  <circle class="packet-anim" id="demoPacket" r="7" fill="#38bdf8" opacity="0">
+                    <animateMotion id="demoPacketMotion" dur="2.2s" begin="indefinite" path="M90,124 L630,124" />
+                  </circle>
+
+                  <rect x="25" y="85" width="130" height="78" rx="16" fill="#1d2b45" stroke="#38bdf8" stroke-width="1.6" />
+                  <text x="90" y="120" text-anchor="middle" font-size="26">📱</text>
+                  <text x="90" y="147" text-anchor="middle" font-size="13" fill="#94a3b8" font-weight="700">PHONE</text>
+
+                  <rect x="205" y="85" width="130" height="78" rx="16" fill="#1d2b45" stroke="#38bdf8" stroke-width="1.6" />
+                  <text x="270" y="120" text-anchor="middle" font-size="26">📡</text>
+                  <text x="270" y="147" text-anchor="middle" font-size="13" fill="#94a3b8" font-weight="700">ROUTER</text>
+
+                  <rect x="385" y="85" width="130" height="78" rx="16" fill="#1d2b45" stroke="#38bdf8" stroke-width="1.6" />
+                  <text x="450" y="120" text-anchor="middle" font-size="26">☁️</text>
+                  <text x="450" y="147" text-anchor="middle" font-size="13" fill="#94a3b8" font-weight="700">INTERNET</text>
+
+                  <rect x="565" y="85" width="130" height="78" rx="16" fill="#1d2b45" stroke="#38bdf8" stroke-width="1.6" />
+                  <text x="630" y="120" text-anchor="middle" font-size="26">🖥️</text>
+                  <text x="630" y="147" text-anchor="middle" font-size="13" fill="#94a3b8" font-weight="700">SERVER</text>
+                </svg>
+
+                <div class="flex items-center gap-3 mt-4 wrap" style="justify-content:center">
+                  <button class="btn btn-primary" id="sendDataBtn"><i data-lucide="send"></i> Send Data</button>
+                  <span class="status-pill" id="sendStatus"><span class="dot"></span> Ready</span>
+                </div>
+              </div>
+
+              <div class="flex" style="flex-direction:column;gap:16px">
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="sparkles" class="cyan"></i>ลองนึกภาพง่าย ๆ</h3>
+                  <p class="card-text">มือถือของเราส่งข้อความไปหา Server ข้อมูลจะถูกตัดเป็นชิ้นเล็ก ๆ (Packet) แล้วเดินทางผ่าน Router ไปตามเครือข่าย จนถึงปลายทาง — เหมือนส่งจดหมายที่ถูกแบ่งใส่ซองหลายซอง</p>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="book-open" class="cyan"></i>นิยามแบบวิชาการ</h3>
+                  <p class="card-text">Computer Network คือกลุ่มของอุปกรณ์อิสระตั้งแต่ 2 เครื่องขึ้นไปที่เชื่อมต่อกันด้วยสื่อกลาง เพื่อแลกเปลี่ยนข้อมูลและใช้ทรัพยากรร่วมกัน</p>
+                </div>
+                <div class="tip-box tip-exam">
+                  <i data-lucide="graduation-cap"></i>
+                  <div><b>Exam Tip</b>ข้อสอบชอบถามว่า "ข้อใดคือตัวอย่าง Network" — ให้มองหา "อุปกรณ์หลายเครื่อง + เชื่อมต่อ + แบ่งปันข้อมูล"</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 4 · WHY NETWORKS ============ -->
+        <section class="slide-view" data-title="ทำไมต้องมีเครือข่าย?" aria-label="สไลด์ 4: ประโยชน์ของเครือข่าย">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">NETWORK BASICS</p>
+            <h2 class="slide-title">ทำไมต้องมีเครือข่าย? (Benefits of Network)</h2>
+            <p class="slide-subtitle">ถ้าไม่มีเครือข่าย เราจะต้องสลับ USB ไปมาเพื่อส่งไฟล์ — Network ทำให้ทุกอย่างเชื่อมต่อและแบ่งปันกันได้</p>
+            <div class="grid-3 mt-6" id="whyGrid"></div>
+            <div class="tip-box tip-remember mt-6">
+              <i data-lucide="lightbulb"></i>
+              <div><b>จำง่าย ๆ</b>ประโยชน์หลักของ Network = แบ่งปัน (Share) + สื่อสาร (Communicate) + รวมศูนย์ (Centralize)</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 5 · FIVE COMPONENTS ============ -->
+        <section class="slide-view" data-title="Five Components of Data Communication" aria-label="สไลด์ 5: องค์ประกอบห้าอย่างของการสื่อสารข้อมูล">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">DATA COMMUNICATION COMPONENTS</p>
+            <h2 class="slide-title">Five Components of <span class="grad-text">Data Communication</span></h2>
+            <p class="slide-subtitle">การสื่อสารข้อมูลจะเกิดขึ้นได้ ต้องมีองค์ประกอบครบ 5 อย่าง ถ้าขาดอย่างใดอย่างหนึ่ง การสื่อสารจะไม่สมบูรณ์</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">INTERACTIVE DIAGRAM</span>
+                <div class="center mt-3">
+                  <div class="node pulse"><span class="node-emoji">🖥️</span>Sender — ผู้ส่ง</div>
+                  <div class="arrow-down"><i data-lucide="arrow-down"></i></div>
+                  <div class="node"><span class="node-emoji">💬</span>Message — ข้อมูล</div>
+                  <div class="arrow-down"><i data-lucide="arrow-down"></i></div>
+                  <div class="node"><span class="node-emoji">🔌</span>Medium — สื่อกลาง</div>
+                  <div class="arrow-down"><i data-lucide="arrow-down"></i></div>
+                  <div class="node"><span class="node-emoji">📥</span>Receiver — ผู้รับ</div>
+                </div>
+                <div class="card mt-4" style="background:rgba(34,211,238,.07);border-color:rgba(34,211,238,.3)">
+                  <div class="flex items-center gap-2 mb-2"><i data-lucide="book-open" class="cyan" style="width:18px;height:18px"></i><b style="font-size:14px">Protocol = Communication Rules</b></div>
+                  <p class="card-text small">กฎการสื่อสารที่ทั้งสองฝ่ายตกลงกัน — คอยกำกับการส่งข้อมูลตลอดทั้งกระบวนการ</p>
+                </div>
+              </div>
+
+              <div class="flex" style="flex-direction:column;gap:16px">
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="list-checks" class="cyan"></i>องค์ประกอบ 5 อย่าง</h3>
+                  <p class="card-text">ทุกครั้งที่เราส่งข้อมูล — ไม่ว่าจะส่ง LINE, โหลดเว็บ หรือดูวิดีโอ — ข้อมูลต้องผ่านองค์ประกอบเหล่านี้เสมอ ลองดูการ์ดด้านล่างทีละใบ</p>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="message-circle" class="cyan"></i>ตัวอย่าง: ส่ง LINE</h3>
+                  <p class="card-text small">เรา (Sender) พิมพ์ข้อความ (Message) ส่งผ่านอินเทอร์เน็ต (Medium) ไปยังมือถือเพื่อน (Receiver) โดยทุกฝ่ายใช้ภาษาและรูปแบบเดียวกัน (Protocol)</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-5 mt-6" id="componentsGrid"></div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 6 · MESSENGER EXAMPLE ============ -->
+        <section class="slide-view" data-title="ตัวอย่างใกล้ตัว: Messenger" aria-label="สไลด์ 6: ตัวอย่างการส่งข้อความ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REAL WORLD EXAMPLE</p>
+            <h2 class="slide-title">ตัวอย่างใกล้ตัว: การส่งข้อความใน Messenger</h2>
+            <p class="slide-subtitle">ทุกครั้งที่คุณส่งข้อความ คุณกำลังใช้ Data Communication ครบทั้ง 5 องค์ประกอบโดยไม่รู้ตัว</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">CHAT SIMULATION · กดส่งข้อความ</span>
+                <div class="flex items-center gap-3 mt-3 wrap" style="justify-content:center">
+                  <div class="card" style="padding:14px;min-width:200px">
+                    <b class="text-3" style="font-size:12px">📱 ของเรา (Sender)</b>
+                    <div class="bubble" id="myBubble" style="display:none;margin-top:10px;background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;border-radius:14px 14px 4px 14px;padding:9px 12px;font-size:13.5px">สวัสดี! วันนี้เรียนอะไร?</div>
+                  </div>
+                  <i data-lucide="arrow-left-right" class="cyan" style="width:20px;height:20px"></i>
+                  <div class="card" style="padding:14px;min-width:200px">
+                    <b class="text-3" style="font-size:12px">📱 เพื่อน (Receiver)</b>
+                    <div class="bubble" id="friendBubble" style="display:none;margin-top:10px;background:#283550;color:var(--text-2);border-radius:14px 14px 14px 4px;padding:9px 12px;font-size:13.5px">เรียน Network อยู่นะ! 🎉</div>
+                  </div>
+                </div>
+                <div class="center mt-4">
+                  <span class="status-pill" id="msgStatus"><span class="dot"></span> รอพิมพ์ข้อความ</span>
+                </div>
+                <div class="center mt-3">
+                  <button class="btn btn-primary" id="sendMsgBtn"><i data-lucide="send"></i> ส่งข้อความ</button>
+                </div>
+              </div>
+
+              <div class="flex" style="flex-direction:column;gap:16px">
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="map" class="cyan"></i>แผนผังการทำงาน</h3>
+                  <p class="card-text small" id="msgSteps" style="line-height:2">
+                    1️⃣ เรา (Sender) พิมพ์ข้อความ<br />
+                    2️⃣ ข้อความถูกแปลงเป็นข้อมูลดิจิทัล<br />
+                    3️⃣ ข้อมูลวิ่งผ่านอินเทอร์เน็ต (Medium)<br />
+                    4️⃣ ถึงมือถือเพื่อน (Receiver)<br />
+                    5️⃣ เพื่อนอ่านข้อความ (Protocol ช่วยให้เข้าใจกัน)
+                  </p>
+                </div>
+                <div class="tip-box tip-remember">
+                  <i data-lucide="lightbulb"></i>
+                  <div><b>จำแบบนี้</b>การแชทใน LINE / Messenger คือตัวอย่าง Data Communication ที่สมบูรณ์แบบ — มีครบทั้ง Sender, Message, Medium, Receiver และ Protocol</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 7 · PROTOCOL ANALOGY ============ -->
+        <section class="slide-view" data-title="Protocol = กฎของการสื่อสาร" aria-label="สไลด์ 7: โปรโตคอลคือกฎของการสื่อสาร">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">PROTOCOL</p>
+            <h2 class="slide-title">Protocol = กฎของการสื่อสาร</h2>
+            <p class="slide-subtitle">Protocol คือกฎและข้อตกลงที่ใช้สื่อสารกัน เพื่อให้อุปกรณ์ต่างยี่ห้อ ต่างระบบ สามารถเข้าใจกันได้</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">ANALOGY · ภาษา</span>
+                <div class="center mt-3">
+                  <div class="flex items-center gap-3 wrap" style="justify-content:center">
+                    <div class="node"><span class="node-emoji">🙎</span>คนไทย<br /><span class="text-3" style="font-size:12px">พูดไทย</span></div>
+                    <i data-lucide="x" class="red" style="width:22px;height:22px"></i>
+                    <div class="node"><span class="node-emoji">🧑</span>ชาวต่างชาติ<br /><span class="text-3" style="font-size:12px">พูดอังกฤษ</span></div>
+                  </div>
+                  <p class="text-3 mt-3" style="font-size:13.5px">❌ ไม่มี Protocol ร่วมกัน → สื่อสารไม่รู้เรื่อง</p>
+                  <div class="arrow-down"><i data-lucide="arrow-down"></i></div>
+                  <div class="flex items-center gap-3 wrap" style="justify-content:center">
+                    <div class="node" style="border-color:rgba(34,211,238,.5)"><span class="node-emoji">🙎</span>คนไทย<br /><span class="text-3" style="font-size:12px">พูดอังกฤษ</span></div>
+                    <i data-lucide="check" class="green" style="width:22px;height:22px"></i>
+                    <div class="node" style="border-color:rgba(34,211,238,.5)"><span class="node-emoji">🧑</span>ชาวต่างชาติ<br /><span class="text-3" style="font-size:12px">พูดอังกฤษ</span></div>
+                  </div>
+                  <p class="cyan mt-3" style="font-size:13.5px;font-weight:700">✅ ใช้ภาษาเดียวกัน (Protocol) → สื่อสารกันรู้เรื่อง</p>
+                </div>
+              </div>
+
+              <div class="flex" style="flex-direction:column;gap:16px">
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="book-open" class="cyan"></i>Protocol ต้องมีอะไรบ้าง</h3>
+                  <p class="card-text small" style="line-height:2">
+                    <b class="cyan">Syntax</b> — รูปแบบของข้อมูล เช่น ขึ้นต้นและจบอย่างไร<br />
+                    <b class="cyan">Semantics</b> — ความหมายของแต่ละส่วน เช่น ข้อมูลนี้คืออะไร<br />
+                    <b class="cyan">Timing</b> — จังหวะเวลา เช่น เมื่อไหร่ควรส่ง และรอคำตอบนานแค่ไหน
+                  </p>
+                </div>
+                <div class="tip-box tip-remember">
+                  <i data-lucide="lightbulb"></i>
+                  <div><b>จำแบบนี้</b>Protocol = ภาษาและมารยาทของการสื่อสาร ถ้าไม่มี Protocol อุปกรณ์จะ "พูดกันไม่รู้เรื่อง" เหมือนคนที่พูดคนละภาษา</div>
+                </div>
+                <div class="tip-box tip-exam">
+                  <i data-lucide="graduation-cap"></i>
+                  <div><b>Exam Tip</b>ตัวอย่าง Protocol ที่ข้อสอบชอบ: HTTP (เปิดเว็บ), TCP (ส่งข้อมูลให้ครบ), IP (กำหนดที่อยู่)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 8 · DATA FLOW ============ -->
+        <section class="slide-view" data-title="การเดินทางของข้อมูล (Data Flow)" aria-label="สไลด์ 8: การเดินทางของข้อมูล">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">DATA FLOW</p>
+            <h2 class="slide-title">การเดินทางของข้อมูล (Data Flow)</h2>
+            <p class="slide-subtitle">ข้อมูลขนาดใหญ่จะถูกตัดเป็นชิ้นเล็ก ๆ (Packet) ส่งข้ามเครือข่ายทีละชิ้น แล้วประกอบกลับเป็นข้อมูลเดิมที่ปลายทาง</p>
+
+            <div class="visual-box mt-6">
+              <span class="vb-label">PACKET JOURNEY · ข้อมูลถูกแบ่งแล้วส่ง</span>
+              <div class="packet-journey">
+                <div class="pj-step">
+                  <div class="pj-box" id="pjBig">
+                    <b>📄 ข้อมูลขนาดใหญ่</b>
+                    <span class="text-3" style="font-size:12px">ไฟล์ / วิดีโอ / ข้อความยาว</span>
+                  </div>
+                  <span class="pj-cap">ต้นทาง</span>
+                </div>
+                <i data-lucide="arrow-right" class="pj-arrow"></i>
+                <div class="pj-step">
+                  <div class="pj-box" id="pjPackets">
+                    <b>✂️ แบ่งเป็น Packet</b>
+                    <div class="pj-pkts">
+                      <span class="pj-pkt">#1</span>
+                      <span class="pj-pkt">#2</span>
+                      <span class="pj-pkt">#3</span>
+                    </div>
+                  </div>
+                  <span class="pj-cap">ตัดเป็นชิ้นเล็ก ๆ</span>
+                </div>
+                <i data-lucide="arrow-right" class="pj-arrow"></i>
+                <div class="pj-step">
+                  <div class="pj-box" id="pjNet">
+                    <b>🌐 เครือข่าย</b>
+                    <div class="pj-route">
+                      <span class="pj-hop"></span><span class="pj-hop"></span><span class="pj-hop"></span>
+                    </div>
+                  </div>
+                  <span class="pj-cap">Packet เดินทางแยกเส้นทาง</span>
+                </div>
+                <i data-lucide="arrow-right" class="pj-arrow"></i>
+                <div class="pj-step">
+                  <div class="pj-box" id="pjRe">
+                    <b>📥 ประกอบกลับ</b>
+                    <span class="text-3" style="font-size:12px">ได้ข้อมูลครบเหมือนเดิม</span>
+                  </div>
+                  <span class="pj-cap">ปลายทาง</span>
+                </div>
+              </div>
+              <div class="center mt-4">
+                <button class="btn btn-cyan" id="flowBtn"><i data-lucide="play"></i> ดูการเดินทาง</button>
+              </div>
+            </div>
+
+            <div class="grid-2 mt-6">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="package" class="cyan"></i>ทำไมต้องตัดเป็น Packet?</h3>
+                <p class="card-text small">ส่งทั้งไฟล์ใหญ่ทีเดียวเสี่ยงต่อการชนกันและใช้เส้นทางยาว Packet ชิ้นเล็กส่งได้เร็ว ตรวจสอบได้ทีละชิ้น และเดินทางคนละเส้นทางได้</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="route" class="cyan"></i>Router เลือกเส้นทางให้</h3>
+                <p class="card-text small">Router เปรียบเหมือนเจ้าหน้าที่คัดแยกจดหมายที่แต่ละสี่แยก — คอยส่ง Packet แต่ละชิ้นไปยังเส้นทางที่เหมาะสมที่สุด</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 9 · TRANSMISSION MODE ============ -->
+        <section class="slide-view" data-title="Transmission Mode" aria-label="สไลด์ 9: การสื่อสารสามรูปแบบ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">TRANSMISSION MODE</p>
+            <h2 class="slide-title">การสื่อสารข้อมูล 3 รูปแบบ</h2>
+            <p class="slide-subtitle">ทิศทางที่ข้อมูลไหลระหว่างผู้ส่งและผู้รับ แบ่งได้ 3 แบบ — กดแท็บเพื่อดูแต่ละแบบ</p>
+
+            <div class="tabs mt-5" id="modeTabs" role="tablist" aria-label="รูปแบบการสื่อสาร"></div>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label" id="modeVisLabel">LIVE DIAGRAM · ทิศทางข้อมูลระหว่าง Device A และ Device B</span>
+              <div class="mode-badge" id="modeBadge">—</div>
+              <svg viewBox="0 0 760 200" style="margin-top:16px" aria-label="แผนภาพทิศทางข้อมูล">
+                <defs>
+                  <marker id="arrA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9">
+                    <path d="M0,0 L10,5 L0,10 Z" fill="#22d3ee" />
+                  </marker>
+                  <marker id="arrB" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="9" markerHeight="9">
+                    <path d="M10,0 L0,5 L10,10 Z" fill="#818cf8" />
+                  </marker>
+                </defs>
+                <rect x="18" y="52" width="152" height="96" rx="18" fill="#18243a" stroke="#38bdf8" stroke-width="2" />
+                <text x="94" y="92" text-anchor="middle" font-size="26">💻</text>
+                <text x="94" y="131" text-anchor="middle" font-size="13" fill="#e2e8f0" font-weight="700">Device A</text>
+                <rect x="590" y="52" width="152" height="96" rx="18" fill="#18243a" stroke="#38bdf8" stroke-width="2" />
+                <text x="666" y="92" text-anchor="middle" font-size="26">💻</text>
+                <text x="666" y="131" text-anchor="middle" font-size="13" fill="#e2e8f0" font-weight="700">Device B</text>
+
+                <path id="lineMain" d="M185,100 L575,100" fill="none" stroke="#475569" stroke-width="2.5" stroke-dasharray="7 6" marker-end="url(#arrA)" />
+                <circle class="packet-anim pkt-dot" id="pktAB" r="8" fill="#22d3ee" opacity="0">
+                  <animateMotion dur="2s" repeatCount="indefinite" begin="indefinite" path="M185,100 L575,100" />
+                </circle>
+                <circle class="packet-anim pkt-dot" id="pktBA" r="8" fill="#818cf8" opacity="0">
+                  <animateMotion dur="2s" repeatCount="indefinite" begin="indefinite" path="M575,100 L185,100" />
+                </circle>
+              </svg>
+              <p class="center text-3 mt-3" id="modeVisCaption" style="font-size:13px">—</p>
+            </div>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title" id="modeName"><i data-lucide="info" class="cyan"></i>—</h3>
+                <p class="card-text" id="modeDesc">—</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="monitor-play" class="cyan"></i>ตัวอย่าง</h3>
+                <p class="card-text" id="modeExample">—</p>
+              </div>
+            </div>
+            <div class="grid-2 mt-4">
+              <div class="tip-box tip-remember">
+                <i data-lucide="lightbulb"></i>
+                <div><b>Remember</b><span id="modeRem">—</span></div>
+              </div>
+              <div class="tip-box tip-exam">
+                <i data-lucide="graduation-cap"></i>
+                <div><b>Exam Tip</b><span id="modeTip">—</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 10 · CONNECTION TYPE ============ -->
+        <section class="slide-view" data-title="Connection Type" aria-label="สไลด์ 10: รูปแบบการเชื่อมต่อ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">PHYSICAL STRUCTURE</p>
+            <h2 class="slide-title">Connection Type — รูปแบบการเชื่อมต่อ</h2>
+            <p class="slide-subtitle">การเชื่อมต่อระหว่างอุปกรณ์มี 2 แบบหลัก — กดสลับเพื่อดูความแตกต่าง</p>
+
+            <div class="tabs mt-5">
+              <button class="tab-btn active" data-conn="ptp">Point-to-Point</button>
+              <button class="tab-btn" data-conn="multi">Multipoint</button>
+            </div>
+
+            <div class="split">
+              <div class="visual-box">
+                <span class="vb-label">LIVE DIAGRAM</span>
+                <svg id="svgPtp" viewBox="0 0 560 200" style="margin-top:14px" aria-label="แผนภาพจุดต่อจุด">
+                  <line x1="110" y1="100" x2="450" y2="100" stroke="#38bdf8" stroke-width="3" stroke-dasharray="8 6">
+                    <animate attributeName="stroke-dashoffset" from="0" to="-28" dur="1.6s" repeatCount="indefinite" />
+                  </line>
+                  <circle cx="70" cy="100" r="30" fill="#18243a" stroke="#38bdf8" stroke-width="2" />
+                  <text x="70" y="95" text-anchor="middle" font-size="20">💻</text>
+                  <text x="70" y="155" text-anchor="middle" font-size="12" fill="#94a3b8" font-weight="700">A</text>
+                  <circle cx="490" cy="100" r="30" fill="#18243a" stroke="#38bdf8" stroke-width="2" />
+                  <text x="490" y="95" text-anchor="middle" font-size="20">💻</text>
+                  <text x="490" y="155" text-anchor="middle" font-size="12" fill="#94a3b8" font-weight="700">B</text>
+                </svg>
+
+                <svg id="svgMulti" viewBox="0 0 560 230" style="margin-top:14px;display:none" aria-label="แผนภาพหลายจุด">
+                  <line x1="60" y1="90" x2="500" y2="90" stroke="#38bdf8" stroke-width="4" />
+                  <line x1="170" y1="90" x2="170" y2="150" stroke="#38bdf8" stroke-width="2.5" />
+                  <line x1="280" y1="90" x2="280" y2="150" stroke="#38bdf8" stroke-width="2.5" />
+                  <line x1="390" y1="90" x2="390" y2="150" stroke="#38bdf8" stroke-width="2.5" />
+                  <rect x="30" y="70" width="34" height="34" rx="8" fill="#1d2b45" stroke="#22d3ee" stroke-width="2" />
+                  <circle cx="170" cy="175" r="24" fill="#18243a" stroke="#38bdf8" stroke-width="2" />
+                  <text x="170" y="172" text-anchor="middle" font-size="16">💻</text>
+                  <text x="170" y="218" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="700">A</text>
+                  <circle cx="280" cy="175" r="24" fill="#18243a" stroke="#38bdf8" stroke-width="2" />
+                  <text x="280" y="172" text-anchor="middle" font-size="16">💻</text>
+                  <text x="280" y="218" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="700">B</text>
+                  <circle cx="390" cy="175" r="24" fill="#18243a" stroke="#38bdf8" stroke-width="2" />
+                  <text x="390" y="172" text-anchor="middle" font-size="16">💻</text>
+                  <text x="390" y="218" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="700">C</text>
+                  <text x="47" y="55" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="700">BUS</text>
+                </svg>
+
+                <p class="center text-3 mt-2" style="font-size:13px" id="connCaption">—</p>
+              </div>
+
+              <div class="flex" style="flex-direction:column;gap:14px">
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="info" class="cyan"></i>คำอธิบาย</h3>
+                  <p class="card-text" id="connDesc">—</p>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="monitor-play" class="cyan"></i>ตัวอย่าง</h3>
+                  <p class="card-text" id="connExample">—</p>
+                </div>
+                <div class="tip-box tip-exam">
+                  <i data-lucide="graduation-cap"></i>
+                  <div><b>Exam Tip</b><span id="connTip">—</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 11 · TOPOLOGY EXPLORER ============ -->
+        <section class="slide-view" data-title="Topology Explorer" aria-label="สไลด์ 11: สำรวจรูปแบบการเชื่อมต่อเครือข่าย">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">NETWORK TOPOLOGY</p>
+            <h2 class="slide-title">รูปแบบการเชื่อมต่อเครือข่าย <span class="grad-text">(Topology)</span></h2>
+            <p class="slide-subtitle">Topology คือรูปแบบการจัดวางและการเชื่อมต่ออุปกรณ์ในเครือข่าย — กดแท็บเพื่อสำรวจทีละแบบ</p>
+
+            <div class="tabs mt-5" id="topoTabs" role="tablist" aria-label="รูปแบบโทโพโลยี"></div>
+
+            <div class="split">
+              <div class="visual-box">
+                <span class="vb-label">TOPOLOGY DIAGRAM</span>
+                <div id="topoVis" style="margin-top:14px"></div>
+              </div>
+
+              <div class="flex" style="flex-direction:column;gap:14px">
+                <div class="card">
+                  <h3 class="card-title" id="topoName"><i data-lucide="info" class="cyan"></i>—</h3>
+                  <p class="card-text" id="topoDesc">—</p>
+                </div>
+                <div class="grid-2" style="gap:10px">
+                  <div class="card" style="padding:14px">
+                    <b class="green" style="font-size:13px">✓ ข้อดี</b>
+                    <p class="card-text small mt-2" id="topoPros">—</p>
+                  </div>
+                  <div class="card" style="padding:14px">
+                    <b class="red" style="font-size:13px">✗ ข้อเสีย</b>
+                    <p class="card-text small mt-2" id="topoCons">—</p>
+                  </div>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="monitor-play" class="cyan"></i>ตัวอย่างจริง</h3>
+                  <p class="card-text" id="topoExample">—</p>
+                </div>
+                <div class="tip-box tip-exam">
+                  <i data-lucide="graduation-cap"></i>
+                  <div><b>Exam Tip</b><span id="topoTip">—</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 12 · MESH DEMO ============ -->
+        <section class="slide-view" data-title="Mesh Demo" aria-label="สไลด์ 12: ทดลองเส้นทางสำรองแบบเมช">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">NETWORK TOPOLOGY · INTERACTIVE</p>
+            <h2 class="slide-title">Mesh — ทดลองเส้นทางสำรอง</h2>
+            <p class="slide-subtitle">ในเครือข่ายแบบ Mesh ถ้าเส้นทางหนึ่งเสีย ข้อมูลจะหาเส้นทางใหม่ทันที — ลองกดปุ่มเพื่อดู</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">MESH NETWORK · คลิกที่เส้นเพื่อทำลาย</span>
+                <svg viewBox="0 0 560 300" style="margin-top:14px" role="img" aria-label="เครือข่ายแบบเมช">
+                  <defs>
+                    <marker id="meshArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8">
+                      <path d="M0,0 L10,5 L0,10 Z" fill="#22d3ee" />
+                    </marker>
+                  </defs>
+                  <!-- links -->
+                  <line class="mesh-link" data-link="AB" x1="70" y1="140" x2="190" y2="60" />
+                  <line class="mesh-link" data-link="AC" x1="70" y1="140" x2="190" y2="230" />
+                  <line class="mesh-link" data-link="BD" x1="190" y1="60" x2="340" y2="60" />
+                  <line class="mesh-link" data-link="CE" x1="190" y1="230" x2="340" y2="230" />
+                  <line class="mesh-link" data-link="BE" x1="190" y1="60" x2="340" y2="230" />
+                  <line class="mesh-link" data-link="CD" x1="190" y1="230" x2="340" y2="60" />
+                  <line class="mesh-link" data-link="DF" x1="340" y1="60" x2="490" y2="140" />
+                  <line class="mesh-link" data-link="EF" x1="340" y1="230" x2="490" y2="140" />
+                  <line class="mesh-link" data-link="DE" x1="340" y1="60" x2="340" y2="230" />
+
+                  <!-- route paths (hidden) -->
+                  <path id="routePrimary" d="M70,140 L190,60 L340,60 L490,140" fill="none" stroke="none" />
+                  <path id="routeBackup" d="M70,140 L190,230 L340,230 L490,140" fill="none" stroke="none" />
+
+                  <circle class="mesh-node" cx="70" cy="140" r="22" />
+                  <text x="70" y="135" text-anchor="middle" font-size="14">💻</text>
+                  <text x="70" y="188" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="700">Sender</text>
+                  <circle class="mesh-node" cx="190" cy="60" r="18" />
+                  <text x="190" y="55" text-anchor="middle" font-size="12">📡</text>
+                  <text x="190" y="100" text-anchor="middle" font-size="10" fill="#94a3b8" font-weight="700">B</text>
+                  <circle class="mesh-node" cx="190" cy="230" r="18" />
+                  <text x="190" y="225" text-anchor="middle" font-size="12">📡</text>
+                  <text x="190" y="270" text-anchor="middle" font-size="10" fill="#94a3b8" font-weight="700">C</text>
+                  <circle class="mesh-node" cx="340" cy="60" r="18" />
+                  <text x="340" y="55" text-anchor="middle" font-size="12">📡</text>
+                  <text x="340" y="100" text-anchor="middle" font-size="10" fill="#94a3b8" font-weight="700">D</text>
+                  <circle class="mesh-node" cx="340" cy="230" r="18" />
+                  <text x="340" y="225" text-anchor="middle" font-size="12">📡</text>
+                  <text x="340" y="270" text-anchor="middle" font-size="10" fill="#94a3b8" font-weight="700">E</text>
+                  <circle class="mesh-node" cx="490" cy="140" r="22" />
+                  <text x="490" y="135" text-anchor="middle" font-size="14">🖥️</text>
+                  <text x="490" y="188" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="700">Receiver</text>
+
+                  <circle class="packet-anim" id="meshPkt" r="6" fill="#22d3ee" opacity="0">
+                    <animateMotion id="meshPktMotion" dur="2.4s" begin="indefinite" path="M70,140 L190,60 L340,60 L490,140" />
+                  </circle>
+                </svg>
+                <div class="flex items-center gap-3 mt-4 wrap" style="justify-content:center">
+                  <button class="btn btn-ghost" id="meshFailBtn"><i data-lucide="unplug"></i> Disable Link</button>
+                  <button class="btn btn-ghost" id="meshResetBtn"><i data-lucide="rotate-ccw"></i> Reset</button>
+                  <span class="status-pill" id="meshStatus"><span class="dot"></span> Ready</span>
+                </div>
+              </div>
+
+              <div class="flex" style="flex-direction:column;gap:14px">
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="activity" class="cyan"></i>Event Log</h3>
+                  <div class="mesh-log" id="meshLog" style="font-size:13px;color:var(--text-3);line-height:1.9;font-family:ui-monospace,monospace"></div>
+                </div>
+                <div class="tip-box tip-remember">
+                  <i data-lucide="lightbulb"></i>
+                  <div><b>Remember</b>Mesh มีเส้นทางหลายเส้นทาง (Multiple Paths) ทำให้เครือข่ายทนทานต่อความเสียหาย — นี่คือเหตุผลที่ Internet ใช้หลักการนี้</div>
+                </div>
+                <div class="tip-box tip-exam">
+                  <i data-lucide="graduation-cap"></i>
+                  <div><b>Exam Tip</b>ข้อเสียของ Mesh คือใช้สายและพอร์ตมาก ทำให้ราคาแพง จึงใช้เฉพาะเครือข่ายที่ต้องมีความน่าเชื่อถือสูง</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 13 · PAN LAN MAN WAN ============ -->
+        <section class="slide-view" data-title="PAN / LAN / MAN / WAN" aria-label="สไลด์ 13: ขนาดของเครือข่าย">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">NETWORK SCOPE</p>
+            <h2 class="slide-title">ขนาดของเครือข่าย: <span class="grad-text">PAN → LAN → MAN → WAN</span></h2>
+            <p class="slide-subtitle">เครือข่ายแบ่งตามขนาดพื้นที่ครอบคลุม — กด "Zoom Out" เพื่อเห็นภาพการขยายใหญ่ขึ้นทีละระดับ</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">ZOOM OUT · กล้องถอยหลังออก</span>
+                <div class="zoom-stage mt-3" id="zoomStage" data-level="1">
+                  <div class="zoom-layer layer-1"><div class="zoom-emoji">👤</div><div class="zoom-label">PAN</div></div>
+                  <div class="zoom-layer layer-2"><div class="zoom-emoji">🏠</div><div class="zoom-label">LAN</div></div>
+                  <div class="zoom-layer layer-3"><div class="zoom-emoji">🏙️</div><div class="zoom-label">MAN</div></div>
+                  <div class="zoom-layer layer-4"><div class="zoom-emoji">🌎</div><div class="zoom-label">WAN</div></div>
+                </div>
+                <div class="flex items-center gap-3 mt-4 wrap" style="justify-content:center">
+                  <button class="btn btn-primary" id="zoomOutBtn"><i data-lucide="zoom-out"></i> Zoom Out</button>
+                  <div class="tabs" style="margin-bottom:0" id="scopeTabs">
+                    <button class="tab-btn active" data-scope="0">PAN</button>
+                    <button class="tab-btn" data-scope="1">LAN</button>
+                    <button class="tab-btn" data-scope="2">MAN</button>
+                    <button class="tab-btn" data-scope="3">WAN</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex" style="flex-direction:column;gap:14px">
+                <div class="card">
+                  <h3 class="card-title" id="scopeName"><i data-lucide="info" class="cyan"></i>PAN</h3>
+                  <p class="card-text" id="scopeDef">—</p>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="map-pin" class="cyan"></i>ขนาดพื้นที่</h3>
+                  <p class="card-text" id="scopeRange">—</p>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="monitor-play" class="cyan"></i>ตัวอย่าง</h3>
+                  <p class="card-text" id="scopeExample">—</p>
+                </div>
+                <div class="tip-box tip-remember">
+                  <i data-lucide="lightbulb"></i>
+                  <div><b>Remember</b><span id="scopeRemember">—</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 14 · TRANSMISSION MEDIA ============ -->
+        <section class="slide-view" data-title="Transmission Media" aria-label="สไลด์ 14: สื่อนำสัญญาณ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">TRANSMISSION MEDIA</p>
+            <h2 class="slide-title">สื่อนำสัญญาณ (Transmission Media)</h2>
+            <p class="slide-subtitle">เส้นทางที่ข้อมูลเดินทางไปยังปลายทาง — แบ่งเป็นแบบมีสาย (Wired) และไร้สาย (Wireless) กดเลือกเพื่อดูแต่ละชนิด</p>
+
+            <div class="tabs mt-5" id="mediaGroupTabs">
+              <button class="tab-btn active" data-group="wired">🔌 Wired — มีสาย</button>
+              <button class="tab-btn" data-group="wireless">📡 Wireless — ไร้สาย</button>
+            </div>
+            <div class="tabs" id="mediaTabs" role="tablist" aria-label="ชนิดของสื่อนำสัญญาณ"></div>
+
+            <div class="split">
+              <div class="visual-box">
+                <span class="vb-label" id="mediaVisLabel">SIGNAL ANIMATION</span>
+                <div class="center mt-4" id="mediaVis" style="min-height:120px">
+                  <!-- filled by JS -->
+                </div>
+              </div>
+              <div class="flex" style="flex-direction:column;gap:14px">
+                <div class="card">
+                  <h3 class="card-title" id="mediaName"><i data-lucide="info" class="cyan"></i>—</h3>
+                  <p class="card-text" id="mediaDesc">—</p>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="monitor-play" class="cyan"></i>ตัวอย่างการใช้งาน</h3>
+                  <p class="card-text" id="mediaExample">—</p>
+                </div>
+                <div class="tip-box tip-remember">
+                  <i data-lucide="lightbulb"></i>
+                  <div><b>Remember</b>ทองแดงส่งด้วยไฟฟ้า ⚡ ใยแก้วส่งด้วยแสง 💡 ไร้สายส่งด้วยคลื่น 📡</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 15 · PROTOCOL STACK ============ -->
+        <section class="slide-view" data-title="Protocol Stack" aria-label="สไลด์ 15: โปรโตคอลสี่ชั้น">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">PROTOCOLS &amp; STANDARDS</p>
+            <h2 class="slide-title">Protocol Stack — ทำงานเป็นชั้น ๆ</h2>
+            <p class="slide-subtitle">การสื่อสารบน Internet ถูกแบ่งเป็น 4 ชั้น แต่ละชั้นมีหน้าที่ชัดเจน เหมือนการส่งจดหมายที่มีหลายขั้นตอน — กดแต่ละชั้นเพื่อดูรายละเอียด</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">TCP/IP MODEL · 4 LAYERS</span>
+                <div class="flex" id="stackList" style="flex-direction:column;gap:10px;margin-top:16px"></div>
+              </div>
+              <div class="flex" style="flex-direction:column;gap:14px">
+                <div class="card">
+                  <h3 class="card-title" id="stackName"><i data-lucide="info" class="cyan"></i>—</h3>
+                  <p class="card-text" id="stackDesc">—</p>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="lightbulb" class="cyan"></i>เปรียบเทียบง่าย ๆ</h3>
+                  <p class="card-text" id="stackAnalogy">—</p>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="monitor-play" class="cyan"></i>ตัวอย่าง</h3>
+                  <p class="card-text" id="stackExample">—</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-note mt-6">
+              <i data-lucide="info"></i>
+              <div><b>ทำไมต้องแบ่งเป็นชั้น?</b>แต่ละชั้นทำงานอิสระต่อกัน เปลี่ยนเทคโนโลยีชั้นล่าง (เช่น เปลี่ยนสายเป็น Wi-Fi) โดยไม่ต้องแก้ชั้นบน — เหมือนเปลี่ยนรถแต่จุดหมายปลายทางยังเหมือนเดิม</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 16 · PROTOCOL CARDS ============ -->
+        <section class="slide-view" data-title="Protocol ที่ควรรู้" aria-label="สไลด์ 16: โปรโตคอลที่ควรรู้จัก">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">PROTOCOLS &amp; STANDARDS</p>
+            <h2 class="slide-title">Protocol ที่ควรรู้จัก</h2>
+            <p class="slide-subtitle">5 โปรโตคอลที่เจอบ่อยที่สุดในชีวิตประจำวัน — กดการ์ดเพื่อดูรายละเอียดและแอนิเมชัน</p>
+
+            <div class="grid-5 mt-6" id="protoCards"></div>
+
+            <div class="card mt-6" id="protoDetail" style="display:none">
+              <div class="split stack" style="grid-template-columns:1fr">
+                <div class="flex items-center gap-3 wrap" style="justify-content:space-between">
+                  <div>
+                    <h3 class="card-title" id="protoDetailName"><i data-lucide="info" class="cyan"></i>—</h3>
+                    <p class="card-text" id="protoDetailDef">—</p>
+                  </div>
+                  <span class="chip" id="protoDetailThai">—</span>
+                </div>
+              </div>
+              <div class="split mt-4" style="align-items:center">
+                <div class="visual-box" style="min-height:150px">
+                  <span class="vb-label">ANIMATION</span>
+                  <div id="protoAnim" style="margin-top:20px"></div>
+                </div>
+                <div class="flex" style="flex-direction:column;gap:12px">
+                  <div class="card" style="padding:14px">
+                    <b class="cyan" style="font-size:13px">📌 ตัวอย่าง</b>
+                    <p class="card-text small mt-2" id="protoDetailExample">—</p>
+                  </div>
+                  <div class="tip-box tip-exam" style="margin:0">
+                    <i data-lucide="graduation-cap"></i>
+                    <div><b>Exam Tip</b><span id="protoDetailTip">—</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 17 · RFC ============ -->
+        <section class="slide-view" data-title="RFC — Internet Standards" aria-label="สไลด์ 17: มาตรฐานอินเทอร์เน็ต RFC">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">INTERNET STANDARDS</p>
+            <h2 class="slide-title">RFC คืออะไร? (Request for Comments)</h2>
+            <p class="slide-subtitle">RFC คือเอกสารที่เผยแพร่ข้อกำหนด แนวคิด และรายละเอียดทางเทคนิคเกี่ยวกับ Internet Protocols และเทคโนโลยีของ Internet</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">DOCUMENT ILLUSTRATION</span>
+                <div class="doc-paper mt-3">
+                  <div style="font-weight:800;color:#2563eb;font-size:13px">RFC 0000</div>
+                  <div class="doc-line short"></div>
+                  <div class="doc-line"></div>
+                  <div class="doc-line mid"></div>
+                  <div class="doc-line"></div>
+                  <div class="doc-line short"></div>
+                  <div class="doc-stamp">REQUEST FOR COMMENTS</div>
+                </div>
+                <div class="flow-row mt-5" style="flex-direction:column">
+                  <div class="node"><span class="node-emoji">📡</span>Protocol</div>
+                  <div class="arrow-down"><i data-lucide="arrow-down"></i></div>
+                  <div class="node"><span class="node-emoji">📋</span>Technical Specification</div>
+                  <div class="arrow-down"><i data-lucide="arrow-down"></i></div>
+                  <div class="node"><span class="node-emoji">📄</span>RFC Document</div>
+                </div>
+              </div>
+
+              <div class="flex" style="flex-direction:column;gap:16px">
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="file-text" class="cyan"></i>คำอธิบาย</h3>
+                  <p class="card-text">RFC (Request for Comments) คือเอกสารที่ใช้เผยแพร่ข้อกำหนดและแนวคิดทางเทคนิคของ Internet — ใคร ๆ ก็เสนอได้ และชุมชนนักพัฒนาเป็นผู้พิจารณา</p>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="list" class="cyan"></i>RFC มีบทบาทอย่างไร?</h3>
+                  <p class="card-text small" style="line-height:2">
+                    📌 กำหนดมาตรฐานของโปรโตคอล เช่น TCP, IP, HTTP<br />
+                    📌 เก็บประวัติและแนวคิดของการพัฒนา Internet<br />
+                    📌 เปิดให้ทุกคนอ่านและแสดงความคิดเห็นได้
+                  </p>
+                </div>
+                <div class="tip-box tip-note">
+                  <i data-lucide="alert-triangle"></i>
+                  <div><b>Important Note</b>RFC ทุกฉบับไม่ได้หมายความว่าเป็น Internet Standard โดยตรง — บางฉบับเป็นเพียงข้อเสนอ (Proposal) หรือข้อมูล (Informational) เท่านั้น</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 18 · INTERNET HISTORY ============ -->
+        <section class="slide-view" data-title="Internet History" aria-label="สไลด์ 18: ประวัติอินเทอร์เน็ต">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">INTERNET HISTORY</p>
+            <h2 class="slide-title">ประวัติของ Internet</h2>
+            <p class="slide-subtitle">จากเครือข่ายทหารสู่เครือข่ายที่เชื่อมคนทั้งโลก — กดการ์ดแต่ละยุคเพื่อดูรายละเอียด</p>
+            <div class="timeline-h mt-6" id="timelineH"></div>
+            <div class="timeline-v mt-6" id="timelineV"></div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 19 · INTERNET VS WEB ============ -->
+        <section class="slide-view" data-title="Internet vs Web" aria-label="สไลด์ 19: อินเทอร์เน็ตกับเวิลด์ไวด์เว็บ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">INTERNET</p>
+            <h2 class="slide-title">Internet vs World Wide Web</h2>
+            <p class="slide-subtitle">หลายคนใช้คำว่า "Internet" และ "Web" แทนกัน แต่จริง ๆ แล้วไม่เหมือนกัน</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card hoverable">
+                <h3 class="card-title"><i data-lucide="globe-2" class="cyan"></i>INTERNET</h3>
+                <p class="card-text">โครงสร้างเครือข่ายขนาดยักษ์ที่เชื่อมต่ออุปกรณ์ทั่วโลกเข้าด้วยกัน — เป็น "โครงสร้างพื้นฐาน" (Infrastructure)</p>
+                <p class="card-text small mt-3">ประกอบด้วย: สายเคเบิล, Router, Server, อุปกรณ์ทุกชนิดที่ต่อถึงกัน</p>
+              </div>
+              <div class="card hoverable">
+                <h3 class="card-title"><i data-lucide="mouse-pointer-click" class="cyan"></i>WORLD WIDE WEB</h3>
+                <p class="card-text">บริการหนึ่งที่วิ่งอยู่บน Internet — ระบบของหน้าเว็บและลิงก์ที่เราเปิดผ่าน Browser</p>
+                <p class="card-text small mt-3">Web, Email, Game, Video Call ล้วนเป็นบริการที่ "วิ่งบน" Internet ทั้งหมด</p>
+              </div>
+            </div>
+
+            <div class="tip-box tip-remember mt-5">
+              <i data-lucide="lightbulb"></i>
+              <div><b>Analogy — จำง่ายมาก</b>Internet = ถนน 🛣️ (โครงสร้าง) ส่วน Web = รถ 🚗 (ยานพาหนะที่วิ่งบนถนน) — บน Internet มีบริการหลายชนิดวิ่งอยู่ ไม่ใช่แค่ Web</div>
+            </div>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label">หลายบริการวิ่งบน Internet เดียวกัน</span>
+              <div class="road mt-5">
+                <div class="road-line"></div>
+                <div class="road-vehicle" style="animation-duration:9s"><span>🌐</span> Web</div>
+                <div class="road-vehicle" style="animation-duration:12s;animation-delay:-4s"><span>✉️</span> Email</div>
+                <div class="road-vehicle" style="animation-duration:7.5s;animation-delay:-2s"><span>🎮</span> Game</div>
+                <div class="road-vehicle" style="animation-duration:11s;animation-delay:-6s"><span>🎥</span> Video Call</div>
+                <div class="road-vehicle" style="animation-duration:14s;animation-delay:-9s"><span>📁</span> File Transfer</div>
+              </div>
+              <p class="center text-3 mt-3" style="font-size:13px">🛣️ Internet = โครงสร้างถนน · ยานพาหนะ = บริการต่าง ๆ ที่วิ่งบน Internet</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 20 · SUMMARY ============ -->
+        <section class="slide-view" data-title="Chapter Summary" aria-label="สไลด์ 20: สรุปบทเรียน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">CHAPTER SUMMARY</p>
+            <h2 class="slide-title">สิ่งที่เราเรียนรู้ในบทนี้</h2>
+            <p class="slide-subtitle">8 หัวข้อสำคัญที่ควรจำก่อนไปทำแบบทดสอบ — ถ้าจำไม่ได้ให้ย้อนกลับไปทบทวนสไลด์นั้น ๆ</p>
+            <div class="grid-4 mt-6" id="summaryGrid"></div>
+            <div class="center mt-6">
+              <div class="flex items-center gap-3 wrap" style="justify-content:center">
+                <button class="btn btn-primary" id="goQuizBtn">ไปทำแบบทดสอบ <i data-lucide="arrow-right"></i></button>
+                <button class="btn btn-cyan" id="goQuickBtn"><i data-lucide="zap"></i> ไปทำข้อสอบหลังเรียน 20 ข้อ</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 21 · CHEAT SHEET ============ -->
+        <section class="slide-view" data-title="Exam Cheat Sheet" aria-label="สไลด์ 21: สูตรจำก่อนสอบ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">EXAM CHEAT SHEET</p>
+            <h2 class="slide-title">สูตรจำก่อนสอบ <span class="grad-text">(Cheat Sheet)</span></h2>
+            <p class="slide-subtitle">สรุปแบบย่อ สไตล์สมุดโน้ต — ท่องให้ขึ้นใจก่อนเข้าห้องสอบ</p>
+            <div class="cheat-grid mt-6" id="cheatGrid"></div>
+            <div class="tip-box tip-exam mt-6">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>เทคนิคท่องจำ</b>จับคู่คำศัพท์กับความหมายให้เป็นเรื่องราว เช่น "Simplex = ทางเดียว เหมือนสัญญาณทีวี" — ยิ่งเป็นภาพ ยิ่งจำได้นาน</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 22 · QUIZ 1 ============ -->
+        <section class="slide-view quiz-slide" data-title="Quiz 1 (ข้อ 1–5)" aria-label="สไลด์ 22: แบบทดสอบชุดที่ 1">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">QUIZ MODE · PART 1</p>
+            <h2 class="slide-title">แบบทดสอบ ชุดที่ 1</h2>
+            <p class="slide-subtitle">ตอบคำถามแล้วดูคำอธิบายทันที — ความรู้ที่ได้จากสไลด์ 1–11</p>
+            <div id="quiz1"></div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 23 · QUIZ 2 ============ -->
+        <section class="slide-view quiz-slide" data-title="Quiz 2 (ข้อ 6–10)" aria-label="สไลด์ 23: แบบทดสอบชุดที่ 2">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">QUIZ MODE · PART 2</p>
+            <h2 class="slide-title">แบบทดสอบ ชุดที่ 2</h2>
+            <p class="slide-subtitle">ต่อจากชุดที่ 1 — ครอบคลุม Topology, ขนาดเครือข่าย และโปรโตคอล</p>
+            <div id="quiz2"></div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 24 · FLASHCARDS ============ -->
+        <section class="slide-view" data-title="Flashcards" aria-label="สไลด์ 24: การ์ดทบทวน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REVIEW · FLASHCARDS</p>
+            <h2 class="slide-title">Flashcards — ทบทวนความรู้</h2>
+            <p class="slide-subtitle">อ่านคำถามแล้วลองตอบในใจก่อน — คลิกการ์ดเพื่อพลิกดูคำตอบ</p>
+
+            <div class="split mt-6" style="grid-template-columns:1fr">
+              <div class="flashcard-wrap">
+                <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="การ์ดคำถาม — คลิกเพื่อพลิก">
+                  <div class="flashcard-face flashcard-front">
+                    <span class="fc-eyebrow">QUESTION</span>
+                    <p class="fc-q" id="fcQ">—</p>
+                    <span class="flashcard-hint">คลิกเพื่อพลิกการ์ด 🔄</span>
+                  </div>
+                  <div class="flashcard-face flashcard-back">
+                    <span class="fc-eyebrow">ANSWER</span>
+                    <p class="fc-a" id="fcA">—</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 mt-5 wrap" style="justify-content:center">
+              <button class="btn btn-ghost" id="fcPrev"><i data-lucide="chevron-left"></i> Previous</button>
+              <span class="chip" id="fcCounter">1 / 14</span>
+              <button class="btn btn-ghost" id="fcNext">Next <i data-lucide="chevron-right"></i></button>
+              <button class="btn btn-cyan" id="fcShuffle"><i data-lucide="shuffle"></i> Shuffle</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 25 · GLOSSARY ============ -->
+        <section class="slide-view" data-title="Glossary" aria-label="สไลด์ 25: คำศัพท์">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REVIEW · GLOSSARY</p>
+            <h2 class="slide-title">Glossary — คำศัพท์ที่ควรรู้</h2>
+            <p class="slide-subtitle">ค้นหาคำศัพท์แบบเรียลไทม์ — คลิกคำศัพท์เพื่อดูความหมาย</p>
+
+            <div class="search-box mt-5">
+              <i data-lucide="search"></i>
+              <input type="search" id="glossarySearch" placeholder="Search term... (ค้นหาคำศัพท์)" aria-label="ค้นหาคำศัพท์" autocomplete="off" />
+            </div>
+            <p class="text-3 mt-3" style="font-size:13px" id="glossaryCount">32 คำศัพท์</p>
+            <div class="grid-2 mt-4" id="glossaryList"></div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 26 · QUICK QUIZ ============ -->
+        <section class="slide-view quiz-slide" data-title="ข้อสอบหลังเรียน — แบบทดสอบท้ายบท 20 ข้อ" aria-label="สไลด์ 26: ข้อสอบหลังเรียน 20 ข้อ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">POST-LESSON EXAM · 20 QUESTIONS</p>
+            <h2 class="slide-title">ข้อสอบหลังเรียน <span class="grad-text">20 ข้อ</span></h2>
+            <p class="slide-subtitle">สอบเก็บคะแนนท้ายบท — เรียนครบทุกสไลด์ก่อนถึงจะเข้าสอบได้ ตอบแล้วดูเฉลยทันที</p>
+            <div id="quizExam"></div>
+          </div>
+        </section>
+      </div><!-- /viewport -->
+
+      <!-- ================= BOTTOM BAR ================= -->
+      <footer class="bottombar">
+        <button class="bb-nav-btn" id="prevBtn" aria-label="สไลด์ก่อนหน้า">
+          <i data-lucide="chevron-left"></i><span class="bb-label">ก่อนหน้า</span>
+        </button>
+
+        <div class="bb-center">
+          สไลด์ <b id="bbCounter">1</b> / <b id="bbTotal">26</b>
+        </div>
+
+        <div class="bb-tools">
+          <button class="icon-btn" id="fullscreenBtn" aria-label="ขยายสไลด์เต็มจอ" title="ขยายสไลด์">
+            <i data-lucide="maximize-2"></i>
+          </button>
+          <button class="icon-btn" id="printSlidesBtn" aria-label="พิมพ์สไลด์ทั้งหมด" title="พิมพ์สไลด์ทั้งหมด">
+            <i data-lucide="printer"></i>
+          </button>
+          <button class="icon-btn" id="printCardsBtn" aria-label="พิมพ์การ์ดสรุป" title="พิมพ์การ์ดสรุป">
+            <i data-lucide="file-output"></i>
+          </button>
+        </div>
+
+        <button class="bb-nav-btn next" id="nextBtn" aria-label="สไลด์ถัดไป">
+          <span class="bb-label">ถัดไป</span><i data-lucide="chevron-right"></i>
+        </button>
+      </footer>
+
+    </main>
+  </div><!-- /shell -->
+</div><!-- /app -->
+
+<!-- ================= DRAWER BACKDROP ================= -->
+<div id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- ================= NOTES PANEL ================= -->
+<aside class="notes-panel" id="notesPanel" aria-label="บันทึกย่อ">
+  <div class="flex items-center justify-between" style="padding:16px 20px;border-bottom:1px solid var(--border)">
+    <div>
+      <b style="font-size:15px">📝 บันทึกย่อ (Notes)</b>
+      <p class="text-3" style="font-size:12px" id="notesLabel">สไลด์ที่กำลังเรียน</p>
+    </div>
+    <button class="icon-btn" id="notesCloseBtn" aria-label="ปิดบันทึกย่อ"><i data-lucide="x"></i></button>
+  </div>
+  <textarea id="notesTextarea" placeholder="เขียนสิ่งที่ต้องจำจากสไลด์นี้...&#10;เช่น:&#10;- Simplex = ทางเดียว&#10;- Star ใช้ศูนย์กลาง&#10;- Mesh มีเส้นทางสำรอง" aria-label="บันทึกย่อ"></textarea>
+  <div class="text-3" style="padding:10px 20px 14px;font-size:12px;border-top:1px solid var(--border)">
+    💾 บันทึกอัตโนมัติลงในเครื่องของคุณ (localStorage)
+  </div>
+</aside>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ================= COMPLETION OVERLAY ================= -->
+<div id="completionOverlay" role="dialog" aria-modal="true" aria-label="จบบทเรียน">
+  <div class="card center" style="max-width:440px;position:relative;padding:40px 32px;z-index:1">
+    <div style="font-size:56px" class="float-y">🎉</div>
+    <h2 class="slide-title mt-4" style="font-size:28px">Chapter Complete!</h2>
+    <p class="text-2 mt-2" id="completionMsg">คุณเรียนครบทุกสไลด์แล้ว — ยอดเยี่ยมมาก! <b class="grad-text">Keep Learning!</b></p>
+    <div class="grid-3 mt-5" style="grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneSlides">26</b><p class="text-3" style="font-size:12px">สไลด์</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneScore">–</b><p class="text-3" style="font-size:12px">คะแนน Quiz</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px">100%</b><p class="text-3" style="font-size:12px">ความคืบหน้า</p></div>
+    </div>
+    <div class="flex items-center gap-3 mt-6 wrap" style="justify-content:center">
+      <button class="btn btn-ghost" id="completionCloseBtn">ปิด 🎊</button>
+      <button class="btn btn-primary" id="completionRestartBtn"><i data-lucide="rotate-ccw"></i> เรียนใหม่อีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PRINT AREA ================= -->
+<div id="printArea" aria-hidden="true"></div>
+
+<!-- App scripts -->
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

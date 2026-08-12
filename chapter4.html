@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive Digital Textbook — บทที่ 4: Transport Layer (TCP/UDP, Multiplexing, Three-Way Handshake, Flow/Congestion Control)" />
+  <title>CN · บทที่ 4 — Transport Layer</title>
+
+  <!-- App styles — โหลดก่อนเสมอ (สำคัญต่อการแสดงผล) -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS (Play CDN) — defer: ไม่บล็อกการโหลดหน้าและ app.js -->
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide icons — defer: ไม่บล็อกการโหลดหน้าและ app.js -->
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body data-page="chapter" data-chapter="4">
+
+<div id="app">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header id="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="เปิดเมนูบทเรียน" title="เมนู">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <div class="brand">
+      <div class="cn-logo" aria-hidden="true">CN</div>
+      <div class="brand-titles">
+        <h1>เครือข่ายคอมพิวเตอร์และอินเทอร์เน็ต</h1>
+        <p id="headerChapterLabel">พื้นฐานการสื่อสารข้อมูลและเครือข่าย · บทที่ 1</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn" id="homeBtn" aria-label="กลับไปเมนูหลัก" title="เมนูหลัก">
+        <i data-lucide="home"></i>
+      </button>
+      <button class="icon-btn" id="notesBtn" aria-label="เปิดบันทึกย่อ" title="บันทึกย่อ (Notes)">
+        <i data-lucide="notebook-pen"></i>
+      </button>
+
+      <div class="header-progress" aria-label="ความคืบหน้า">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="headerProgressBar">
+          <div class="progress-fill" id="headerProgressFill"></div>
+        </div>
+        <span class="progress-count" id="headerProgressCount">1 / 22</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SHELL ================= -->
+  <div class="shell">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside id="sidebar" aria-label="เมนูบทเรียน">
+      <div class="sidebar-head">
+        <div class="sidebar-head-title">
+          <h2 id="sidebarChapterTitle">เมนูบทที่ 4</h2>
+          <p id="sidebarChapterSub">หัวข้อในสัปดาห์นี้ · 22 หัวข้อ</p>
+        </div>
+        <button class="icon-btn sidebar-close" id="sidebarCloseBtn" aria-label="ปิดเมนูบทเรียน" title="ปิดเมนู">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-info">
+        <i data-lucide="info"></i>
+        <span>คลิกหัวข้อหรือสไลด์เพื่อข้ามไปได้เลย<br />เรียนทีละสไลด์เพื่อเก็บเนื้อหาให้ครบ</span>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav" aria-label="สารบัญสไลด์"></nav>
+      <div class="sidebar-foot">
+        <div class="sf-top"><span>ความคืบหน้า</span><b id="sidebarPct">0%</b></div>
+        <div class="progress-track"><div class="progress-fill" id="sidebarProgressFill"></div></div>
+        <p class="mt-2 text-3" style="font-size:12px" id="sidebarDone">ยังไม่ได้เรียนสไลด์ใดเลย — เริ่มที่ Cover ได้เลย!</p>
+      </div>
+    </aside>
+
+    <!-- ================= STAGE ================= -->
+    <main class="stage">
+
+      <div class="slide-viewport" id="viewport">
+
+        <!-- ============ SLIDE 1 · COVER ============ -->
+        <section class="slide-view" data-title="Cover — บทที่ 4: Transport Layer" aria-label="สไลด์ 1: เปิดบทเรียน">
+          <div class="slide-inner">
+            <div class="center" style="padding:26px 0 6px">
+              <div class="cn-logo small" style="margin:0 auto 18px">CN</div>
+              <p class="menu-kicker" style="margin:0">CHAPTER 4 · TRANSPORT LAYER</p>
+              <h2 class="slide-title" style="font-size:38px">Transport Layer <span class="grad-text">— ชั้นขนส่งข้อมูล</span></h2>
+              <p class="slide-subtitle" style="max-width:600px;margin:10px auto 0">รู้จัก Multiplexing/Demultiplexing, TCP vs UDP, UDP Header, ความเชื่อถือได้ (rdt, ACK/NAK), Three-Way Handshake, Flow/Congestion Control และ Checksum</p>
+
+              <div class="visual-box mt-6" style="max-width:540px;margin-left:auto;margin-right:auto">
+                <span class="vb-label">APP → TRANSPORT · เชื่อมต่อระหว่าง Process</span>
+                <div class="flex items-center justify-center" style="gap:16px;padding:18px 10px;flex-wrap:wrap">
+                  <div class="card center" style="padding:14px 18px"><div style="font-size:26px">📱</div><b style="font-size:12.5px">App (Process)</b><span class="text-3" style="font-size:11px">Socket</span></div>
+                  <div style="font-size:22px;color:var(--cyan)">↓</div>
+                  <div class="card center" style="padding:14px 18px;border-color:rgba(56,189,248,.5)"><div style="font-size:26px">📦</div><b style="font-size:12.5px;color:var(--cyan)">Transport</b><span class="text-3" style="font-size:11px">Segment</span></div>
+                  <div style="font-size:22px;color:var(--cyan)">↓</div>
+                  <div class="card center" style="padding:14px 18px"><div style="font-size:26px">🌐</div><b style="font-size:12.5px">Network</b><span class="text-3" style="font-size:11px">Router ส่งต่อ</span></div>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 wrap mt-5" style="justify-content:center">
+                <span class="chip">22 สไลด์</span><span class="chip">12 Quiz</span><span class="chip">13 Flashcards</span><span class="chip">28 คำศัพท์</span>
+              </div>
+              <div class="mt-6">
+                <button class="btn btn-primary btn-lg" id="startBtn4">เริ่มเรียนบทนี้ <i data-lucide="arrow-right"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 2 · หน้าที่ Transport Layer ============ -->
+        <section class="slide-view" data-title="หน้าที่ของ Transport Layer" aria-label="สไลด์ 2: หน้าที่ของ Transport Layer">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">TRANSPORT LAYER · FUNCTIONS</p>
+            <h2 class="slide-title">หน้าที่ของ Transport Layer</h2>
+            <p class="slide-subtitle">ชั้นที่ทำให้ "โปรแกรม (Process)" บนเครื่องต่าง ๆ คุยกันได้ — ทำงานใน Host ไม่ใช่ Router</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="layers" class="cyan"></i>1. เชื่อม Process ต่อ Process</h3><p class="card-text small">การสื่อสารจริง ๆ คือระหว่าง Process กับ Process — Transport ใช้หมายเลขพอร์ตระบุว่าแอปไหนต้องรับ</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="split" class="cyan"></i>2. Multiplexing / Demultiplexing</h3><p class="card-text small">รวมข้อมูลจากหลายแอปส่งลงเครือข่ายเดียว (Mux) และแยกไปยังแอปปลายทางที่ถูกต้อง (Demux)</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="shield-check" class="cyan"></i>3. Reliability (เฉพาะ TCP)</h3><p class="card-text small">ตรวจข้อผิดพลาด ส่งซ้ำเมื่อหาย และจัดลำดับข้อมูลให้ถูกต้อง — UDP ไม่มี</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="gauge" class="cyan"></i>4. Flow &amp; Congestion Control (TCP)</h3><p class="card-text small">ไม่ส่งเกิน buffer ฝั่งรับ (Flow) และไม่ทำให้เครือข่ายแน่นเกินไป (Congestion)</p></div>
+            </div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="lightbulb"></i>
+              <div><b>จำง่าย</b>Transport = "ชั้นที่ทำงานในเครื่องปลายทาง" — Router สนใจแค่ Network Layer (IP) ไม่เปิดดู Segment ข้างใน</div>
+            </div>
+            <div class="tip-box tip-exam mt-3">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Exam Tip</b>PDU ของ Transport Layer เรียกว่า <b>Segment</b> — ข้อสอบชอบถามชื่อ PDU ของแต่ละชั้น</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 3 · MUX / DEMUX ============ -->
+        <section class="slide-view" data-title="Multiplexing / Demultiplexing" aria-label="สไลด์ 3: Multiplexing และ Demultiplexing">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">MULTIPLEXING / DEMULTIPLEXING</p>
+            <h2 class="slide-title">Multiplexing / Demultiplexing <span class="grad-text">(Mux / Demux)</span></h2>
+            <p class="slide-subtitle">หลายแอปใช้เครือข่ายเดียวกันได้ยังไง — รวมฝั่งส่ง แยกฝั่งรับ</p>
+
+            <div class="visual-box mt-6">
+              <span class="vb-label">MULTIPLEXING (ฝั่งส่ง) · DEMULTIPLEXING (ฝั่งรับ)</span>
+              <svg viewBox="0 0 560 190" style="margin-top:8px" aria-label="แผนภาพ Multiplexing และ Demultiplexing">
+                <rect x="10" y="18" width="90" height="38" rx="10" fill="#18243a" stroke="rgba(148,163,184,.25)"/>
+                <text x="55" y="42" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="700">App A :80</text>
+                <rect x="10" y="76" width="90" height="38" rx="10" fill="#18243a" stroke="rgba(148,163,184,.25)"/>
+                <text x="55" y="100" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="700">App B :53</text>
+                <rect x="10" y="134" width="90" height="38" rx="10" fill="#18243a" stroke="rgba(148,163,184,.25)"/>
+                <text x="55" y="158" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="700">App C :443</text>
+                <rect x="135" y="70" width="120" height="52" rx="12" fill="#141f33" stroke="rgba(56,189,248,.5)"/>
+                <text x="195" y="93" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700">Transport</text>
+                <text x="195" y="110" text-anchor="middle" fill="#94a3b8" font-size="10">MUX / DEMUX</text>
+                <path d="M100,37 L135,85" stroke="#2563eb" stroke-width="2" fill="none" marker-end="url(#mxA)"/>
+                <path d="M100,95 L135,95" stroke="#2563eb" stroke-width="2" fill="none" marker-end="url(#mxA)"/>
+                <path d="M100,153 L135,105" stroke="#2563eb" stroke-width="2" fill="none" marker-end="url(#mxA)"/>
+                <rect x="290" y="60" width="120" height="72" rx="12" fill="#141f33" stroke="rgba(148,163,184,.3)"/>
+                <text x="350" y="92" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="700">Network</text>
+                <text x="350" y="110" text-anchor="middle" fill="#94a3b8" font-size="10">หนึ่งช่องทาง / สาย</text>
+                <path d="M255,96 L290,96" stroke="#22d3ee" stroke-width="2.5" fill="none" marker-end="url(#mxC)"/>
+                <rect x="445" y="18" width="105" height="38" rx="10" fill="#18243a" stroke="rgba(148,163,184,.25)"/>
+                <text x="497" y="42" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="700">App A' :80</text>
+                <rect x="445" y="76" width="105" height="38" rx="10" fill="#18243a" stroke="rgba(148,163,184,.25)"/>
+                <text x="497" y="100" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="700">App B' :53</text>
+                <rect x="445" y="134" width="105" height="38" rx="10" fill="#18243a" stroke="rgba(148,163,184,.25)"/>
+                <text x="497" y="158" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="700">App C' :443</text>
+                <path d="M445,37 L410,85" stroke="#22d3ee" stroke-width="2" fill="none" marker-end="url(#mxC)"/>
+                <path d="M445,95 L410,95" stroke="#22d3ee" stroke-width="2" fill="none" marker-end="url(#mxC)"/>
+                <path d="M445,153 L410,105" stroke="#22d3ee" stroke-width="2" fill="none" marker-end="url(#mxC)"/>
+                <defs>
+                  <marker id="mxA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7"><path d="M0,0 L10,5 L0,10 Z" fill="#2563eb"/></marker>
+                  <marker id="mxC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7"><path d="M0,0 L10,5 L0,10 Z" fill="#22d3ee"/></marker>
+                </defs>
+              </svg>
+            </div>
+
+            <div class="grid-2 mt-5">
+              <div class="card"><h3 class="card-title" style="color:var(--cyan)">Multiplexing</h3><p class="card-text small">ฝั่งส่งรวมข้อมูลจากหลาย Socket/Process ลงสู่ <b>ช่องทางเดียว</b> (หนึ่งเครือข่าย) — ประหยัดทรัพยากร เพราะไม่ต้องมีสาย/ช่องทางแยกต่อแอป</p></div>
+              <div class="card"><h3 class="card-title" style="color:var(--success)">Demultiplexing</h3><p class="card-text small">ฝั่งรับใช้ข้อมูลใน Header (Source/Destination Port) เพื่อแยกข้อมูลไปยัง <b>Socket/Process ที่ถูกต้อง</b></p></div>
+            </div>
+
+            <div class="tip-box tip-exam mt-5">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>จำ</b>Mux = "รวมหลาย ๆ อย่างเป็นหนึ่ง" · Demux = "แยกหนึ่งเป็นหลาย ๆ" — ฝั่งส่ง Mux, ฝั่งรับ Demux</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 4 · SOURCE / DEST PORT ============ -->
+        <section class="slide-view" data-title="Source Port / Destination Port" aria-label="สไลด์ 4: Source Port และ Destination Port">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">PORTS</p>
+            <h2 class="slide-title">Source Port / Destination Port</h2>
+            <p class="slide-subtitle">สองช่องแรกใน TCP/UDP Header — ระบุว่า "แอปไหนส่ง" และ "แอปไหนรับ"</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="log-out" class="cyan"></i>Source Port</h3><p class="card-text small">หมายเลขพอร์ตของ <b>Process ต้นทาง</b> — ฝั่งรับใช้ค่านี้เพื่อตอบกลับ (กลายเป็น Destination Port ของฝั่งตรงข้าม)</p><p class="card-text small mt-3">💡 มักเป็น <b>Ephemeral Port</b> (เลขสูง, ชั่วคราว) ที่ OS สุ่มให้ เช่น 54321</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="log-in" class="cyan"></i>Destination Port</h3><p class="card-text small">หมายเลขพอร์ตของ <b>Process ปลายทาง</b> — มักเป็น <b>Well-Known Port</b> (เลขต่ำ, มาตรฐาน) เช่น 80 = HTTP, 443 = HTTPS, 53 = DNS</p></div>
+            </div>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label">SEGMENT · ใน TCP/UDP Header</span>
+              <div class="flex" style="gap:10px;padding:14px 6px;flex-wrap:wrap;justify-content:center">
+                <div class="fv-field" style="min-width:130px"><b>Source Port</b><span>เช่น 54321 (ของแอปเรา)</span></div>
+                <div class="fv-field" style="min-width:130px"><b>Destination Port</b><span>เช่น 80 (HTTP)</span></div>
+                <div class="fv-payload" style="min-width:130px"><b>... Payload (ข้อมูล)</b><span>เนื้อหาของแอป</span></div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="lightbulb"></i>
+              <div><b>อุปมา</b>เหมือนซองจดหมาย: <b>From</b> (Source) + <b>To</b> (Destination) — ไปรษณีย์ (Demux) อ่านที่อยู่แล้วส่งให้ห้องที่ถูกต้อง</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 5 · 4-TUPLE ============ -->
+        <section class="slide-view" data-title="TCP Demultiplexing และ 4-tuple" aria-label="สไลด์ 5: TCP Demultiplexing และ 4-tuple">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">TCP DEMULTIPLEXING</p>
+            <h2 class="slide-title">TCP Demultiplexing และ <span class="grad-text">4-tuple</span></h2>
+            <p class="slide-subtitle">TCP มีหลาย connection พร้อมกัน — ต้องใช้ 4 ค่าเพื่อระบุให้ไม่ซ้ำกัน</p>
+
+            <div class="card mt-6 center" style="padding:26px">
+              <p class="text-3" style="font-size:13px">4-tuple ที่ใช้ระบุ TCP Connection</p>
+              <div class="flex items-center justify-center wrap" style="gap:12px;margin-top:14px">
+                <span class="chip" style="font-size:15px;padding:10px 16px">Source IP</span>
+                <span style="color:var(--cyan);font-size:18px">+</span>
+                <span class="chip" style="font-size:15px;padding:10px 16px">Source Port</span>
+                <span style="color:var(--cyan);font-size:18px">+</span>
+                <span class="chip" style="font-size:15px;padding:10px 16px">Dest IP</span>
+                <span style="color:var(--cyan);font-size:18px">+</span>
+                <span class="chip" style="font-size:15px;padding:10px 16px">Dest Port</span>
+              </div>
+              <p class="card-text small mt-4">TCP Demultiplexing ใช้ครบทั้ง 4 ค่า เพราะฝั่งรับอาจมีหลาย connection ที่ใช้ <b>Destination Port เดียวกัน</b> (เช่น มี 100 การเชื่อมต่อมาที่ Port 80) — ต้องแยกด้วย Source IP/Port ด้วย</p>
+            </div>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="git-branch" class="cyan"></i>ตัวอย่าง 2 Connection ที่ Port เดียวกัน</h3>
+                <pre style="font-size:12px;line-height:1.7;color:var(--text-2);background:rgba(2,6,23,.5);padding:14px;border-radius:12px;overflow-x:auto;margin-top:10px">Conn 1: (10.0.0.5 : 51000 → 1.2.3.4 : 80)
+Conn 2: (10.0.0.5 : 51001 → 1.2.3.4 : 80)</pre>
+                <p class="card-text small mt-2">ปลายทางเหมือนกัน (1.2.3.4:80) แต่ Source Port ต่างกัน → เป็นคนละ Connection</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="key" class="cyan"></i>UDP ใช้แค่ 2 ค่า</h3>
+                <p class="card-text small mt-2">UDP Demultiplexing ใช้แค่ <b>(Dest IP, Dest Port)</b> — เพราะ UDP ไม่มี "Connection" ที่ต้องแยก จึงง่ายและเบากว่า TCP</p>
+                <div class="tip-box tip-note mt-4"><i data-lucide="lightbulb"></i><div><b>จำ</b>TCP = 4-tuple · UDP = 2-tuple — เพราะ TCP ต้องรู้จักแต่ละ Connection</div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 6 · TCP VS UDP ============ -->
+        <section class="slide-view" data-title="TCP vs UDP" aria-label="สไลด์ 6: TCP vs UDP">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">TCP vs UDP</p>
+            <h2 class="slide-title">TCP vs UDP <span class="grad-text">— เลือกใช้ตามแอป</span></h2>
+            <p class="slide-subtitle">สองโปรโตคอลหลักของ Transport — ดูความต่างเพื่อเลือกให้ถูกกับงาน</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card" style="border-color:rgba(34,197,94,.35)">
+                <h3 class="card-title" style="color:var(--success)">TCP <span style="font-size:12px;color:var(--text-3)">— เชื่อถือได้</span></h3>
+                <div class="flex" style="flex-direction:column;gap:8px;margin-top:10px">
+                  <div class="card" style="padding:10px 14px"><b style="font-size:13px">Connection-oriented</b><span class="text-3" style="font-size:11.5px;display:block">ต้อง Three-Way Handshake ก่อนส่ง</span></div>
+                  <div class="card" style="padding:10px 14px"><b style="font-size:13px">Reliable</b><span class="text-3" style="font-size:11.5px;display:block">ส่งซ้ำเมื่อหาย, จัดลำดับให้ถูกต้อง</span></div>
+                  <div class="card" style="padding:10px 14px"><b style="font-size:13px">Flow &amp; Congestion Control</b><span class="text-3" style="font-size:11.5px;display:block">ไม่ล้น buffer ฝั่งรับ / ไม่ทำให้เครือข่ายแน่น</span></div>
+                  <div class="card" style="padding:10px 14px"><b style="font-size:13px">Header ใหญ่</b><span class="text-3" style="font-size:11.5px;display:block">20–60 ไบต์</span></div>
+                </div>
+              </div>
+              <div class="card" style="border-color:rgba(245,158,11,.35)">
+                <h3 class="card-title" style="color:var(--warning)">UDP <span style="font-size:12px;color:var(--text-3)">— เร็ว / เบา</span></h3>
+                <div class="flex" style="flex-direction:column;gap:8px;margin-top:10px">
+                  <div class="card" style="padding:10px 14px"><b style="font-size:13px">Connectionless</b><span class="text-3" style="font-size:11.5px;display:block">ไม่ต้องเปิดการเชื่อมต่อ ส่งได้ทันที</span></div>
+                  <div class="card" style="padding:10px 14px"><b style="font-size:13px">ไม่รับประกัน</b><span class="text-3" style="font-size:11.5px;display:block">อาจหาย/ไม่เรียงลำดับ (มีแค่ Checksum)</span></div>
+                  <div class="card" style="padding:10px 14px"><b style="font-size:13px">ไม่มี Flow/Congestion</b><span class="text-3" style="font-size:11.5px;display:block">ส่งตามอัตราที่แอปต้องการ</span></div>
+                  <div class="card" style="padding:10px 14px"><b style="font-size:13px">Header เล็ก</b><span class="text-3" style="font-size:11.5px;display:block">แค่ 8 ไบต์</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="lightbulb"></i>
+              <div><b>ใช้ TCP เมื่อ</b>โอนไฟล์, เว็บ, อีเมล (ทน loss ไม่ได้) · <b>ใช้ UDP เมื่อ</b>เกม, วิดีโอคอล, สตรีมสด, DNS (ต้องการความเร็ว/Delay ต่ำ)</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 7 · UDP HEADER ============ -->
+        <section class="slide-view" data-title="UDP Header" aria-label="สไลด์ 7: UDP Header">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">UDP HEADER</p>
+            <h2 class="slide-title">UDP Header <span class="grad-text">(8 ไบต์)</span></h2>
+            <p class="slide-subtitle">เรียบง่ายที่สุด — แค่ 4 ช่อง ๆ ละ 2 ไบต์ — กดแต่ละช่องเพื่อดูรายละเอียด</p>
+
+            <div class="visual-box mt-6">
+              <span class="vb-label">UDP SEGMENT · คลิกช่องเพื่อดูรายละเอียด</span>
+              <div class="flex" style="gap:10px;padding:16px 6px;flex-wrap:wrap;justify-content:center">
+                <div class="fv-field" data-udp="src" role="button" tabindex="0"><b>Source Port</b><span>16 bits</span></div>
+                <div class="fv-field" data-udp="dst" role="button" tabindex="0"><b>Dest Port</b><span>16 bits</span></div>
+                <div class="fv-field" data-udp="len" role="button" tabindex="0"><b>Length</b><span>16 bits</span></div>
+                <div class="fv-field" data-udp="chk" role="button" tabindex="0"><b>Checksum</b><span>16 bits</span></div>
+                <div class="fv-payload" data-udp="data" role="button" tabindex="0"><b>Payload (ข้อมูล)</b><span>ขนาดตามแอป</span></div>
+              </div>
+              <p class="center text-3 mt-3" id="udpFieldDesc" style="font-size:13px">— กดที่ช่อง Header เพื่อดูรายละเอียด —</p>
+            </div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="lightbulb"></i>
+              <div><b>จำ</b>UDP Header = 8 ไบต์ (4 × 2 ไบต์) — เทียบกับ TCP ที่ 20+ ไบต์ จึงเบาและเร็ว เหมาะกับงานที่ต้องการความเร็ว</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 8 · UDP CHECKSUM ============ -->
+        <section class="slide-view" data-title="UDP Checksum" aria-label="สไลด์ 8: UDP Checksum">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">UDP CHECKSUM</p>
+            <h2 class="slide-title">UDP Checksum <span class="grad-text">— ตรวจจับความผิดพลาด</span></h2>
+            <p class="slide-subtitle">วิธีง่าย ๆ ตรวจว่าข้อมูลเปลี่ยนไประหว่างทางหรือไม่ (detect เท่านั้น ไม่แก้ไข)</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">การทำงาน · Sender → Receiver</span>
+                <div class="flex items-center justify-center" style="gap:14px;padding:22px 8px;flex-wrap:wrap">
+                  <div class="card center" style="padding:16px 20px"><div style="font-size:26px">📤</div><b style="font-size:12.5px">Sender</b><span class="text-3" style="font-size:11px">คำนวณ Checksum แล้วแปะ</span></div>
+                  <div style="font-size:20px;color:var(--cyan)">→</div>
+                  <div class="card center" style="padding:16px 20px"><div style="font-size:26px">📥</div><b style="font-size:12.5px">Receiver</b><span class="text-3" style="font-size:11px">คำนวณซ้ำ แล้วเทียบ</span></div>
+                </div>
+                <div class="tip-box tip-note" style="margin:10px 8px"><i data-lucide="lightbulb"></i><div>ตรงกัน = น่าจะถูก · <b>ไม่ตรง = ข้อมูลเสีย</b> → UDP แค่ทิ้ง (ไม่ส่งซ้ำให้ ต่างจาก TCP)</div></div>
+              </div>
+              <div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="calculator" class="cyan"></i>หลักการคร่าว ๆ</h3>
+                  <p class="card-text small mt-2">รวมข้อมูลเป็น <b>ชุด 16 บิต</b> แล้วใช้ <b>1's complement</b> — หักล้างเลขไป-มา จนได้ค่าเดียว ถ้าข้อมูลถูกแก้แม้ 1 บิต ค่าที่คำนวณใหม่จะไม่ตรง</p>
+                  <div class="tip-box tip-exam mt-4"><i data-lucide="graduation-cap"></i><div><b>Exam Tip</b>Checksum ตรวจจับ <b>Bit Error ได้ แต่ไม่สามารถแก้ไขหรือส่งซ้ำได้</b> — การส่งซ้ำเป็นหน้าที่ของ TCP</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="lightbulb"></i>
+              <div><b>จำ</b>UDP = "ตรวจได้ แต่ไม่แก้งาน" · TCP = "ตรวจได้ แล้วยังส่งซ้ำให้จนกว่าจะถูก"</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 9 · TCP RELIABILITY + rdt ============ -->
+        <section class="slide-view" data-title="TCP Reliability + Reliable Data Transfer" aria-label="สไลด์ 9: TCP Reliability และ rdt">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">RELIABLE DATA TRANSFER</p>
+            <h2 class="slide-title">TCP Reliability + <span class="grad-text">rdt (Reliable Data Transfer)</span></h2>
+            <p class="slide-subtitle">TCP ทำยังไงให้ข้อมูลถึงครบและถูกต้อง — ใช้กลไกหลายอย่างร่วมกัน</p>
+
+            <div class="grid-4 mt-6">
+              <div class="card hoverable center" style="padding:16px 10px"><i data-lucide="shield-check" style="width:22px;height:22px;color:var(--cyan);margin-bottom:8px"></i><b style="font-size:13px">Checksum</b><p class="text-3" style="font-size:11px;margin-top:4px">ตรวจว่าข้อมูลเสียไหม</p></div>
+              <div class="card hoverable center" style="padding:16px 10px"><i data-lucide="list-ordered" style="width:22px;height:22px;color:var(--cyan);margin-bottom:8px"></i><b style="font-size:13px">Seq #</b><p class="text-3" style="font-size:11px;margin-top:4px">เรียงลำดับข้อมูลถูกต้อง</p></div>
+              <div class="card hoverable center" style="padding:16px 10px"><i data-lucide="message-circle-check" style="width:22px;height:22px;color:var(--cyan);margin-bottom:8px"></i><b style="font-size:13px">ACK</b><p class="text-3" style="font-size:11px;margin-top:4px">ยืนยันว่าได้รับแล้ว</p></div>
+              <div class="card hoverable center" style="padding:16px 10px"><i data-lucide="timer-reset" style="width:22px;height:22px;color:var(--cyan);margin-bottom:8px"></i><b style="font-size:13px">Timer + ส่งซ้ำ</b><p class="text-3" style="font-size:11px;margin-top:4px">หมดเวลา/หาย → ส่งใหม่</p></div>
+            </div>
+
+            <div class="grid-2 mt-5">
+              <div class="card" style="border-color:rgba(148,163,184,.25)">
+                <h3 class="card-title"><i data-lucide="file-input" class="cyan"></i>rdt1.0 — ส่งอย่างเดียว</h3>
+                <p class="card-text small">สมมติว่าช่องทาง <b>สมบูรณ์แบบ</b>: ไม่หาย ไม่เสีย ไม่ผิดลำดับ → ผู้ส่งแค่ส่งไป ผู้รับแค่รับ <b>ไม่ต้องมีอะไรตรวจสอบ</b></p>
+              </div>
+              <div class="card" style="border-color:rgba(56,189,248,.4)">
+                <h3 class="card-title"><i data-lucide="file-plus-2" class="cyan"></i>rdt2.0 — ตรวจ + ตอบกลับ</h3>
+                <p class="card-text small">ช่องทางอาจมี <b>Bit Error</b> → เพิ่ม <b>Error Detection (Checksum)</b> และ <b>ACK/NAK</b>: รับถูก → ACK, รับเสีย → NAK แล้วผู้ส่งส่งใหม่</p>
+                <div class="tip-box tip-note mt-3"><i data-lucide="lightbulb"></i><div><b>จำ</b>rdt2.0 มีปัญหา "ACK/NAK เสียหาย" → แก้ด้วยการเพิ่มหมายเลขใน packet (rdt2.1/2.2) แล้วพัฒนาเป็น rdt3.0 (มี Timer)</div></div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-exam mt-5">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Exam Tip</b>ลำดับวิวัฒนาการ: rdt1.0 (ไม่ตรวจ) → rdt2.0 (ACK/NAK) → rdt3.0 (+ Timer) — ข้อสอบชอบถามว่า "รุ่นไหนเพิ่มอะไร"</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 10 · ACK / NAK ============ -->
+        <section class="slide-view" data-title="ACK / NAK" aria-label="สไลด์ 10: ACK และ NAK">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">ACK / NAK</p>
+            <h2 class="slide-title">ACK / NAK <span class="grad-text">— feedback จากผู้รับ</span></h2>
+            <p class="slide-subtitle">ผู้รับบอกผู้ส่งว่าข้อมูล "ถึงดี" หรือ "เสีย ขอใหม่" — หัวใจของความเชื่อถือได้</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card" style="border-color:rgba(34,197,94,.4)">
+                <h3 class="card-title" style="color:var(--success)"><i data-lucide="check-circle-2" class="cyan"></i>ACK — ยืนยันรับแล้ว</h3>
+                <p class="card-text small mt-2">Acknowledgment — ผู้รับตอบว่า "ได้รับข้อมูลถูกต้องแล้ว" ผู้ส่งจึงส่งชุดถัดไปได้</p>
+                <div class="tip-box tip-note mt-4"><i data-lucide="lightbulb"></i><div>ใน TCP ใช้ <b>Cumulative ACK</b> — ACK หนึ่งค่าบอกว่า "รับครบจนถึงไบต์นี้แล้ว"</div></div>
+              </div>
+              <div class="card" style="border-color:rgba(239,68,68,.4)">
+                <h3 class="card-title" style="color:var(--danger)"><i data-lucide="x-circle" class="cyan"></i>NAK — ข้อมูลเสีย ขอใหม่</h3>
+                <p class="card-text small mt-2">Negative Acknowledgment — ผู้รับตรวจ Checksum แล้วพบว่าข้อมูลเสีย → ขอให้ผู้ส่งส่งใหม่</p>
+                <div class="tip-box tip-note mt-4"><i data-lucide="lightbulb"></i><div>rdt2.0 ใช้ทั้ง ACK และ NAK แต่ TCP ในความเป็นจริงใช้แค่ ACK + Timeout/Dup-ACK (ไม่มี NAK)</div></div>
+              </div>
+            </div>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label">ขั้นตอน</span>
+              <div class="flex items-center justify-center" style="gap:14px;padding:18px 8px;flex-wrap:wrap">
+                <div class="card center" style="padding:14px 18px"><div style="font-size:24px">📤</div><b style="font-size:12.5px">Sender</b></div>
+                <div style="font-size:18px;color:var(--cyan)">send →</div>
+                <div class="card center" style="padding:14px 18px"><div style="font-size:24px">📥</div><b style="font-size:12.5px">Receiver</b></div>
+                <div style="font-size:18px;color:var(--success)">← ACK ✓</div>
+                <div style="font-size:18px;color:var(--danger)">/ NAK ✗</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 11 · THREE-WAY HANDSHAKE ============ -->
+        <section class="slide-view" data-title="TCP Three-Way Handshake" aria-label="สไลด์ 11: Three-Way Handshake">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">TCP CONNECTION SETUP</p>
+            <h2 class="slide-title">TCP Three-Way Handshake <span class="grad-text">(SYN · SYN-ACK · ACK)</span></h2>
+            <p class="slide-subtitle">ขั้นตอนเปิดการเชื่อมต่อ TCP — กด "เล่นการเชื่อมต่อ" เพื่อดูทีละขั้น</p>
+
+            <div class="visual-box mt-6">
+              <span class="vb-label" id="hsLabel">กดปุ่มเพื่อเริ่ม</span>
+              <div class="flex items-center justify-center" style="gap:22px;padding:20px 8px;flex-wrap:wrap">
+                <div class="card center" style="padding:18px 26px"><div style="font-size:30px">🧑‍💻</div><b style="font-size:13px">Client</b></div>
+                <div style="min-width:180px" class="center">
+                  <div class="hs-line" id="hsLine1" style="color:var(--muted);font-size:13px;font-weight:700">—</div>
+                  <div class="hs-line" id="hsLine2" style="color:var(--muted);font-size:13px;font-weight:700">—</div>
+                  <div class="hs-line" id="hsLine3" style="color:var(--muted);font-size:13px;font-weight:700">—</div>
+                </div>
+                <div class="card center" style="padding:18px 26px"><div style="font-size:30px">🖥️</div><b style="font-size:13px">Server</b></div>
+              </div>
+              <p class="center text-3 mt-2" id="hsDesc" style="font-size:13px;padding:0 8px">—</p>
+              <div class="center mt-4" style="padding-bottom:8px">
+                <button class="btn btn-primary" id="hsPlayBtn"><i data-lucide="play"></i> เล่นการเชื่อมต่อ</button>
+              </div>
+            </div>
+
+            <div class="grid-3 mt-5">
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="flag" class="cyan"></i>SYN</h3><p class="card-text small">ขอเริ่มการเชื่อมต่อ + ตั้ง Sequence Number เริ่มต้น (seq = x)</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="reply" class="cyan"></i>SYN-ACK</h3><p class="card-text small">ตอบรับ SYN (ack = x+1) พร้อมขอเปิดฝั่งตัวเอง (seq = y)</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="check" class="cyan"></i>ACK</h3><p class="card-text small">ยืนยัน (ack = y+1) → เปิดการเชื่อมต่อสำเร็จ เริ่มส่งข้อมูล</p></div>
+            </div>
+
+            <div class="tip-box tip-exam mt-5">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>จำ</b>เปิดด้วย <b>SYN</b> · ปิดด้วย <b>FIN</b> (และใช้ 4-way ในการปิด) — SYN/FIN อยู่ใน Flag ของ TCP Header</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 12 · SEQ / ACK NUMBER ============ -->
+        <section class="slide-view" data-title="Sequence Number / Acknowledgment Number" aria-label="สไลด์ 12: Sequence และ Acknowledgment Number">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">SEQ / ACK</p>
+            <h2 class="slide-title">Sequence Number / Acknowledgment Number</h2>
+            <p class="slide-subtitle">ตัวเลขสองช่องใน TCP Header ที่ทำให้ "เรียงลำดับได้" และ "รู้ว่าส่งถึงไหนแล้ว"</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card hoverable">
+                <h3 class="card-title"><i data-lucide="list-ordered" class="cyan"></i>Sequence Number (Seq #)</h3>
+                <p class="card-text small mt-2">เลขลำดับของ <b>ไบต์แรก</b> ของข้อมูลใน Segment นี้ — ผู้รับใช้จัดเรียงข้อมูลให้ถูกต้องตามเดิม</p>
+                <p class="card-text small mt-3">💡 ข้อมูลถูกนับเป็นไบต์: ถ้า Segment นี้เริ่มที่ไบต์ 0 มี 1000 ไบต์ → Segment ถัดไปเริ่มที่ Seq 1000</p>
+              </div>
+              <div class="card hoverable">
+                <h3 class="card-title"><i data-lucide="flag" class="cyan"></i>Acknowledgment Number (Ack #)</h3>
+                <p class="card-text small mt-2">บอกว่า <b>"พร้อมรับไบต์ถัดไป"</b> = Seq# ที่ได้รับ + จำนวนไบต์ที่รับได้ (Cumulative)</p>
+                <p class="card-text small mt-3">💡 รับครบไบต์ 0–999 → Ack = 1000 (หมายถึงถัดไปขอไบต์ 1000)</p>
+              </div>
+            </div>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label">ตัวอย่าง · Sender ส่ง 1000 ไบต์ (Seq = 0)</span>
+              <div class="flex items-center justify-center" style="gap:14px;padding:18px 8px;flex-wrap:wrap">
+                <div class="card center" style="padding:14px 18px"><div style="font-size:24px">📤</div><b style="font-size:12.5px">Sender</b><span class="text-3" style="font-size:11px">ส่ง Seq=0 (1000 B)</span></div>
+                <div style="font-size:18px;color:var(--cyan)">→</div>
+                <div class="card center" style="padding:14px 18px"><div style="font-size:24px">📥</div><b style="font-size:12.5px">Receiver</b><span class="text-3" style="font-size:11px">รับครบ → Ack = 1000</span></div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-exam mt-5">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Exam Tip</b>Seq# บอก "เริ่มที่ไบต์ไหน" · Ack# บอก "จบถึงไหนแล้ว (cumulative)" — Ack# = Seq# + จำนวนไบต์ที่รับ</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 13 · คำนวณ ACK ============ -->
+        <section class="slide-view" data-title="การคำนวณ ACK จากจำนวน Byte" aria-label="สไลด์ 13: การคำนวณ ACK จากจำนวน Byte">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">CUMULATIVE ACK · WORKED EXAMPLE</p>
+            <h2 class="slide-title">การคำนวณ ACK จากจำนวน Byte</h2>
+            <p class="slide-subtitle">ตัวอย่างการคิด ACK# แบบ Cumulative — ทำตามแล้วจะเข้าใจเอง</p>
+
+            <div class="card mt-6">
+              <h3 class="card-title"><i data-lucide="calculator" class="cyan"></i>โจทย์</h3>
+              <p class="card-text small mt-2">Sender ส่งข้อมูล 3 Segment ขนาด <b>1,000 ไบต์</b> ต่อชิ้น โดยเริ่ม Seq = <b>0</b></p>
+              <div class="cheat-grid mt-4" style="grid-template-columns:1fr 1fr 1fr">
+                <div class="cheat-item"><b>Segment 1</b><span class="def">Seq = 0 (ไบต์ 0–999)</span></div>
+                <div class="cheat-item"><b>Segment 2</b><span class="def">Seq = 1000 (ไบต์ 1000–1999)</span></div>
+                <div class="cheat-item"><b>Segment 3</b><span class="def">Seq = 2000 (ไบต์ 2000–2999)</span></div>
+              </div>
+            </div>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="list-checks" class="cyan"></i>วิธีคิด</h3>
+                <p class="card-text small mt-2">Ack# = <b>Seq# ของ Segment</b> + <b>จำนวนไบต์ที่รับใน Segment นั้น</b></p>
+                <div class="flex" style="flex-direction:column;gap:8px;margin-top:10px">
+                  <div class="card" style="padding:10px 14px"><b style="font-size:13px">รับ Segment 1</b><span class="text-3" style="font-size:12px;display:block">Ack = 0 + 1000 = <b style="color:var(--cyan)">1000</b></span></div>
+                  <div class="card" style="padding:10px 14px"><b style="font-size:13px">รับ Segment 2</b><span class="text-3" style="font-size:12px;display:block">Ack = 1000 + 1000 = <b style="color:var(--cyan)">2000</b></span></div>
+                  <div class="card" style="padding:10px 14px"><b style="font-size:13px">รับ Segment 3</b><span class="text-3" style="font-size:12px;display:block">Ack = 2000 + 1000 = <b style="color:var(--cyan)">3000</b></span></div>
+                </div>
+              </div>
+              <div>
+                <div class="card" style="border-color:rgba(56,189,248,.4)">
+                  <h3 class="card-title"><i data-lucide="zap" class="cyan"></i>เทคนิคลัด</h3>
+                  <p class="card-text small mt-2"><b>Cumulative ACK</b> = "ไบต์ถัดไปที่ยังไม่ได้รับ" — รับครบจนถึงไบต์ 2999 → Ack = <b>3000</b></p>
+                  <div class="tip-box tip-note mt-4"><i data-lucide="lightbulb"></i><div>ถ้า ACK ย้อนกลับมาเป็นค่าต่ำ (เช่น 1000 ซ้ำ ๆ) แปลว่ายังมี Segment ที่ยังมาไม่ถึง — นั่นคือจุดเริ่มของ Duplicate ACK</div></div>
+                </div>
+                <div class="tip-box tip-exam mt-4">
+                  <i data-lucide="graduation-cap"></i>
+                  <div><b>Exam Tip</b>ข้อสอบมักให้ Seq + ขนาดไบต์ แล้วถาม Ack# — แค่บวกเลข: <b>Ack = Seq + Bytes</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 14 · FLOW CONTROL ============ -->
+        <section class="slide-view" data-title="Flow Control / Receive Window" aria-label="สไลด์ 14: Flow Control และ Receive Window">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">FLOW CONTROL</p>
+            <h2 class="slide-title">Flow Control / Receive Window <span class="grad-text">(rwnd)</span></h2>
+            <p class="slide-subtitle">กัน "Buffer ล้นที่ฝั่งรับ" — ฝั่งรับบอกว่ามีที่ว่างเท่าไหร่ แล้วผู้ส่งส่งตามนั้น</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">RECEIVER BUFFER · ฝั่งรับ</span>
+                <div class="card" style="margin:14px 10px;padding:16px">
+                  <div class="flex items-center justify-between"><b style="font-size:13px">Buffer ที่ใช้แล้ว</b><b style="font-size:13px;color:var(--warning)">30 KB</b></div>
+                  <div class="progress-track mt-2" style="width:100%"><div class="progress-fill" style="width:30%;background:var(--warning)"></div></div>
+                  <div class="flex items-center justify-between mt-4"><b style="font-size:13px;color:var(--success)">Receive Window (rwnd) — ว่าง</b><b style="font-size:13px;color:var(--success)">70 KB</b></div>
+                  <div class="progress-track mt-2" style="width:100%"><div class="progress-fill" style="width:70%;background:var(--success)"></div></div>
+                </div>
+                <p class="center text-3" style="font-size:12px;padding:0 10px">ฝั่งรับประกาศ rwnd ในทุก ACK — ผู้ส่งส่งได้ไม่เกินค่านี้</p>
+              </div>
+              <div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="container" class="cyan"></i>หลักการ</h3>
+                  <p class="card-text small mt-2"><b>Flow Control</b> = การควบคุมอัตราส่งของ Sender เพื่อไม่ให้ <b>Receiver Buffer ล้น</b> (ข้อมูลมาเร็วเกินกว่าที่แอปจะประมวลผลทัน)</p>
+                  <p class="card-text small mt-3">Sender ต้องรักษา: <b class="cyan">ส่งไปแล้ว − ได้รับ ACK แล้ว ≤ rwnd</b></p>
+                </div>
+                <div class="tip-box tip-note mt-4">
+                  <i data-lucide="lightbulb"></i>
+                  <div><b>อย่าสับสน</b><b>Flow Control</b> = ควบคุมตาม <b>ความสามารถฝั่งรับ</b> (rwnd) · <b>Congestion Control</b> = ควบคุมตาม <b>สภาพเครือข่าย</b> (cwnd) — ผู้ส่งต้องช้ากว่าทั้งสอง</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-exam mt-5">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>จำ</b>rwnd ประกาศโดย <b>Receiver</b> ใน TCP Header (Window field) — "ฉันมีที่ว่างเท่านี้ ส่งมาแค่นี้พอ"</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 15 · CONGESTION + AIMD ============ -->
+        <section class="slide-view" data-title="Congestion Control + AIMD" aria-label="สไลด์ 15: Congestion Control และ AIMD">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">CONGESTION CONTROL · AIMD</p>
+            <h2 class="slide-title">Congestion Control + <span class="grad-text">AIMD</span></h2>
+            <p class="slide-subtitle">กัน "เครือข่ายแน่น" — ผู้ส่งค่อย ๆ เร่ง แล้วลดครึ่งเมื่อเจอ Loss — กดปุ่มเพื่อดูกราฟ</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">CONGESTION WINDOW (cwnd) · AIMD</span>
+                <svg viewBox="0 0 360 170" style="margin-top:8px" aria-label="กราฟ AIMD">
+                  <line x1="15" y1="150" x2="345" y2="150" stroke="#334155" stroke-width="2"/>
+                  <line x1="15" y1="150" x2="15" y2="10" stroke="#334155" stroke-width="2"/>
+                  <text x="20" y="30" fill="#94a3b8" font-size="10">cwnd</text>
+                  <polyline id="aimdCurve" points="15,150 60,128 105,106 150,84 150,117 195,99 240,81 285,63 285,96 330,78" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+                  <circle id="aimdDot" cx="15" cy="150" r="4.5" fill="#22d3ee"/>
+                </svg>
+                <p class="center text-3 mt-2" id="aimdStage" style="font-size:12.5px">เริ่ม: cwnd = 1 MSS</p>
+                <div class="center mt-3" style="padding-bottom:6px">
+                  <button class="btn btn-ghost" id="aimdBtn"><i data-lucide="step-forward"></i> ก้าวถัดไป</button>
+                </div>
+              </div>
+              <div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="activity" class="cyan"></i>AIMD</h3>
+                  <p class="card-text small mt-2"><b>Additive Increase</b> — เพิ่ม cwnd ทีละ <b>1 MSS ต่อ RTT</b> (ค่อย ๆ เร่ง ขณะที่ไม่มี Loss)</p>
+                  <p class="card-text small mt-2"><b>Multiplicative Decrease</b> — เมื่อเกิด <b>Loss (Timeout / Dup ACK)</b> ลด cwnd ลงครึ่งหนึ่งทันที</p>
+                </div>
+                <div class="tip-box tip-note mt-4">
+                  <i data-lucide="lightbulb"></i>
+                  <div><b>เปรียบ</b>เหมือนรถ: ค่อย ๆ เพิ่มความเร็วทีละนิด (AI) แต่พอเจอรถติด (Loss) ให้ <b>เบรกครึ่งหนึ่ง</b> (MD) แล้วค่อยเร่งใหม่</div>
+                </div>
+                <div class="tip-box tip-exam mt-4">
+                  <i data-lucide="graduation-cap"></i>
+                  <div><b>Exam Tip</b>AI = +1 MSS/RTT · MD = ÷2 เมื่อ Loss — สูตรนี้ติดข้อสอบประจำ</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 16 · TIMEOUT / RETRANSMIT ============ -->
+        <section class="slide-view" data-title="Timeout / Retransmission / Duplicate ACK" aria-label="สไลด์ 16: Timeout, Retransmission และ Duplicate ACK">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">RETRANSMISSION</p>
+            <h2 class="slide-title">Timeout / Retransmission / Duplicate ACK</h2>
+            <p class="slide-subtitle">เมื่อข้อมูลหาย TCP รู้ได้ยังไง และส่งซ้ำเมื่อไหร่</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card" style="border-color:rgba(245,158,11,.4)">
+                <h3 class="card-title"><i data-lucide="timer" class="cyan"></i>Timeout → Retransmission</h3>
+                <p class="card-text small mt-2">Sender ตั้ง Timer ไว้สำหรับ Segment ที่ส่งไป <b>ถ้าครบเวลายังไม่ได้รับ ACK → สงสัยว่าหาย → ส่งซ้ำ (Retransmit)</b></p>
+                <p class="card-text small mt-3">💡 Timeout ยาวเกินไป = ช้า · สั้นเกินไป = ส่งซ้ำเปล่า — TCP จึงปรับเวลาอัตโนมัติตาม RTT</p>
+              </div>
+              <div class="card" style="border-color:rgba(56,189,248,.4)">
+                <h3 class="card-title"><i data-lucide="copy-x" class="cyan"></i>Duplicate ACK ×3 → Fast Retransmit</h3>
+                <p class="card-text small mt-2">เมื่อ Receiver ได้ Segment ที่ไม่ต่อเนื่อง (เช่น ตัวกลางหาย) จะ <b>ACK ซ้ำค่าเดิม</b> ทุกครั้ง</p>
+                <p class="card-text small mt-3">เจอ <b>3 Duplicate ACK ติดกัน</b> = แทบแน่ใจว่าหาย → <b>ส่งซ้ำทันที</b> โดยไม่ต้องรอ Timeout</p>
+              </div>
+            </div>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label">ตัวอย่าง · Segment 2 หาย</span>
+              <div class="flex items-center justify-center" style="gap:12px;padding:16px 6px;flex-wrap:wrap">
+                <div class="card center" style="padding:12px 16px"><b style="font-size:12px">Seg 1 ✓</b></div>
+                <div class="card center" style="padding:12px 16px;border-color:rgba(239,68,68,.5)"><b style="font-size:12px;color:var(--danger)">Seg 2 ✗ หาย</b></div>
+                <div class="card center" style="padding:12px 16px"><b style="font-size:12px">Seg 3 ✓</b></div>
+                <div style="font-size:16px;color:var(--cyan)">→</div>
+                <div class="card center" style="padding:12px 16px"><b style="font-size:12px;color:var(--warning)">ACK 1000 ซ้ำ ×3</b></div>
+              </div>
+              <p class="center text-3 mt-3" style="font-size:12.5px">Receiver ได้ Seg 3 ก่อน Seg 2 → ACK ย้ำค่าเดิม (1000) → Sender สงสัย Seg 2 หาย → Fast Retransmit</p>
+            </div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="lightbulb"></i>
+              <div><b>จำ</b>Timeout = "รอครบเวลา" · Duplicate ACK ×3 = "หลักฐานชัดเจน" → ทั้งคู่ทำให้ส่งซ้ำ แต่ Fast Retransmit ไวกว่า</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 17 · INTERNET CHECKSUM ============ -->
+        <section class="slide-view" data-title="Internet Checksum" aria-label="สไลด์ 17: Internet Checksum">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">INTERNET CHECKSUM</p>
+            <h2 class="slide-title">Internet Checksum <span class="grad-text">— ตรวจ error แบบง่าย</span></h2>
+            <p class="slide-subtitle">วิธีตรวจสอบความถูกต้องของข้อมูลที่ Internet ใช้ (เช่น ใน UDP/TCP/IP) — หลักการ 1's complement</p>
+
+            <div class="split mt-6">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="calculator" class="cyan"></i>ขั้นตอนการคำนวณ (Sender)</h3>
+                <ol class="card-text small" style="padding-left:20px;margin-top:8px;display:flex;flex-direction:column;gap:6px">
+                  <li>แบ่งข้อมูลเป็นชุด <b>16 บิต</b> เรียงต่อกัน</li>
+                  <li>บวกเลขทุกชุดแบบ <b>1's complement</b> (ถ้า overflow ให้เอากลับมาบวกที่ bit ล่าง)</li>
+                  <li>แล้ว <b>กลับบิต (complement)</b> ได้ค่า Checksum</li>
+                  <li>แปะ Checksum ลงใน Header แล้วส่ง</li>
+                </ol>
+              </div>
+              <div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="search-check" class="cyan"></i>การตรวจสอบ (Receiver)</h3>
+                  <p class="card-text small mt-2">Receiver <b>บวกทุกชุด + Checksum ด้วยกัน</b> — ถ้าข้อมูลถูกต้อง ผลรวม 1's complement ต้องเป็น <b>11111111 11111111</b> (FFFF)</p>
+                  <p class="card-text small mt-3">ผลไม่ใช่ FFFF → มี <b>Bit Error</b> → ข้อมูลเสีย</p>
+                  <div class="tip-box tip-note mt-4"><i data-lucide="lightbulb"></i><div><b>ง่ายแต่มีขีดจำกัด</b>จับ error ได้ แต่ไม่รู้ว่ากี่บิต/ตำแหน่งไหน — เทคโนโลยีใหม่ใช้ CRC แข็งแรงกว่า (เช่น ใน Data Link)</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-exam mt-5">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>จำ</b>Internet Checksum = 1's complement sum (16 บิต) — ตรวจ error เบื้องต้น ถูกกว่าและเบากว่าการเข้ารหัส</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 18 · SUMMARY ============ -->
+        <section class="slide-view" data-title="Chapter Summary — สรุปบทเรียน" aria-label="สไลด์ 18: สรุปบทเรียน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">CHAPTER SUMMARY</p>
+            <h2 class="slide-title">สิ่งที่เราเรียนรู้ <span class="grad-text">(บทที่ 4)</span></h2>
+            <p class="slide-subtitle">รวบรวมประเด็นสำคัญของ Transport Layer ไว้ครบในที่เดียว</p>
+
+            <div class="grid-3 mt-6">
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="split" class="cyan"></i>Mux / Demux</h3><p class="card-text small">รวมหลายแอปลงช่องเดียว (Mux) · แยกไปแอปถูกต้อง (Demux) · TCP ใช้ 4-tuple, UDP ใช้ 2 ค่า</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="scale" class="cyan"></i>TCP vs UDP</h3><p class="card-text small">TCP เชื่อถือได้ มีลำดับ Flow/Congestion · UDP เร็วเบา Header 8 ไบต์</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="shield-check" class="cyan"></i>Reliability</h3><p class="card-text small">Checksum + Seq# + ACK + Timer/Send ซ้ำ — จาก rdt1.0 (ไม่ตรวจ) → rdt2.0 (ACK/NAK) → rdt3.0 (Timer)</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="handshake" class="cyan"></i>Three-Way Handshake</h3><p class="card-text small">SYN → SYN-ACK → ACK — เปิด TCP · ปิดด้วย FIN</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="calculator" class="cyan"></i>Seq / Ack</h3><p class="card-text small">Seq = ไบต์แรก · Ack# = Seq + จำนวนไบต์ที่รับ (Cumulative)</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="gauge" class="cyan"></i>Flow / Congestion</h3><p class="card-text small">Flow = rwnd (กัน buffer ล้น) · Congestion = cwnd + AIMD (เพิ่ม 1 ลดครึ่ง) · Dup ACK ×3 → Fast Retransmit</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 19 · CHEAT SHEET ============ -->
+        <section class="slide-view" data-title="Exam Cheat Sheet — สูตรจำก่อนสอบ" aria-label="สไลด์ 19: สูตรจำก่อนสอบ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">EXAM CHEAT SHEET</p>
+            <h2 class="slide-title">สูตรจำก่อนสอบ — บทที่ 4</h2>
+            <p class="slide-subtitle">รวบรวมจุดที่ข้อสอบชอบถาม ฉบับย่อ เหมือนโน้ตสรุป</p>
+
+            <div class="cheat-grid mt-6">
+              <div class="cheat-item"><b>Transport Layer</b><span class="def">→ เชื่อม Process ต่อ Process · PDU = Segment</span></div>
+              <div class="cheat-item"><b>Multiplexing</b><span class="def">→ รวมหลาย Socket ลงช่องทางเดียว</span></div>
+              <div class="cheat-item"><b>Demultiplexing</b><span class="def">→ แยกข้อมูลไป Socket ที่ถูกต้อง</span></div>
+              <div class="cheat-item"><b>4-tuple</b><span class="def">→ Src IP + Src Port + Dst IP + Dst Port</span></div>
+              <div class="cheat-item"><b>Source Port</b><span class="def">→ ระบุ Process ต้นทาง (ตอบกลับที่ไหน)</span></div>
+              <div class="cheat-item"><b>Destination Port</b><span class="def">→ ระบุ Process ปลายทาง</span></div>
+              <div class="cheat-item"><b>TCP</b><span class="def">→ เชื่อถือได้, มีลำดับ, Flow/Congestion Control</span></div>
+              <div class="cheat-item"><b>UDP</b><span class="def">→ เร็ว, ไม่มี Connection, Header 8 ไบต์</span></div>
+              <div class="cheat-item"><b>UDP Header</b><span class="def">→ Src Port · Dst Port · Length · Checksum (8B)</span></div>
+              <div class="cheat-item"><b>UDP Checksum</b><span class="def">→ ตรวจจับ Bit Error (detect ไม่แก้ไข)</span></div>
+              <div class="cheat-item"><b>rdt1.0</b><span class="def">→ ส่งอย่างเดียว สมมติช่องทางสมบูรณ์</span></div>
+              <div class="cheat-item"><b>rdt2.0</b><span class="def">→ เพิ่ม Error Detection + ACK/NAK</span></div>
+              <div class="cheat-item"><b>ACK</b><span class="def">→ ยืนยันรับข้อมูลถูกต้อง</span></div>
+              <div class="cheat-item"><b>NAK</b><span class="def">→ บอกว่าข้อมูลเสีย ขอส่งใหม่</span></div>
+              <div class="cheat-item"><b>Three-Way Handshake</b><span class="def">→ SYN → SYN-ACK → ACK</span></div>
+              <div class="cheat-item"><b>SYN / FIN</b><span class="def">→ SYN เริ่มเชื่อมต่อ · FIN ขอปิด</span></div>
+              <div class="cheat-item"><b>ACK #</b><span class="def">→ Seq# + จำนวนไบต์ที่รับ (Cumulative)</span></div>
+              <div class="cheat-item"><b>Flow Control</b><span class="def">→ Receive Window (rwnd) จากฝั่งรับ</span></div>
+              <div class="cheat-item"><b>Congestion Control</b><span class="def">→ AIMD: เพิ่มทีละน้อย / ลดครึ่งเมื่อ Loss</span></div>
+              <div class="cheat-item"><b>Dup ACK ×3</b><span class="def">→ น่าจะ Packet หาย → Fast Retransmit</span></div>
+              <div class="cheat-item"><b>Timeout</b><span class="def">→ หมดเวลา → Retransmission (ส่งซ้ำ)</span></div>
+              <div class="cheat-item"><b>Internet Checksum</b><span class="def">→ 1's complement sum — ตรวจ error ง่าย ๆ</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 20 · QUIZ ============ -->
+        <section class="slide-view quiz-slide" data-title="Quiz — แบบทดสอบบท 4" aria-label="สไลด์ 20: แบบทดสอบบท 4">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">QUIZ · TRANSPORT LAYER</p>
+            <h2 class="slide-title">แบบทดสอบบทที่ 4 <span class="grad-text">12 ข้อ</span></h2>
+            <p class="slide-subtitle">ตรวจความเข้าใจเรื่อง Transport Layer — ตอบแล้วเห็นคำอธิบายทันที</p>
+            <div id="quizC4"></div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 21 · FLASHCARDS ============ -->
+        <section class="slide-view" data-title="Flashcards — การ์ดทบทวน" aria-label="สไลด์ 21: การ์ดทบทวน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REVIEW · FLASHCARDS</p>
+            <h2 class="slide-title">การ์ดทบทวน — บทที่ 4</h2>
+            <p class="slide-subtitle">กดที่การ์ดเพื่อพลิกดูคำตอบ — ปุ่มสับการ์ดเพื่อเรียงใหม่</p>
+
+            <div class="split mt-6" style="grid-template-columns:1fr">
+              <div class="flashcard-wrap">
+                <div class="flashcard" id="flashcard4" role="button" tabindex="0" aria-label="การ์ดทบทวน กดเพื่อพลิก">
+                  <div class="flashcard-face flashcard-front">
+                    <span class="fc-eyebrow">QUESTION</span>
+                    <p class="fc-q" id="fcQ4">—</p>
+                    <span class="flashcard-hint">คลิกเพื่อพลิกการ์ด 🔄</span>
+                  </div>
+                  <div class="flashcard-face flashcard-back">
+                    <span class="fc-eyebrow" style="color:var(--success)">ANSWER</span>
+                    <p class="fc-a" id="fcA4">—</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-center gap-3 mt-5 wrap">
+                <button class="btn btn-ghost" id="fcPrev4">ก่อนหน้า <i data-lucide="chevron-left"></i></button>
+                <span class="chip" id="fcCounter4">1 / 13</span>
+                <button class="btn btn-ghost" id="fcNext4">ถัดไป <i data-lucide="chevron-right"></i></button>
+                <button class="btn btn-cyan" id="fcShuffle4">สับการ์ด <i data-lucide="shuffle"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 22 · GLOSSARY ============ -->
+        <section class="slide-view" data-title="Glossary — คำศัพท์" aria-label="สไลด์ 22: คำศัพท์">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REVIEW · GLOSSARY</p>
+            <h2 class="slide-title">คำศัพท์ — บทที่ 4</h2>
+            <p class="slide-subtitle">ค้นหาคำศัพท์ Transport Layer พร้อมคำอธิบายสั้น ๆ</p>
+
+            <div class="search-box mt-5">
+              <i data-lucide="search"></i>
+              <input type="text" id="glossarySearch4" placeholder="ค้นหาคำศัพท์..." autocomplete="off" />
+            </div>
+            <p class="text-3 mt-3" id="glossaryCount4" style="font-size:13px">—</p>
+            <div class="glossary-list mt-2" id="glossaryList4"></div>
+          </div>
+        </section>
+
+        <!-- ============ CH4 · SLIDE 23 · POST-LESSON EXAM ============ -->
+        <section class="slide-view quiz-slide" data-title="ข้อสอบหลังเรียน — แบบทดสอบท้ายบท 20 ข้อ" aria-label="สไลด์ 23: ข้อสอบหลังเรียน 20 ข้อ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">POST-LESSON EXAM · 20 QUESTIONS</p>
+            <h2 class="slide-title">ข้อสอบหลังเรียน <span class="grad-text">20 ข้อ</span></h2>
+            <p class="slide-subtitle">สอบเก็บคะแนนท้ายบท — เรียนครบทุกสไลด์ก่อนถึงจะเข้าสอบได้ ตอบแล้วดูเฉลยทันที</p>
+            <div id="quizExam4"></div>
+          </div>
+        </section>
+
+      </div><!-- /viewport -->
+
+      <!-- ================= BOTTOM BAR ================= -->
+      <footer class="bottombar">
+        <button class="bb-nav-btn" id="prevBtn" aria-label="สไลด์ก่อนหน้า">
+          <i data-lucide="chevron-left"></i><span class="bb-label">ก่อนหน้า</span>
+        </button>
+
+        <div class="bb-center">
+          สไลด์ <b id="bbCounter">1</b> / <b id="bbTotal">23</b>
+        </div>
+
+        <div class="bb-tools">
+          <button class="icon-btn" id="fullscreenBtn" aria-label="ขยายสไลด์เต็มจอ" title="ขยายสไลด์">
+            <i data-lucide="maximize-2"></i>
+          </button>
+          <button class="icon-btn" id="printSlidesBtn" aria-label="พิมพ์สไลด์ทั้งหมด" title="พิมพ์สไลด์ทั้งหมด">
+            <i data-lucide="printer"></i>
+          </button>
+          <button class="icon-btn" id="printCardsBtn" aria-label="พิมพ์การ์ดสรุป" title="พิมพ์การ์ดสรุป">
+            <i data-lucide="file-output"></i>
+          </button>
+        </div>
+
+        <button class="bb-nav-btn next" id="nextBtn" aria-label="สไลด์ถัดไป">
+          <span class="bb-label">ถัดไป</span><i data-lucide="chevron-right"></i>
+        </button>
+      </footer>
+
+    </main>
+  </div><!-- /shell -->
+</div><!-- /app -->
+
+<!-- ================= DRAWER BACKDROP ================= -->
+<div id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- ================= NOTES PANEL ================= -->
+<aside class="notes-panel" id="notesPanel" aria-label="บันทึกย่อ">
+  <div class="flex items-center justify-between" style="padding:16px 20px;border-bottom:1px solid var(--border)">
+    <div>
+      <b style="font-size:15px">📝 บันทึกย่อ (Notes)</b>
+      <p class="text-3" style="font-size:12px" id="notesLabel">สไลด์ที่กำลังเรียน</p>
+    </div>
+    <button class="icon-btn" id="notesCloseBtn" aria-label="ปิดบันทึกย่อ"><i data-lucide="x"></i></button>
+  </div>
+  <textarea id="notesTextarea" placeholder="เขียนสิ่งที่ต้องจำจากสไลด์นี้...&#10;เช่น:&#10;- ACK# = Seq# + Bytes&#10;- SYN → SYN-ACK → ACK&#10;- AIMD = เพิ่ม 1 ลดครึ่ง" aria-label="บันทึกย่อ"></textarea>
+  <div class="text-3" style="padding:10px 20px 14px;font-size:12px;border-top:1px solid var(--border)">
+    💾 บันทึกอัตโนมัติลงในเครื่องของคุณ (localStorage)
+  </div>
+</aside>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ================= COMPLETION OVERLAY ================= -->
+<div id="completionOverlay" role="dialog" aria-modal="true" aria-label="จบบทเรียน">
+  <div class="card center" style="max-width:440px;position:relative;padding:40px 32px;z-index:1">
+    <div style="font-size:56px" class="float-y">🎉</div>
+    <h2 class="slide-title mt-4" style="font-size:28px">Chapter Complete!</h2>
+    <p class="text-2 mt-2" id="completionMsg">คุณเรียนครบทุกสไลด์แล้ว — ยอดเยี่ยมมาก! <b class="grad-text">Keep Learning!</b></p>
+    <div class="grid-3 mt-5" style="grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneSlides">23</b><p class="text-3" style="font-size:12px">สไลด์</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneScore">–</b><p class="text-3" style="font-size:12px">คะแนน Quiz</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px">100%</b><p class="text-3" style="font-size:12px">ความคืบหน้า</p></div>
+    </div>
+    <div class="flex items-center gap-3 mt-6 wrap" style="justify-content:center">
+      <button class="btn btn-ghost" id="completionCloseBtn">ปิด 🎊</button>
+      <button class="btn btn-primary" id="completionRestartBtn"><i data-lucide="rotate-ccw"></i> เรียนใหม่อีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PRINT AREA ================= -->
+<div id="printArea" aria-hidden="true"></div>
+
+<!-- App scripts -->
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

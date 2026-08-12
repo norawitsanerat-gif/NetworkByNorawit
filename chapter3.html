@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive Digital Textbook — บทที่ 3: Application Layer (HTTP/HTTPS, DNS, SMTP, Port)" />
+  <title>CN · บทที่ 3 — Application Layer</title>
+
+  <!-- App styles — โหลดก่อนเสมอ (สำคัญต่อการแสดงผล) -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS (Play CDN) — defer: ไม่บล็อกการโหลดหน้าและ app.js -->
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide icons — defer: ไม่บล็อกการโหลดหน้าและ app.js -->
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body data-page="chapter" data-chapter="3">
+
+<div id="app">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header id="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="เปิดเมนูบทเรียน" title="เมนู">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <div class="brand">
+      <div class="cn-logo" aria-hidden="true">CN</div>
+      <div class="brand-titles">
+        <h1>เครือข่ายคอมพิวเตอร์และอินเทอร์เน็ต</h1>
+        <p id="headerChapterLabel">พื้นฐานการสื่อสารข้อมูลและเครือข่าย · บทที่ 1</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn" id="homeBtn" aria-label="กลับไปเมนูหลัก" title="เมนูหลัก">
+        <i data-lucide="home"></i>
+      </button>
+      <button class="icon-btn" id="notesBtn" aria-label="เปิดบันทึกย่อ" title="บันทึกย่อ (Notes)">
+        <i data-lucide="notebook-pen"></i>
+      </button>
+
+      <div class="header-progress" aria-label="ความคืบหน้า">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="headerProgressBar">
+          <div class="progress-fill" id="headerProgressFill"></div>
+        </div>
+        <span class="progress-count" id="headerProgressCount">1 / 15</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SHELL ================= -->
+  <div class="shell">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside id="sidebar" aria-label="เมนูบทเรียน">
+      <div class="sidebar-head">
+        <div class="sidebar-head-title">
+          <h2 id="sidebarChapterTitle">เมนูบทที่ 3</h2>
+          <p id="sidebarChapterSub">หัวข้อในสัปดาห์นี้ · 15 หัวข้อ</p>
+        </div>
+        <button class="icon-btn sidebar-close" id="sidebarCloseBtn" aria-label="ปิดเมนูบทเรียน" title="ปิดเมนู">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-info">
+        <i data-lucide="info"></i>
+        <span>คลิกหัวข้อหรือสไลด์เพื่อข้ามไปได้เลย<br />เรียนทีละสไลด์เพื่อเก็บเนื้อหาให้ครบ</span>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav" aria-label="สารบัญสไลด์"></nav>
+      <div class="sidebar-foot">
+        <div class="sf-top"><span>ความคืบหน้า</span><b id="sidebarPct">0%</b></div>
+        <div class="progress-track"><div class="progress-fill" id="sidebarProgressFill"></div></div>
+        <p class="mt-2 text-3" style="font-size:12px" id="sidebarDone">ยังไม่ได้เรียนสไลด์ใดเลย — เริ่มที่ Cover ได้เลย!</p>
+      </div>
+    </aside>
+
+    <!-- ================= STAGE ================= -->
+    <main class="stage">
+
+      <div class="slide-viewport" id="viewport">
+
+        <!-- ============ SLIDE 1 · COVER ============ -->
+        <section class="slide-view" data-title="Cover — บทที่ 3: Application Layer" aria-label="สไลด์ 1: เปิดบทเรียน">
+          <div class="slide-inner">
+            <div class="center" style="padding:26px 0 6px">
+              <div class="cn-logo small" style="margin:0 auto 18px">CN</div>
+              <p class="menu-kicker" style="margin:0">CHAPTER 3 · APPLICATION LAYER</p>
+              <h2 class="slide-title" style="font-size:38px">Application Layer <span class="grad-text">— ชั้นโปรแกรมประยุกต์</span></h2>
+              <p class="slide-subtitle" style="max-width:600px;margin:10px auto 0">รู้จักสถาปัตยกรรมแอปพลิเคชัน, Process / Socket / IP / Port, HTTP/HTTPS, DNS, SMTP และ Port มาตรฐานที่ต้องจำ</p>
+
+              <div class="visual-box mt-6" style="max-width:520px;margin-left:auto;margin-right:auto">
+                <span class="vb-label">CLIENT → SERVER · สถาปัตยกรรมที่ใช้บ่อยที่สุด</span>
+                <div class="flex items-center justify-center" style="gap:22px;padding:18px 10px;flex-wrap:wrap">
+                  <div class="card center" style="padding:16px 22px"><div style="font-size:30px">🧑‍💻</div><b style="font-size:13px">Client</b><span class="text-3" style="font-size:11px">เบราว์เซอร์</span></div>
+                  <div style="font-size:26px;color:var(--cyan)">⇄</div>
+                  <div class="card center" style="padding:16px 22px"><div style="font-size:30px">🖥️</div><b style="font-size:13px">Server</b><span class="text-3" style="font-size:11px">เว็บเซิร์ฟเวอร์</span></div>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 wrap mt-5" style="justify-content:center">
+                <span class="chip">15 สไลด์</span><span class="chip">12 Quiz</span><span class="chip">12 Flashcards</span><span class="chip">24 คำศัพท์</span>
+              </div>
+              <div class="mt-6">
+                <button class="btn btn-primary btn-lg" id="startBtn3">เริ่มเรียนบทนี้ <i data-lucide="arrow-right"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 2 · ARCHITECTURE ============ -->
+        <section class="slide-view" data-title="Network Application Architecture" aria-label="สไลด์ 2: สถาปัตยกรรมแอปพลิเคชัน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">APPLICATION ARCHITECTURE</p>
+            <h2 class="slide-title">สถาปัตยกรรมแอปพลิเคชัน <span class="grad-text">มี 2 แบบ</span></h2>
+            <p class="slide-subtitle">รูปแบบการจัดความสัมพันธ์ระหว่างผู้ใช้บริการกับผู้ให้บริการ — กดแท็บเพื่อสลับดู</p>
+
+            <div class="tabs mt-5" id="archTabs" role="tablist" aria-label="สถาปัตยกรรมแอปพลิเคชัน">
+              <button class="tab-btn active" data-arch="client-server" role="tab">Client-Server</button>
+              <button class="tab-btn" data-arch="p2p" role="tab">Peer-to-Peer (P2P)</button>
+            </div>
+
+            <div class="split mt-5">
+              <div class="visual-box">
+                <span class="vb-label">DIAGRAM</span>
+                <div id="archSVG_CS">
+                  <svg viewBox="0 0 420 235" style="margin-top:8px" aria-label="แผนภาพ Client-Server">
+                    <rect x="275" y="52" width="130" height="130" rx="18" fill="#18243a" stroke="rgba(56,189,248,.6)" stroke-width="2"/>
+                    <text x="340" y="95" text-anchor="middle" font-size="34">👑</text>
+                    <text x="340" y="124" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="700">Server</text>
+                    <text x="340" y="142" text-anchor="middle" fill="#94a3b8" font-size="9.5">ให้บริการตลอดเวลา</text>
+                    <rect x="18" y="18" width="108" height="60" rx="14" fill="#18243a" stroke="rgba(148,163,184,.25)"/>
+                    <text x="72" y="46" text-anchor="middle" font-size="26">🧑‍💻</text>
+                    <text x="72" y="68" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="700">Client 1</text>
+                    <rect x="18" y="157" width="108" height="60" rx="14" fill="#18243a" stroke="rgba(148,163,184,.25)"/>
+                    <text x="72" y="185" text-anchor="middle" font-size="26">💻</text>
+                    <text x="72" y="207" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="700">Client 2</text>
+                    <path d="M128,42 L268,74" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#archArr)"/>
+                    <text x="200" y="34" text-anchor="middle" fill="#7dd3fc" font-size="10.5" font-weight="700">1 · Request</text>
+                    <path d="M268,96 L130,62" stroke="#22d3ee" stroke-width="3" fill="none" marker-end="url(#archArrC)"/>
+                    <text x="202" y="100" text-anchor="middle" fill="#67e8f9" font-size="10.5" font-weight="700">2 · Response</text>
+                    <path d="M128,185 L268,130" stroke="#2563eb" stroke-width="2.5" fill="none" marker-end="url(#archArr)"/>
+                    <text x="212" y="150" text-anchor="middle" fill="#7dd3fc" font-size="10" font-weight="700">Request</text>
+                    <path d="M52,84 L92,151" stroke="#f87171" stroke-width="2" fill="none" stroke-dasharray="5 4"/>
+                    <text x="72" y="122" text-anchor="middle" fill="#f87171" font-size="14" font-weight="700">✕</text>
+                    <text x="72" y="139" text-anchor="middle" fill="#f87171" font-size="9" font-weight="600">คุยกันเองไม่ได้</text>
+                    <text x="210" y="228" text-anchor="middle" fill="#64748b" font-size="9.5">Client ขอ (Request) → Server ตอบ (Response) · Client หลายตัวต่อ Server ตัวเดียว</text>
+                    <defs>
+                      <marker id="archArr" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8"><path d="M0,0 L10,5 L0,10 Z" fill="#2563eb"/></marker>
+                      <marker id="archArrC" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8"><path d="M0,0 L10,5 L0,10 Z" fill="#22d3ee"/></marker>
+                    </defs>
+                  </svg>
+                </div>
+                <div id="archSVG_P2P" style="display:none">
+                  <svg viewBox="0 0 420 240" style="margin-top:8px" aria-label="แผนภาพ Peer-to-Peer">
+                    <rect x="165" y="12" width="90" height="52" rx="14" fill="#18243a" stroke="rgba(56,189,248,.45)"/>
+                    <text x="210" y="35" text-anchor="middle" font-size="24">💻</text>
+                    <text x="210" y="55" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-weight="700">Peer 1</text>
+                    <rect x="40" y="165" width="90" height="52" rx="14" fill="#18243a" stroke="rgba(56,189,248,.45)"/>
+                    <text x="85" y="188" text-anchor="middle" font-size="24">💻</text>
+                    <text x="85" y="208" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-weight="700">Peer 2</text>
+                    <rect x="290" y="165" width="90" height="52" rx="14" fill="#18243a" stroke="rgba(56,189,248,.45)"/>
+                    <text x="335" y="188" text-anchor="middle" font-size="24">💻</text>
+                    <text x="335" y="208" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-weight="700">Peer 3</text>
+                    <path d="M178,68 Q108,105 95,163" stroke="#38bdf8" stroke-width="2.5" fill="none" marker-start="url(#p2pArr)" marker-end="url(#p2pArr)"/>
+                    <path d="M242,68 Q312,105 325,163" stroke="#38bdf8" stroke-width="2.5" fill="none" marker-start="url(#p2pArr)" marker-end="url(#p2pArr)"/>
+                    <path d="M133,185 Q210,212 287,185" stroke="#38bdf8" stroke-width="2.5" fill="none" marker-start="url(#p2pArr)" marker-end="url(#p2pArr)"/>
+                    <text x="128" y="112" text-anchor="middle" fill="#67e8f9" font-size="11" font-weight="700">⇄</text>
+                    <text x="292" y="112" text-anchor="middle" fill="#67e8f9" font-size="11" font-weight="700">⇄</text>
+                    <text x="210" y="203" text-anchor="middle" fill="#67e8f9" font-size="11" font-weight="700">⇄</text>
+                    <text x="210" y="233" text-anchor="middle" fill="#94a3b8" font-size="10">ทุก Peer เป็นทั้งผู้ขอและผู้ให้ — คุยตรง ๆ กันเอง ไม่มี Server กลาง</text>
+                    <defs>
+                      <marker id="p2pArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#38bdf8"/></marker>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
+
+              <div>
+                <div class="card">
+                  <h3 class="card-title" id="archName"><i data-lucide="server" class="cyan"></i>Client-Server</h3>
+                  <p class="text-3" style="font-size:12.5px" id="archThai">สถาปัตยกรรมแบบไคลเอนต์-เซิร์ฟเวอร์</p>
+                  <p class="card-text small mt-3" id="archDesc">—</p>
+                  <div class="tip-box tip-note mt-4"><i data-lucide="lightbulb"></i><div><b>ตัวอย่างจริง</b><span id="archExample">—</span></div></div>
+                </div>
+                <div class="grid-2 mt-4">
+                  <div class="card" style="padding:14px"><b style="font-size:13px;color:var(--success)">✓ ข้อดี</b><p class="card-text small mt-2" id="archPros">—</p></div>
+                  <div class="card" style="padding:14px"><b style="font-size:13px;color:var(--danger)">✗ ข้อเสีย</b><p class="card-text small mt-2" id="archCons">—</p></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-exam mt-5">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Exam Tip</b>ข้อสอบชอบถามว่า "สถาปัตยกรรมแบบใดมี Server กลางคอยให้บริการ" — ตอบ <b>Client-Server</b> ส่วน P2P จำตัวอย่าง BitTorrent</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 3 · PROCESS / SOCKET / IP / PORT ============ -->
+        <section class="slide-view" data-title="Process, Socket, IP Address และ Port Number" aria-label="สไลด์ 3: Process, Socket, IP และ Port">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">SOCKETS &amp; ADDRESSING</p>
+            <h2 class="slide-title">Process, Socket, IP Address และ Port</h2>
+            <p class="slide-subtitle">พื้นฐานที่เชื่อมไปสู่ Transport Layer — "ใคร" คุยกับ "ใคร" และรู้ได้ยังไงว่าต้องส่งให้ "ห้องไหน"</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="cpu" class="cyan"></i>Process</h3><p class="card-text small">โปรแกรมที่กำลังทำงานอยู่บนเครื่อง เช่น เบราว์เซอร์ที่เปิดอยู่คือ 1 process</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="door-open" class="cyan"></i>Socket</h3><p class="card-text small">"ประตู" ที่ process ใช้ส่ง/รับข้อมูลเข้า-ออกจากเครือข่าย — ข้อมูลเดินเข้า-ออกผ่านประตูนี้</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="home" class="cyan"></i>IP Address</h3><p class="card-text small">ที่อยู่ของเครื่อง (host) บนเครือข่าย — บอกว่า "บ้านหลังไหน"</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="hash" class="cyan"></i>Port Number</h3><p class="card-text small">หมายเลขที่บอกว่า process ไหนบน host นั้นเป็นผู้รับ/ส่งข้อมูล — บอกว่า "ห้องไหนในบ้าน"</p></div>
+            </div>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label">อุปมา · ส่งจดหมาย</span>
+              <div class="flex items-center justify-center wrap" style="gap:16px;padding:16px 6px">
+                <div class="card center" style="padding:14px 20px"><div style="font-size:26px">🏠</div><b style="font-size:13px">บ้านเลขที่ 123</b><span class="text-3" style="font-size:11px">IP Address</span></div>
+                <div class="arrow-badge"><i data-lucide="arrow-right"></i></div>
+                <div class="card center" style="padding:14px 20px"><div style="font-size:26px">🚪</div><b style="font-size:13px">ห้อง 4B</b><span class="text-3" style="font-size:11px">Port Number (Socket)</span></div>
+                <div class="arrow-badge"><i data-lucide="arrow-right"></i></div>
+                <div class="card center" style="padding:14px 20px"><div style="font-size:26px">🧑‍💼</div><b style="font-size:13px">คนในห้อง</b><span class="text-3" style="font-size:11px">Process</span></div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="lightbulb"></i>
+              <div><b>สูตรจำ</b>การระบุปลายทางของข้อมูลที่ Transport Layer ต้องใช้ <b class="cyan">IP Address + Port Number</b> คู่กันเสมอ — ขาดตัวใดตัวหนึ่งส่งข้อมูลไม่ถึง</div>
+            </div>
+            <div class="tip-box tip-exam mt-3">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Exam Tip</b>IP = "เครื่องไหน" · Port = "แอปไหนบนเครื่องนั้น" — ข้อสอบชอบให้จับคู่ความหมาย</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 4 · APP REQUIREMENTS ============ -->
+        <section class="slide-view" data-title="ความต้องการของ Application" aria-label="สไลด์ 4: ความต้องการของแอปพลิเคชัน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">APP REQUIREMENTS</p>
+            <h2 class="slide-title">ความต้องการของ Application <span class="grad-text">(Delay / Data Loss)</span></h2>
+            <p class="slide-subtitle">แต่ละแอปต้องการคุณสมบัติจากเครือข่ายไม่เหมือนกัน — หลัก ๆ พิจารณา 3 อย่าง</p>
+
+            <div class="grid-3 mt-6">
+              <div class="card hoverable">
+                <h3 class="card-title"><i data-lucide="package-x" class="cyan"></i>1. Data Loss</h3>
+                <p class="card-text small">บางแอปทนไม่ได้เลย เช่น <b>การโอนไฟล์</b> (หายนิดเดียวไฟล์เสียหาย) → ต้อง reliable · บางแอปทนได้บ้าง เช่น VoIP / วิดีโอสด (กระตุกนิดหน่อยยังใช้ได้)</p>
+              </div>
+              <div class="card hoverable">
+                <h3 class="card-title"><i data-lucide="timer" class="cyan"></i>2. Timing / Delay</h3>
+                <p class="card-text small">บางแอปต้องการ Delay ต่ำมาก เช่น <b>เกมออนไลน์, วิดีโอคอล</b> (real-time) · บางแอปไม่ซีเรียส เช่น ส่งอีเมล</p>
+              </div>
+              <div class="card hoverable">
+                <h3 class="card-title"><i data-lucide="gauge" class="cyan"></i>3. Throughput / Bandwidth</h3>
+                <p class="card-text small">บางแอปต้องการแบนด์วิดท์ขั้นต่ำคงที่ เช่น <b>สตรีมมิงวิดีโอ</b> · บางแอปยืดหยุ่นได้ เช่น ดาวน์โหลดไฟล์</p>
+              </div>
+            </div>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label">เลือกใช้ให้ถูก: TCP vs UDP</span>
+              <div class="grid-2" style="gap:14px;padding:6px">
+                <div class="card" style="border-color:rgba(34,197,94,.35)"><b style="color:var(--success)">TCP — เน้นความน่าเชื่อถือ</b><p class="card-text small mt-2">ส่งครบ ตรวจสอบ รับประกันไม่หาย → ใช้กับโอนไฟล์, เว็บ, อีเมล (ยอมรับ Delay สูงกว่า)</p></div>
+                <div class="card" style="border-color:rgba(245,158,11,.35)"><b style="color:var(--warning)">UDP — เน้นความเร็ว / Delay ต่ำ</b><p class="card-text small mt-2">ส่งไว ไม่รับประกัน → ใช้กับเกม, วิดีโอคอล, สตรีมสด (ยอมรับการสูญเสียได้บ้าง)</p></div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="lightbulb"></i>
+              <div><b>จำง่าย</b>เลือก TCP หรือ UDP ขึ้นอยู่กับความต้องการของแต่ละแอป: <b>ทน loss ไม่ได้ → TCP</b> · <b>ต้องการ Delay ต่ำสุด → UDP</b></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 5 · HTTP / HTTPS ============ -->
+        <section class="slide-view" data-title="HTTP / HTTPS" aria-label="สไลด์ 5: HTTP และ HTTPS">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">WEB PROTOCOL</p>
+            <h2 class="slide-title">HTTP / HTTPS <span class="grad-text">(Port 80 · 443)</span></h2>
+            <p class="slide-subtitle">โปรโตคอลที่ใช้ขอ-ส่งข้อมูลเว็บเพจระหว่างเบราว์เซอร์กับเว็บเซิร์ฟเวอร์ — กดแท็บเพื่อเปรียบเทียบ</p>
+
+            <div class="tabs mt-5" id="httpTabs" role="tablist" aria-label="HTTP vs HTTPS">
+              <button class="tab-btn active" data-http="http" role="tab">HTTP · Port 80</button>
+              <button class="tab-btn" data-http="https" role="tab">HTTPS · Port 443</button>
+            </div>
+
+            <div class="split mt-5">
+              <div class="visual-box">
+                <span class="vb-label" id="httpVisLabel">SECURITY</span>
+                <div class="center" style="padding:24px 10px">
+                  <div style="font-size:56px" id="httpVisIcon">📄</div>
+                  <div class="chip mt-3" id="httpPort">Port 80</div>
+                  <p class="card-text small mt-3" style="max-width:260px;margin:12px auto 0" id="httpVisDesc">—</p>
+                </div>
+              </div>
+              <div>
+                <div class="card">
+                  <h3 class="card-title" id="httpName"><i data-lucide="globe" class="cyan"></i>HTTP</h3>
+                  <p class="card-text small mt-3" id="httpDesc">—</p>
+                  <div class="tip-box tip-note mt-4"><i data-lucide="lightbulb"></i><div><b>ใช้กับ</b><span id="httpUse">—</span></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mt-5">
+              <h3 class="card-title"><i data-lucide="brain" class="cyan"></i>Stateless HTTP — เซิร์ฟเวอร์ไม่จำสถานะ</h3>
+              <p class="card-text small mt-2">HTTP ถูกออกแบบให้เป็น <b>stateless</b> — เซิร์ฟเวอร์ไม่จำข้อมูลของ request ก่อนหน้า แต่ละ request ที่ client ส่งมาถือเป็นเรื่องใหม่ทั้งหมด เซิร์ฟเวอร์ไม่รู้ว่า request นี้กับ request ก่อนหน้ามาจากคนเดียวกันหรือเปล่า</p>
+              <p class="card-text small mt-3">💡 อยากให้จำสถานะ (เช่น ล็อกอิน) ต้องใช้กลไกเสริมอย่าง <b>Cookies</b></p>
+              <div class="tip-box tip-note mt-3"><i data-lucide="lightbulb"></i><div><b>อุปมา</b>เหมือนพนักงานร้านที่ความจำสั้นมาก — ทุกครั้งที่คุณสั่งของ พนักงานจะถามข้อมูลใหม่หมด ไม่จำว่าคุณเพิ่งสั่งอะไรไป</div></div>
+            </div>
+
+            <div class="tip-box tip-exam mt-5">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>จำ Port</b>HTTP = <b>80</b> (ไม่เข้ารหัส) · HTTPS = <b>443</b> (เข้ารหัสด้วย TLS/SSL) — ออกสอบบ่อยมาก</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 6 · PERSISTENT + HTTP MESSAGE ============ -->
+        <section class="slide-view" data-title="Persistent vs Non-Persistent + HTTP Message" aria-label="สไลด์ 6: การเชื่อมต่อ HTTP และโครงสร้างข้อความ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">HTTP CONNECTION &amp; MESSAGE</p>
+            <h2 class="slide-title">Persistent vs Non-Persistent + โครงสร้าง HTTP Message</h2>
+            <p class="slide-subtitle">HTTP ใช้การเชื่อมต่อ TCP อย่างไร และข้อความที่ส่งไป-มากันมีหน้าตาแบบไหน</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card hoverable" style="border-color:rgba(245,158,11,.35)">
+                <h3 class="card-title"><i data-lucide="plug" class="cyan"></i>Non-Persistent</h3>
+                <p class="card-text small">แต่ละ request/response ใช้ <b>การเชื่อมต่อ TCP ใหม่ 1 ครั้ง</b> แล้วปิดทันที — ถ้าหน้าเว็บมีหลายไฟล์ (รูป, CSS) ต้องเปิด-ปิด connection ใหม่ทุกไฟล์ → <b>ช้า</b> เพราะต้องทำ TCP handshake ใหม่ทุกครั้ง</p>
+              </div>
+              <div class="card hoverable" style="border-color:rgba(34,197,94,.35)">
+                <h3 class="card-title"><i data-lucide="link-2" class="cyan"></i>Persistent</h3>
+                <p class="card-text small">ใช้ <b>การเชื่อมต่อ TCP เดียว ส่งหลาย request/response ต่อเนื่องกันได้</b> ไม่ต้องเปิด-ปิดใหม่ทุกครั้ง → <b>เร็วกว่า</b> ประหยัดเวลา handshake ซ้ำ ๆ — <b>ค่า default ของ HTTP/1.1</b></p>
+              </div>
+            </div>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title" style="color:var(--cyan)">HTTP Request <span style="font-size:12px;color:var(--text-3)">(Client → Server)</span></h3>
+                <pre style="font-size:12px;line-height:1.6;color:var(--text-2);background:rgba(2,6,23,.5);padding:14px;border-radius:12px;overflow-x:auto;margin-top:10px">GET /index.html HTTP/1.1   ← Request line
+Host: www.example.com       ← Header lines
+User-Agent: Chrome/...
+Accept-Language: th
+
+(body ถ้ามี เช่น ตอน POST)</pre>
+              </div>
+              <div class="card">
+                <h3 class="card-title" style="color:var(--success)">HTTP Response <span style="font-size:12px;color:var(--text-3)">(Server → Client)</span></h3>
+                <pre style="font-size:12px;line-height:1.6;color:var(--text-2);background:rgba(2,6,23,.5);padding:14px;border-radius:12px;overflow-x:auto;margin-top:10px">HTTP/1.1 200 OK           ← Status line
+Content-Type: text/html     ← Header lines
+Content-Length: 1024
+
+&lt;html&gt;...เนื้อหาเว็บเพจ...&lt;/html&gt;   ← Body</pre>
+              </div>
+            </div>
+
+            <div class="card mt-5">
+              <h3 class="card-title"><i data-lucide="tag" class="cyan"></i>Status Code ที่ควรรู้</h3>
+              <div class="grid-4 mt-3">
+                <div class="card center" style="padding:12px"><b style="color:var(--success)">200</b><p class="text-3" style="font-size:11px">OK — สำเร็จ</p></div>
+                <div class="card center" style="padding:12px"><b style="color:var(--warning)">301/302</b><p class="text-3" style="font-size:11px">Redirect</p></div>
+                <div class="card center" style="padding:12px"><b style="color:var(--danger)">404</b><p class="text-3" style="font-size:11px">ไม่พบหน้า</p></div>
+                <div class="card center" style="padding:12px"><b style="color:var(--danger)">500</b><p class="text-3" style="font-size:11px">Server พัง</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 7 · HTTP METHODS ============ -->
+        <section class="slide-view" data-title="HTTP Methods" aria-label="สไลด์ 7: HTTP Methods">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">HTTP METHODS</p>
+            <h2 class="slide-title">HTTP Methods <span class="grad-text">GET · POST · PUT</span></h2>
+            <p class="slide-subtitle">วิธีที่ client บอก server ว่าต้องการให้ทำอะไรกับข้อมูล — กดการ์ดเพื่อดูรายละเอียด</p>
+
+            <div class="grid-3 mt-6" id="methodCards">
+              <button class="card hoverable method-card active" data-method="get" style="text-align:left"><b style="font-size:20px;color:var(--cyan)">GET</b><p class="card-text small mt-2">ขอดึงข้อมูลจาก Server</p></button>
+              <button class="card hoverable method-card" data-method="post" style="text-align:left"><b style="font-size:20px;color:var(--cyan)">POST</b><p class="card-text small mt-2">ส่งข้อมูลเพื่อสร้าง/ประมวลผล</p></button>
+              <button class="card hoverable method-card" data-method="put" style="text-align:left"><b style="font-size:20px;color:var(--cyan)">PUT</b><p class="card-text small mt-2">ส่งข้อมูลแทนที่/อัปเดตทั้งหมด</p></button>
+            </div>
+
+            <div class="split mt-5">
+              <div class="card">
+                <h3 class="card-title" id="methodName"><i data-lucide="arrow-down-to-line" class="cyan"></i>GET</h3>
+                <p class="card-text small mt-3" id="methodDuty">—</p>
+                <div class="tip-box tip-note mt-4"><i data-lucide="lightbulb"></i><div><b>ตัวอย่าง</b><span id="methodExample">—</span></div></div>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="alert-triangle" class="cyan"></i>จุดที่ออกสอบ</h3>
+                <p class="card-text small mt-3" id="methodTip">—</p>
+              </div>
+            </div>
+
+            <div class="tip-box tip-exam mt-5">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>GET vs POST</b>GET ส่งข้อมูลผ่าน URL (เช่น <code>?search=cat</code>) เห็นข้อมูลง่าย ไม่เหมาะกับข้อมูลลับ · POST ส่งข้อมูลใน <b>Body</b> ของ request ไม่โชว์บน URL เหมาะกับข้อมูลยาว/อ่อนไหว เช่น รหัสผ่าน</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 8 · DNS + DNS CACHE ============ -->
+        <section class="slide-view" data-title="DNS และ DNS Cache" aria-label="สไลด์ 8: DNS และ DNS Cache">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">DNS — DOMAIN NAME SYSTEM</p>
+            <h2 class="slide-title">DNS และ DNS Cache <span class="grad-text">(สมุดโทรศัพท์ของอินเทอร์เน็ต)</span></h2>
+            <p class="slide-subtitle">คอมพิวเตอร์ต้องใช้ IP Address ในการส่งข้อมูล แต่มนุษย์จำชื่อได้ง่ายกว่า — DNS คือตัวแปลงระหว่างสองอย่างนี้</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">DNS LOOKUP · แปลงชื่อเป็น IP</span>
+                <svg viewBox="0 0 420 190" style="margin-top:8px" aria-label="กระบวนการแปลงชื่อโดเมน">
+                  <rect x="15" y="30" width="120" height="55" rx="14" fill="#18243a" stroke="rgba(148,163,184,.25)"/>
+                  <text x="75" y="52" text-anchor="middle" font-size="18">🧑‍💻</text>
+                  <text x="75" y="72" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-weight="700">Browser</text>
+                  <rect x="285" y="30" width="120" height="55" rx="14" fill="#18243a" stroke="rgba(148,163,184,.25)"/>
+                  <text x="345" y="52" text-anchor="middle" font-size="18">📚</text>
+                  <text x="345" y="72" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-weight="700">DNS Server</text>
+                  <path d="M133,50 L281,50" stroke="#2563eb" stroke-width="2.5" fill="none" marker-end="url(#dnsArr)"/>
+                  <text x="207" y="38" text-anchor="middle" fill="#7dd3fc" font-size="10" font-weight="700">1 · www.example.com ?</text>
+                  <path d="M287,68 L139,68" stroke="#22d3ee" stroke-width="2.5" fill="none" marker-end="url(#dnsArrC)"/>
+                  <text x="207" y="88" text-anchor="middle" fill="#67e8f9" font-size="10" font-weight="700">2 · IP: 93.184.216.34 ✓</text>
+                  <rect x="15" y="120" width="120" height="55" rx="14" fill="#18243a" stroke="rgba(56,189,248,.5)"/>
+                  <text x="75" y="148" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-weight="700">เชื่อมต่อจริง</text>
+                  <text x="75" y="163" text-anchor="middle" fill="#94a3b8" font-size="9.5">Web Server (IP)</text>
+                  <path d="M75,88 L75,116" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="6 5" fill="none" marker-end="url(#dnsArrC)"/>
+                  <text x="84" y="106" fill="#67e8f9" font-size="9.5" font-weight="700">3 · เชื่อมต่อด้วย IP</text>
+                  <defs>
+                    <marker id="dnsArr" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8"><path d="M0,0 L10,5 L0,10 Z" fill="#2563eb"/></marker>
+                    <marker id="dnsArrC" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8"><path d="M0,0 L10,5 L0,10 Z" fill="#22d3ee"/></marker>
+                  </defs>
+                </svg>
+              </div>
+              <div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="book-open" class="cyan"></i>DNS = สมุดโทรศัพท์</h3>
+                  <p class="card-text small mt-2">คุณจำชื่อเพื่อน (โดเมน) ได้ แต่จำเบอร์โทร (IP) ไม่ได้ — เมื่อจะโทร คุณเปิดสมุดโทรศัพท์ (DNS) เพื่อหาเบอร์ที่ตรงกับชื่อนั้น</p>
+                </div>
+                <div class="card mt-4">
+                  <h3 class="card-title"><i data-lucide="zap" class="cyan"></i>DNS Cache</h3>
+                  <p class="card-text small mt-2">ทั้งเครื่องผู้ใช้และ DNS server ต่าง ๆ <b>เก็บผลลัพธ์ที่เคยถามไว้ชั่วคราว</b> — เมื่อถามชื่อเดิมซ้ำ จะดึงคำตอบจาก cache แทนการถามใหม่ตั้งแต่ต้น → <b>เร็วขึ้นมาก</b> และลดภาระ DNS server</p>
+                  <p class="card-text small mt-3">📌 ข้อมูลใน cache มีอายุจำกัดตาม <b>TTL (Time-To-Live)</b> — หมดอายุแล้วต้องถามใหม่</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="lightbulb"></i>
+              <div><b>จำ</b>DNS Cache ลด <b>Delay</b> และลดภาระของ DNS Server โดยรวม แต่คำตอบอาจล้าสมัยได้เมื่อมี TTL</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 9 · SMTP / EMAIL ============ -->
+        <section class="slide-view" data-title="SMTP / Email" aria-label="สไลด์ 9: SMTP และอีเมล">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">EMAIL PROTOCOLS</p>
+            <h2 class="slide-title">SMTP / Email <span class="grad-text">(Port 25)</span></h2>
+            <p class="slide-subtitle">SMTP ใช้ "ส่ง" อีเมล ส่วน IMAP/POP3 ใช้ "รับ/ดึง" อีเมลมาอ่าน — อย่าสลับกัน</p>
+
+            <div class="visual-box mt-6">
+              <span class="vb-label">เส้นทางของอีเมล</span>
+              <div class="flex items-center justify-center wrap" style="gap:12px;padding:16px 6px">
+                <div class="card center" style="padding:14px 18px"><div style="font-size:26px">✍️</div><b style="font-size:12.5px">ผู้ส่ง</b></div>
+                <div class="arrow-badge"><i data-lucide="arrow-right"></i>SMTP (25)</div>
+                <div class="card center" style="padding:14px 18px"><div style="font-size:26px">📤</div><b style="font-size:12.5px">Mail Server<br/>ผู้ส่ง</b></div>
+                <div class="arrow-badge"><i data-lucide="arrow-right"></i>SMTP (25)</div>
+                <div class="card center" style="padding:14px 18px"><div style="font-size:26px">📥</div><b style="font-size:12.5px">Mail Server<br/>ผู้รับ</b></div>
+                <div class="arrow-badge"><i data-lucide="arrow-right"></i>IMAP/POP3</div>
+                <div class="card center" style="padding:14px 18px"><div style="font-size:26px">🧑‍💻</div><b style="font-size:12.5px">ผู้รับ</b></div>
+              </div>
+            </div>
+
+            <div class="grid-3 mt-5">
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="send" class="cyan"></i>SMTP</h3><p class="card-text small">Simple Mail Transfer Protocol — ใช้<b>ส่ง</b>อีเมล จากเครื่องผู้ส่งไป mail server และระหว่าง mail server ด้วยกัน (Port 25)</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="inbox" class="cyan"></i>IMAP</h3><p class="card-text small">ใช้<b>รับ/ดึง</b>อีเมลมาอ่าน — <b>เก็บเมลไว้บนเซิร์ฟเวอร์</b> ดูจากเครื่องไหนก็เห็นเมลเหมือนกัน (Port 143)</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="download" class="cyan"></i>POP3</h3><p class="card-text small">ใช้<b>รับ/ดึง</b>อีเมล — <b>ดาวน์โหลดเมลลงเครื่อง</b> แล้ว (โดยค่าเริ่มต้น) ลบออกจากเซิร์ฟเวอร์ (Port 110)</p></div>
+            </div>
+
+            <div class="tip-box tip-exam mt-5">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>จำ</b>SMTP = <b>ส่ง</b> (Port 25) · IMAP/POP3 = <b>รับ</b> (143 / 110) — ข้อสอบชอบจับคู่ "โปรโตคอลกับหน้าที่"</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 10 · PORTS ============ -->
+        <section class="slide-view" data-title="Port มาตรฐานที่สำคัญ" aria-label="สไลด์ 10: Port มาตรฐานที่สำคัญ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">WELL-KNOWN PORTS</p>
+            <h2 class="slide-title">Port มาตรฐานที่สำคัญ <span class="grad-text">(ต้องจำ!)</span></h2>
+            <p class="slide-subtitle">หมายเลขพอร์ตของบริการยอดนิยม — จำ 3 ตัวหลักก่อน: HTTP=80, HTTPS=443, DNS=53</p>
+
+            <div class="grid-2 mt-6" id="portsGrid"></div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="lightbulb"></i>
+              <div><b>เทคนิคจำเร็ว</b>จำ 3 ตัวหลักก่อนเป็นอย่างน้อย: <b class="cyan">HTTP=80 · HTTPS=443 · DNS=53</b> เพราะออกสอบบ่อยที่สุด แล้วค่อยเพิ่ม SMTP=25, FTP=20/21</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 11 · SUMMARY ============ -->
+        <section class="slide-view" data-title="Chapter Summary — สรุปบทเรียน" aria-label="สไลด์ 11: สรุปบทเรียน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">CHAPTER SUMMARY</p>
+            <h2 class="slide-title">สิ่งที่เราเรียนรู้ <span class="grad-text">(บทที่ 3)</span></h2>
+            <p class="slide-subtitle">รวบรวมประเด็นสำคัญของ Application Layer ไว้ครบในที่เดียว</p>
+
+            <div class="grid-3 mt-6">
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="layers" class="cyan"></i>สถาปัตยกรรม</h3><p class="card-text small">Client-Server มี Server กลาง · P2P ไม่มี Server ตายตัว คุยกันตรง ๆ</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="door-open" class="cyan"></i>Process/Socket</h3><p class="card-text small">Process = โปรแกรมที่ทำงาน · Socket = ประตู · ปลายทาง = IP + Port คู่กัน</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="gauge" class="cyan"></i>App Requirements</h3><p class="card-text small">Data Loss / Delay / Bandwidth — กำหนดว่าจะใช้ TCP หรือ UDP</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="globe" class="cyan"></i>HTTP/HTTPS</h3><p class="card-text small">HTTP=80 ไม่เข้ารหัส · HTTPS=443 เข้ารหัส TLS · Stateless · Persistent default ของ HTTP/1.1</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="book-open" class="cyan"></i>DNS</h3><p class="card-text small">แปลงชื่อโดเมนเป็น IP เหมือนสมุดโทรศัพท์ · Cache ช่วยลด Delay</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="send" class="cyan"></i>SMTP/Email</h3><p class="card-text small">SMTP=25 ส่ง · IMAP=143 / POP3=110 รับ · FTP=20/21 โอนไฟล์</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 12 · CHEAT SHEET ============ -->
+        <section class="slide-view" data-title="Exam Cheat Sheet — สูตรจำก่อนสอบ" aria-label="สไลด์ 12: สูตรจำก่อนสอบ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">EXAM CHEAT SHEET</p>
+            <h2 class="slide-title">สูตรจำก่อนสอบ — บทที่ 3</h2>
+            <p class="slide-subtitle">รวบรวมจุดที่ข้อสอบชอบถาม ฉบับย่อ เหมือนโน้ตสรุป</p>
+
+            <div class="cheat-grid mt-6">
+              <div class="cheat-item"><b>Client-Server</b><span class="def">→ Server กลางเปิดบริการ, Client ขอใช้บริการ</span></div>
+              <div class="cheat-item"><b>P2P</b><span class="def">→ ไม่มี Server ตายตัว, Peer คุยกันตรง ๆ</span></div>
+              <div class="cheat-item"><b>Process</b><span class="def">→ โปรแกรมที่กำลังทำงาน</span></div>
+              <div class="cheat-item"><b>Socket</b><span class="def">→ ประตูที่ Process ใช้ส่ง/รับข้อมูล</span></div>
+              <div class="cheat-item"><b>IP Address</b><span class="def">→ บ้านเลขที่ (เครื่องไหน)</span></div>
+              <div class="cheat-item"><b>Port Number</b><span class="def">→ เบอร์ห้อง (แอปไหนบนเครื่องนั้น)</span></div>
+              <div class="cheat-item"><b>HTTP</b><span class="def">→ Port 80 · ไม่เข้ารหัส</span></div>
+              <div class="cheat-item"><b>HTTPS</b><span class="def">→ Port 443 · เข้ารหัส TLS/SSL</span></div>
+              <div class="cheat-item"><b>Stateless</b><span class="def">→ Server ไม่จำ request ก่อนหน้า</span></div>
+              <div class="cheat-item"><b>Persistent</b><span class="def">→ ใช้ TCP เดียวส่งหลาย request (HTTP/1.1)</span></div>
+              <div class="cheat-item"><b>Non-Persistent</b><span class="def">→ เปิด-ปิด TCP ใหม่ทุก request</span></div>
+              <div class="cheat-item"><b>GET</b><span class="def">→ ขอดึงข้อมูล (ข้อมูลไปกับ URL)</span></div>
+              <div class="cheat-item"><b>POST</b><span class="def">→ ส่งข้อมูลเพื่อสร้างสิ่งใหม่ (อยู่ใน Body)</span></div>
+              <div class="cheat-item"><b>PUT</b><span class="def">→ ส่งข้อมูลแทนที่/อัปเดตทั้งหมด</span></div>
+              <div class="cheat-item"><b>DNS</b><span class="def">→ แปลงชื่อโดเมนเป็น IP (สมุดโทรศัพท์)</span></div>
+              <div class="cheat-item"><b>DNS Cache</b><span class="def">→ เก็บคำตอบไว้ชั่วคราว ลด Delay</span></div>
+              <div class="cheat-item"><b>SMTP</b><span class="def">→ ส่งอีเมล (Port 25)</span></div>
+              <div class="cheat-item"><b>IMAP / POP3</b><span class="def">→ รับ/ดึงอีเมล (143 / 110)</span></div>
+              <div class="cheat-item"><b>FTP</b><span class="def">→ โอนไฟล์ (Port 20/21)</span></div>
+              <div class="cheat-item"><b>HTTP Status</b><span class="def">→ 200 OK · 404 ไม่เจอ · 500 Server พัง</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 13 · QUIZ ============ -->
+        <section class="slide-view quiz-slide" data-title="Quiz — แบบทดสอบบท 3" aria-label="สไลด์ 13: แบบทดสอบบท 3">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">QUIZ · APPLICATION LAYER</p>
+            <h2 class="slide-title">แบบทดสอบบทที่ 3 <span class="grad-text">12 ข้อ</span></h2>
+            <p class="slide-subtitle">ตรวจความเข้าใจเรื่อง Application Layer — ตอบแล้วเห็นคำอธิบายทันที</p>
+            <div id="quizC3"></div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 14 · FLASHCARDS ============ -->
+        <section class="slide-view" data-title="Flashcards — การ์ดทบทวน" aria-label="สไลด์ 14: การ์ดทบทวน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REVIEW · FLASHCARDS</p>
+            <h2 class="slide-title">การ์ดทบทวน — บทที่ 3</h2>
+            <p class="slide-subtitle">กดที่การ์ดเพื่อพลิกดูคำตอบ — ปุ่มสับการ์ดเพื่อเรียงใหม่</p>
+
+            <div class="split mt-6" style="grid-template-columns:1fr">
+              <div class="flashcard-wrap">
+                <div class="flashcard" id="flashcard3" role="button" tabindex="0" aria-label="การ์ดทบทวน กดเพื่อพลิก">
+                  <div class="flashcard-face flashcard-front">
+                    <span class="fc-eyebrow">QUESTION</span>
+                    <p class="fc-q" id="fcQ3">—</p>
+                    <span class="flashcard-hint">คลิกเพื่อพลิกการ์ด 🔄</span>
+                  </div>
+                  <div class="flashcard-face flashcard-back">
+                    <span class="fc-eyebrow" style="color:var(--success)">ANSWER</span>
+                    <p class="fc-a" id="fcA3">—</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-center gap-3 mt-5 wrap">
+                <button class="btn btn-ghost" id="fcPrev3">ก่อนหน้า <i data-lucide="chevron-left"></i></button>
+                <span class="chip" id="fcCounter3">1 / 12</span>
+                <button class="btn btn-ghost" id="fcNext3">ถัดไป <i data-lucide="chevron-right"></i></button>
+                <button class="btn btn-cyan" id="fcShuffle3">สับการ์ด <i data-lucide="shuffle"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 15 · GLOSSARY ============ -->
+        <section class="slide-view" data-title="Glossary — คำศัพท์" aria-label="สไลด์ 15: คำศัพท์">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REVIEW · GLOSSARY</p>
+            <h2 class="slide-title">คำศัพท์ — บทที่ 3</h2>
+            <p class="slide-subtitle">ค้นหาคำศัพท์ Application Layer พร้อมคำอธิบายสั้น ๆ</p>
+
+            <div class="search-box mt-5">
+              <i data-lucide="search"></i>
+              <input type="text" id="glossarySearch3" placeholder="ค้นหาคำศัพท์..." autocomplete="off" />
+            </div>
+            <p class="text-3 mt-3" id="glossaryCount3" style="font-size:13px">—</p>
+            <div class="glossary-list mt-2" id="glossaryList3"></div>
+          </div>
+        </section>
+
+        <!-- ============ CH3 · SLIDE 16 · POST-LESSON EXAM ============ -->
+        <section class="slide-view quiz-slide" data-title="ข้อสอบหลังเรียน — แบบทดสอบท้ายบท 20 ข้อ" aria-label="สไลด์ 16: ข้อสอบหลังเรียน 20 ข้อ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">POST-LESSON EXAM · 20 QUESTIONS</p>
+            <h2 class="slide-title">ข้อสอบหลังเรียน <span class="grad-text">20 ข้อ</span></h2>
+            <p class="slide-subtitle">สอบเก็บคะแนนท้ายบท — เรียนครบทุกสไลด์ก่อนถึงจะเข้าสอบได้ ตอบแล้วดูเฉลยทันที</p>
+            <div id="quizExam3"></div>
+          </div>
+        </section>
+
+      </div><!-- /viewport -->
+
+      <!-- ================= BOTTOM BAR ================= -->
+      <footer class="bottombar">
+        <button class="bb-nav-btn" id="prevBtn" aria-label="สไลด์ก่อนหน้า">
+          <i data-lucide="chevron-left"></i><span class="bb-label">ก่อนหน้า</span>
+        </button>
+
+        <div class="bb-center">
+          สไลด์ <b id="bbCounter">1</b> / <b id="bbTotal">16</b>
+        </div>
+
+        <div class="bb-tools">
+          <button class="icon-btn" id="fullscreenBtn" aria-label="ขยายสไลด์เต็มจอ" title="ขยายสไลด์">
+            <i data-lucide="maximize-2"></i>
+          </button>
+          <button class="icon-btn" id="printSlidesBtn" aria-label="พิมพ์สไลด์ทั้งหมด" title="พิมพ์สไลด์ทั้งหมด">
+            <i data-lucide="printer"></i>
+          </button>
+          <button class="icon-btn" id="printCardsBtn" aria-label="พิมพ์การ์ดสรุป" title="พิมพ์การ์ดสรุป">
+            <i data-lucide="file-output"></i>
+          </button>
+        </div>
+
+        <button class="bb-nav-btn next" id="nextBtn" aria-label="สไลด์ถัดไป">
+          <span class="bb-label">ถัดไป</span><i data-lucide="chevron-right"></i>
+        </button>
+      </footer>
+
+    </main>
+  </div><!-- /shell -->
+</div><!-- /app -->
+
+<!-- ================= DRAWER BACKDROP ================= -->
+<div id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- ================= NOTES PANEL ================= -->
+<aside class="notes-panel" id="notesPanel" aria-label="บันทึกย่อ">
+  <div class="flex items-center justify-between" style="padding:16px 20px;border-bottom:1px solid var(--border)">
+    <div>
+      <b style="font-size:15px">📝 บันทึกย่อ (Notes)</b>
+      <p class="text-3" style="font-size:12px" id="notesLabel">สไลด์ที่กำลังเรียน</p>
+    </div>
+    <button class="icon-btn" id="notesCloseBtn" aria-label="ปิดบันทึกย่อ"><i data-lucide="x"></i></button>
+  </div>
+  <textarea id="notesTextarea" placeholder="เขียนสิ่งที่ต้องจำจากสไลด์นี้...&#10;เช่น:&#10;- HTTP = 80, HTTPS = 443&#10;- DNS = สมุดโทรศัพท์&#10;- POST ส่งข้อมูลใน Body" aria-label="บันทึกย่อ"></textarea>
+  <div class="text-3" style="padding:10px 20px 14px;font-size:12px;border-top:1px solid var(--border)">
+    💾 บันทึกอัตโนมัติลงในเครื่องของคุณ (localStorage)
+  </div>
+</aside>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ================= COMPLETION OVERLAY ================= -->
+<div id="completionOverlay" role="dialog" aria-modal="true" aria-label="จบบทเรียน">
+  <div class="card center" style="max-width:440px;position:relative;padding:40px 32px;z-index:1">
+    <div style="font-size:56px" class="float-y">🎉</div>
+    <h2 class="slide-title mt-4" style="font-size:28px">Chapter Complete!</h2>
+    <p class="text-2 mt-2" id="completionMsg">คุณเรียนครบทุกสไลด์แล้ว — ยอดเยี่ยมมาก! <b class="grad-text">Keep Learning!</b></p>
+    <div class="grid-3 mt-5" style="grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneSlides">16</b><p class="text-3" style="font-size:12px">สไลด์</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneScore">–</b><p class="text-3" style="font-size:12px">คะแนน Quiz</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px">100%</b><p class="text-3" style="font-size:12px">ความคืบหน้า</p></div>
+    </div>
+    <div class="flex items-center gap-3 mt-6 wrap" style="justify-content:center">
+      <button class="btn btn-ghost" id="completionCloseBtn">ปิด 🎊</button>
+      <button class="btn btn-primary" id="completionRestartBtn"><i data-lucide="rotate-ccw"></i> เรียนใหม่อีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PRINT AREA ================= -->
+<div id="printArea" aria-hidden="true"></div>
+
+<!-- App scripts -->
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

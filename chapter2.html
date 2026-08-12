@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive Digital Textbook — Fundamentals of Computer Network / พื้นฐานการสื่อสารข้อมูลและเครือข่าย" />
+  <title>CN · บทที่ 2 — Network Models</title>
+
+  <!-- App styles — โหลดก่อนเสมอ (สำคัญต่อการแสดงผล) -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS (Play CDN) — defer: ไม่บล็อกการโหลดหน้าและ app.js -->
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide icons — defer: ไม่บล็อกการโหลดหน้าและ app.js -->
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body data-page="chapter" data-chapter="2">
+
+
+  <!-- ================= TOP HEADER ================= -->
+  <header id="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="เปิดเมนูบทเรียน" title="เมนู">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <div class="brand">
+      <div class="cn-logo" aria-hidden="true">CN</div>
+      <div class="brand-titles">
+        <h1>เครือข่ายคอมพิวเตอร์และอินเทอร์เน็ต</h1>
+        <p id="headerChapterLabel">พื้นฐานการสื่อสารข้อมูลและเครือข่าย · บทที่ 1</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn" id="homeBtn" aria-label="กลับไปเมนูหลัก" title="เมนูหลัก">
+        <i data-lucide="home"></i>
+      </button>
+      <button class="icon-btn" id="notesBtn" aria-label="เปิดบันทึกย่อ" title="บันทึกย่อ (Notes)">
+        <i data-lucide="notebook-pen"></i>
+      </button>
+
+      <div class="header-progress" aria-label="ความคืบหน้า">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="headerProgressBar">
+          <div class="progress-fill" id="headerProgressFill"></div>
+        </div>
+        <span class="progress-count" id="headerProgressCount">1 / 25</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SHELL ================= -->
+  <div class="shell">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside id="sidebar" aria-label="เมนูบทเรียน">
+      <div class="sidebar-head">
+        <div class="sidebar-head-title">
+          <h2 id="sidebarChapterTitle">เมนูบทที่ 1</h2>
+          <p id="sidebarChapterSub">หัวข้อในสัปดาห์นี้ · 26 หัวข้อ</p>
+        </div>
+        <button class="icon-btn sidebar-close" id="sidebarCloseBtn" aria-label="ปิดเมนูบทเรียน" title="ปิดเมนู">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-info">
+        <i data-lucide="info"></i>
+        <span>คลิกหัวข้อหรือสไลด์เพื่อข้ามไปได้เลย<br />เรียนทีละสไลด์เพื่อเก็บเนื้อหาให้ครบ</span>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav" aria-label="สารบัญสไลด์"></nav>
+      <div class="sidebar-foot">
+        <div class="sf-top"><span>ความคืบหน้า</span><b id="sidebarPct">0%</b></div>
+        <div class="progress-track"><div class="progress-fill" id="sidebarProgressFill"></div></div>
+        <p class="mt-2 text-3" style="font-size:12px" id="sidebarDone">ยังไม่ได้เรียนสไลด์ใดเลย — เริ่มที่ Cover ได้เลย!</p>
+      </div>
+    </aside>
+
+    <!-- ================= STAGE ================= -->
+    <main class="stage">
+
+      <div class="slide-viewport" id="viewport">
+        <!-- ============ CH2 · SLIDE 1 · COVER ============ -->
+        <section class="slide-view" data-title="Cover — บทที่ 2: Network Models" aria-label="สไลด์ 1: เปิดบทเรียน">
+          <div class="slide-inner">
+            <div class="center" style="padding:26px 0 6px">
+              <div class="cn-logo small" style="margin:0 auto 18px">CN</div>
+              <p class="menu-kicker" style="margin:0">CHAPTER 2 · NETWORK MODELS</p>
+              <h2 class="slide-title" style="font-size:38px">Network Models <span class="grad-text">— โมเดลเครือข่าย</span></h2>
+              <p class="slide-subtitle" style="max-width:560px;margin:10px auto 0">เข้าใจโครงสร้างที่ซ่อนอยู่เบื้องหลังการสื่อสาร — จาก Physical ถึง Logical, โมเดล OSI/TCP/IP, การห่อ-แกะข้อมูล และ Protocol กับ Service</p>
+
+              <div class="stack-vis mt-6">
+                <div class="sv-row"><span class="sv-name">Application</span><span class="sv-pdu">Data</span></div>
+                <div class="sv-row"><span class="sv-name">Transport</span><span class="sv-pdu">Segment</span></div>
+                <div class="sv-row"><span class="sv-name">Network</span><span class="sv-pdu">Packet</span></div>
+                <div class="sv-row"><span class="sv-name">Data Link</span><span class="sv-pdu">Frame</span></div>
+                <div class="sv-row"><span class="sv-name">Physical</span><span class="sv-pdu">Bits</span></div>
+              </div>
+
+              <div class="flex items-center gap-3 wrap mt-5" style="justify-content:center">
+                <span class="chip">15 สไลด์</span><span class="chip">10 Quiz</span><span class="chip">12 Flashcards</span><span class="chip">24 คำศัพท์</span>
+              </div>
+              <div class="mt-6">
+                <button class="btn btn-primary btn-lg" id="startBtn2">เริ่มเรียนบทนี้ <i data-lucide="arrow-right"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 2 · PHYSICAL VS LOGICAL ============ -->
+        <section class="slide-view" data-title="Physical vs Logical Communication" aria-label="สไลด์ 2: Physical vs Logical">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">NETWORK MODELS</p>
+            <h2 class="slide-title">Physical vs Logical Communication</h2>
+            <p class="slide-subtitle">การสื่อสารมี 2 มุมมอง — มุมมองทางกายภาพ (เส้นจริง) กับมุมมองเชิงตรรกะ (เส้นทางที่ข้อมูลเดินทาง)</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card" style="padding:22px">
+                <h3 class="card-title"><i data-lucide="cable" class="cyan"></i> Physical — ทางกายภาพ</h3>
+                <p class="card-text">เส้นทางที่สัญญาณไหลผ่านจริง เช่น สายทองแดง ใยแก้ว คลื่นวิทยุ เป็นการเชื่อมต่อของอุปกรณ์ในแต่ละช่วง (hop)</p>
+                <div class="phys-path mt-4">
+                  <span>💻</span><i data-lucide="arrow-right"></i><span>📡</span><i data-lucide="arrow-right"></i><span>📡</span><i data-lucide="arrow-right"></i><span>🖥️</span>
+                </div>
+                <p class="text-3 mt-3" style="font-size:12.5px">💡 ดูที่สายไฟและอุปกรณ์ที่ข้อมูลไหลผ่านจริง</p>
+              </div>
+              <div class="card" style="padding:22px">
+                <h3 class="card-title"><i data-lucide="git-branch" class="cyan"></i> Logical — เชิงตรรกะ</h3>
+                <p class="card-text">เส้นทางเชิงตรรกะที่ข้อมูลเดินทางจากต้นทางถึงปลายทาง ข้ามหลายเครือข่าย เหมือนเส้นทางที่ GPS วางแผนไว้ — ไม่ใช่สายจริงเส้นเดียว</p>
+                <div class="logi-path mt-4">
+                  <span>A</span><span class="lp-line"></span><span>B</span><span class="lp-line"></span><span>C</span><span class="lp-line"></span><span>D</span>
+                </div>
+                <p class="text-3 mt-3" style="font-size:12.5px">💡 ดูที่ต้นทาง → ปลายทาง โดยไม่สนใจสายระหว่างทาง</p>
+              </div>
+            </div>
+
+            <div class="tip-box tip-remember mt-4">
+              <i data-lucide="lightbulb"></i>
+              <div><b>จำแบบนี้</b><span>Physical = ถนนจริงที่รถวิ่ง · Logical = เส้นทางที่ GPS วางแผนให้รถไปถึงจุดหมาย</span></div>
+            </div>
+            <div class="tip-box tip-exam mt-3">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Exam Tip</b><span>ข้อสอบชอบถาม "ข้อใดคือ Physical Communication" — ให้มองหาคำตอบที่เกี่ยวกับสายไฟ/คลื่นสัญญาณ ส่วน Logical จะเกี่ยวกับเส้นทางและ IP</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 3 · NETWORK EDGE ============ -->
+        <section class="slide-view" data-title="Network Edge" aria-label="สไลด์ 3: Network Edge">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">NETWORK MODELS</p>
+            <h2 class="slide-title">Network Edge — ขอบเครือข่าย</h2>
+            <p class="slide-subtitle">อุปกรณ์ที่เราใช้กันอยู่ทุกวันอยู่ที่ "ขอบ" ของเครือข่าย — เรียก End Systems หรือ Hosts</p>
+
+            <div class="visual-box mt-6">
+              <span class="vb-label">EDGE → ACCESS → CORE</span>
+              <div class="edge-map mt-3">
+                <div class="em-group">
+                  <b class="em-title cyan">EDGE · ขอบเครือข่าย</b>
+                  <div class="em-devices">
+                    <div class="em-device">💻<span>PC</span></div>
+                    <div class="em-device">📱<span>Phone</span></div>
+                    <div class="em-device">💼<span>Laptop</span></div>
+                    <div class="em-device">🖥️<span>Server</span></div>
+                  </div>
+                </div>
+                <i data-lucide="arrow-right" class="em-arrow"></i>
+                <div class="em-group">
+                  <b class="em-title">ACCESS · เข้าเครือข่าย</b>
+                  <div class="em-access">📡<span>Router / Wi-Fi</span></div>
+                </div>
+                <i data-lucide="arrow-right" class="em-arrow"></i>
+                <div class="em-group">
+                  <b class="em-title">CORE · แกนกลาง</b>
+                  <div class="em-core">☁️<span>ISP / Internet</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-3 mt-6">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="monitor" class="cyan"></i>End Systems / Hosts</h3>
+                <p class="card-text small">อุปกรณ์ปลายทางที่ผู้ใช้ใช้โดยตรง — คอมพิวเตอร์ มือถือ แท็บเล็ต หรือเซิร์ฟเวอร์ อยู่ที่ขอบเครือข่าย (Edge)</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="server" class="cyan"></i>Clients &amp; Servers</h3>
+                <p class="card-text small">Client = ผู้ร้องขอบริการ (เช่น เบราว์เซอร์) · Server = ผู้ให้บริการ (เช่น เว็บเซิร์ฟเวอร์) — ทั้งคู่เป็น End System</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="wifi" class="cyan"></i>Access Networks</h3>
+                <p class="card-text small">เครือข่ายที่เชื่อม End Systems เข้าสู่แกนกลาง เช่น Wi-Fi ที่บ้าน, Fiber/ADSL, โมบาย 4G/5G</p>
+              </div>
+            </div>
+
+            <div class="tip-box tip-exam mt-4">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Exam Tip</b><span>ถ้าข้อสอบถาม "ข้อใดคือ End System" — ตอบคอมพิวเตอร์/มือถือ/เซิร์ฟเวอร์ (อุปกรณ์ที่อยู่ขอบ) ไม่ใช่ Router หรือ Switch (อยู่กลางเครือข่าย)</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 4 · PROTOCOL STACK / OSI ============ -->
+        <section class="slide-view" data-title="Internet Protocol Stack / OSI Model" aria-label="สไลด์ 4: Protocol Stack / OSI">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REFERENCE MODELS</p>
+            <h2 class="slide-title">Internet Protocol Stack และ <span class="grad-text">OSI Model</span></h2>
+            <p class="slide-subtitle">สองโมเดลที่ช่วยให้เราเข้าใจการสื่อสารเป็นชั้น ๆ — OSI มี 7 ชั้น (มาตรฐานอ้างอิง) ส่วน TCP/IP แบบเรียนมี 5 ชั้น (ใช้งานจริง)</p>
+
+            <div class="grid-2 mt-6" style="gap:20px">
+              <div>
+                <span class="vb-label" style="display:block;text-align:center;margin-bottom:10px">INTERNET PROTOCOL STACK · 5 ชั้น</span>
+                <div class="layer-stack">
+                  <div class="ls-layer" style="background:linear-gradient(90deg,rgba(37,99,235,.5),rgba(37,99,235,.2))"><b>Application</b><span>HTTP · DNS · SMTP</span></div>
+                  <div class="ls-layer" style="background:linear-gradient(90deg,rgba(34,211,238,.5),rgba(34,211,238,.18))"><b>Transport</b><span>TCP · UDP</span></div>
+                  <div class="ls-layer" style="background:linear-gradient(90deg,rgba(129,140,248,.5),rgba(129,140,248,.18))"><b>Network</b><span>IP</span></div>
+                  <div class="ls-layer" style="background:linear-gradient(90deg,rgba(167,139,250,.5),rgba(167,139,250,.18))"><b>Data Link</b><span>Ethernet · Wi-Fi</span></div>
+                  <div class="ls-layer" style="background:linear-gradient(90deg,rgba(34,197,94,.45),rgba(34,197,94,.15))"><b>Physical</b><span>สาย · คลื่น · ไฟเบอร์</span></div>
+                </div>
+              </div>
+              <div>
+                <span class="vb-label" style="display:block;text-align:center;margin-bottom:10px">OSI MODEL · 7 ชั้น</span>
+                <div class="layer-stack osi">
+                  <div class="ls-layer" style="background:rgba(37,99,235,.22)"><b>7 Application</b><span>บริการกับผู้ใช้</span></div>
+                  <div class="ls-layer" style="background:rgba(56,189,248,.2)"><b>6 Presentation</b><span>รูปแบบข้อมูล/เข้ารหัส</span></div>
+                  <div class="ls-layer" style="background:rgba(34,211,238,.2)"><b>5 Session</b><span>จัดการการสนทนา</span></div>
+                  <div class="ls-layer" style="background:rgba(129,140,248,.2)"><b>4 Transport</b><span>Segment · TCP/UDP</span></div>
+                  <div class="ls-layer" style="background:rgba(167,139,250,.2)"><b>3 Network</b><span>Packet · IP</span></div>
+                  <div class="ls-layer" style="background:rgba(244,114,182,.2)"><b>2 Data Link</b><span>Frame · MAC</span></div>
+                  <div class="ls-layer" style="background:rgba(34,197,94,.2)"><b>1 Physical</b><span>Bits</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mt-6">
+              <h3 class="card-title"><i data-lucide="scale" class="cyan"></i>OSI vs TCP/IP — ต่างกันยังไง?</h3>
+              <p class="card-text">OSI เป็น <b>โมเดลอ้างอิง (Reference Model)</b> ที่ออกแบบโดย ISO แบ่งละเอียด 7 ชั้น เพื่อใช้อธิบายแนวคิด ส่วน <b>TCP/IP</b> เป็นชุดโปรโตคอลที่ Internet ใช้จริง — รวมชั้น Session, Presentation เข้าไว้ใน Application จึงเหลือ 5 ชั้น (หรือบางตำราแบ่ง 4 ชั้น)</p>
+            </div>
+            <div class="tip-box tip-remember mt-4">
+              <i data-lucide="lightbulb"></i>
+              <div><b>จำแบบนี้</b><span>OSI = 7 ชั้น อธิบายสวย ๆ (ทฤษฎี) · TCP/IP = 5 ชั้น ใช้จริงบน Internet (ปฏิบัติ)</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 5 · FUNCTIONS OF EACH LAYER ============ -->
+        <section class="slide-view" data-title="หน้าที่ของแต่ละ Layer" aria-label="สไลด์ 5: หน้าที่แต่ละชั้น">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REFERENCE MODELS</p>
+            <h2 class="slide-title">หน้าที่ของแต่ละ Layer</h2>
+            <p class="slide-subtitle">แต่ละชั้นมีหน้าที่ชัดเจน ไม่ก้าวก่ายกัน — กดที่ชั้นเพื่อดูรายละเอียด</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">LAYER STACK · กดชั้นเพื่อดู</span>
+                <div class="c2-layers mt-3" id="c2LayerTabs" role="tablist" aria-label="ชั้นของโมเดล"></div>
+              </div>
+              <div class="flex" style="flex-direction:column;gap:14px">
+                <div class="card">
+                  <h3 class="card-title" id="c2LayerName"><i data-lucide="info" class="cyan"></i>—</h3>
+                  <p class="card-text" id="c2LayerPdu" style="margin-bottom:6px">—</p>
+                  <p class="card-text" id="c2LayerDuty">—</p>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="map-pin" class="cyan"></i>ระบุตัวตนด้วย</h3>
+                  <p class="card-text" id="c2LayerAddr">—</p>
+                </div>
+                <div class="tip-box tip-remember">
+                  <i data-lucide="lightbulb"></i>
+                  <div><b>เปรียบเทียบ</b><span id="c2LayerAnalog">—</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 6 · PDU ============ -->
+        <section class="slide-view" data-title="PDU — Protocol Data Unit" aria-label="สไลด์ 6: PDU">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">DATA IN TRANSIT</p>
+            <h2 class="slide-title">PDU — Protocol Data Unit</h2>
+            <p class="slide-subtitle">ข้อมูลที่วิ่งผ่านแต่ละชั้นจะถูกเรียกชื่อต่างกันตามชั้นที่ดูแล — PDU = ข้อมูล + Header ของชั้นนั้น</p>
+
+            <div class="visual-box mt-6">
+              <span class="vb-label">PDU CHAIN · ชื่อข้อมูลเปลี่ยนไปทุกชั้น</span>
+              <div class="pdu-chain mt-4">
+                <div class="pdu-node"><b>Application</b><span>Data</span></div>
+                <i data-lucide="arrow-down" class="pj-arrow"></i>
+                <div class="pdu-node"><b>Transport</b><span>Segment</span></div>
+                <i data-lucide="arrow-down" class="pj-arrow"></i>
+                <div class="pdu-node"><b>Network</b><span>Packet</span></div>
+                <i data-lucide="arrow-down" class="pj-arrow"></i>
+                <div class="pdu-node"><b>Data Link</b><span>Frame</span></div>
+                <i data-lucide="arrow-down" class="pj-arrow"></i>
+                <div class="pdu-node"><b>Physical</b><span>Bits</span></div>
+              </div>
+            </div>
+
+            <div class="grid-2 mt-6">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="box" class="cyan"></i>PDU คืออะไร?</h3>
+                <p class="card-text small">Protocol Data Unit — ชุดข้อมูลที่แต่ละชั้นจัดการ ซึ่งรวม Header ของชั้นนั้นกับข้อมูล (Payload) ที่ส่งต่อลงมา ยิ่งลงล่าง ยิ่งถูกห่อเพิ่ม</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="list-ordered" class="cyan"></i>จำลำดับยังไง?</h3>
+                <p class="card-text small">จำจากบนลงล่าง: <b>Data → Segment → Packet → Frame → Bits</b> และย้อนกลับตอนรับข้อมูล (Bits → ... → Data)</p>
+              </div>
+            </div>
+            <div class="tip-box tip-exam mt-4">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Exam Tip</b><span>ข้อสอบชอบให้จับคู่ PDU กับ Layer: Segment=Transport · Packet=Network · Frame=Data Link · Bit=Physical — จำคู่เหล่านี้ให้แม่น</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 7 · ENCAPSULATION ============ -->
+        <section class="slide-view" data-title="Encapsulation / De-encapsulation" aria-label="สไลด์ 7: ห่อ-แกะข้อมูล">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">DATA IN TRANSIT</p>
+            <h2 class="slide-title">Encapsulation / De-encapsulation</h2>
+            <p class="slide-subtitle">ตอนส่ง ข้อมูลถูก "ห่อ" เพิ่ม Header ทีละชั้น (Encapsulation) ตอนรับ ข้อมูลถูก "แกะ" Header ออกทีละชั้น (De-encapsulation)</p>
+
+            <div class="split mt-6">
+              <div class="visual-box">
+                <span class="vb-label">LIVE ANIMATION · ส่ง ↓ ห่อทีละชั้น / รับ ↑ แกะทีละชั้น</span>
+                <div class="encap" id="encap">
+                  <div class="encap-row" data-row="app"><span class="encap-layer">Application</span><div class="encap-box"><span class="encap-chip core">DATA</span></div></div>
+                  <div class="encap-row" data-row="trans"><span class="encap-layer">Transport</span><div class="encap-box"><span class="encap-chip h h4">H4</span><span class="encap-chip core">DATA</span></div></div>
+                  <div class="encap-row" data-row="net"><span class="encap-layer">Network</span><div class="encap-box"><span class="encap-chip h h3">H3</span><span class="encap-chip h h4">H4</span><span class="encap-chip core">DATA</span></div></div>
+                  <div class="encap-row" data-row="link"><span class="encap-layer">Data Link</span><div class="encap-box"><span class="encap-chip h h2">H2</span><span class="encap-chip h h3">H3</span><span class="encap-chip h h4">H4</span><span class="encap-chip core">DATA</span></div></div>
+                  <div class="encap-row" data-row="phys"><span class="encap-layer">Physical</span><div class="encap-box"><span class="encap-chip h h1">H1</span><span class="encap-chip h h2">H2</span><span class="encap-chip h h3">H3</span><span class="encap-chip h h4">H4</span><span class="encap-chip core">DATA</span></div></div>
+                </div>
+                <div class="center mt-4">
+                  <button class="btn btn-primary" id="encapSendBtn"><i data-lucide="arrow-down"></i> ส่งข้อมูล (ห่อ)</button>
+                  <button class="btn btn-cyan" id="encapRecvBtn" style="margin-left:8px"><i data-lucide="arrow-up"></i> รับข้อมูล (แกะ)</button>
+                  <span class="status-pill" id="encapStatus" style="margin-left:10px">พร้อมส่ง</span>
+                </div>
+              </div>
+              <div class="flex" style="flex-direction:column;gap:14px">
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="package-plus" class="cyan"></i>Encapsulation (ห่อ)</h3>
+                  <p class="card-text small">ตอนส่ง: แต่ละชั้นเพิ่ม Header ของตัวเองต่อหน้าข้อมูล จากบนลงล่าง — ข้อมูลยิ่งลงล่างยิ่งใหญ่ขึ้น</p>
+                </div>
+                <div class="card">
+                  <h3 class="card-title"><i data-lucide="package-open" class="cyan"></i>De-encapsulation (แกะ)</h3>
+                  <p class="card-text small">ตอนรับ: แต่ละชั้นถอด Header ของตัวเองออก จากล่างขึ้นบน — จนเหลือ Data บริสุทธิ์ส่งขึ้นไปถึงแอป</p>
+                </div>
+                <div class="tip-box tip-remember">
+                  <i data-lucide="lightbulb"></i>
+                  <div><b>จำแบบนี้</b><span>ห่อตอนส่ง (ลง) · แกะตอนรับ (ขึ้น) — เหมือนซองจดหมายที่ถูกซ้อนหลายชั้น</span></div>
+                </div>
+                <div class="tip-box tip-exam">
+                  <i data-lucide="graduation-cap"></i>
+                  <div><b>Exam Tip</b><span>ข้อสอบมักถาม "ลำดับ Encapsulation" — ตอบจากบนลงล่าง (Application → Physical) และ De-encap ย้อนกลับ</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 8 · HEADER ============ -->
+        <section class="slide-view" data-title="Header — ส่วนหัวของข้อมูล" aria-label="สไลด์ 8: Header">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">DATA IN TRANSIT</p>
+            <h2 class="slide-title">Header — ส่วนหัวของข้อมูล</h2>
+            <p class="slide-subtitle">ทุกครั้งที่ห่อข้อมูล จะมีการใส่ Header ที่บอก "ข้อมูลสำคัญสำหรับการส่ง" — เนื้อหาจริงเรียกว่า Payload</p>
+
+            <div class="visual-box mt-6">
+              <span class="vb-label">FRAME STRUCTURE · คลิกแต่ละส่วนเพื่อดู</span>
+              <div class="frame-vis mt-4">
+                <button class="fv-field fv-ip" data-field="ip"><b>IP Header</b><span>Network Layer</span></button>
+                <button class="fv-field fv-tcp" data-field="tcp"><b>TCP Header</b><span>Transport Layer</span></button>
+                <div class="fv-payload" data-field="payload"><b>Payload</b><span>ข้อมูลจริง (Data)</span></div>
+                <button class="fv-field fv-mac" data-field="mac"><b>MAC</b><span>Data Link</span></button>
+              </div>
+              <p class="center text-3 mt-3" id="headerFieldDesc" style="font-size:13px">— กดที่ส่วนของเฟรมเพื่อดูรายละเอียด —</p>
+            </div>
+
+            <div class="grid-2 mt-6">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="tag" class="cyan"></i>Header เก็บอะไรบ้าง?</h3>
+                <p class="card-text small">ที่อยู่ต้นทาง-ปลายทาง (IP/MAC), หมายเลขพอร์ต, หมายเลขลำดับ (Sequence), Checksum ตรวจความถูกต้อง และอื่น ๆ ตามแต่ละโปรโตคอล</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="file-text" class="cyan"></i>Payload คืออะไร?</h3>
+                <p class="card-text small">เนื้อหาข้อมูลจริงที่ต้องการส่ง (เช่น ไฟล์, ข้อความ) — ส่วน Header เป็นเพียง "ป้ายกำกับ" ที่ช่วยให้ส่งถึงที่ถูกต้อง</p>
+              </div>
+            </div>
+            <div class="tip-box tip-remember mt-4">
+              <i data-lucide="lightbulb"></i>
+              <div><b>จำแบบนี้</b><span>Header = ซองจดหมาย (ที่อยู่) · Payload = ตัวจดหมาย (เนื้อหา)</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 9 · PROTOCOL VS SERVICE ============ -->
+        <section class="slide-view" data-title="Protocol vs Service" aria-label="สไลด์ 9: Protocol vs Service">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">PROTOCOL &amp; SERVICE</p>
+            <h2 class="slide-title">Protocol vs Service</h2>
+            <p class="slide-subtitle">Protocol คือ "กฎ" ส่วน Service คือ "ผลลัพธ์ที่ได้รับ" — สองอย่างนี้ไปด้วยกันเสมอ</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card" style="padding:22px">
+                <h3 class="card-title"><i data-lucide="book-open-check" class="cyan"></i>Protocol — กฎ</h3>
+                <p class="card-text">ชุดกฎที่ว่าข้อมูลจะถูกส่งอย่างไร เช่น TCP (ส่งครบ เชื่อถือได้), IP (มีที่อยู่), HTTP (รูปแบบเว็บ) — เปรียบเหมือน "มารยาทและภาษา"</p>
+                <div class="flex wrap gap-2 mt-4">
+                  <span class="chip">TCP</span><span class="chip">UDP</span><span class="chip">IP</span><span class="chip">HTTP</span><span class="chip">DNS</span>
+                </div>
+              </div>
+              <div class="card" style="padding:22px">
+                <h3 class="card-title"><i data-lucide="handshake" class="cyan"></i>Service — บริการที่ได้รับ</h3>
+                <p class="card-text">สิ่งที่ชั้นบนได้รับจากชั้นล่าง เช่น "ส่งข้อมูลให้ครบถ้วน" (จาก TCP), "มีที่อยู่และเส้นทาง" (จาก IP), "เปิดเว็บได้" (จาก HTTP)</p>
+                <div class="flex wrap gap-2 mt-4">
+                  <span class="chip">ส่งครบถ้วน</span><span class="chip">มีที่อยู่</span><span class="chip">เปิดเว็บได้</span><span class="chip">แปลงชื่อโดเมน</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mt-4">
+              <h3 class="card-title"><i data-lucide="phone" class="cyan"></i>อุปมาอุปไมย: การโทรศัพท์</h3>
+              <p class="card-text">Protocol = ภาษาที่เราใช้คุยและมารยาท (พูดทีละคน รอฟังอีกฝ่าย) · Service = ผลลัพธ์ที่เราได้รับ คือ "ได้สนทนากัน" — กฎทำให้บริการเกิดขึ้นได้</p>
+            </div>
+            <div class="tip-box tip-exam mt-4">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Exam Tip</b><span>ข้อสอบอาจถาม "TCP ให้บริการอะไร" — ตอบว่าบริการส่งข้อมูลแบบเชื่อถือได้ (Reliable Delivery) เพราะ TCP เป็น Protocol ที่ให้ Service นี้</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 10 · SUMMARY ============ -->
+        <section class="slide-view" data-title="Chapter Summary — สรุปบทเรียน" aria-label="สไลด์ 10: สรุปบทเรียน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">CHAPTER SUMMARY</p>
+            <h2 class="slide-title">สิ่งที่เราเรียนรู้ในบทนี้</h2>
+            <p class="slide-subtitle">Network Models — โมเดลที่ทำให้เห็นภาพการสื่อสารเป็นระบบ</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card"><h3 class="card-title"><i data-lucide="cable" class="cyan"></i>Physical vs Logical</h3><p class="card-text small">Physical = เส้นทางจริง (สาย/คลื่น) · Logical = เส้นทางเชิงตรรกะจากต้นทางถึงปลายทาง</p></div>
+              <div class="card"><h3 class="card-title"><i data-lucide="monitor" class="cyan"></i>Network Edge</h3><p class="card-text small">End Systems (PC, มือถือ, Server) อยู่ที่ขอบเครือข่าย เชื่อมเข้าสู่ Core ผ่าน Access Network</p></div>
+              <div class="card"><h3 class="card-title"><i data-lucide="layers" class="cyan"></i>OSI กับ TCP/IP</h3><p class="card-text small">OSI = 7 ชั้น (อ้างอิง) · TCP/IP = 5 ชั้น (ใช้งานจริง)</p></div>
+              <div class="card"><h3 class="card-title"><i data-lucide="list-tree" class="cyan"></i>หน้าที่ของ Layer</h3><p class="card-text small">แต่ละชั้นมีหน้าที่ชัดเจน: แอป, ขนส่ง, เส้นทาง, เชื่อมโยง, สัญญาณ</p></div>
+              <div class="card"><h3 class="card-title"><i data-lucide="box" class="cyan"></i>PDU</h3><p class="card-text small">Data → Segment → Packet → Frame → Bits เปลี่ยนชื่อทุกชั้น</p></div>
+              <div class="card"><h3 class="card-title"><i data-lucide="package-plus" class="cyan"></i>ห่อ-แกะข้อมูล</h3><p class="card-text small">Encapsulation ห่อเพิ่ม Header ตอนส่ง · De-encapsulation แกะออกตอนรับ</p></div>
+              <div class="card"><h3 class="card-title"><i data-lucide="tag" class="cyan"></i>Header</h3><p class="card-text small">ส่วนหัวบอกที่อยู่/พอร์ต/ลำดับ/Checksum — ส่วนเนื้อหาคือ Payload</p></div>
+              <div class="card"><h3 class="card-title"><i data-lucide="handshake" class="cyan"></i>Protocol vs Service</h3><p class="card-text small">Protocol = กฎการสื่อสาร · Service = บริการที่ชั้นบนได้รับ</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 11 · CHEAT SHEET ============ -->
+        <section class="slide-view" data-title="Exam Cheat Sheet — สูตรจำก่อนสอบ" aria-label="สไลด์ 11: สูตรจำก่อนสอบ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">EXAM CHEAT SHEET</p>
+            <h2 class="slide-title">สูตรจำก่อนสอบ — บทที่ 2</h2>
+            <p class="slide-subtitle">รวบรวมจุดที่ข้อสอบชอบถาม ฉบับย่อ เหมือนโน้ตสรุป</p>
+
+            <div class="cheat-grid mt-6">
+              <div class="cheat-item"><b>OSI Model</b><span class="def">→ 7 ชั้น (Reference Model)</span></div>
+              <div class="cheat-item"><b>TCP/IP Stack</b><span class="def">→ 5 ชั้น (ใช้จริง)</span></div>
+              <div class="cheat-item"><b>Network Edge</b><span class="def">→ End Systems / Hosts</span></div>
+              <div class="cheat-item"><b>PDU</b><span class="def">→ ข้อมูล + Header ของแต่ละชั้น</span></div>
+              <div class="cheat-item"><b>Segment</b><span class="def">→ Transport</span></div>
+              <div class="cheat-item"><b>Packet</b><span class="def">→ Network</span></div>
+              <div class="cheat-item"><b>Frame</b><span class="def">→ Data Link</span></div>
+              <div class="cheat-item"><b>Bits</b><span class="def">→ Physical</span></div>
+              <div class="cheat-item"><b>Encapsulation</b><span class="def">→ ห่อเพิ่ม Header ตอนส่ง</span></div>
+              <div class="cheat-item"><b>De-encapsulation</b><span class="def">→ แกะ Header ตอนรับ</span></div>
+              <div class="cheat-item"><b>Header</b><span class="def">→ ที่อยู่ พอร์ต ลำดับ Checksum</span></div>
+              <div class="cheat-item"><b>Payload</b><span class="def">→ เนื้อหาข้อมูลจริง</span></div>
+              <div class="cheat-item"><b>Physical Comm.</b><span class="def">→ สายไฟ / คลื่นจริง</span></div>
+              <div class="cheat-item"><b>Logical Comm.</b><span class="def">→ เส้นทางเชิงตรรกะ</span></div>
+              <div class="cheat-item"><b>Protocol</b><span class="def">→ กฎการสื่อสาร (TCP, IP, HTTP)</span></div>
+              <div class="cheat-item"><b>Service</b><span class="def">→ บริการที่ชั้นบนได้รับ</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 12 · QUIZ ============ -->
+        <section class="slide-view quiz-slide" data-title="Quiz — แบบทดสอบบท 2" aria-label="สไลด์ 12: แบบทดสอบบท 2">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">QUIZ · NETWORK MODELS</p>
+            <h2 class="slide-title">แบบทดสอบบทที่ 2 <span class="grad-text">10 ข้อ</span></h2>
+            <p class="slide-subtitle">ตรวจความเข้าใจเรื่อง Network Models — ตอบแล้วเห็นคำอธิบายทันที</p>
+            <div id="quizC2"></div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 13 · FLASHCARDS ============ -->
+        <section class="slide-view" data-title="Flashcards — การ์ดทบทวน" aria-label="สไลด์ 13: การ์ดทบทวน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REVIEW · FLASHCARDS</p>
+            <h2 class="slide-title">การ์ดทบทวน — บทที่ 2</h2>
+            <p class="slide-subtitle">กดที่การ์ดเพื่อพลิกดูคำตอบ — ปุ่มสับการ์ดเพื่อเรียงใหม่</p>
+
+            <div class="split mt-6" style="grid-template-columns:1fr">
+              <div class="flashcard-wrap">
+                <div class="flashcard" id="flashcard2" role="button" tabindex="0" aria-label="การ์ดทบทวน กดเพื่อพลิก">
+                  <div class="flashcard-face flashcard-front">
+                    <span class="fc-eyebrow">QUESTION</span>
+                    <p class="fc-q" id="fcQ2">—</p>
+                    <span class="flashcard-hint">คลิกเพื่อพลิกการ์ด 🔄</span>
+                  </div>
+                  <div class="flashcard-face flashcard-back">
+                    <span class="fc-eyebrow">ANSWER</span>
+                    <p class="fc-a" id="fcA2">—</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 mt-5 wrap" style="justify-content:center">
+              <button class="btn btn-ghost" id="fcPrev2"><i data-lucide="chevron-left"></i> ก่อนหน้า</button>
+              <span class="chip" id="fcCounter2">1 / 12</span>
+              <button class="btn btn-ghost" id="fcNext2">ถัดไป <i data-lucide="chevron-right"></i></button>
+              <button class="btn btn-cyan" id="fcShuffle2">สับการ์ด <i data-lucide="shuffle"></i></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 14 · GLOSSARY ============ -->
+        <section class="slide-view" data-title="Glossary — คำศัพท์" aria-label="สไลด์ 14: คำศัพท์">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REVIEW · GLOSSARY</p>
+            <h2 class="slide-title">คำศัพท์ — บทที่ 2</h2>
+            <p class="slide-subtitle">ค้นหาคำศัพท์ Network Models พร้อมคำอธิบายสั้น ๆ</p>
+
+            <div class="search-box mt-5">
+              <i data-lucide="search"></i>
+              <input type="text" id="glossarySearch2" placeholder="ค้นหาคำศัพท์..." autocomplete="off" />
+            </div>
+            <p class="text-3 mt-3" id="glossaryCount2" style="font-size:13px">—</p>
+            <div class="glossary-list mt-2" id="glossaryList2"></div>
+          </div>
+        </section>
+
+        <!-- ============ CH2 · SLIDE 15 · POST-LESSON EXAM ============ -->
+        <section class="slide-view quiz-slide" data-title="ข้อสอบหลังเรียน — แบบทดสอบท้ายบท 20 ข้อ" aria-label="สไลด์ 15: ข้อสอบหลังเรียน 20 ข้อ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">POST-LESSON EXAM · 20 QUESTIONS</p>
+            <h2 class="slide-title">ข้อสอบหลังเรียน <span class="grad-text">20 ข้อ</span></h2>
+            <p class="slide-subtitle">สอบเก็บคะแนนท้ายบท — เรียนครบทุกสไลด์ก่อนถึงจะเข้าสอบได้ ตอบแล้วดูเฉลยทันที</p>
+            <div id="quizExam2"></div>
+          </div>
+        </section>
+
+      </div><!-- /viewport -->
+      <!-- ================= BOTTOM BAR ================= -->
+      <footer class="bottombar">
+        <button class="bb-nav-btn" id="prevBtn" aria-label="สไลด์ก่อนหน้า">
+          <i data-lucide="chevron-left"></i><span class="bb-label">ก่อนหน้า</span>
+        </button>
+
+        <div class="bb-center">
+          สไลด์ <b id="bbCounter">1</b> / <b id="bbTotal">15</b>
+        </div>
+
+        <div class="bb-tools">
+          <button class="icon-btn" id="fullscreenBtn" aria-label="ขยายสไลด์เต็มจอ" title="ขยายสไลด์">
+            <i data-lucide="maximize-2"></i>
+          </button>
+          <button class="icon-btn" id="printSlidesBtn" aria-label="พิมพ์สไลด์ทั้งหมด" title="พิมพ์สไลด์ทั้งหมด">
+            <i data-lucide="printer"></i>
+          </button>
+          <button class="icon-btn" id="printCardsBtn" aria-label="พิมพ์การ์ดสรุป" title="พิมพ์การ์ดสรุป">
+            <i data-lucide="file-output"></i>
+          </button>
+        </div>
+
+        <button class="bb-nav-btn next" id="nextBtn" aria-label="สไลด์ถัดไป">
+          <span class="bb-label">ถัดไป</span><i data-lucide="chevron-right"></i>
+        </button>
+      </footer>
+
+    </main>
+  </div><!-- /shell -->
+</div><!-- /app -->
+
+<!-- ================= DRAWER BACKDROP ================= -->
+<div id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- ================= NOTES PANEL ================= -->
+<aside class="notes-panel" id="notesPanel" aria-label="บันทึกย่อ">
+  <div class="flex items-center justify-between" style="padding:16px 20px;border-bottom:1px solid var(--border)">
+    <div>
+      <b style="font-size:15px">📝 บันทึกย่อ (Notes)</b>
+      <p class="text-3" style="font-size:12px" id="notesLabel">สไลด์ที่กำลังเรียน</p>
+    </div>
+    <button class="icon-btn" id="notesCloseBtn" aria-label="ปิดบันทึกย่อ"><i data-lucide="x"></i></button>
+  </div>
+  <textarea id="notesTextarea" placeholder="เขียนสิ่งที่ต้องจำจากสไลด์นี้...&#10;เช่น:&#10;- Simplex = ทางเดียว&#10;- Star ใช้ศูนย์กลาง&#10;- Mesh มีเส้นทางสำรอง" aria-label="บันทึกย่อ"></textarea>
+  <div class="text-3" style="padding:10px 20px 14px;font-size:12px;border-top:1px solid var(--border)">
+    💾 บันทึกอัตโนมัติลงในเครื่องของคุณ (localStorage)
+  </div>
+</aside>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ================= COMPLETION OVERLAY ================= -->
+<div id="completionOverlay" role="dialog" aria-modal="true" aria-label="จบบทเรียน">
+  <div class="card center" style="max-width:440px;position:relative;padding:40px 32px;z-index:1">
+    <div style="font-size:56px" class="float-y">🎉</div>
+    <h2 class="slide-title mt-4" style="font-size:28px">Chapter Complete!</h2>
+    <p class="text-2 mt-2" id="completionMsg">คุณเรียนครบทุกสไลด์แล้ว — ยอดเยี่ยมมาก! <b class="grad-text">Keep Learning!</b></p>
+    <div class="grid-3 mt-5" style="grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneSlides">15</b><p class="text-3" style="font-size:12px">สไลด์</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneScore">–</b><p class="text-3" style="font-size:12px">คะแนน Quiz</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px">100%</b><p class="text-3" style="font-size:12px">ความคืบหน้า</p></div>
+    </div>
+    <div class="flex items-center gap-3 mt-6 wrap" style="justify-content:center">
+      <button class="btn btn-ghost" id="completionCloseBtn">ปิด 🎊</button>
+      <button class="btn btn-primary" id="completionRestartBtn"><i data-lucide="rotate-ccw"></i> เรียนใหม่อีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PRINT AREA ================= -->
+<div id="printArea" aria-hidden="true"></div>
+
+<!-- App scripts -->
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

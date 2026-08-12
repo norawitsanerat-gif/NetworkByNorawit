@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive Digital Textbook — Fundamentals of Computer Network / พื้นฐานการสื่อสารข้อมูลและเครือข่าย" />
+  <title>CN · Interactive Digital Textbook — เมนูหลัก</title>
+
+  <!-- App styles — โหลดก่อนเสมอ (สำคัญต่อการแสดงผล) -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS (Play CDN) — defer: ไม่บล็อกการโหลดหน้าและ app.js -->
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide icons — defer: ไม่บล็อกการโหลดหน้าและ app.js -->
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body data-page="menu">
+
+<!-- ================= CHAPTER MENU (เมนูหลัก) ================= -->
+<div id="chapterMenu" aria-label="เมนูหลัก — เลือกบทเรียน">
+  <!-- พื้นหลังเคลื่อนไหว -->
+  <div class="menu-bg" aria-hidden="true">
+    <div class="menu-bg-grid"></div>
+    <div class="menu-orb orb-1"></div>
+    <div class="menu-orb orb-2"></div>
+    <div class="menu-orb orb-3"></div>
+    <div class="menu-bg-ring"></div>
+  </div>
+
+  <div class="menu-inner">
+    <!-- Hero -->
+    <header class="menu-hero">
+      <div class="menu-logo-wrap">
+        <div class="cn-logo menu-logo">CN</div>
+        <div class="menu-logo-ping" aria-hidden="true"></div>
+      </div>
+      <p class="menu-kicker">INTERACTIVE DIGITAL TEXTBOOK · COMPUTER NETWORK AND INTERNET</p>
+      <h1 class="menu-title">เรียน <span class="grad-text">เครือข่ายคอมพิวเตอร์</span><br class="hide-sm" />ตั้งแต่ศูนย์จนรู้พื้นฐาน</h1>
+      <div class="menu-hero-stats">
+        <div class="stat"><b>04</b><span>บทเรียน</span></div>
+        <div class="stat"><b>80</b><span>สไลด์ทั้งหมด</span></div>
+        <div class="stat"><b>04</b><span>ข้อสอบ 20 ข้อ</span></div>
+        <div class="stat"><b>100%</b><span>เรียนฟรี</span></div>
+      </div>
+
+      <button class="btn btn-primary btn-lg" id="menuCtaBtn">เริ่มเรียนเลย <i data-lucide="arrow-down"></i></button>
+    </header>
+
+    <!-- บทเรียน -->
+    <div class="chapter-grid" id="chapterGrid" role="list" aria-label="บทเรียน">
+      <button class="chapter-card unlocked" data-chapter="1" role="listitem">
+        <span class="ch-top"><span class="ch-num">1</span><span class="ch-icon"><i data-lucide="network"></i></span></span>
+        <div class="ch-body">
+          <span class="ch-en">Fundamentals of Computer Network</span>
+          <b class="ch-title">พื้นฐานการสื่อสารข้อมูลและเครือข่าย</b>
+          <p class="ch-desc">องค์ประกอบ 5 อย่าง · การไหลของข้อมูล · Transmission Mode · โทโพโลยี · PAN/LAN/MAN/WAN · สื่อนำสัญญาณ · Protocol &amp; RFC · ประวัติ Internet</p>
+          <div class="ch-meta">
+            <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="1">26</b> สไลด์</span>
+            <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+          </div>
+          <div class="ch-progress">
+            <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+            <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch1Pct">0%</b></span>
+          </div>
+        </div>
+        <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+      </button>
+
+      <button class="chapter-card unlocked" data-chapter="2" role="listitem">
+        <span class="ch-top"><span class="ch-num">2</span><span class="ch-icon"><i data-lucide="layers"></i></span></span>
+        <div class="ch-body">
+          <span class="ch-en">Network Models</span>
+          <b class="ch-title">โมเดลเครือข่าย</b>
+          <p class="ch-desc">Physical vs Logical · Network Edge · โมเดล OSI / TCP/IP · หน้าที่แต่ละ Layer · PDU · Encapsulation · Header · Protocol vs Service</p>
+          <div class="ch-meta">
+            <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="2">15</b> สไลด์</span>
+            <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+          </div>
+          <div class="ch-progress">
+            <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+            <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch2Pct">0%</b></span>
+          </div>
+        </div>
+        <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+      </button>
+
+      <button class="chapter-card unlocked" data-chapter="3" role="listitem">
+        <span class="ch-top"><span class="ch-num">3</span><span class="ch-icon"><i data-lucide="globe"></i></span></span>
+        <div class="ch-body">
+          <span class="ch-en">Application Layer</span>
+          <b class="ch-title">ชั้นโปรแกรมประยุกต์</b>
+          <p class="ch-desc">Client-Server / P2P · Process/Socket/Port · HTTP/HTTPS 80-443 · Stateless · HTTP Methods · DNS &amp; Cache · SMTP/Email · Port มาตรฐาน</p>
+          <div class="ch-meta">
+            <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="3">16</b> สไลด์</span>
+            <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+          </div>
+          <div class="ch-progress">
+            <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+            <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch3Pct">0%</b></span>
+          </div>
+        </div>
+        <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+      </button>
+
+      <button class="chapter-card unlocked" data-chapter="4" role="listitem">
+        <span class="ch-top"><span class="ch-num">4</span><span class="ch-icon"><i data-lucide="cpu"></i></span></span>
+        <div class="ch-body">
+          <span class="ch-en">Transport Layer</span>
+          <b class="ch-title">ชั้นขนส่งข้อมูล</b>
+          <p class="ch-desc">Mux/Demux &amp; 4-tuple · TCP vs UDP · UDP Header/Checksum · Three-Way Handshake · Seq/Ack · Flow &amp; Congestion Control · AIMD · Internet Checksum</p>
+          <div class="ch-meta">
+            <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="4">23</b> สไลด์</span>
+            <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+          </div>
+          <div class="ch-progress">
+            <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+            <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch4Pct">0%</b></span>
+          </div>
+        </div>
+        <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <footer class="menu-foot">
+      <div class="menu-foot-badge"><i data-lucide="sparkles"></i> Chapters 01–04 · ONLINE</div>
+      <span>Designed &amp; Developed by นายนรวิชญ์ แสงรัตน์</span>
+    </footer>
+  </div>
+</div>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- App scripts -->
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
