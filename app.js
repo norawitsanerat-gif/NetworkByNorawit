@@ -91,14 +91,18 @@
      CHAPTER MENU (เมนูหลัก — เลือกบทเรียน)
      ========================================================================== */
   function renderMenuProgress() {
+    var doneTotal = 0, slideTotal = 0, doneChapters = 0;
     [1, 2, 3, 4].forEach(function (n) {
       var el = $("ch" + n + "Pct");
-      if (!el) return;
       var comp = LS.get("cn_completed_" + n, null);
       if (n === 1 && comp === null) comp = LS.get("cn_completed", []);
       var count = CHS[n].count;
-      var pct = (comp && comp.length) ? Math.min(100, Math.round((comp.length / count) * 100)) : 0;
-      el.textContent = pct + "%";
+      var compArr = (comp && comp.length) ? comp : [];
+      var pct = compArr.length ? Math.min(100, Math.round((compArr.length / count) * 100)) : 0;
+      doneTotal += compArr.length;
+      slideTotal += count;
+      if (pct === 100 && compArr.length) doneChapters++;
+      if (el) el.textContent = pct + "%";
       var card = document.querySelector('[data-chapter="' + n + '"]');
       if (card) {
         card.style.setProperty("--pct", pct + "%");
@@ -106,6 +110,13 @@
         if (s) s.textContent = count;
       }
     });
+    var coursePct = slideTotal ? Math.round((doneTotal / slideTotal) * 100) : 0;
+    var op = $("coursePct");
+    if (op) op.textContent = coursePct + "%";
+    var ob = $("courseBar");
+    if (ob) ob.style.setProperty("--pct", coursePct + "%");
+    var od = $("courseDone");
+    if (od) od.textContent = "เรียนแล้ว " + doneTotal + " / " + slideTotal + " สไลด์ · จบแล้ว " + doneChapters + " / 4 บท";
   }
   /* กลับไปเมนูหลัก (index.html) — ใช้จากปุ่ม 🏠 ในหน้าเรียน */
   function goHome() {
