@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="description" content="ข้อสอบรวม 80 ข้อ จาก 4 บท — ทดสอบความรู้พื้นฐานเครือข่ายคอมพิวเตอร์ก่อนเรียน" />
-  <title>CN · ข้อสอบรวม 80 ข้อ — ทดสอบความรู้ก่อนเรียน</title>
+  <title>CN · คลังข้อสอบ 160 ข้อ — ทดสอบความรู้ก่อนเรียน</title>
 
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -235,8 +235,8 @@
 <header class="test-top">
   <div class="cn-logo">CN</div>
   <div class="test-top-title">
-    <b>ข้อสอบรวม 80 ข้อ</b>
-    <span>Computer Network and Internet · ทดสอบความรู้ก่อนเรียน</span>
+    <b>คลังข้อสอบ 160 ข้อ</b>
+    <span>Computer Network and Internet · สุ่ม 80 ข้อต่อครั้ง</span>
   </div>
   <div class="spacer"></div>
   <span class="chip hide-xs" id="topChapterChip" style="display:none"></span>
@@ -248,16 +248,16 @@
   <!-- ================= INTRO ================= -->
   <section id="viewIntro" class="test-intro fade-up">
     <div class="cn-logo">CN</div>
-    <p class="menu-kicker">PRE-TEST · ข้อสอบรวมทั้งหลักสูตร</p>
-    <h1>ข้อสอบรวม <span class="grad-text">80 ข้อ</span><br />จากทั้ง 4 บทเรียน</h1>
+    <p class="menu-kicker">PRE-TEST · คลังข้อสอบทั้งหลักสูตร</p>
+    <h1>คลังข้อสอบ <span class="grad-text">160 ข้อ</span><br />สุ่ม 80 ข้อ ต่อการสอบ 1 ครั้ง</h1>
     <p class="lead">
-      อยากรู้ว่าตอนนี้ความรู้เครือข่ายคอมพิวเตอร์อยู่ระดับไหน? มาลองทำข้อสอบรวมก่อนเรียนได้เลย —
-      คำถามถูกสุ่มคละจากทุกบท ครอบคลุมตั้งแต่พื้นฐานการสื่อสารข้อมูลไปจนถึง Transport Layer
-      ลำดับข้อและตัวเลือกจะถูกสับใหม่ทุกครั้งที่เริ่มสอบ
+      อยากรู้ว่าตอนนี้ความรู้เครือข่ายคอมพิวเตอร์อยู่ระดับไหน? มาลองทำข้อสอบก่อนเรียนได้เลย —
+      มีคลังข้อสอบ 160 ข้อ (ระดับกลาง-ยาก) ครอบคลุม 4 บท ในแต่ละครั้งระบบจะสุ่มมา 80 ข้อ
+      ลำดับข้อและตัวเลือกถูกสับใหม่ทุกครั้ง — กลับมาทำอีกรอบก็ได้ชุดคำถามใหม่ ไม่จำเจ
     </p>
     <div class="test-chips" id="introChips"></div>
     <div class="rules">
-      <div class="rule"><b><i data-lucide="shuffle"></i> คละทุกบท</b><p>80 ข้อสุ่มปนกันหมด ครอบคลุม 47 หัวข้อจาก 4 บท — ไม่เรียงตามบทเรียน</p></div>
+      <div class="rule"><b><i data-lucide="shuffle"></i> สุ่มจากคลัง 160 ข้อ</b><p>แต่ละครั้งได้ 80 ข้อจากคลัง 160 ข้อ คละทุกบท ระดับกลาง-ยาก — ครอบคลุม 47 หัวข้อ</p></div>
       <div class="rule"><b><i data-lucide="skip-forward"></i> ข้ามข้อได้</b><p>ข้อไหนนึกไม่ออกกด "ข้ามข้อ" ไปทำข้ออื่นก่อน — ย้อนกลับมาทำทีหลังได้จนกว่าจะส่ง</p></div>
       <div class="rule"><b><i data-lucide="trophy"></i> สรุประดับ</b><p>ส่งข้อสอบแล้วได้คะแนน + ระดับความรู้ พร้อมทบทวนเฉลยทีละข้อแยกรายบท</p></div>
     </div>
@@ -386,6 +386,9 @@
     push(window.DATA.ch2 && window.DATA.ch2.exam, 2);
     push(window.DATA.ch3 && window.DATA.ch3.exam, 3);
     push(window.DATA.ch4 && window.DATA.ch4.exam, 4);
+    (window.DATA.extraExam || []).forEach(function (q) {
+      out.push({ q: q.q, options: q.options.slice(), correct: q.correct, explain: q.explain, ch: q.ch });
+    });
     return out;
   }
 
@@ -397,8 +400,9 @@
     return a;
   }
 
-  var RAW = collect();
-  var items = [], answers = [], cur = 0, total = RAW.length, bestKey = "cn_test_best";
+  var POOL = collect();
+  var EXAM_LEN = 80; // สุ่ม 80 ข้อ ต่อการสอบ 1 ครั้ง
+  var items = [], answers = [], cur = 0, total = EXAM_LEN, bestKey = "cn_test_best";
 
   function show(id) {
     ["viewIntro", "viewQuiz", "viewResult"].forEach(function (v) { $(v).style.display = v === id ? "" : "none"; });
@@ -439,9 +443,10 @@
   }
 
   function start() {
-    items = shuffle(RAW.slice());
+    items = shuffle(POOL.slice()).slice(0, EXAM_LEN);
     answers = new Array(items.length).fill(null);
     cur = 0;
+    total = items.length;
     show("viewQuiz");
     renderQuestion();
   }
