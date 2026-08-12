@@ -475,6 +475,8 @@
     });
 
     var canPrev = cur > 0, canNext = cur < total - 1;
+    $("prevBtn").disabled = !canPrev;
+    $("nextBtn").disabled = !canNext;
     $("qNav").innerHTML =
       '<button class="btn btn-ghost" id="qPrev" ' + (canPrev ? "" : "disabled") + "><i data-lucide=\"chevron-left\"></i> ก่อนหน้า</button>" +
       '<button class="btn btn-ghost" id="qSkip" style="border-color:rgba(245,158,11,.45);color:#fbbf24;background:rgba(245,158,11,.08)"><i data-lucide="skip-forward"></i> ข้ามข้อ (ไปข้อที่ยังไม่ตอบ)</button>' +
@@ -669,6 +671,8 @@
   $("startBtn").addEventListener("click", start);
   $("retryBtn").addEventListener("click", start);
   $("backBtn").addEventListener("click", function () { window.location.href = "index.html"; });
+  $("prevBtn").addEventListener("click", function () { if (cur > 0) { cur--; renderQuestion(); } });
+  $("nextBtn").addEventListener("click", function () { if (cur < total - 1) { cur++; renderQuestion(); } });
   $("paletteToggle").addEventListener("click", togglePalette);
   $("skipBtn").addEventListener("click", skip);
   $("submitBtn").addEventListener("click", trySubmit);
