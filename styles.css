@@ -82,6 +82,49 @@ body {
 }
 
 img, svg, video, canvas { max-width: 100%; display: block; }
+.visual-box > svg { width: 100%; height: auto; max-width: 640px; margin-left: auto; margin-right: auto; }
+
+/* MUX/DEMUX mobile vertical version (chapter4 slide 3) */
+.mux-mobile { display: none; }
+.mux-chip {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--card-2);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.mux-core {
+  padding: 10px 22px;
+  border-radius: 12px;
+  background: #141f33;
+  border: 1px solid var(--border);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #e2e8f0;
+  text-align: center;
+}
+.mux-mobile .mux-arrow { margin: 2px 0; }
+.mux-mobile { flex-direction: column; align-items: center; gap: 8px; padding: 18px 4px 4px; }
+
+/* MUX/DEMUX mobile animations — chips fly in one-by-one, arrows bob, cores glow */
+@keyframes muxChipIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.9); }
+  to   { opacity: 1; transform: none; }
+}
+.slide-view.active .mux-mobile .mux-chip {
+  animation: muxChipIn 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+}
+.slide-view.active .mux-mobile .mux-chip:nth-child(1) { animation-delay: 0.1s; }
+.slide-view.active .mux-mobile .mux-chip:nth-child(2) { animation-delay: 0.18s; }
+.slide-view.active .mux-mobile .mux-chip:nth-child(3) { animation-delay: 0.26s; }
+@keyframes muxGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(56, 189, 248, 0); }
+  50% { box-shadow: 0 0 16px rgba(56, 189, 248, 0.25); }
+}
+.mux-mobile .mux-core { animation: muxGlow 2.8s ease-in-out infinite; }
+.mux-mobile .mux-arrow { animation: arrowBob 1.6s ease-in-out infinite; }
 button { font-family: inherit; cursor: pointer; }
 input, textarea, select { font-family: inherit; }
 h1, h2, h3, h4, p { margin: 0; }
@@ -713,6 +756,47 @@ html[data-theme="light"] .bottombar { background: rgba(255, 255, 255, 0.94); }
 .float-y { animation: floatY 4s ease-in-out infinite; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ==========================================================================
+   Staggered content entrance — elements rise in one-by-one when a slide
+   becomes active. Uses `backwards` fill so hover transforms still work
+   after the entrance finishes.
+   ========================================================================== */
+@keyframes slideContentIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+.slide-view.active .slide-inner > * {
+  animation: slideContentIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+}
+.slide-view.active .slide-inner > *:nth-child(2) { animation-delay: 0.04s; }
+.slide-view.active .slide-inner > *:nth-child(3) { animation-delay: 0.08s; }
+.slide-view.active .slide-inner > *:nth-child(4) { animation-delay: 0.12s; }
+.slide-view.active .slide-inner > *:nth-child(5) { animation-delay: 0.16s; }
+.slide-view.active .slide-inner > *:nth-child(n+6) { animation-delay: 0.2s; }
+
+/* Cheat-sheet items stagger too */
+.slide-view.active .cheat-grid > * { animation: slideContentIn 0.32s cubic-bezier(0.22, 0.61, 0.36, 1) backwards; }
+.slide-view.active .cheat-grid > *:nth-child(n+2) { animation-delay: 0.05s; }
+.slide-view.active .cheat-grid > *:nth-child(n+3) { animation-delay: 0.1s; }
+.slide-view.active .cheat-grid > *:nth-child(n+4) { animation-delay: 0.15s; }
+.slide-view.active .cheat-grid > *:nth-child(n+5) { animation-delay: 0.2s; }
+.slide-view.active .cheat-grid > *:nth-child(n+6) { animation-delay: 0.25s; }
+.slide-view.active .cheat-grid > *:nth-child(n+7) { animation-delay: 0.3s; }
+.slide-view.active .cheat-grid > *:nth-child(n+8) { animation-delay: 0.35s; }
+.slide-view.active .cheat-grid > *:nth-child(n+9) { animation-delay: 0.4s; }
+.slide-view.active .cheat-grid > *:nth-child(n+10) { animation-delay: 0.45s; }
+
+/* JS-rendered port cards stagger in too */
+.slide-view.active #portsGrid .card { animation: slideContentIn 0.32s cubic-bezier(0.22, 0.61, 0.36, 1) backwards; }
+.slide-view.active #portsGrid .card:nth-child(n+2) { animation-delay: 0.05s; }
+.slide-view.active #portsGrid .card:nth-child(n+3) { animation-delay: 0.1s; }
+.slide-view.active #portsGrid .card:nth-child(n+4) { animation-delay: 0.15s; }
+
+/* Gentle idle bobbing for card-title & tip icons (lucide replaces <i> with <svg>) */
+@keyframes iconBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+.card-title svg[data-lucide], .tip-box svg[data-lucide] { animation: iconBob 3.4s ease-in-out infinite; }
+.tip-box svg[data-lucide] { animation-duration: 2.8s; }
 
 /* Moving packet dot (CSS offset-path fallback for simple cases) */
 .packet-dot {
@@ -1823,6 +1907,8 @@ body[data-page="menu"] #app { display: none; }
 }
 
 @media (max-width: 640px) {
+  .mux-desktop { display: none; }
+  .mux-mobile { display: flex; }
   .chapter-grid { grid-template-columns: 1fr; margin-top: 32px; }
   .menu-title { font-size: 28px; }
   .menu-logo-wrap { width: 64px; height: 64px; }
