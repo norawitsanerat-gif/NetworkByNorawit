@@ -930,6 +930,9 @@
   var items = [], answers = [], cur = 0, total = 80;
   var setIdx = 0; // ชุดที่เลือก/กำลังทำ (0=A, 1=B, 2=C, 3=D)
   var flags = [], deadline = 0, timerInterval = null, warned1min = false;
+  // snapshot ข้อมูลข้อสอบ/คำตอบหลังสอบเสร็จ — ไว้ให้ renderReview() ใช้ตอนกดกรอง
+  // (เพราะ items/answers/flags ถูกเคลียร์หลัง finish() เพื่อกัน session ผี)
+  var revItems = [], revAnswers = [], revFlags = [], revTotal = 0;
   var mode = "exam"; // ค่า default = โหมดสอบจริง (ไม่เฉลย) ทุกครั้งที่เปิดหน้า
 
   function getBests() {
@@ -1376,6 +1379,8 @@
     renderReview("all");
     window.scrollTo({ top: 0, behavior: "smooth" });
 
+    // เก็บ snapshot ไว้ให้ review กรองซ้ำได้ หลัง finish() กัน session ผีจะเคลียร์ items/answers
+    revItems = items.slice(); revAnswers = answers.slice(); revFlags = flags.slice(); revTotal = total;
     // เคลียร์ state ในหน่วยความจำท้ายสุด — หลังใช้ items/answers/flags คำนวณผลครบแล้ว
     // (ถ้าเคลียร์ก่อน จะทำให้คะแนน/สรุปรายบท/รีวิวเป็น 0 เสมอ)
     // เพื่อไม่ให้ beforeunload → saveSession() บันทึก session กลับมาหลังสอบเสร็จ
@@ -1428,12 +1433,16 @@
     $("reviewFilters").querySelectorAll(".rf").forEach(function (b) {
       b.classList.toggle("on", b.dataset.f === reviewFilter);
     });
+    // ใช้ snapshot หลังสอบเสร็จ (ถ้ามี) — ไม่งั้น items/answers ถูกเคลียร์แล้วจะกรองไม่ได้
+    var list = revItems.length ? revItems : items;
+    var ans = revItems.length ? revAnswers : answers;
+    var fl = revItems.length ? revFlags : flags;
     var rows = "";
-    items.forEach(function (q, i) {
-      var a = answers[i];
+    list.forEach(function (q, i) {
+      var a = ans[i];
       var ok = a !== null && a === q.correct;
       var state = a === null ? "un" : (ok ? "good" : "bad");
-      var isFlag = flags.indexOf(i) >= 0;
+      var isFlag = fl.indexOf(i) >= 0;
       if (reviewFilter === "flag") { if (!isFlag) return; }
       else if (reviewFilter !== "all" && reviewFilter !== state) return;
       var badge = (a === null ? "⚠️" : (ok ? "✅" : "❌")) + (isFlag ? " 🔖" : "");
