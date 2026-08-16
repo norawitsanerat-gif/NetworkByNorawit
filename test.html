@@ -1288,13 +1288,15 @@
       });
     });
     $("paletteCount").textContent = answeredCount() + " / " + total + (flags.length ? " · หมายไว้ " + flags.length : "");
-    var dot = '<span style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;">';
+    function dot(css) {
+      return '<span style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;' + css + '"></span>';
+    }
     $("paletteLegend").innerHTML = (mode === "practice"
-      ? '<span class="chip" style="font-size:11px">' + dot + 'background:rgba(34,197,94,.5);"></span>ตอบถูก</span> ' +
-        '<span class="chip" style="font-size:11px">' + dot + 'background:rgba(239,68,68,.5);"></span>ตอบผิด</span> '
-      : '<span class="chip" style="font-size:11px">' + dot + 'background:rgba(56,189,248,.4);"></span>ตอบแล้ว</span> ') +
-      '<span class="chip" style="font-size:11px">' + dot + 'background:linear-gradient(135deg,#2563eb,#22d3ee);"></span>ข้อปัจจุบัน</span> ' +
-      '<span class="chip" style="font-size:11px">' + dot + 'border:1px solid rgba(245,158,11,.6);background:rgba(245,158,11,.12);"></span>หมายไว้ทบทวน</span>';
+      ? '<span class="chip" style="font-size:11px">' + dot('background:rgba(34,197,94,.5);') + 'ตอบถูก</span> ' +
+        '<span class="chip" style="font-size:11px">' + dot('background:rgba(239,68,68,.5);') + 'ตอบผิด</span> '
+      : '<span class="chip" style="font-size:11px">' + dot('background:rgba(56,189,248,.4);') + 'ตอบแล้ว</span> ') +
+      '<span class="chip" style="font-size:11px">' + dot('background:linear-gradient(135deg,#2563eb,#22d3ee);') + 'ข้อปัจจุบัน</span> ' +
+      '<span class="chip" style="font-size:11px">' + dot('border:1px solid rgba(245,158,11,.6);background:rgba(245,158,11,.12);') + 'หมายไว้ทบทวน</span>';
   }
   function closePalette() { $("palettePanel").classList.remove("open"); $("paletteToggle").querySelector("svg").setAttribute("data-lucide", "layout-grid"); icons(); }
   function togglePalette() { $("palettePanel").classList.toggle("open"); }
@@ -1490,7 +1492,10 @@
   $("flagBtn").addEventListener("click", toggleFlag);
   $("resumeBtn").addEventListener("click", resume);
   $("discardBtn").addEventListener("click", function () {
+    // ล้างทั้ง localStorage และ state ในหน่วยความจำ — ไม่งั้น beforeunload → saveSession() จะบันทึกกลับมาใหม่
+    stopTimer();
     clearSession();
+    items = []; answers = []; flags = []; cur = 0; deadline = 0; total = 80;
     $("resumeBox").hidden = true;
     toast("ล้างความคืบหน้าเดิมแล้ว — กดเริ่มทำข้อสอบเพื่อเริ่มใหม่");
   });
