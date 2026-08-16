@@ -534,7 +534,8 @@
       '<circle class="net-node" cx="145" cy="175" r="16"/><text x="145" y="210" text-anchor="middle" class="net-label">B</text>' +
       '<circle class="net-node" cx="215" cy="175" r="16"/><text x="215" y="210" text-anchor="middle" class="net-label">C</text>' +
       '<circle class="net-node" cx="285" cy="175" r="16"/><text x="285" y="210" text-anchor="middle" class="net-label">D</text>' +
-      '<text x="170" y="78" text-anchor="middle" class="net-label">BACKBONE</text></svg>',
+      '<text x="170" y="78" text-anchor="middle" class="net-label">BACKBONE</text>' +
+      '<circle class="topo-packet" r="6"><animateMotion dur="4s" repeatCount="indefinite" path="M30,90 L310,90 L30,90"/></circle></svg>',
     star: '<svg viewBox="0 0 340 220" role="img" aria-label="โทโพโลยีแบบดาว">' +
       '<line x1="170" y1="110" x2="60" y2="40" stroke="#38bdf8" stroke-width="2"/><line x1="170" y1="110" x2="280" y2="40" stroke="#38bdf8" stroke-width="2"/>' +
       '<line x1="170" y1="110" x2="60" y2="180" stroke="#38bdf8" stroke-width="2"/><line x1="170" y1="110" x2="280" y2="180" stroke="#38bdf8" stroke-width="2"/>' +
@@ -544,7 +545,8 @@
       '<circle class="net-node" cx="280" cy="40" r="15"/><text x="280" y="16" text-anchor="middle" class="net-label">B</text>' +
       '<circle class="net-node" cx="60" cy="180" r="15"/><text x="60" y="214" text-anchor="middle" class="net-label">C</text>' +
       '<circle class="net-node" cx="280" cy="180" r="15"/><text x="280" y="214" text-anchor="middle" class="net-label">D</text>' +
-      '<circle class="net-node" cx="170" cy="195" r="15"/><text x="170" y="229" text-anchor="middle" class="net-label">E</text></svg>',
+      '<circle class="net-node" cx="170" cy="195" r="15"/><text x="170" y="229" text-anchor="middle" class="net-label">E</text>' +
+      '<circle class="topo-packet" r="6"><animateMotion dur="9s" repeatCount="indefinite" path="M170,110 L60,40 L170,110 L280,40 L170,110 L60,180 L170,110 L280,180 L170,110 L170,195 L170,110"/></circle></svg>',
     ring: '<svg viewBox="0 0 340 220" role="img" aria-label="โทโพโลยีแบบริง">' +
       '<ellipse cx="170" cy="110" rx="115" ry="65" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="7 5"/>' +
       '<line x1="55" y1="110" x2="95" y2="65" stroke="#38bdf8" stroke-width="1.5"/><line x1="245" y1="65" x2="285" y2="110" stroke="#38bdf8" stroke-width="1.5"/>' +
@@ -555,7 +557,8 @@
       '<circle class="net-node" cx="245" cy="65" r="14"/><text x="245" y="41" text-anchor="middle" class="net-label">C</text>' +
       '<circle class="net-node" cx="285" cy="110" r="14"/><text x="285" y="86" text-anchor="middle" class="net-label">D</text>' +
       '<circle class="net-node" cx="245" cy="155" r="14"/><text x="245" y="179" text-anchor="middle" class="net-label">E</text>' +
-      '<circle class="net-node" cx="95" cy="155" r="14"/><text x="95" y="179" text-anchor="middle" class="net-label">F</text></svg>',
+      '<circle class="net-node" cx="95" cy="155" r="14"/><text x="95" y="179" text-anchor="middle" class="net-label">F</text>' +
+      '<circle class="topo-packet" r="6"><animateMotion dur="5s" repeatCount="indefinite" path="M55,110 A115,65 0 1,1 285,110 A115,65 0 1,1 55,110"/></circle></svg>',
     mesh: '<svg viewBox="0 0 340 220" role="img" aria-label="โทโพโลยีแบบเมช">' +
       '<line x1="60" y1="60" x2="270" y2="50" stroke="#38bdf8" stroke-width="1.8"/><line x1="60" y1="60" x2="60" y2="180" stroke="#38bdf8" stroke-width="1.8"/>' +
       '<line x1="60" y1="60" x2="165" y2="115" stroke="#38bdf8" stroke-width="1.8"/><line x1="270" y1="50" x2="60" y2="180" stroke="#38bdf8" stroke-width="1.8"/>' +
@@ -566,7 +569,8 @@
       '<circle class="net-node" cx="270" cy="50" r="15"/><text x="270" y="26" text-anchor="middle" class="net-label">B</text>' +
       '<circle class="net-node" cx="60" cy="180" r="15"/><text x="60" y="214" text-anchor="middle" class="net-label">C</text>' +
       '<circle class="net-node" cx="270" cy="180" r="15"/><text x="270" y="214" text-anchor="middle" class="net-label">D</text>' +
-      '<circle class="net-node" cx="165" cy="115" r="15"/><text x="165" y="91" text-anchor="middle" class="net-label">E</text></svg>',
+      '<circle class="net-node" cx="165" cy="115" r="15"/><text x="165" y="91" text-anchor="middle" class="net-label">E</text>' +
+      '<circle class="topo-packet" r="6"><animateMotion dur="7s" repeatCount="indefinite" path="M60,60 L270,50 L165,115 L60,180 L270,180 L165,115 L60,60"/></circle></svg>',
     tree: '<svg viewBox="0 0 340 220" role="img" aria-label="โทโพโลยีแบบทรี">' +
       '<line x1="170" y1="60" x2="100" y2="120" stroke="#38bdf8" stroke-width="2.5"/><line x1="170" y1="60" x2="240" y2="120" stroke="#38bdf8" stroke-width="2.5"/>' +
       '<line x1="100" y1="120" x2="50" y2="180" stroke="#38bdf8" stroke-width="2"/><line x1="100" y1="120" x2="150" y2="180" stroke="#38bdf8" stroke-width="2"/>' +
@@ -577,7 +581,31 @@
       '<circle class="net-node" cx="50" cy="180" r="13"/><text x="50" y="212" text-anchor="middle" class="net-label">A</text>' +
       '<circle class="net-node" cx="150" cy="180" r="13"/><text x="150" y="212" text-anchor="middle" class="net-label">B</text>' +
       '<circle class="net-node" cx="190" cy="180" r="13"/><text x="190" y="212" text-anchor="middle" class="net-label">C</text>' +
-      '<circle class="net-node" cx="290" cy="180" r="13"/><text x="290" y="212" text-anchor="middle" class="net-label">D</text></svg>'
+      '<circle class="net-node" cx="290" cy="180" r="13"/><text x="290" y="212" text-anchor="middle" class="net-label">D</text>' +
+      '<circle class="topo-packet" r="6"><animateMotion dur="10s" repeatCount="indefinite" path="M170,40 L100,120 L50,180 L100,120 L150,180 L100,120 L170,40 L240,120 L190,180 L240,120 L290,180 L240,120 L170,40"/></circle></svg>',
+    hybrid: '<svg viewBox="0 0 340 220" role="img" aria-label="โทโพโลยีแบบไฮบริด">' +
+      '<line x1="30" y1="60" x2="100" y2="110" stroke="#38bdf8" stroke-width="2"/>' +
+      '<line x1="30" y1="160" x2="100" y2="110" stroke="#38bdf8" stroke-width="2"/>' +
+      '<line x1="310" y1="60" x2="240" y2="110" stroke="#38bdf8" stroke-width="2"/>' +
+      '<line x1="310" y1="160" x2="240" y2="110" stroke="#38bdf8" stroke-width="2"/>' +
+      '<line x1="100" y1="110" x2="240" y2="110" stroke="#38bdf8" stroke-width="2.6"/>' +
+      '<line x1="100" y1="110" x2="170" y2="52" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 4"/>' +
+      '<line x1="170" y1="52" x2="240" y2="110" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 4"/>' +
+      '<text x="170" y="102" text-anchor="middle" class="net-label" style="font-size:9px">MESH BACKBONE</text>' +
+      '<text x="65" y="128" text-anchor="middle" class="net-label" style="font-size:9px">STAR LAN A</text>' +
+      '<text x="275" y="128" text-anchor="middle" class="net-label" style="font-size:9px">STAR LAN B</text>' +
+      '<circle class="net-node-ring" cx="30" cy="60" r="21"/>' +
+      '<circle class="net-node" cx="30" cy="60" r="15"/><text x="30" y="65" text-anchor="middle" class="net-label" fill="#c4b5fd" font-size="12" font-weight="800">S</text>' +
+      '<text x="30" y="28" text-anchor="middle" class="net-label">SENDER</text>' +
+      '<circle class="net-node" cx="30" cy="160" r="13"/><text x="30" y="194" text-anchor="middle" class="net-label">C1</text>' +
+      '<circle class="net-node hub" cx="100" cy="110" r="18"/><text x="100" y="145" text-anchor="middle" class="net-label" fill="#e2e8f0">HUB 1</text>' +
+      '<circle class="net-node" cx="170" cy="52" r="11"/><text x="170" y="30" text-anchor="middle" class="net-label">M</text>' +
+      '<circle class="net-node hub" cx="240" cy="110" r="18"/><text x="240" y="145" text-anchor="middle" class="net-label" fill="#e2e8f0">HUB 2</text>' +
+      '<circle class="net-node" cx="310" cy="60" r="13"/><text x="310" y="36" text-anchor="middle" class="net-label">C2</text>' +
+      '<circle class="net-node-ring" cx="310" cy="160" r="21"/>' +
+      '<circle class="net-node" cx="310" cy="160" r="15"/><text x="310" y="165" text-anchor="middle" class="net-label" fill="#5eead4" font-size="12" font-weight="800">R</text>' +
+      '<text x="310" y="194" text-anchor="middle" class="net-label">RECEIVER</text>' +
+      '<circle class="topo-packet" r="6"><animateMotion dur="5.5s" repeatCount="indefinite" path="M30,60 L100,110 L240,110 L310,160 L240,110 L100,110 L30,60"/></circle></svg>'
   };
   function renderTopoTabs() {
     var tabs = $("topoTabs");
@@ -591,11 +619,16 @@
     if (!t) return;
     qsa("#topoTabs .tab-btn").forEach(function (b) { b.classList.toggle("active", b.dataset.topo === key); });
     var vis = $("topoVis");
-    vis.style.opacity = "0";
-    setTimeout(function () {
+    var isFirstRender = vis.innerHTML.trim() === "";
+    if (isFirstRender) {
       vis.innerHTML = topoSVG[t.key];
-      vis.style.opacity = "1";
-    }, 180);
+    } else {
+      vis.classList.add("topo-enter");
+      setTimeout(function () {
+        vis.innerHTML = topoSVG[t.key];
+        requestAnimationFrame(function () { vis.classList.remove("topo-enter"); });
+      }, 200);
+    }
     $("topoName").innerHTML = '<i data-lucide="info" class="cyan"></i>' + esc(t.label) + " — " + esc(t.thai);
     $("topoDesc").textContent = t.desc;
     $("topoPros").textContent = t.pros;
