@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="ข้อสอบรวม 80 ข้อ จาก 4 บท — ทดสอบความรู้พื้นฐานเครือข่ายคอมพิวเตอร์ก่อนเรียน" />
+  <meta name="description" content="ข้อสอบรวม 320 ข้อ (4 ชุด × 80 ข้อ) จาก 4 บท — ทดสอบความรู้พื้นฐานเครือข่ายคอมพิวเตอร์ก่อนเรียน" />
   <title>CN · ข้อสอบ 4 ชุด (A–D) — ทดสอบความรู้ก่อนเรียน</title>
 
   <link rel="stylesheet" href="styles.css" />
@@ -645,8 +645,8 @@
 <header class="test-top">
   <div class="cn-logo">CN</div>
   <div class="test-top-title">
-    <b>ข้อสอบ 4 ชุด · 160 ข้อ</b>
-    <span id="topSubtitle">Computer Network and Internet · ชุด A–D · 80 ข้อ · จับเวลา 60 นาที</span>
+    <b>ข้อสอบ 4 ชุด · 320 ข้อ</b>
+    <span id="topSubtitle">Computer Network and Internet · ชุด A–D · ชุดละ 80 ข้อ · จับเวลา 60 นาที</span>
   </div>
   <div class="spacer"></div>
   <span class="chip hide-xs" id="topChapterChip" style="display:none"></span>
@@ -671,14 +671,14 @@
         <span class="ti-title-chip">ชุดละ 80 ข้อ</span>
       </h1>
       <p class="ti-lead">
-        วัดระดับความรู้เครือข่ายคอมพิวเตอร์ก่อนเรียน — มีข้อสอบ 4 ชุด (A–D) ชุดละ 80 ข้อ ครบ 4 บท บทละ 20 ข้อ
-        ข้อสอบคงที่ ไม่สุ่ม ทำเสร็จเก็บคะแนนรายชุด แล้วต่อชุดถัดไปได้ทันที
+        วัดระดับความรู้เครือข่ายคอมพิวเตอร์ก่อนเรียน — มีข้อสอบ 4 ชุด (A–D) ชุดละ 80 ข้อ รวม 320 ข้อ ครบ 4 บท บทละ 20 ข้อ
+        ข้อสอบทุกชุดไม่ซ้ำกัน คงที่ ไม่สุ่ม ทำเสร็จเก็บคะแนนรายชุด แล้วต่อชุดถัดไปได้ทันที
       </p>
 
       <div class="ti-stats">
         <div class="ti-stat"><b>4</b><span>ชุดข้อสอบ</span></div>
         <div class="ti-stat"><b>80</b><span>ข้อ / ชุด</span></div>
-        <div class="ti-stat"><b>160</b><span>ข้อสอบรวม</span></div>
+        <div class="ti-stat"><b>320</b><span>ข้อสอบรวม</span></div>
         <div class="ti-stat"><b>4</b><span>บทเรียน</span></div>
       </div>
 
@@ -698,7 +698,7 @@
     <div class="section-head">
       <span class="sh-ico"><i data-lucide="layers"></i></span>
       <h2>เลือกชุดข้อสอบ</h2>
-      <span class="sh-note">4 ชุด · ชุดละ 80 ข้อ · บทละ 20 ข้อ</span>
+      <span class="sh-note">4 ชุด · ชุดละ 80 ข้อ · รวม 320 ข้อ ไม่ซ้ำกัน</span>
     </div>
     <div class="set-grid" id="setGrid" role="radiogroup" aria-label="เลือกชุดข้อสอบ"></div>
 
@@ -879,22 +879,26 @@
     (window.DATA.extraExam || []).forEach(function (q) {
       out.push({ q: q.q, options: q.options.slice(), correct: q.correct, explain: q.explain, ch: q.ch, src: "extra" });
     });
+    (window.DATA.extraExam2 || []).forEach(function (q) {
+      out.push({ q: q.q, options: q.options.slice(), correct: q.correct, explain: q.explain, ch: q.ch, src: "extra2" });
+    });
     return out;
   }
 
-  /* ---------- ชุดข้อสอบ A–D: ชุดละ 80 ข้อ = บทละ 20 ข้อ (4 บท) ---------- */
+  /* ---------- ชุดข้อสอบ A–D: ชุดละ 80 ข้อ = บทละ 20 ข้อ (4 บท) · รวม 320 ข้อ ไม่ซ้ำกัน ---------- */
   function buildSets() {
     var byCh = {};
     POOL.forEach(function (q) {
-      if (!byCh[q.ch]) byCh[q.ch] = { base: [], extra: [] };
-      byCh[q.ch][q.src === "extra" ? "extra" : "base"].push(q);
+      if (!byCh[q.ch]) byCh[q.ch] = { base: [], extra: [], extra2: [] };
+      byCh[q.ch][q.src === "extra2" ? "extra2" : (q.src === "extra" ? "extra" : "base")].push(q);
     });
     function make(sel) {
       var items = [];
       [1, 2, 3, 4].forEach(function (ch) {
         var b = (byCh[ch] && byCh[ch].base) || [];
         var e = (byCh[ch] && byCh[ch].extra) || [];
-        sel(b, e).forEach(function (q) {
+        var x = (byCh[ch] && byCh[ch].extra2) || [];
+        sel(b, e, x).forEach(function (q) {
           q._order = [0, 1, 2, 3]; // ล็อกลำดับตัวเลือก — ชุดข้อสอบคงที่ทุกครั้ง
           items.push(q);
         });
@@ -904,8 +908,8 @@
     return [
       { key: "A", label: "ชุด A", sub: "ข้อสอบท้ายบทของทั้ง 4 บท", items: make(function (b) { return b.slice(0, 20); }) },
       { key: "B", label: "ชุด B", sub: "ข้อสอบพิเศษ ระดับกลาง–ยาก", items: make(function (b, e) { return e.slice(0, 20); }) },
-      { key: "C", label: "ชุด C", sub: "ผสมครึ่งแรก (ท้ายบท + พิเศษ)", items: make(function (b, e) { return b.slice(0, 10).concat(e.slice(0, 10)); }) },
-      { key: "D", label: "ชุด D", sub: "ผสมครึ่งหลัง (ท้ายบท + พิเศษ)", items: make(function (b, e) { return b.slice(10, 20).concat(e.slice(10, 20)); }) }
+      { key: "C", label: "ชุด C", sub: "ข้อสอบเพิ่มเติม ชุดที่ 1 (ใหม่)", items: make(function (b, e, x) { return x.slice(0, 20); }) },
+      { key: "D", label: "ชุด D", sub: "ข้อสอบเพิ่มเติม ชุดที่ 2 (ใหม่)", items: make(function (b, e, x) { return x.slice(20, 40); }) }
     ];
   }
 
