@@ -24,7 +24,8 @@
     5: { start: 0, count: D.ch5.slides.length, sections: D.ch5.sections, slides: D.ch5.slides, cheat: D.ch5.cheat, flashcards: D.ch5.flashcards, glossary: D.ch5.glossary, exam: D.ch5.exam, thai: "Network Layer: Data Plane (ชั้นเครือข่าย — ระนาบข้อมูล)", en: "Network Layer: Data Plane", file: "final-ch4-data-plane.html", code: "F1", bookChapter: 4 },
     6: { start: 0, count: D.ch6.slides.length, sections: D.ch6.sections, slides: D.ch6.slides, cheat: D.ch6.cheat, flashcards: D.ch6.flashcards, glossary: D.ch6.glossary, exam: D.ch6.exam, thai: "Network Layer: Control Plane (ชั้นเครือข่าย — ระนาบควบคุม)", en: "Network Layer: Control Plane", file: "final-ch5-control-plane.html", code: "F2", bookChapter: 5 },
     7: { start: 0, count: D.ch7.slides.length, sections: D.ch7.sections, slides: D.ch7.slides, cheat: D.ch7.cheat, flashcards: D.ch7.flashcards, glossary: D.ch7.glossary, exam: D.ch7.exam, thai: "The Link Layer and LANs (ชั้นลิงก์และ LAN)", en: "The Link Layer and LANs", file: "final-ch6-link-layer.html", code: "F3", bookChapter: 6 },
-    8: { start: 0, count: D.ch8.slides.length, sections: D.ch8.sections, slides: D.ch8.slides, cheat: D.ch8.cheat, flashcards: D.ch8.flashcards, glossary: D.ch8.glossary, exam: D.ch8.exam, thai: "Wireless and Mobile Networks (เครือข่ายไร้สายและเคลื่อนที่)", en: "Wireless and Mobile Networks", file: "final-ch7-wireless.html", code: "F4", bookChapter: 7 }
+    8: { start: 0, count: D.ch8.slides.length, sections: D.ch8.sections, slides: D.ch8.slides, cheat: D.ch8.cheat, flashcards: D.ch8.flashcards, glossary: D.ch8.glossary, exam: D.ch8.exam, thai: "Wireless and Mobile Networks (เครือข่ายไร้สายและเคลื่อนที่)", en: "Wireless and Mobile Networks", file: "final-ch7-wireless.html", code: "F4", bookChapter: 7 },
+    9: { start: 0, count: D.ch9.slides.length, sections: D.ch9.sections, slides: D.ch9.slides, cheat: D.ch9.cheat, flashcards: D.ch9.flashcards, glossary: D.ch9.glossary, exam: D.ch9.exam, thai: "Security (ความมั่นคงปลอดภัยของเครือข่าย)", en: "Security", file: "final-ch8-security.html", code: "F5", bookChapter: 8 }
   };
   /* label ที่ใช้แสดงผล — F1 ต้องไม่ซ้ำกับ M4 ที่เป็น Book Chapter 4 เหมือนกัน */
   function chapterLabel(n) {
@@ -52,6 +53,20 @@
     set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   };
 
+  /* ---------- migration ครั้งเดียว: สลับลำดับตัวเลือกของ F1–F5 ----------
+     เดิมเฉลยของ F1–F4 วนเป็น 1,2,3,4 ซ้ำทุกข้อ และ F5 เอียงไปทาง B เกือบทั้งหมด (เดาคำตอบได้)
+     จึงสลับตัวเลือกใน data.js → index คำตอบที่บันทึกไว้เดิมชี้ไปคนละข้อความ
+     ล้างคำตอบเก่าของ 5–9 (เก็บ best score ไว้) */
+  (function migrateOptionOrder() {
+    if (LS.get("cn_option_order_v1", false)) return;
+    [5, 6, 7, 8, 9].forEach(function (n) {
+      ["cn_quiz" + n, "cn_exam" + n].forEach(function (k) {
+        try { localStorage.removeItem(k); } catch (e) {}
+      });
+    });
+    LS.set("cn_option_order_v1", true);
+  })();
+
   var state = {
     chapter: PAGE === "menu" ? 1 : PCH,
     current: 0, // ดัชนีสไลด์ภายในหน้า (local)
@@ -74,6 +89,7 @@
     quiz6: LS.get("cn_quiz6", { answers: {} }),
     quiz7: LS.get("cn_quiz7", { answers: {} }),
     quiz8: LS.get("cn_quiz8", { answers: {} }),
+    quiz9: LS.get("cn_quiz9", { answers: {} }),
     exam: LS.get("cn_exam") || LS.get("cn_quick") || { answers: {}, best: null },
     exam2: LS.get("cn_exam2") || { answers: {}, best: null },
     exam3: LS.get("cn_exam3") || { answers: {}, best: null },
@@ -82,6 +98,7 @@
     exam6: LS.get("cn_exam6") || { answers: {}, best: null },
     exam7: LS.get("cn_exam7") || { answers: {}, best: null },
     exam8: LS.get("cn_exam8") || { answers: {}, best: null },
+    exam9: LS.get("cn_exam9") || { answers: {}, best: null },
     best: null,
     celebrated: false
   };
@@ -115,7 +132,7 @@
      ========================================================================== */
   function renderMenuProgress() {
     var doneTotal = 0, slideTotal = 0, doneChapters = 0;
-    [1, 2, 3, 4, 5, 6, 7, 8].forEach(function (n) {
+    [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(function (n) {
       var el = $("ch" + n + "Pct");
       var comp = LS.get("cn_completed_" + n, null);
       if (n === 1 && comp === null) comp = LS.get("cn_completed", []);
@@ -139,7 +156,7 @@
     var ob = $("courseBar");
     if (ob) ob.style.setProperty("--pct", coursePct + "%");
     var od = $("courseDone");
-    if (od) od.textContent = "เรียนแล้ว " + doneTotal + " / " + slideTotal + " สไลด์ · จบแล้ว " + doneChapters + " / 8 บท";
+    if (od) od.textContent = "เรียนแล้ว " + doneTotal + " / " + slideTotal + " สไลด์ · จบแล้ว " + doneChapters + " / 9 บท";
   }
   /* กลับไปเมนูหลัก (index.html) — ใช้จากปุ่ม 🏠 ในหน้าเรียน */
   function goHome() {
@@ -161,6 +178,59 @@
     var ss = $("sidebarChapterSub");
     if (ss) ss.textContent = (CHS[state.chapter].code.charAt(0) === "F" ? "FINAL" : "MIDTERM") + " · BOOK CH." + CHS[state.chapter].bookChapter + " · " + TOTAL + " หัวข้อ";
   }
+  /* ---------- จำตำแหน่งเลื่อนของเมนูหลัก (#chapterMenu) ----------
+     ตัวเลื่อนคือ #chapterMenu เอง (position:fixed + overflow-y:auto) ไม่ใช่ window
+     → กลับมาจากหน้าเรียนแล้วเมนูจะเลื่อนไปจุดเดิม ไม่ต้องเริ่มบนสุดทุกครั้ง */
+  var MENU_SCROLL_KEY = "cn_menu_scroll";
+
+  function saveMenuScroll() {
+    var menu = $("chapterMenu");
+    if (!menu) return;
+    LS.set(MENU_SCROLL_KEY, Math.round(menu.scrollTop));
+  }
+
+  function restoreMenuScroll() {
+    var menu = $("chapterMenu");
+    if (!menu) return;
+    var y = LS.get(MENU_SCROLL_KEY, 0);
+    if (!y || y < 40) return; // อยู่ช่วงบนอยู่แล้ว — ไม่ต้องเลื่อน
+    function apply() {
+      var max = Math.max(0, menu.scrollHeight - menu.clientHeight);
+      var target = Math.min(y, max);
+      if (target <= 0) return;
+      menu.scrollTop = target;
+    }
+    // ถ้าผู้ใช้ยังไม่เลื่อนเอง (scrollTop ยังเกือบ 0) ค่อยแก้ซ้ำหลัง layout/ไอคอน/ฟอนต์นิ่ง
+    // → ไม่กระชากกลับไปจุดเดิมถ้าผู้ใช้เลื่อนเมนูเองไปแล้ว
+    function applyIfUntouched() { if (menu.scrollTop < 40) apply(); }
+    apply();
+    requestAnimationFrame(applyIfUntouched);
+    if (document.readyState === "complete") {
+      setTimeout(applyIfUntouched, 120);
+    } else {
+      window.addEventListener("load", applyIfUntouched, { once: true });
+    }
+  }
+
+  function bindMenuScrollMemory() {
+    var menu = $("chapterMenu");
+    if (!menu) return;
+    // debounce ด้วย setTimeout (ไม่ใช้ rAF เพราะ rAF ถูกระงับเมื่อแท็บไม่ active)
+    var timer = null;
+    menu.addEventListener("scroll", function () {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(function () {
+        timer = null;
+        saveMenuScroll();
+      }, 150);
+    }, { passive: true });
+    // กันข้อมูลหายตอนกดลิงก์ออกไปหน้าเรียน/pิดแท็บ
+    window.addEventListener("pagehide", saveMenuScroll);
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") saveMenuScroll();
+    });
+  }
+
   /* เมนูหลัก — กดการ์ดบท 1/2 ไปหน้าเรียน, บท 3/4 แจ้งเตือนเร็วๆ นี้ */
   function bindMenu() {
     var m = $("chapterMenu");
@@ -377,7 +447,7 @@
   }
   function showCompletion() {
     $("doneSlides").textContent = TOTAL;
-    var doneQuizLen = state.chapter === 5 ? D.ch5.quiz.length : state.chapter === 6 ? D.ch6.quiz.length : state.chapter === 7 ? D.ch7.quiz.length : state.chapter === 8 ? D.ch8.quiz.length : 10;
+    var doneQuizLen = state.chapter === 5 ? D.ch5.quiz.length : state.chapter === 6 ? D.ch6.quiz.length : state.chapter === 7 ? D.ch7.quiz.length : state.chapter === 8 ? D.ch8.quiz.length : state.chapter === 9 ? D.ch9.quiz.length : 10;
     $("doneScore").textContent = state.best === null ? "–" : state.best + "/" + doneQuizLen;
     var ov = $("completionOverlay");
     ov.classList.add("show");
@@ -1039,7 +1109,8 @@
       5: "ลองนึกถึง Forwarding vs Routing, Data/Control Plane, Longest Prefix Matching, subnet /24 และ DHCP 4 ขั้น",
       6: "ลองนึกถึง Control Plane, LS↔Dijkstra, DV↔Bellman-Ford, count-to-infinity, OSPF และ BGP selection",
       7: "ลองนึกถึง node ที่ติดกัน, frame/NIC, parity vs CRC, TDMA/FDMA/ALOHA, CSMA/CD, Ethernet frame, MAC vs IP, ARP, switch learning และ VLAN 802.1Q",
-      8: "ลองนึกถึง wireless ≠ mobility, dBm, SNR/Shannon, hidden terminal/multipath, CSMA/CA + ACK, 802.11 address, association, MIMO และ 5G handover"
+      8: "ลองนึกถึง wireless ≠ mobility, dBm, SNR/Shannon, hidden terminal/multipath, CSMA/CA + ACK, 802.11 address, association, MIMO และ 5G handover",
+      9: "ลองนึกถึง confidentiality/authentication/integrity, symmetric vs public key, RSA (p,q,n,z,e,d), nonce กัน playback, hash/MAC, digital signature + CA, TLS 1.3 handshake และ MITM/replay/DoS"
     };
     return h[state.chapter] || "ลองทบทวนเนื้อหาจากสไลด์ที่ผ่านมา แล้วค่อยตอบใหม่";
   }
@@ -1613,13 +1684,16 @@
       } else if (n === 8) {
         state.quiz8 = { answers: {} };
         LS.set("cn_quiz8", state.quiz8);
+      } else if (n === 9) {
+        state.quiz9 = { answers: {} };
+        LS.set("cn_quiz9", state.quiz9);
       }
       state["exam" + (n === 1 ? "" : n)] = { answers: {}, best: null };
       LS.set("cn_exam" + (n === 1 ? "" : n), state["exam" + (n === 1 ? "" : n)]);
       LS.set("cn_completed_" + n, []);
       LS.set("cn_celebrated_" + n, false);
       $("completionOverlay").classList.remove("show");
-      if (n === 1) { renderQuiz(0); renderQuiz(1); renderExam(); } else if (n === 2) { renderQuiz2(); renderExam(); } else if (n === 3) { renderQuiz3(); renderExam(); } else if (n === 4) { renderQuiz4(); renderExam(); } else if (n === 5) { renderQuiz5(); renderExam(); } else if (n === 6) { renderQuiz6(); renderExam(); } else if (n === 7) { renderQuiz7(); renderExam(); } else { renderQuiz8(); renderExam(); }
+      if (n === 1) { renderQuiz(0); renderQuiz(1); renderExam(); } else if (n === 2) { renderQuiz2(); renderExam(); } else if (n === 3) { renderQuiz3(); renderExam(); } else if (n === 4) { renderQuiz4(); renderExam(); } else if (n === 5) { renderQuiz5(); renderExam(); } else if (n === 6) { renderQuiz6(); renderExam(); } else if (n === 7) { renderQuiz7(); renderExam(); } else if (n === 8) { renderQuiz8(); renderExam(); } else { renderQuiz9(); renderExam(); }
       goTo(0, -1);
       toast("เริ่มเรียน " + chapterLabel(n) + " ใหม่ — สู้ ๆ นะ! 💪");
     });
@@ -2050,6 +2124,53 @@
     // F4 — glossary
     on("glossarySearch8", "input", function () { renderGlossary8(this.value); });
     on("glossaryList8", "click", function (e) {
+      var item = e.target.closest(".gloss-item");
+      if (!item) return;
+      var open = item.classList.toggle("open");
+      item.setAttribute("aria-expanded", open);
+      var def = item.querySelector(".g-def");
+      if (def) def.style.display = open ? "block" : "none";
+    });
+
+    // ===== FINAL F5 — Security =====
+    on("startBtn9", "click", function () { goTo(state.current + 1, 1); });
+    on("encTabs9", "click", function (e) {
+      var b = e.target.closest("[data-enc]");
+      if (b) selectEnc9(parseInt(b.dataset.enc, 10));
+    });
+    on("rsaSteps9", "click", function (e) {
+      var b = e.target.closest("[data-rsa]");
+      if (b) selectRsa9(parseInt(b.dataset.rsa, 10));
+    });
+    on("authTabs9", "click", function (e) {
+      var b = e.target.closest("[data-auth]");
+      if (b) selectAuth9(parseInt(b.dataset.auth, 10));
+    });
+    on("hashTabs9", "click", function (e) {
+      var b = e.target.closest("[data-hash]");
+      if (b) selectHash9(parseInt(b.dataset.hash, 10));
+    });
+    on("tlsSteps9", "click", function (e) {
+      var b = e.target.closest("[data-tls]");
+      if (b) selectTls9(parseInt(b.dataset.tls, 10));
+    });
+    on("attackTabs9", "click", function (e) {
+      var b = e.target.closest("[data-attack]");
+      if (b) selectAttack9(parseInt(b.dataset.attack, 10));
+    });
+
+    // F5 — flashcards
+    on("flashcard9", "click", fc9Flip);
+    on("flashcard9", "keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fc9Flip(); }
+    });
+    on("fcPrev9", "click", function () { fc9Step(-1); });
+    on("fcNext9", "click", function () { fc9Step(1); });
+    on("fcShuffle9", "click", function () { fc9Shuffle(); fc9Render(); toast("สับการ์ดใหม่ 🔀"); });
+
+    // F5 — glossary
+    on("glossarySearch9", "input", function () { renderGlossary9(this.value); });
+    on("glossaryList9", "click", function (e) {
       var item = e.target.closest(".gloss-item");
       if (!item) return;
       var open = item.classList.toggle("open");
@@ -4007,6 +4128,297 @@
     if (el) el.innerHTML = "<b>" + esc(d.n) + " · " + esc(d.name) + "</b><br>" + esc(d.detail);
   }
 
+  /* ==========================================================================
+     FINAL F5 — Security
+     ========================================================================== */
+
+  /* ---------- Encryption / Decryption stepper (slide 7) ---------- */
+  function renderEnc9() {
+    var g = $("encTabs9");
+    if (!g) return;
+    g.innerHTML = D.ch9.encSteps.map(function (d, i) {
+      return '<button class="tab-btn' + (i === 0 ? " active" : "") + '" data-enc="' + i + '" role="tab">' + esc(d.label) + "</button>";
+    }).join("");
+    selectEnc9(0);
+  }
+  function selectEnc9(i) {
+    var d = D.ch9.encSteps[i];
+    if (!d) return;
+    qsa("#encTabs9 .tab-btn").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.enc, 10) === i); });
+    var t = $("encTitle9"); if (t) t.textContent = d.title;
+    var de = $("encDetail9"); if (de) de.textContent = d.detail;
+    var v = $("encValue9"); if (v) v.textContent = d.value;
+  }
+
+  /* ---------- RSA key-generation stepper (slide 16) ---------- */
+  function renderRsa9() {
+    var g = $("rsaSteps9");
+    if (!g) return;
+    g.innerHTML = D.ch9.rsaSteps.map(function (d, i) {
+      return '<button class="dhcp-step' + (i === 0 ? " active" : "") + '" data-rsa="' + i + '">' +
+        '<span class="n">ขั้นที่ ' + esc(d.n) + "</span><b>" + esc(d.title) + "</b></button>";
+    }).join("");
+    selectRsa9(0);
+  }
+  function selectRsa9(i) {
+    var d = D.ch9.rsaSteps[i];
+    if (!d) return;
+    qsa("#rsaSteps9 .dhcp-step").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.rsa, 10) === i); });
+    var t = $("rsaStepTitle9"); if (t) t.textContent = d.n + " · " + d.title;
+    var de = $("rsaStepDetail9"); if (de) de.textContent = d.detail;
+  }
+
+  /* ---------- Authentication protocol tabs ap1.0–ap5.0 (slide 20) ---------- */
+  function renderAuth9() {
+    var g = $("authTabs9");
+    if (!g) return;
+    g.innerHTML = D.ch9.authTabs.map(function (m, i) {
+      return '<button class="tab-btn' + (i === 0 ? " active" : "") + '" data-auth="' + i + '" role="tab">' + esc(m.name) + "</button>";
+    }).join("");
+    selectAuth9(0);
+  }
+  function selectAuth9(i) {
+    var m = D.ch9.authTabs[i];
+    if (!m) return;
+    qsa("#authTabs9 .tab-btn").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.auth, 10) === i); });
+    var r = $("authResult9"); if (r) r.textContent = m.name + " · " + m.result;
+    var q = $("authQuestion9"); if (q) q.textContent = m.question;
+    var f = $("authFlaw9"); if (f) f.textContent = m.flaw;
+    var d = $("authDetail9"); if (d) d.textContent = m.detail;
+  }
+
+  /* ---------- Internet checksum collision demo (slide 25) ---------- */
+  function selectHash9(i) {
+    var h = D.ch9.hashDemo;
+    if (!h) return;
+    qsa("#hashTabs9 .tab-btn").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.hash, 10) === i); });
+    var m = $("hashMsg9"); if (m) m.textContent = i === 0 ? h.m1 : h.m2;
+    var a = $("hashAscii9"); if (a) a.textContent = i === 0 ? h.ascii1 : h.ascii2;
+    var s = $("hashSum9"); if (s) s.textContent = h.sum;
+  }
+
+  /* ---------- TLS 1.3 handshake stepper (slide 31) ---------- */
+  function renderTls9() {
+    var g = $("tlsSteps9");
+    if (!g) return;
+    g.innerHTML = D.ch9.tlsSteps.map(function (d, i) {
+      return '<button class="dhcp-step' + (i === 0 ? " active" : "") + '" data-tls="' + i + '">' +
+        '<span class="n">ขั้นที่ ' + esc(d.n) + "</span><b>" + esc(d.title) + "</b></button>";
+    }).join("");
+    selectTls9(0);
+  }
+  function selectTls9(i) {
+    var d = D.ch9.tlsSteps[i];
+    if (!d) return;
+    qsa("#tlsSteps9 .dhcp-step").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.tls, 10) === i); });
+    var t = $("tlsStepTitle9"); if (t) t.textContent = d.n + " · " + d.title;
+    var de = $("tlsStepDetail9"); if (de) de.textContent = d.detail;
+  }
+
+  /* ---------- Attack taxonomy tabs (slide 33) ---------- */
+  function renderAttack9() {
+    var g = $("attackTabs9");
+    if (!g) return;
+    g.innerHTML = D.ch9.attacks.map(function (m, i) {
+      return '<button class="tab-btn' + (i === 0 ? " active" : "") + '" data-attack="' + i + '" role="tab">' + esc(m.name) + "</button>";
+    }).join("");
+    selectAttack9(0);
+  }
+  function selectAttack9(i) {
+    var m = D.ch9.attacks[i];
+    if (!m) return;
+    qsa("#attackTabs9 .tab-btn").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.attack, 10) === i); });
+    var g = $("attackGoal9"); if (g) g.textContent = "Goal: " + m.goal;
+    var n = $("attackName9"); if (n) n.textContent = m.name;
+    var e = $("attackExample9"); if (e) e.textContent = m.example;
+    var d = $("attackDefense9"); if (d) d.textContent = m.defense;
+  }
+
+  /* ---------- Cheat sheet 9 (slide 38) ---------- */
+  function renderCheat9() {
+    var g = $("cheatGrid9");
+    if (!g) return;
+    g.innerHTML = D.ch9.cheat.map(function (c) {
+      return '<div class="cheat-item"><span class="term">' + esc(c.term) + '</span><span class="arrow">→</span><span class="def">' + esc(c.def) + "</span></div>";
+    }).join("");
+  }
+
+  /* ---------- Quiz 9 (slide 39 · 12 ข้อ) ---------- */
+  function quiz9Score() {
+    var sc = 0;
+    D.ch9.quiz.forEach(function (q, j) { if (state.quiz9.answers[j] === q.correct) sc++; });
+    return sc;
+  }
+  function renderQuiz9() {
+    var el = $("quiz9");
+    if (!el) return;
+    var qs = D.ch9.quiz;
+    var allAnswered = qs.every(function (_, j) { return state.quiz9.answers[j] !== undefined; });
+    if (allAnswered) { renderQuiz9Result(el, qs); return; }
+    var qi = 0;
+    for (var j = 0; j < qs.length; j++) { if (state.quiz9.answers[j] === undefined) { qi = j; break; } }
+    renderQuiz9Question(qi, el, qs);
+  }
+  function renderQuiz9Question(qi, el, qs) {
+    var q = qs[qi];
+    var chosen = state.quiz9.answers[qi];
+    var answered = chosen !== undefined;
+    var opts = q.options.map(function (o, oi) {
+      var cls = "quiz-option";
+      if (answered) {
+        cls += " locked";
+        if (oi === q.correct) cls += " correct";
+        else if (oi === chosen) cls += " incorrect";
+      }
+      return '<button class="' + cls + '" data-opt="' + oi + '"' + (answered ? " disabled" : "") + ">" +
+        '<span class="opt-key">' + "ABCD"[oi] + '</span><span>' + esc(o) + "</span></button>";
+    }).join("");
+
+    el.innerHTML =
+      '<div class="card fade-up" style="padding:26px">' +
+      '<div class="flex items-center justify-between mb-3 wrap gap-2">' +
+      '<span class="chip">ข้อที่ ' + (qi + 1) + " / " + qs.length + " · F5 · BOOK CH.8</span>" +
+      '<span class="chip" style="border-color:rgba(56,189,248,.4)">คะแนนตอนนี้: ' + quiz9Score() + " / " + qs.length + "</span></div>" +
+      "<h3 style='font-size:19px;line-height:1.5;margin-bottom:18px'>" + esc(q.q) + "</h3>" +
+      '<div class="flex" style="flex-direction:column;gap:10px">' + opts + "</div>" +
+      (answered
+        ? '<div class="quiz-explanation mt-4">💡 ' + esc(q.explain) + "</div>" +
+          '<div class="flex items-center gap-3 mt-5 wrap">' +
+          (qi < qs.length - 1
+            ? '<button class="btn btn-primary" id="q9Next">ข้อถัดไป <i data-lucide="arrow-right"></i></button>'
+            : '<button class="btn btn-primary" id="q9Finish">ดูผลลัพธ์ <i data-lucide="flag"></i></button>') +
+          "</div>"
+        : '<div class="tip-box tip-note mt-4" style="margin-top:18px"><i data-lucide="lightbulb"></i><div><b>Hint</b>ทบทวน 7 หัวข้อ: security goals, symmetric/public-key, RSA, authentication/nonce, hash/integrity, digital signature + TLS และ attacks</div></div>')
+      + "</div>";
+    icons();
+
+    el.querySelectorAll(".quiz-option").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var oi = parseInt(b.dataset.opt, 10);
+        if (answered) return;
+        state.quiz9.answers[qi] = oi;
+        LS.set("cn_quiz9", state.quiz9);
+        var correct = oi === q.correct;
+        b.classList.add(correct ? "correct" : "incorrect");
+        if (!correct) {
+          qsa(".quiz-option", el).forEach(function (x) {
+            if (parseInt(x.dataset.opt, 10) === q.correct) x.classList.add("correct");
+          });
+        }
+        qsa(".quiz-option", el).forEach(function (x) { x.classList.add("locked"); x.setAttribute("disabled", "disabled"); });
+        var exp = document.createElement("div");
+        exp.className = "quiz-explanation mt-4";
+        exp.innerHTML = (correct ? "✅ ถูกต้อง! " : "❌ ยังไม่ถูกนะ ") + "💡 " + esc(q.explain);
+        el.querySelector(".quiz-option").closest("div.flex").insertAdjacentElement("afterend", exp);
+        var nav = document.createElement("div");
+        nav.className = "flex items-center gap-3 mt-5 wrap";
+        nav.innerHTML = qi < qs.length - 1
+          ? '<button class="btn btn-primary" id="q9Next">ข้อถัดไป <i data-lucide="arrow-right"></i></button>'
+          : '<button class="btn btn-primary" id="q9Finish">ดูผลลัพธ์ <i data-lucide="flag"></i></button>';
+        exp.insertAdjacentElement("afterend", nav);
+        icons();
+        bindQuiz9Nav();
+        if (correct) toast("✅ ถูกต้อง!", 1200);
+      });
+    });
+    bindQuiz9Nav();
+  }
+  function bindQuiz9Nav() {
+    var n = $("q9Next");
+    if (n) n.addEventListener("click", function () { renderQuiz9(); });
+    var f = $("q9Finish");
+    if (f) f.addEventListener("click", function () { renderQuiz9(); });
+    var r = $("q9Retry");
+    if (r) r.addEventListener("click", function () {
+      state.quiz9.answers = {};
+      LS.set("cn_quiz9", state.quiz9);
+      renderQuiz9();
+    });
+  }
+  function renderQuiz9Result(el, qs) {
+    var sc = quiz9Score();
+    var pct = Math.round((sc / qs.length) * 100);
+    var msg = sc === qs.length ? "Perfect! คะแนนเต็ม เก่งมาก! 🏆"
+      : sc >= qs.length - 2 ? "Excellent! เกือบเต็มแล้ว! 💪"
+      : sc >= Math.ceil(qs.length / 2) ? "Good job! ทบทวนอีกนิดก็เพอร์เฟกต์ ✨"
+      : "ยังไม่ผ่าน — ย้อนกลับไปทบทวนสไลด์แล้วลองใหม่นะ 📚";
+    if (state.best === null || sc > state.best) {
+      state.best = sc;
+      LS.set("cn_best_" + state.chapter, state.best);
+    }
+    var ring = 2 * Math.PI * 62;
+    var offset = ring - (sc / qs.length) * ring;
+    el.innerHTML =
+      '<div class="card center fade-up" style="padding:34px 26px">' +
+      '<div class="score-ring"><svg width="150" height="150" viewBox="0 0 150 150">' +
+      '<defs><linearGradient id="ringGrad9" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>' +
+      '<circle class="ring-bg" cx="75" cy="75" r="62" fill="none" stroke-width="12"/>' +
+      '<circle class="ring-fill" id="ringC9" cx="75" cy="75" r="62" fill="none" stroke-width="12" stroke-linecap="round" ' +
+      'style="stroke:url(#ringGrad9)" stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
+      '<div class="ring-num">' + sc + "/" + qs.length + "</div></div>" +
+      "<p class='mt-3 text-2' style='font-weight:700'>" + pct + "% · " + msg + "</p>" +
+      '<p class="text-3 mt-2" style="font-size:13px">คะแนนดีที่สุดของบทนี้: <b class="cyan">' + (state.best === null ? "–" : state.best + "/" + qs.length) + "</b></p>" +
+      '<div class="flex items-center gap-3 mt-5 wrap" style="justify-content:center">' +
+      '<button class="btn btn-ghost" id="q9Retry"><i data-lucide="rotate-ccw"></i> ทำใหม่อีกครั้ง</button>' +
+      '<button class="btn btn-primary" id="q9ToCards"><i data-lucide="square-stack"></i> ไปที่การ์ดทบทวน</button>' +
+      "</div></div>";
+    icons();
+    setTimeout(function () {
+      var rf = $("ringC9");
+      if (rf) rf.style.strokeDashoffset = offset;
+    }, 120);
+    bindQuiz9Nav();
+    var cards = $("q9ToCards");
+    if (cards) cards.addEventListener("click", function () {
+      var ci = -1;
+      ch().slides.forEach(function (s, i) { if ((s.short === "Flashcards" || s.title.indexOf("Flashcards") !== -1 || s.title.indexOf("การ์ดทบทวน") !== -1)) ci = i; });
+      if (ci !== -1) goTo(ch().start + ci, 1);
+    });
+  }
+
+  /* ---------- Flashcards 9 (slide 40) ---------- */
+  var fc9 = { order: [], idx: 0 };
+  function fc9Shuffle() {
+    fc9.order = D.ch9.flashcards.map(function (_, i) { return i; });
+    for (var i = fc9.order.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = fc9.order[i]; fc9.order[i] = fc9.order[j]; fc9.order[j] = t;
+    }
+    fc9.idx = 0;
+  }
+  function fc9Render() {
+    if (!fc9.order.length) fc9Shuffle();
+    var card = D.ch9.flashcards[fc9.order[fc9.idx]];
+    if (!card) return;
+    $("fcQ9").textContent = card.q;
+    $("fcA9").textContent = card.a;
+    $("fcCounter9").textContent = (fc9.idx + 1) + " / " + D.ch9.flashcards.length;
+  }
+  function fc9Flip() { $("flashcard9").classList.toggle("flipped"); }
+  function fc9Step(d) {
+    fc9.idx = (fc9.idx + d + D.ch9.flashcards.length) % D.ch9.flashcards.length;
+    fc9Render();
+    $("flashcard9").classList.remove("flipped");
+  }
+
+  /* ---------- Glossary 9 (slide 41) ---------- */
+  function renderGlossary9(filter) {
+    var list = $("glossaryList9");
+    if (!list) return;
+    var term = (filter || "").toLowerCase().trim();
+    var items = D.ch9.glossary.filter(function (g) {
+      return g.term.toLowerCase().indexOf(term) !== -1 || g.def.toLowerCase().indexOf(term) !== -1;
+    });
+    $("glossaryCount9").textContent = items.length + " คำศัพท์";
+    list.innerHTML = items.map(function (g) {
+      return '<div class="gloss-item" data-term="' + esc(g.term) + '" role="button" tabindex="0" aria-expanded="false">' +
+        "<div><b>" + esc(g.term) + '</b><div class="g-def" style="display:none">' + esc(g.def) + "</div></div>" +
+        '<i data-lucide="chevron-down" class="g-chev"></i></div>';
+    }).join("");
+    icons();
+  }
+
   /* ---------- Cheat sheet 8 (slide 38) ---------- */
   function renderCheat8() {
     var g = $("cheatGrid8");
@@ -4200,6 +4612,8 @@
     if (PAGE === "menu") {
       renderMenuProgress();
       bindMenu();
+      bindMenuScrollMemory();
+      restoreMenuScroll();
       icons();
       return;
     }
@@ -4316,6 +4730,19 @@
       fc8Shuffle();
       fc8Render();
       renderGlossary8("");
+      renderExam();
+    } else if (PCH === 9) {
+      renderEnc9();
+      renderRsa9();
+      renderAuth9();
+      selectHash9(0);
+      renderTls9();
+      renderAttack9();
+      renderCheat9();
+      renderQuiz9();
+      fc9Shuffle();
+      fc9Render();
+      renderGlossary9("");
       renderExam();
     }
     applyMode();

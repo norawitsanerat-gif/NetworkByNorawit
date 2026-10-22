@@ -1557,76 +1557,76 @@ window.DATA.ch5 = {
     {
       "q": "Network Layer ทำหน้าที่อะไรในมุมมอง end-to-end?",
       "options": [
-        "ส่ง transport segment จาก sending host ไปยัง receiving host",
         "เข้ารหัสข้อมูลทั้งหมดก่อนส่งออก",
         "แปลงสัญญาณไฟฟ้าให้เป็นบิต 0/1",
-        "กำหนดหมายเลข port ของแต่ละ process"
+        "กำหนดหมายเลข port ของแต่ละ process",
+        "ส่ง transport segment จาก sending host ไปยัง receiving host"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "สไลด์ 4-4: transport segment จาก sending ไป receiving host — sender ห่อ segment เป็น datagram, receiver ส่ง segment ขึ้นไปให้ transport layer protocol"
     },
     {
       "q": "Forwarding คืออะไร?",
       "options": [
-        "กำหนด route ที่ packet จะใช้จาก source ไป destination",
         "ย้าย packet จาก input link ของ router ไปยัง output link ที่เหมาะสม",
+        "กำหนด route ที่ packet จะใช้จาก source ไป destination",
         "คำนวณเส้นทางทั้งเครือข่ายล่วงหน้า",
         "เปลี่ยน IP address ต้นทางเป็น NAT address"
       ],
-      "correct": 1,
+      "correct": 0,
       "explain": "สไลด์ 4-5: forwarding = ย้าย packet จาก input link ของ router ไปยัง output link ที่เหมาะสม"
     },
     {
       "q": "Routing คืออะไร?",
       "options": [
-        "move packets from input link to output link ภายใน router เดียว",
-        "เก็บ packet ไว้ใน buffer เมื่อคิวเต็ม",
+        "แบ่ง datagram เป็น fragment",
         "กำหนด route ที่ packet จะใช้จาก source ไป destination",
-        "แบ่ง datagram เป็น fragment"
+        "เก็บ packet ไว้ใน buffer เมื่อคิวเต็ม",
+        "move packets from input link to output link ภายใน router เดียว"
       ],
-      "correct": 2,
+      "correct": 1,
       "explain": "สไลด์ 4-5: routing = กำหนด route ที่ packet จะใช้จาก source ไป destination — ใช้ routing algorithms"
     },
     {
       "q": "ข้อใดอธิบาย Data Plane ถูกต้อง?",
       "options": [
-        "logic ทั้งเครือข่าย — ตัดสินใจเส้นทางตลอด end-to-end path",
-        "ทำงานใน remote controller เท่านั้น",
         "เป็นส่วนที่คำนวณ routing table ทั้งเครือข่าย",
-        "ฟังก์ชัน local ต่อ router — ตัดสินใจว่า datagram ที่เข้ามาที่ input port จะถูกส่งไป output port ใด"
+        "ฟังก์ชัน local ต่อ router — ตัดสินใจว่า datagram ที่เข้ามาที่ input port จะถูกส่งไป output port ใด",
+        "logic ทั้งเครือข่าย — ตัดสินใจเส้นทางตลอด end-to-end path",
+        "ทำงานใน remote controller เท่านั้น"
       ],
-      "correct": 3,
+      "correct": 1,
       "explain": "สไลด์ 4-6: Data plane = ฟังก์ชัน local ต่อ router; ตัดสินใจว่า datagram ที่เข้ามาที่ input port ของ router จะถูก forward ไปยัง output port ใด"
     },
     {
       "q": "Control Plane ต่างจาก Data Plane อย่างไร?",
       "options": [
-        "Control plane เป็น logic ทั้งเครือข่าย — กำหนดว่า datagram จะถูก route ระหว่าง router ตามเส้นทาง end-to-end อย่างไร",
         "Control plane เป็นฟังก์ชัน local ต่อ router",
+        "Control plane เป็น logic ทั้งเครือข่าย — กำหนดว่า datagram จะถูก route ระหว่าง router ตามเส้นทาง end-to-end อย่างไร",
         "Control plane ทำงานในระดับนาโนวินาที",
         "Control plane ทำงานเฉพาะใน host ไม่เกี่ยวกับ router"
       ],
-      "correct": 0,
+      "correct": 1,
       "explain": "สไลด์ 4-6: Control plane = logic ทั้งเครือข่าย; กำหนดว่า datagram จะถูก route ระหว่าง router ตามเส้นทาง end-to-end จาก source host ไป destination host อย่างไร"
     },
     {
       "q": "SDN control plane ทำงานอย่างไร?",
       "options": [
+        "ใช้เฉพาะ static route ที่ตั้งด้วยมือ",
         "routing algorithm ทำงานแยกใน router ทุกตัว",
-        "remote controller คำนวณและติดตั้ง forwarding table ลงใน router",
         "router ทุกตัวคำนวณ forwarding table ของตัวเองโดยไม่สื่อสารกัน",
-        "ใช้เฉพาะ static route ที่ตั้งด้วยมือ"
+        "remote controller คำนวณและติดตั้ง forwarding table ลงใน router"
       ],
-      "correct": 1,
+      "correct": 3,
       "explain": "สไลด์ 4-8: Software-Defined Networking (SDN) control plane — remote controller คำนวณและติดตั้ง forwarding table ลงใน router"
     },
     {
       "q": "Internet service model เป็นแบบใด?",
       "options": [
+        "รับประกัน bandwidth ขั้นต่ำให้แต่ละ flow",
         "รับประกันการส่งถึงภายในเวลาไม่เกิน 40 msec",
-        "ส่ง datagram ตามลำดับทุกกรณี",
         "best effort — ไม่รับประกันการส่งถึง, timing/order หรือ bandwidth",
-        "รับประกัน bandwidth ขั้นต่ำให้แต่ละ flow"
+        "ส่ง datagram ตามลำดับทุกกรณี"
       ],
       "correct": 2,
       "explain": "สไลด์ 4-10: Internet 'best effort' service model — ไม่รับประกันการส่ง datagram, timing หรือลำดับการส่ง และ bandwidth ที่มีให้ end-to-end flow"
@@ -1634,43 +1634,43 @@ window.DATA.ch5 = {
     {
       "q": "Input port ใช้ forwarding table ที่ใด?",
       "options": [
-        "ใน routing processor เท่านั้น",
-        "ใน output port buffer",
+        "ในหน่วยความจำ input port — ใช้ค่าใน header เพื่อ lookup output port",
         "ใน DNS server",
-        "ในหน่วยความจำ input port — ใช้ค่าใน header เพื่อ lookup output port"
+        "ใน routing processor เท่านั้น",
+        "ใน output port buffer"
       ],
-      "correct": 3,
+      "correct": 0,
       "explain": "สไลด์ 4-15: decentralized switching — ใช้ค่าใน header เพื่อ lookup output port จาก forwarding table ในหน่วยความจำ input port ('match plus action')"
     },
     {
       "q": "Longest prefix matching ใช้หลักการใด?",
       "options": [
-        "ใช้ address prefix ที่ยาวที่สุดซึ่ง match destination address",
-        "เลือก prefix ที่สั้นที่สุดที่ match",
         "เลือก interface ที่มีหมายเลขน้อยที่สุด",
+        "เลือก prefix ที่สั้นที่สุดที่ match",
+        "ใช้ address prefix ที่ยาวที่สุดซึ่ง match destination address",
         "สุ่มเลือกหนึ่งในรายการที่ match"
       ],
-      "correct": 0,
+      "correct": 2,
       "explain": "สไลด์ 4-18: เมื่อค้นหา forwarding table entry สำหรับ destination address ที่กำหนด ให้ใช้ address prefix ที่ยาวที่สุดซึ่ง match destination address"
     },
     {
       "q": "Destination 11001000 00010111 00011000 10101010 ควรออก interface ใด?",
       "options": [
-        "0",
-        "1",
+        "3",
         "2",
-        "3"
+        "0",
+        "1"
       ],
-      "correct": 1,
+      "correct": 3,
       "explain": "สไลด์ 4-18: ตรงกับ 11001000 00010111 00011000 (24 บิต) ซึ่งยาวกว่า 11001000 00010111 00011 (21 บิต) → interface 1"
     },
     {
       "q": "Switching via memory ถูกจำกัดความเร็วด้วยอะไร?",
       "options": [
-        "ความเร็วของลิงก์ภายนอกเท่านั้น",
         "จำนวน port สูงสุด 8 port",
+        "ความเร็วของ DNS resolver",
         "memory bandwidth (2 bus crossings ต่อ datagram)",
-        "ความเร็วของ DNS resolver"
+        "ความเร็วของลิงก์ภายนอกเท่านั้น"
       ],
       "correct": 2,
       "explain": "สไลด์ 4-25: ความเร็วจำกัดด้วย memory bandwidth (2 bus crossings ต่อ datagram)"
@@ -1678,12 +1678,12 @@ window.DATA.ch5 = {
     {
       "q": "HOL (Head-of-the-Line) blocking คืออะไร?",
       "options": [
-        "packet ถูกส่งออกก่อนกำหนด",
-        "router ทำการ fragmentation อัตโนมัติ",
+        "datagram ที่อยู่หัวคิวขวาง datagram อื่นในคิวไม่ให้เคลื่อนที่ต่อไป",
         "output port เปลี่ยน IP address ต้นทาง",
-        "datagram ที่อยู่หัวคิวขวาง datagram อื่นในคิวไม่ให้เคลื่อนที่ต่อไป"
+        "packet ถูกส่งออกก่อนกำหนด",
+        "router ทำการ fragmentation อัตโนมัติ"
       ],
-      "correct": 3,
+      "correct": 0,
       "explain": "สไลด์ 4-29: Head-of-the-Line (HOL) blocking — datagram ที่อยู่หัวคิวขวาง datagram อื่นในคิวไม่ให้เคลื่อนที่ต่อไป"
     }
   ],
@@ -1693,45 +1693,45 @@ window.DATA.ch5 = {
     {
       "q": "Sender ใน Network Layer ทำอะไรกับ segment?",
       "options": [
-        "ห่อ segment ให้เป็น datagram",
-        "แบ่ง segment เป็น frame",
+        "เปลี่ยน segment เป็นบิต",
         "เข้ารหัส segment ด้วย public key",
-        "เปลี่ยน segment เป็นบิต"
+        "แบ่ง segment เป็น frame",
+        "ห่อ segment ให้เป็น datagram"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "สไลด์ 4-4: sender ห่อ segment เป็น datagram แล้วส่งต่อให้ link layer"
     },
     {
       "q": "ข้อใดคือ forwarding?",
       "options": [
-        "กำหนด route ที่ packet จะใช้จาก source ไป destination",
         "ย้าย packet จาก input link ของ router ไปยัง output link ที่เหมาะสม",
+        "กำหนด service model ของ ISP",
         "คำนวณเส้นทางทั้งเครือข่าย",
-        "กำหนด service model ของ ISP"
+        "กำหนด route ที่ packet จะใช้จาก source ไป destination"
       ],
-      "correct": 1,
+      "correct": 0,
       "explain": "สไลด์ 4-5: forwarding = ย้าย packet จาก input link ของ router ไปยัง output link ที่เหมาะสม"
     },
     {
       "q": "ข้อใดคือ routing?",
       "options": [
-        "move packet ภายใน router เดียว",
         "เก็บ packet ใน output buffer",
-        "กำหนด route ที่ packet จะใช้จาก source ไป destination",
-        "ตรวจ checksum ของ IP header"
+        "move packet ภายใน router เดียว",
+        "ตรวจ checksum ของ IP header",
+        "กำหนด route ที่ packet จะใช้จาก source ไป destination"
       ],
-      "correct": 2,
+      "correct": 3,
       "explain": "สไลด์ 4-5: routing = determine route taken by packets from source to destination"
     },
     {
       "q": "Data Plane ทำงานแบบใด?",
       "options": [
-        "logic ทั้งเครือข่าย",
-        "ฟังก์ชันของ remote controller",
+        "ฟังก์ชัน local ต่อ router",
         "ฟังก์ชันใน application layer",
-        "ฟังก์ชัน local ต่อ router"
+        "logic ทั้งเครือข่าย",
+        "ฟังก์ชันของ remote controller"
       ],
-      "correct": 3,
+      "correct": 0,
       "explain": "สไลด์ 4-6: Data plane = ฟังก์ชัน local ต่อ router"
     },
     {
@@ -1739,8 +1739,8 @@ window.DATA.ch5 = {
       "options": [
         "logic ทั้งเครือข่าย",
         "ฟังก์ชัน local ต่อ router",
-        "อยู่ใน link layer",
-        "ทำงานเฉพาะใน host"
+        "ทำงานเฉพาะใน host",
+        "อยู่ใน link layer"
       ],
       "correct": 0,
       "explain": "สไลด์ 4-6: Control plane = logic ทั้งเครือข่าย"
@@ -1748,21 +1748,21 @@ window.DATA.ch5 = {
     {
       "q": "SDN controller ทำอะไร?",
       "options": [
+        "ทำหน้าที่เป็น DHCP server",
         "ส่ง packet แทน router ทุกตัว",
         "คำนวณและติดตั้ง forwarding table ลงใน router",
-        "ทำหน้าที่เป็น DHCP server",
         "แปลง IP เป็น MAC address"
       ],
-      "correct": 1,
+      "correct": 2,
       "explain": "สไลด์ 4-8: remote controller คำนวณและติดตั้ง forwarding table ลงใน router"
     },
     {
       "q": "Internet best-effort service model ไม่รับประกันสิ่งใด?",
       "options": [
+        "เฉพาะ MAC address",
         "เฉพาะ checksum",
-        "เฉพาะหมายเลข port",
         "การส่งถึง, timing/order และ bandwidth",
-        "เฉพาะ MAC address"
+        "เฉพาะหมายเลข port"
       ],
       "correct": 2,
       "explain": "สไลด์ 4-10: ไม่รับประกันการส่ง datagram, timing หรือลำดับการส่ง และ bandwidth ที่มีให้ end-to-end flow"
@@ -1770,76 +1770,76 @@ window.DATA.ch5 = {
     {
       "q": "Input port มีลำดับการทำงานอย่างไร?",
       "options": [
-        "lookup → line termination → link layer",
+        "line termination → link layer protocol (รับข้อมูล) → lookup, forwarding, queueing",
         "queueing → lookup → line termination",
-        "link layer → queueing → line termination",
-        "line termination → link layer protocol (รับข้อมูล) → lookup, forwarding, queueing"
+        "lookup → line termination → link layer",
+        "link layer → queueing → line termination"
       ],
-      "correct": 3,
+      "correct": 0,
       "explain": "สไลด์ 4-15: line termination (physical: รับข้อมูลระดับบิต) → link layer protocol (รับข้อมูล) → lookup, forwarding, queueing"
     },
     {
       "q": "Destination-based forwarding ใช้อะไรในการตัดสินใจ?",
       "options": [
-        "destination IP address เท่านั้น",
+        "MAC address เท่านั้น",
         "source IP address เท่านั้น",
-        "TCP port เท่านั้น",
-        "MAC address เท่านั้น"
+        "destination IP address เท่านั้น",
+        "TCP port เท่านั้น"
       ],
-      "correct": 0,
+      "correct": 2,
       "explain": "สไลด์ 4-16: destination-based forwarding: forward โดยดูเฉพาะ destination IP address (แบบ traditional)"
     },
     {
       "q": "Longest prefix matching เลือกอะไร?",
       "options": [
         "prefix ที่สั้นที่สุดที่ match",
+        "entry สุดท้ายในตาราง",
         "prefix ที่ยาวที่สุดที่ match destination address",
-        "entry แรกในตาราง",
-        "entry สุดท้ายในตาราง"
+        "entry แรกในตาราง"
       ],
-      "correct": 1,
+      "correct": 2,
       "explain": "สไลด์ 4-18: ใช้ address prefix ที่ยาวที่สุดซึ่ง match destination address"
     },
     {
       "q": "Destination 11001000 00010111 00011000 10101010 ออก interface ใด?",
+      "options": [
+        "3",
+        "1",
+        "0",
+        "2"
+      ],
+      "correct": 1,
+      "explain": "สไลด์ 4-18: match 11001000 00010111 00011000 (24 บิต) → interface 1"
+    },
+    {
+      "q": "Destination 11001000 00010111 00010110 10100001 ออก interface ใด?",
       "options": [
         "0",
         "2",
         "1",
         "3"
       ],
-      "correct": 2,
-      "explain": "สไลด์ 4-18: match 11001000 00010111 00011000 (24 บิต) → interface 1"
-    },
-    {
-      "q": "Destination 11001000 00010111 00010110 10100001 ออก interface ใด?",
-      "options": [
-        "1",
-        "2",
-        "3",
-        "0"
-      ],
-      "correct": 3,
+      "correct": 0,
       "explain": "สไลด์ 4-18: match 11001000 00010111 00010 (21 บิต) → interface 0"
     },
     {
       "q": "TCAM ใช้ประโยชน์อย่างไรใน longest prefix matching?",
       "options": [
-        "ส่ง address ให้ TCAM แล้วดึง address ได้ใน one clock cycle โดยไม่ขึ้นกับขนาด table",
         "เก็บ packet buffer ขนาดใหญ่",
         "แปลง IP เป็น MAC",
-        "ทำ fragmentation"
+        "ทำ fragmentation",
+        "ส่ง address ให้ TCAM แล้วดึง address ได้ใน one clock cycle โดยไม่ขึ้นกับขนาด table"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "สไลด์ 4-22: content addressable — ส่ง address ให้ TCAM: ดึง address ได้ใน one clock cycle โดยไม่ขึ้นกับขนาด table"
     },
     {
       "q": "Switching via memory ถูกจำกัดด้วยอะไร?",
       "options": [
-        "bus contention",
+        "ความเร็ว DNS",
         "memory bandwidth (2 bus crossings ต่อ datagram)",
-        "จำนวน switching plane",
-        "ความเร็ว DNS"
+        "bus contention",
+        "จำนวน switching plane"
       ],
       "correct": 1,
       "explain": "สไลด์ 4-25: ความเร็วจำกัดด้วย memory bandwidth (2 bus crossings ต่อ datagram)"
@@ -1849,65 +1849,65 @@ window.DATA.ch5 = {
       "options": [
         "output buffer ว่างเกินไป",
         "link layer ส่ง frame เร็วเกินไป",
-        "datagram ที่หัวคิวบล็อก datagram อื่นในคิวไม่ให้เคลื่อนที่",
-        "IP address ซ้ำกัน"
+        "IP address ซ้ำกัน",
+        "datagram ที่หัวคิวบล็อก datagram อื่นในคิวไม่ให้เคลื่อนที่"
       ],
-      "correct": 2,
+      "correct": 3,
       "explain": "สไลด์ 4-29: queued datagram at front of queue prevents others in queue from moving forward"
     },
     {
       "q": "IP address คืออะไร?",
       "options": [
         "identifier 48 บิตของ MAC address",
-        "หมายเลข port 16 บิต",
+        "identifier 32 บิตที่ผูกกับแต่ละ host หรือ router interface",
         "ชื่อโดเมนสำหรับ DNS",
-        "identifier 32 บิตที่ผูกกับแต่ละ host หรือ router interface"
+        "หมายเลข port 16 บิต"
       ],
-      "correct": 3,
+      "correct": 1,
       "explain": "สไลด์ 4-44: IP address: identifier 32 บิตที่ผูกกับแต่ละ host หรือ router interface"
     },
     {
       "q": "Subnet mask /24 หมายถึงอะไร?",
       "options": [
+        "มี 24 subnets ในเครือข่าย",
         "high-order 24 บิตเป็น subnet part ของ IP address",
         "host part มี 24 บิต",
-        "มี 24 subnets ในเครือข่าย",
         "ใช้ได้กับ 24 เครื่องเท่านั้น"
       ],
-      "correct": 0,
+      "correct": 1,
       "explain": "สไลด์ 4-48: subnet mask: /24 (high-order 24 บิต: subnet part ของ IP address)"
     },
     {
       "q": "CIDR 200.23.16.0/23 หมายถึงอะไร?",
       "options": [
+        "มี 23 host ใน subnet",
         "host portion มี 23 บิต",
         "subnet portion ของ address มี 23 บิต",
-        "มี 23 host ใน subnet",
         "เป็น class B address"
       ],
-      "correct": 1,
+      "correct": 2,
       "explain": "สไลด์ 4-50: รูปแบบ CIDR address a.b.c.d/x โดย x คือจำนวนบิตใน subnet portion ของ address"
     },
     {
       "q": "ลำดับ DHCP 4 ขั้นถูกต้องคือข้อใด?",
       "options": [
         "offer → discover → ACK → request",
+        "ACK → request → offer → discover",
         "request → ACK → discover → offer",
-        "discover → offer → request → ACK",
-        "ACK → request → offer → discover"
+        "discover → offer → request → ACK"
       ],
-      "correct": 2,
+      "correct": 3,
       "explain": "สไลด์ 4-52: host broadcast DHCP discover [optional] → DHCP server ตอบกลับด้วย DHCP offer [optional] → host ขอ IP: DHCP request → DHCP server ส่ง address: DHCP ack"
     },
     {
       "q": "Route aggregation ช่วยอะไร?",
       "options": [
-        "เพิ่มจำนวน IP address ใน subnet",
-        "ลดขนาด IP header",
         "เปลี่ยน best-effort เป็น guaranteed",
-        "โฆษณาเส้นทางแบบสรุป เช่น 200.23.16.0/20 แทนหลาย /23"
+        "โฆษณาเส้นทางแบบสรุป เช่น 200.23.16.0/20 แทนหลาย /23",
+        "ลดขนาด IP header",
+        "เพิ่มจำนวน IP address ใน subnet"
       ],
-      "correct": 3,
+      "correct": 1,
       "explain": "สไลด์ 4-59: hierarchical addressing ช่วยให้โฆษณา routing information ได้อย่างมีประสิทธิภาพ — 'ส่งอะไรก็ได้ที่ address ขึ้นต้นด้วย 200.23.16.0/20'"
     }
   ],
@@ -2630,67 +2630,67 @@ window.DATA.ch6 = {
     {
       "q": "Control plane รับผิดชอบงานใด?",
       "options": [
+        "Forwarding packet ภายใน router",
         "Routing เพื่อกำหนดเส้นทางจากต้นทางถึงปลายทาง",
         "ตรวจ checksum ของ IP header",
-        "เก็บ packet ไว้ใน output buffer",
-        "Forwarding packet ภายใน router"
+        "เก็บ packet ไว้ใน output buffer"
       ],
-      "correct": 0,
+      "correct": 1,
       "explain": "Control plane = routing: กำหนดเส้นทางที่ packet จะเดินจากต้นทางถึงปลายทาง แล้วนำผลไปเติมใน forwarding table"
     },
     {
       "q": "ข้อใดอธิบาย Forwarding ได้ถูกต้อง?",
       "options": [
-        "กำหนดเส้นทางทั้งเครือข่าย",
-        "ย้าย packet จาก input ของ router ไปยัง output ที่เหมาะสม",
         "คำนวณ shortest path ด้วย Dijkstra",
-        "แลกเปลี่ยน distance vector กับเพื่อนบ้าน"
+        "แลกเปลี่ยน distance vector กับเพื่อนบ้าน",
+        "ย้าย packet จาก input ของ router ไปยัง output ที่เหมาะสม",
+        "กำหนดเส้นทางทั้งเครือข่าย"
       ],
-      "correct": 1,
+      "correct": 2,
       "explain": "Forwarding เป็นงานรายแพ็กเก็ตของ data plane: ย้าย packet จาก input ไป output ที่เหมาะสม"
     },
     {
       "q": "Per-router control plane ทำงานอย่างไร?",
       "options": [
-        "ไม่ต้องใช้ forwarding table เลย",
         "มี controller กลางคำนวณ forwarding table ให้ทุก router",
-        "router ทุกตัวมี routing algorithm ของตัวเองและคุยกันเพื่อคำนวณ forwarding table",
-        "ใช้เฉพาะ static route ที่ตั้งค่าด้วยมือ"
+        "ไม่ต้องใช้ forwarding table เลย",
+        "ใช้เฉพาะ static route ที่ตั้งค่าด้วยมือ",
+        "router ทุกตัวมี routing algorithm ของตัวเองและคุยกันเพื่อคำนวณ forwarding table"
       ],
-      "correct": 2,
+      "correct": 3,
       "explain": "Per-router control: router แต่ละตัวมี routing algorithm และแลกเปลี่ยนข้อมูลกันเพื่อสร้าง local forwarding table ของตัวเอง"
     },
     {
       "q": "SDN controller อยู่ที่ใด?",
       "options": [
-        "อยู่ใน host ปลายทางทุกเครื่อง",
-        "อยู่ใน DNS server",
+        "เป็น remote controller แบบ logically centralized",
         "อยู่ใน switch ทุกตัว",
-        "เป็น remote controller แบบ logically centralized"
+        "อยู่ใน DNS server",
+        "อยู่ใน host ปลายทางทุกเครื่อง"
       ],
-      "correct": 3,
+      "correct": 0,
       "explain": "SDN ใช้ remote controller ตัวเดียวในเชิงตรรกะ (logically centralized) คำนวณ forwarding table แล้วติดตั้งลง router"
     },
     {
       "q": "Southbound API ใช้เชื่อมส่วนใดกับส่วนใด?",
       "options": [
-        "SDN controller กับ switch",
-        "host กับ router",
         "AS หนึ่งกับอีก AS หนึ่ง",
-        "network-control app กับ SDN controller"
+        "host กับ router",
+        "network-control app กับ SDN controller",
+        "SDN controller กับ switch"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "Northbound API = app ↔ controller; Southbound API = controller ↔ switch (เช่น OpenFlow)"
     },
     {
       "q": "Router ที่รัน Link-State รู้ข้อมูลอะไร?",
       "options": [
+        "รู้เฉพาะ forwarding table ของตัวเอง",
         "รู้เฉพาะ cost ไปยังเพื่อนบ้านโดยตรง",
         "รู้ topology และ link cost ทั้งหมดของเครือข่าย",
-        "รู้เฉพาะ forwarding table ของตัวเอง",
         "รู้เฉพาะเส้นทางที่เคยเรียนมา"
       ],
-      "correct": 1,
+      "correct": 2,
       "explain": "Link-State ใช้ link-state broadcast ทำให้ทุก node มี topology และ link cost ครบเหมือนกัน แล้วจึงรัน Dijkstra"
     },
     {
@@ -2698,21 +2698,21 @@ window.DATA.ch6 = {
       "options": [
         "Hot potato",
         "Dijkstra",
-        "Bellman-Ford",
-        "AS-PATH"
+        "AS-PATH",
+        "Bellman-Ford"
       ],
-      "correct": 2,
+      "correct": 3,
       "explain": "DV ใช้สมการ Bellman-Ford: D_x(y) = min_v { c(x,v) + D_v(y) } โดยแลกเปลี่ยน DV กับเพื่อนบ้าน"
     },
     {
       "q": "Dijkstra เลือก node ใดในแต่ละรอบ?",
       "options": [
-        "node ที่มีหมายเลขมากที่สุด",
+        "node ที่มี D ต่ำสุดและยังไม่อยู่ใน N'",
         "node ที่มี link มากที่สุด",
         "node ที่อยู่ใกล้ source ที่สุดทางกายภาพ",
-        "node ที่มี D ต่ำสุดและยังไม่อยู่ใน N'"
+        "node ที่มีหมายเลขมากที่สุด"
       ],
-      "correct": 3,
+      "correct": 0,
       "explain": "Dijkstra เลือก w ที่ไม่อยู่ใน N' และมี D(w) ต่ำสุด แล้วเพิ่ม w เข้า N' จากนั้นอัปเดต D ของเพื่อนบ้าน"
     },
     {
@@ -2720,8 +2720,8 @@ window.DATA.ch6 = {
       "options": [
         "O(n²)",
         "O(log n)",
-        "O(n³)",
-        "O(n)"
+        "O(n)",
+        "O(n³)"
       ],
       "correct": 0,
       "explain": "จำนวน comparisons ประมาณ n(n+1)/2 = O(n²) และสามารถทำให้เป็น O(n log n) ได้ด้วย implementation ที่ดีกว่า"
@@ -2731,8 +2731,8 @@ window.DATA.ch6 = {
       "options": [
         "controller ที่อยู่ศูนย์กลาง",
         "เพื่อนบ้านที่ให้ค่า c(x,v) + D_v(y) ต่ำที่สุด",
-        "เพื่อนบ้านที่มีหมายเลข ID ต่ำที่สุด",
-        "เพื่อนบ้านที่มี link cost สูงที่สุด"
+        "เพื่อนบ้านที่มี link cost สูงที่สุด",
+        "เพื่อนบ้านที่มีหมายเลข ID ต่ำที่สุด"
       ],
       "correct": 1,
       "explain": "D_x(y) = min_v { c(x,v) + D_v(y) } — v ที่ให้ค่าต่ำสุดคือ next hop บนเส้นทางไป y"
@@ -2740,10 +2740,10 @@ window.DATA.ch6 = {
     {
       "q": "Count-to-infinity เกิดกับ routing algorithm แบบใด?",
       "options": [
+        "OSPF",
         "BGP",
-        "Link-State",
         "Distance-Vector",
-        "OSPF"
+        "Link-State"
       ],
       "correct": 2,
       "explain": "Count-to-infinity เป็นปัญหาของ DV เมื่อข่าวร้าย (cost เพิ่ม) แพร่ช้า ทำให้ค่า cost ไต่ขึ้นทีละน้อยจนถึงค่าจริง"
@@ -2752,11 +2752,11 @@ window.DATA.ch6 = {
       "q": "ข้อใดจับคู่ OSPF และ BGP ได้ถูกต้อง?",
       "options": [
         "ทั้งคู่เป็น distance-vector",
+        "OSPF = intra-AS link-state, BGP = inter-AS path vector",
         "ทั้งคู่ใช้ UDP ในการแลกเปลี่ยนข้อมูล",
-        "OSPF = inter-AS, BGP = intra-AS",
-        "OSPF = intra-AS link-state, BGP = inter-AS path vector"
+        "OSPF = inter-AS, BGP = intra-AS"
       ],
-      "correct": 3,
+      "correct": 1,
       "explain": "OSPF เป็น intra-AS link-state ที่ใช้ Dijkstra; BGP เป็น inter-AS path vector ที่ใช้ TCP และให้ความสำคัญกับ policy"
     }
   ],
@@ -2764,67 +2764,67 @@ window.DATA.ch6 = {
     {
       "q": "Data plane มีหน้าที่หลักอะไร?",
       "options": [
-        "Forwarding packet จาก input ไปยัง output ที่เหมาะสม",
-        "คำนวณ forwarding table ด้วย Dijkstra",
         "แลกเปลี่ยน reachability ระหว่าง AS",
-        "Routing เพื่อกำหนดเส้นทางทั้งเครือข่าย"
+        "Forwarding packet จาก input ไปยัง output ที่เหมาะสม",
+        "Routing เพื่อกำหนดเส้นทางทั้งเครือข่าย",
+        "คำนวณ forwarding table ด้วย Dijkstra"
       ],
-      "correct": 0,
+      "correct": 1,
       "explain": "Data plane = forwarding: ย้าย packet จาก input ของ router ไปยัง output ที่เหมาะสม ทำเป็นรายแพ็กเก็ต"
     },
     {
       "q": "Control plane มีหน้าที่หลักอะไร?",
       "options": [
         "ตรวจ checksum ของ packet",
+        "เก็บ packet ใน buffer",
         "Routing เพื่อกำหนดเส้นทางจากต้นทางถึงปลายทาง",
-        "Forwarding packet ภายใน router",
-        "เก็บ packet ใน buffer"
+        "Forwarding packet ภายใน router"
       ],
-      "correct": 1,
+      "correct": 2,
       "explain": "Control plane = routing: กำหนดเส้นทางที่ packet จะเดิน แล้วนำผลไปเติมใน forwarding table"
     },
     {
       "q": "ข้อใดเป็นความต่างที่ถูกต้องระหว่าง Forwarding กับ Routing?",
       "options": [
-        "Routing ทำงานเร็วกว่า Forwarding เสมอ",
         "Forwarding = network-wide, Routing = local per-router",
         "Forwarding = ย้าย packet input→output, Routing = กำหนดเส้นทาง source→destination",
+        "Routing ทำงานเร็วกว่า Forwarding เสมอ",
         "ทั้งคู่ทำงานใน control plane เหมือนกัน"
       ],
-      "correct": 2,
+      "correct": 1,
       "explain": "Forwarding เป็น local/per-packet ที่ router; Routing เป็น network-wide ที่กำหนดเส้นทางจากต้นทางถึงปลายทาง"
     },
     {
       "q": "Per-router control plane มีลักษณะอย่างไร?",
       "options": [
-        "มี controller กลางเพียงตัวเดียวติดตั้ง table ให้ทุก router",
-        "ไม่มี forwarding table ใน router",
         "ใช้ได้เฉพาะกับ BGP เท่านั้น",
-        "router ทุกตัวมี routing algorithm ของตัวเองและคุยกันเอง"
+        "ไม่มี forwarding table ใน router",
+        "router ทุกตัวมี routing algorithm ของตัวเองและคุยกันเอง",
+        "มี controller กลางเพียงตัวเดียวติดตั้ง table ให้ทุก router"
       ],
-      "correct": 3,
+      "correct": 2,
       "explain": "Per-router control เป็นแบบดั้งเดิม: router แต่ละตัวมี routing algorithm และแลกเปลี่ยนข้อมูลกับ router อื่น"
     },
     {
       "q": "ข้อใดกล่าวถึง SDN ถูกต้อง?",
       "options": [
-        "remote controller แบบ logically centralized คำนวณ forwarding table แล้วติดตั้งลง router",
-        "router ทุกตัวต้องรัน routing algorithm แยกกันโดยไม่มี controller",
         "SDN ใช้ได้เฉพาะใน AS เดียว",
-        "SDN ไม่ต้องใช้ API ใด ๆ"
+        "router ทุกตัวต้องรัน routing algorithm แยกกันโดยไม่มี controller",
+        "SDN ไม่ต้องใช้ API ใด ๆ",
+        "remote controller แบบ logically centralized คำนวณ forwarding table แล้วติดตั้งลง router"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "SDN ใช้ remote controller ตัวเดียวในเชิงตรรกะ และติดตั้ง forwarding table ลง router ผ่าน control agent"
     },
     {
       "q": "Northbound API ใช้เชื่อมอะไร?",
       "options": [
-        "AS กับ AS",
-        "network-control app กับ SDN controller",
         "SDN controller กับ switch",
-        "Router กับ Router"
+        "AS กับ AS",
+        "Router กับ Router",
+        "network-control app กับ SDN controller"
       ],
-      "correct": 1,
+      "correct": 3,
       "explain": "Northbound API อยู่ระหว่าง network-control apps กับ SDN controller; Southbound API อยู่ระหว่าง controller กับ switch"
     },
     {
@@ -2832,96 +2832,96 @@ window.DATA.ch6 = {
       "options": [
         "OSPF LSA",
         "DHCP discover",
-        "OpenFlow port-status",
-        "BGP UPDATE"
+        "BGP UPDATE",
+        "OpenFlow port-status"
       ],
-      "correct": 2,
+      "correct": 3,
       "explain": "switch ส่ง OpenFlow port-status ไปบอก controller จากนั้น controller อัปเดตสถานะ link และเรียกแอป Dijkstra"
     },
     {
       "q": "เพราะเหตุใดจึงต้องแบ่งเครือข่ายออกเป็น Autonomous System (AS)?",
       "options": [
-        "เพื่อให้ทุก AS ใช้ routing protocol เดียวกันเท่านั้น",
-        "เพื่อเพิ่มจำนวน router ในเครือข่าย",
         "เพื่อให้ forwarding table ใหญ่ขึ้น",
-        "เพื่อลด scale ของตารางและการแลกเปลี่ยน routing information และรองรับ administrative autonomy"
+        "เพื่อให้ทุก AS ใช้ routing protocol เดียวกันเท่านั้น",
+        "เพื่อลด scale ของตารางและการแลกเปลี่ยน routing information และรองรับ administrative autonomy",
+        "เพื่อเพิ่มจำนวน router ในเครือข่าย"
       ],
-      "correct": 3,
+      "correct": 2,
       "explain": "AS ช่วยแก้ปัญหา scale (ปลายทางเป็นพันล้าน) และ administrative autonomy (แต่ละเครือข่ายควบคุม routing ของตัวเอง)"
     },
     {
       "q": "Global routing algorithm หมายถึงอะไร?",
       "options": [
-        "router รู้ topology และ link cost ทั้งหมด",
-        "router รู้เฉพาะ cost ไปเพื่อนบ้านโดยตรง",
         "router ไม่ต้องใช้ forwarding table",
-        "router ใช้เฉพาะ static route"
+        "router รู้ topology และ link cost ทั้งหมด",
+        "router ใช้เฉพาะ static route",
+        "router รู้เฉพาะ cost ไปเพื่อนบ้านโดยตรง"
       ],
-      "correct": 0,
+      "correct": 1,
       "explain": "Global algorithm ให้ทุก router รู้ topology และ link cost ทั้งหมด — ตัวอย่างคือ Link-State"
     },
     {
       "q": "Link-State routing ใช้ algorithm ใดคำนวณเส้นทาง?",
       "options": [
         "AS-PATH",
-        "Dijkstra",
         "Bellman-Ford",
-        "Hot potato"
+        "Hot potato",
+        "Dijkstra"
       ],
-      "correct": 1,
+      "correct": 3,
       "explain": "Link-State ให้ทุก node รู้ topology ทั้งหมด แล้วแต่ละ router รัน Dijkstra เพื่อหา least-cost path"
     },
     {
       "q": "Distance-Vector routing ใช้สมการใด?",
       "options": [
+        "Bellman-Ford",
         "BGP",
         "Dijkstra",
-        "Bellman-Ford",
         "OSPF"
       ],
-      "correct": 2,
+      "correct": 0,
       "explain": "DV ใช้สมการ Bellman-Ford และแลกเปลี่ยน distance vector กับเพื่อนบ้านเป็นระยะ"
     },
     {
       "q": "Link-State มี message complexity ประมาณเท่าใด?",
       "options": [
         "O(n)",
-        "O(log n)",
         "O(1)",
-        "O(n²)"
+        "O(n²)",
+        "O(log n)"
       ],
-      "correct": 3,
+      "correct": 2,
       "explain": "แต่ละ router broadcast link state ไปทุกตัว รวมแล้วประมาณ O(n²) messages"
     },
     {
       "q": "จากตัวอย่าง Dijkstra หลังจากเลือก x แล้ว ค่า D(w) เป็นเท่าใด?",
       "options": [
-        "4",
-        "5",
+        "3",
         "∞",
-        "3"
+        "5",
+        "4"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "D(w) = min(5, D(x)+c(x,w)) = min(5, 1+3) = 4 ผ่าน x"
     },
     {
       "q": "จากผล Dijkstra ที่ router u ถ้าจะไป w ต้องใช้ link ใด?",
       "options": [
-        "link (u,v)",
         "link (u,x)",
-        "link (u,w)",
-        "link (u,z)"
+        "link (u,v)",
+        "link (u,z)",
+        "link (u,w)"
       ],
-      "correct": 1,
+      "correct": 0,
       "explain": "Forwarding table ที่ u: ไป v ใช้ (u,v); ปลายทาง w, x, y, z ใช้ link (u,x)"
     },
     {
       "q": "Dijkstra อาจเกิด oscillation เมื่อใด?",
       "options": [
-        "เมื่อใช้ TCP แทน UDP",
         "เมื่อ AS มีขนาดใหญ่เกินไป",
+        "เมื่อ router มี forwarding table ไม่พอ",
         "เมื่อ link cost ขึ้นกับปริมาณ traffic ทำให้เส้นทางสลับไปมา",
-        "เมื่อ router มี forwarding table ไม่พอ"
+        "เมื่อใช้ TCP แทน UDP"
       ],
       "correct": 2,
       "explain": "ถ้า link cost ขึ้นกับ traffic การย้ายเส้นทางจะเปลี่ยน cost และอาจทำให้ต้องย้ายกลับไปมาหรือ oscillation"
@@ -2930,20 +2930,20 @@ window.DATA.ch6 = {
       "q": "จากตัวอย่าง Bellman-Ford ในสไลด์ ถ้าเพื่อนบ้านรายงาน D_v(z)=5, D_w(z)=3, D_x(z)=3 และใช้ค่า 2+5, 1+3, 5+3 ข้อใดคือ D_u(z)?",
       "options": [
         "D_u(z) = max{2+5, 1+3, 5+3} = 8",
-        "D_u(z) = 2+5+1+3+5+3 = 19",
+        "D_u(z) = min{2+5, 1+3, 5+3} = 4",
         "D_u(z) = 0",
-        "D_u(z) = min{2+5, 1+3, 5+3} = 4"
+        "D_u(z) = 2+5+1+3+5+3 = 19"
       ],
-      "correct": 3,
+      "correct": 1,
       "explain": "ตัวอย่างในสไลด์: D_u(z) = min{2+5, 1+3, 5+3} = 4 และ next hop คือ x"
     },
     {
       "q": "Count-to-infinity เป็นปัญหาของ DV เพราะอะไร?",
       "options": [
         "ข่าวร้ายแพร่ช้าและ router อาจเข้าใจผิดว่าไปปลายทางได้ผ่านเพื่อนบ้านที่จริง ๆ แล้วต้องผ่านตัวเอง",
-        "ทุก router รู้ topology ทั้งหมดพร้อมกัน",
         "OSPF ใช้ Dijkstra",
-        "BGP ใช้ TCP"
+        "BGP ใช้ TCP",
+        "ทุก router รู้ topology ทั้งหมดพร้อมกัน"
       ],
       "correct": 0,
       "explain": "DV อาศัยค่าประมาณจากเพื่อนบ้าน เมื่อ cost เพิ่มขึ้น ข่าวร้ายแพร่ช้าและเกิด routing loop/count-to-infinity"
@@ -2951,10 +2951,10 @@ window.DATA.ch6 = {
     {
       "q": "ข้อใดจับคู่ OSPF และ BGP ได้ถูกต้อง?",
       "options": [
-        "ทั้งคู่เป็น protocol ของ data plane",
+        "ทั้งคู่เป็น distance-vector",
         "OSPF = intra-AS link-state, BGP = inter-AS path vector",
-        "OSPF = inter-AS path vector, BGP = intra-AS link-state",
-        "ทั้งคู่เป็น distance-vector"
+        "ทั้งคู่เป็น protocol ของ data plane",
+        "OSPF = inter-AS path vector, BGP = intra-AS link-state"
       ],
       "correct": 1,
       "explain": "OSPF เป็น intra-AS link-state ที่ใช้ Dijkstra; BGP เป็น inter-AS path vector ที่ใช้ TCP และ policy"
@@ -2962,23 +2962,23 @@ window.DATA.ch6 = {
     {
       "q": "BGP route selection พิจารณาข้อใดก่อน?",
       "options": [
+        "Local preference ตาม policy",
         "NEXT-HOP ที่ไกลที่สุด",
         "จำนวน interface ของ router",
-        "Local preference ตาม policy",
         "AS-PATH ที่ยาวที่สุด"
       ],
-      "correct": 2,
+      "correct": 0,
       "explain": "ลำดับของ BGP: local preference → AS-PATH สั้นที่สุด → NEXT-HOP ใกล้ที่สุด (hot potato) → เกณฑ์อื่น ๆ"
     },
     {
       "q": "ข้อความ BGP ชนิดใดใช้ประกาศ path ใหม่ หรือถอน path เก่า?",
       "options": [
-        "KEEPALIVE",
+        "UPDATE",
         "NOTIFICATION",
-        "OPEN",
-        "UPDATE"
+        "KEEPALIVE",
+        "OPEN"
       ],
-      "correct": 3,
+      "correct": 0,
       "explain": "UPDATE ใช้ประกาศ path ใหม่หรือถอน path เก่า; OPEN เปิด connection, KEEPALIVE รักษา connection, NOTIFICATION แจ้ง error"
     }
   ],
@@ -3781,23 +3781,23 @@ window.DATA.ch7 = {
     {
       "q": "Link layer มีหน้าที่หลักอะไร?",
       "options": [
-        "ส่ง datagram ระหว่าง node ที่อยู่ติดกันผ่าน link หนึ่งเส้น",
-        "เลือกเส้นทางจากต้นทางถึงปลายทางทั่วอินเทอร์เน็ต",
         "จัดลำดับ segment และรับประกัน byte stream",
-        "แปลง domain name เป็น IP address"
+        "ส่ง datagram ระหว่าง node ที่อยู่ติดกันผ่าน link หนึ่งเส้น",
+        "แปลง domain name เป็น IP address",
+        "เลือกเส้นทางจากต้นทางถึงปลายทางทั่วอินเทอร์เน็ต"
       ],
-      "correct": 0,
+      "correct": 1,
       "explain": "Link layer ส่ง datagram จาก node หนึ่งไปยัง node ที่อยู่ติดกันทางกายภาพผ่าน link หนึ่งเส้น"
     },
     {
       "q": "Frame ต่างจาก datagram อย่างไร?",
       "options": [
-        "Frame เป็นตาราง MAC address ของ switch",
         "Frame เป็น packet layer 2 ที่ห่อ datagram พร้อม header/trailer",
+        "Frame เป็นสัญญาณ physical ที่ไม่มี header",
         "Frame เป็น packet layer 3 ที่มี IP address",
-        "Frame เป็นสัญญาณ physical ที่ไม่มี header"
+        "Frame เป็นตาราง MAC address ของ switch"
       ],
-      "correct": 1,
+      "correct": 0,
       "explain": "Frame คือ packet ของ layer 2 ซึ่ง encapsulate datagram ของ network layer"
     },
     {
@@ -3814,9 +3814,9 @@ window.DATA.ch7 = {
     {
       "q": "Single parity แบบ even parity ตรวจ error 2 บิตได้หรือไม่?",
       "options": [
-        "ได้ เพราะ parity ตรวจได้ทุก error",
-        "ได้ แต่แก้ไขไม่ได้",
         "ได้เฉพาะ error ที่ติดกัน",
+        "ได้ แต่แก้ไขไม่ได้",
+        "ได้ เพราะ parity ตรวจได้ทุก error",
         "ไม่ได้ เพราะจำนวน 1 อาจยังเป็นเลขคู่เหมือนเดิม"
       ],
       "correct": 3,
@@ -3826,8 +3826,8 @@ window.DATA.ch7 = {
       "q": "Two-dimensional parity แก้ไข error ได้แบบใด?",
       "options": [
         "single-bit error",
-        "error 2 บิตทุกรูปแบบ",
         "error 3 บิตทุกรูปแบบ",
+        "error 2 บิตทุกรูปแบบ",
         "4 บิตที่เรียงเป็นสี่เหลี่ยม"
       ],
       "correct": 0,
@@ -3847,67 +3847,67 @@ window.DATA.ch7 = {
     {
       "q": "Multiple access protocol ใช้กับ link ประเภทใด?",
       "options": [
-        "Fiber ที่มี channel เฉพาะ",
         "Router ภายใน backbone",
-        "Broadcast / shared medium",
-        "Point-to-point link"
+        "Point-to-point link",
+        "Fiber ที่มี channel เฉพาะ",
+        "Broadcast / shared medium"
       ],
-      "correct": 2,
+      "correct": 3,
       "explain": "multiple access ใช้เฉพาะ shared medium เพราะต้องมีกติกาว่าใครส่งได้และส่งเมื่อไร"
     },
     {
       "q": "Slotted ALOHA มีประสิทธิภาพสูงสุดเท่าใด?",
       "options": [
-        "1/(2e) ≈ 18%",
-        "50%",
         "100%",
-        "1/e ≈ 37%"
+        "1/(2e) ≈ 18%",
+        "1/e ≈ 37%",
+        "50%"
       ],
-      "correct": 3,
+      "correct": 2,
       "explain": "Slotted ALOHA สูงสุด 1/e ≈ 0.37 เมื่อ p = 1/N"
     },
     {
       "q": "CSMA/CD ทำอะไรเมื่อตรวจพบ collision ระหว่างส่ง?",
       "options": [
-        "abort การส่งและส่ง jam signal",
-        "ส่ง frame ต่อจนจบ",
+        "เปลี่ยน MAC address ใหม่",
         "รอ ACK จาก receiver",
-        "เปลี่ยน MAC address ใหม่"
+        "abort การส่งและส่ง jam signal",
+        "ส่ง frame ต่อจนจบ"
       ],
-      "correct": 0,
+      "correct": 2,
       "explain": "CSMA/CD หยุดส่งทันทีเมื่อตรวจพบการส่งอื่น แล้วส่ง jam signal และเข้าสู่ binary exponential backoff"
     },
     {
       "q": "802.1Q VLAN tag มี VLAN ID กี่บิต?",
       "options": [
+        "16 บิต (ใช้งาน 1–65534)",
         "4 บิต (ใช้งาน 1–14)",
-        "12 บิต (ใช้งาน 1–4094)",
         "8 บิต (ใช้งาน 1–254)",
-        "16 บิต (ใช้งาน 1–65534)"
+        "12 บิต (ใช้งาน 1–4094)"
       ],
-      "correct": 1,
+      "correct": 3,
       "explain": "802.1Q ใช้ VLAN ID 12 บิต โดยใช้งานได้ 1–4094 ส่วน 0 และ 4095 สงวนไว้"
     },
     {
       "q": "ARP query ส่งแบบใด?",
       "options": [
         "Multicast ไปยัง router เท่านั้น",
-        "Anycast ไปยัง DNS server",
         "Broadcast ด้วย FF-FF-FF-FF-FF-FF",
-        "Unicast ไปยัง MAC ของผู้ถาม"
+        "Unicast ไปยัง MAC ของผู้ถาม",
+        "Anycast ไปยัง DNS server"
       ],
-      "correct": 2,
+      "correct": 1,
       "explain": "ARP query ใช้ broadcast เพราะยังไม่รู้ว่าใครมี IP ปลายทาง ส่วน ARP reply เป็น unicast"
     },
     {
       "q": "Switch เรียนรู้ตำแหน่ง host จากอะไร?",
       "options": [
+        "Source MAC และ incoming port ของ frame",
         "Destination MAC ใน routing table",
         "IP address จาก DHCP",
-        "VLAN ID จาก router",
-        "Source MAC และ incoming port ของ frame"
+        "VLAN ID จาก router"
       ],
-      "correct": 3,
+      "correct": 0,
       "explain": "Self-learning switch ดู source MAC ของ frame แล้วบันทึกว่า host อยู่ที่ incoming LAN segment/port ใด"
     }
   ],
@@ -3915,23 +3915,23 @@ window.DATA.ch7 = {
     {
       "q": "Link layer ส่งข้อมูลระหว่างอะไร?",
       "options": [
-        "node ที่อยู่ติดกันทางกายภาพผ่าน link หนึ่งเส้น",
         "host ต้นทางกับ host ปลายทางทั่วอินเทอร์เน็ต",
+        "node ที่อยู่ติดกันทางกายภาพผ่าน link หนึ่งเส้น",
         "application กับ transport layer",
         "router สองตัวที่อยู่คนละ AS"
       ],
-      "correct": 0,
+      "correct": 1,
       "explain": "Link layer รับผิดชอบการส่ง datagram ระหว่าง node ที่อยู่ติดกันผ่าน link หนึ่งเส้น"
     },
     {
       "q": "NIC implement layer ใด?",
       "options": [
-        "เฉพาะ physical layer",
-        "Link layer และ physical layer",
         "Network layer และ transport layer",
-        "Application layer เท่านั้น"
+        "เฉพาะ physical layer",
+        "Application layer เท่านั้น",
+        "Link layer และ physical layer"
       ],
-      "correct": 1,
+      "correct": 3,
       "explain": "NIC implement ทั้ง link layer และ physical layer และต่อเข้ากับ system bus ของ host"
     },
     {
@@ -3948,45 +3948,45 @@ window.DATA.ch7 = {
     {
       "q": "เพราะเหตุใดจึงอาจมีทั้ง link-level และ end-to-end reliability?",
       "options": [
-        "TCP ไม่สามารถรับประกันข้อมูลได้",
-        "Link layer ต้องรับประกันตลอดเส้นทาง",
+        "Wireless มี error สูงและการ retransmit เฉพาะ link เร็วกว่า",
         "Ethernet มี ACK ทุก frame",
-        "Wireless มี error สูงและการ retransmit เฉพาะ link เร็วกว่า"
+        "TCP ไม่สามารถรับประกันข้อมูลได้",
+        "Link layer ต้องรับประกันตลอดเส้นทาง"
       ],
-      "correct": 3,
+      "correct": 0,
       "explain": "source ระบุ wireless error สูง, retransmit เฉพาะ link เร็ว/ถูกกว่า และ TCP รับประกัน end-to-end อยู่แล้ว"
     },
     {
       "q": "ข้อใดถูกเกี่ยวกับ error detection?",
       "options": [
-        "ไม่สามารถรับประกันได้ 100% และ EDC ที่ใหญ่ขึ้นช่วยได้แต่มี overhead",
-        "ตรวจ error ได้ 100% ถ้าใช้ parity",
+        "Detection แก้ bit error ได้เองเสมอ",
         "EDC ยิ่งเล็กยิ่งตรวจได้ดี",
-        "Detection แก้ bit error ได้เองเสมอ"
+        "ตรวจ error ได้ 100% ถ้าใช้ parity",
+        "ไม่สามารถรับประกันได้ 100% และ EDC ที่ใหญ่ขึ้นช่วยได้แต่มี overhead"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "protocol อาจตรวจไม่พบ error บางรูปแบบ; EDC ใหญ่ขึ้นตรวจ/แก้ได้ดีขึ้นแต่สิ้นเปลือง bandwidth"
     },
     {
       "q": "วิธีใดใช้แก้ไข error ได้เองโดยไม่ต้อง retransmission?",
       "options": [
-        "CRC",
         "FEC / Hamming code",
         "Single parity",
-        "Internet checksum"
+        "Internet checksum",
+        "CRC"
       ],
-      "correct": 1,
+      "correct": 0,
       "explain": "FEC/Hamming code มี redundancy พอที่จะระบุและแก้ bit error; CRC และ checksum เป็น detection"
     },
     {
       "q": "Single parity แบบ even parity ตรวจจับ error ประเภทใดได้?",
       "options": [
-        "error 2 บิตทุกกรณี",
         "burst error ทุกความยาว",
         "error จำนวนบิตเป็นเลขคี่",
+        "error 2 บิตทุกกรณี",
         "error จำนวนบิตเป็นเลขคู่ทั้งหมด"
       ],
-      "correct": 2,
+      "correct": 1,
       "explain": "single parity ตรวจจับ error จำนวนคี่ได้ทั้งหมด แต่ error จำนวนคู่จะหลุด"
     },
     {
@@ -4003,42 +4003,42 @@ window.DATA.ch7 = {
     {
       "q": "CRC ฝั่งส่งคำนวณ R อย่างไร?",
       "options": [
-        "R = remainder[(D · 2^r) / G] แบบ mod 2",
-        "R = D + G แบบ one's complement",
+        "R = MAC address ของ sender",
         "R = จำนวน 1 ใน D mod 2",
-        "R = MAC address ของ sender"
+        "R = remainder[(D · 2^r) / G] แบบ mod 2",
+        "R = D + G แบบ one's complement"
       ],
-      "correct": 0,
+      "correct": 2,
       "explain": "shift D ไปทางซ้าย r บิต แล้วหารด้วย G แบบ mod 2 เศษ r บิตคือ R"
     },
     {
       "q": "CRC ฝั่งรับถือว่าผ่านเมื่อใด?",
       "options": [
-        "MAC destination ตรงกับตัวเอง",
         "เศษจากการหาร <D', R'> ด้วย G เป็น 0",
+        "parity bit ตรงกัน",
         "เศษมีค่าเท่ากับ 1",
-        "parity bit ตรงกัน"
+        "MAC destination ตรงกับตัวเอง"
       ],
-      "correct": 1,
+      "correct": 0,
       "explain": "ถ้าเศษเป็น 0 ถือว่าไม่พบ error; ถ้าไม่เป็น 0 ตรวจพบ error และทิ้ง frame"
     },
     {
       "q": "CRC ตรวจจับ burst error ที่ยาวเท่าใดได้ทั้งหมด?",
       "options": [
         "ยาว 2r บิตทุกกรณี",
-        "เฉพาะ single-bit",
         "ยาว ≤ r บิต",
-        "ยาว > r บิตทุกกรณี"
+        "ยาว > r บิตทุกกรณี",
+        "เฉพาะ single-bit"
       ],
-      "correct": 2,
+      "correct": 1,
       "explain": "CRC ตรวจจับ burst error ที่ยาว ≤ r บิตได้ทั้งหมด; ที่ยาวกว่าอาจตรวจพบได้ขึ้นอยู่กับรูปแบบ"
     },
     {
       "q": "ข้อใดกล่าวถึง shared channel ถูกต้อง?",
       "options": [
+        "ใช้ได้เฉพาะ fiber",
         "ทุก node มี channel เฉพาะของตัวเอง",
         "ไม่ต้องใช้ multiple access protocol",
-        "ใช้ได้เฉพาะ fiber",
         "หลาย node ใช้ medium เดียวกันและอาจเกิด collision"
       ],
       "correct": 3,
@@ -4047,54 +4047,54 @@ window.DATA.ch7 = {
     {
       "q": "Port-based VLAN ช่วยอะไร?",
       "options": [
+        "เปลี่ยน MAC address ของ host อัตโนมัติ",
         "แบ่ง broadcast domain ทาง logical บน switch เดียว",
         "เพิ่มความเร็วของ physical link",
-        "เปลี่ยน MAC address ของ host อัตโนมัติ",
         "ทำให้ทุกพอร์ตอยู่ใน broadcast domain เดียวกัน"
       ],
-      "correct": 0,
+      "correct": 1,
       "explain": "port-based VLAN จัดกลุ่มพอร์ตเป็น VLAN ต่าง ๆ ทำให้ frame ถูกจำกัดอยู่ใน broadcast domain ของ VLAN นั้น"
     },
     {
       "q": "ข้อใดอธิบายความต่างของ switch กับ router ถูกต้อง?",
       "options": [
+        "switch ใช้ IP; router ใช้ MAC",
         "switch แยก broadcast domain; router ไม่แยก",
         "switch ใช้ MAC/layer 2; router ใช้ IP/layer 3",
-        "switch ใช้ IP; router ใช้ MAC",
         "ทั้งคู่สร้าง forwarding table ด้วย routing algorithm"
       ],
-      "correct": 1,
+      "correct": 2,
       "explain": "switch เป็น link-layer device ดู MAC address; router เป็น network-layer device ดู IP address"
     },
     {
       "q": "CSMA ยังเกิด collision ได้เพราะอะไร?",
       "options": [
-        "CSMA ใช้ slot แบบ TDMA",
         "receiver ไม่ส่ง ACK",
         "propagation delay ทำให้ node ไม่ได้ยินการส่งของกันทันที",
+        "CSMA ใช้ slot แบบ TDMA",
         "CSMA ไม่ฟัง channel ก่อนส่ง"
       ],
-      "correct": 2,
+      "correct": 1,
       "explain": "CSMA ฟังก่อนส่ง แต่ propagation delay ทำให้สอง node อาจไม่เห็นการส่งที่เพิ่งเริ่มของกันและกัน"
     },
     {
       "q": "หลัง collision ครั้งที่ m ใน Ethernet CSMA/CD เลือก K จากช่วงใด?",
       "options": [
-        "{1, 2, ..., m}",
-        "{0, 1, ..., m}",
         "{0, 1, ..., 2m}",
-        "{0, 1, ..., 2^m − 1}"
+        "{1, 2, ..., m}",
+        "{0, 1, ..., 2^m − 1}",
+        "{0, 1, ..., m}"
       ],
-      "correct": 3,
+      "correct": 2,
       "explain": "binary exponential backoff เลือก K จาก {0,...,2^m−1} แล้วรอ K × 512 bit times"
     },
     {
       "q": "Ethernet frame ขนาดเล็กสุดนับจาก Dest MAC ถึง CRC คือเท่าใด?",
       "options": [
         "64 ไบต์",
+        "1522 ไบต์",
         "46 ไบต์",
-        "1518 ไบต์",
-        "1522 ไบต์"
+        "1518 ไบต์"
       ],
       "correct": 0,
       "explain": "6+6+2+46+4 = 64 ไบต์; data ขั้นต่ำ 46 ไบต์เพื่อให้ frame อย่างน้อย 64 ไบต์"
@@ -4103,30 +4103,30 @@ window.DATA.ch7 = {
       "q": "MAC address ต่างจาก IP address อย่างไร?",
       "options": [
         "MAC เปลี่ยนทุก hop; IP คงที่",
+        "MAC ใช้ routing; IP ใช้ forwarding",
         "MAC 48 บิตและ portable; IP 32 บิตและขึ้นกับ subnet",
-        "MAC 32 บิต; IP 48 บิต",
-        "MAC ใช้ routing; IP ใช้ forwarding"
+        "MAC 32 บิต; IP 48 บิต"
       ],
-      "correct": 1,
+      "correct": 2,
       "explain": "MAC เป็น flat address 48 บิต ใช้ local link และ portable; IPv4 32 บิตขึ้นกับ subnet"
     },
     {
       "q": "เมื่อส่ง datagram ข้าม subnet ข้อใดคงเดิม?",
       "options": [
-        "Source MAC และ Source IP",
-        "Destination MAC และ Destination IP",
         "Source IP และ Destination IP",
+        "Destination MAC และ Destination IP",
+        "Source MAC และ Source IP",
         "Source MAC และ Destination MAC"
       ],
-      "correct": 2,
+      "correct": 0,
       "explain": "IP ต้นทาง/ปลายทางคงเดิมตลอดเส้นทาง แต่ MAC ของ source/destination เปลี่ยนทุก hop"
     },
     {
       "q": "Switch ไม่รู้ destination MAC ควรทำอะไร?",
       "options": [
+        "ส่งกลับไปยัง source",
         "drop frame ทันที",
         "forward ไปเฉพาะ port 1",
-        "ส่งกลับไปยัง source",
         "flood ไปทุก interface ยกเว้น incoming interface"
       ],
       "correct": 3,
@@ -4898,100 +4898,100 @@ window.DATA.ch8 = {
     {
       "q": "องค์ประกอบพื้นฐาน 4 อย่างของ wireless network คืออะไร?",
       "options": [
-        "wireless host, base station, wireless link, wireless device radio",
         "router, switch, hub, modem",
         "AP, SSID, BSSID, channel",
+        "wireless host, base station, wireless link, wireless device radio",
         "DNS, DHCP, ARP, NAT"
       ],
-      "correct": 0,
+      "correct": 2,
       "explain": "source ระบุองค์ประกอบหลัก 4 อย่าง: wireless hosts, base station, wireless link และ wireless device radio"
     },
     {
       "q": "ข้อใดอธิบายความสัมพันธ์ wireless กับ mobility ถูกต้อง?",
       "options": [
-        "mobility หมายถึงใช้คลื่นวิทยุเท่านั้น",
-        "wireless กับ mobility เป็นคนละมิติ; อุปกรณ์ wireless อาจอยู่นิ่งก็ได้",
         "wireless ทุกชนิดต้องเคลื่อนที่เสมอ",
-        "mobile device ต้องใช้ wireless ตลอดเวลา"
+        "mobile device ต้องใช้ wireless ตลอดเวลา",
+        "mobility หมายถึงใช้คลื่นวิทยุเท่านั้น",
+        "wireless กับ mobility เป็นคนละมิติ; อุปกรณ์ wireless อาจอยู่นิ่งก็ได้"
       ],
-      "correct": 1,
+      "correct": 3,
       "explain": "AP/IoT sensor อยู่นิ่งได้ ขณะที่ laptop อาจย้ายที่แล้วกลับมาต่อ Ethernet"
     },
     {
       "q": "ความถี่สูงขึ้นส่งผลต่อ wavelength อย่างไร?",
       "options": [
-        "wavelength ไม่เปลี่ยน",
-        "wavelength เป็นศูนย์",
         "wavelength สั้นลง เพราะ f = c / λ",
-        "wavelength ยาวขึ้น"
+        "wavelength ยาวขึ้น",
+        "wavelength เป็นศูนย์",
+        "wavelength ไม่เปลี่ยน"
       ],
-      "correct": 2,
+      "correct": 0,
       "explain": "f = c / λ ดังนั้นความถี่สูงขึ้น → wavelength สั้นลง"
     },
     {
       "q": "SNR สูงหมายความว่าอย่างไร?",
       "options": [
         "noise แรงกว่าสัญญาณ",
+        "แยกสัญญาณจาก noise ได้ง่ายขึ้น ส่งข้อมูลได้เร็ว/ผิดพลาดน้อย",
         "กำลังสัญญาณเท่ากับ noise",
-        "bandwidth เป็นศูนย์",
-        "แยกสัญญาณจาก noise ได้ง่ายขึ้น ส่งข้อมูลได้เร็ว/ผิดพลาดน้อย"
+        "bandwidth เป็นศูนย์"
       ],
-      "correct": 3,
+      "correct": 1,
       "explain": "SNR คืออัตราส่วนกำลังสัญญาณต่อ noise; SNR สูงแยกสัญญาณได้ง่ายกว่า"
     },
     {
       "q": "Hidden terminal เกิดจากอะไร?",
       "options": [
-        "A กับ C ไม่ได้ยินกัน แต่ส่งพร้อมกันแล้วชนกันที่ B",
-        "ทุก node ได้ยินกันพร้อมกัน",
+        "MAC address ซ้ำกัน",
         "AP ส่ง beacon ถี่เกินไป",
-        "MAC address ซ้ำกัน"
+        "ทุก node ได้ยินกันพร้อมกัน",
+        "A กับ C ไม่ได้ยินกัน แต่ส่งพร้อมกันแล้วชนกันที่ B"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "A กับ B ได้ยินกัน, B กับ C ได้ยินกัน, แต่ A กับ C ไม่ได้ยินกัน จึงชนกันที่ B"
     },
     {
       "q": "Wi-Fi ใช้ MAC protocol ใด?",
       "options": [
-        "Token passing",
         "CSMA/CA",
         "CSMA/CD",
-        "TDMA only"
+        "TDMA only",
+        "Token passing"
       ],
-      "correct": 1,
+      "correct": 0,
       "explain": "802.11 ใช้ CSMA/CA (Collision Avoidance) ไม่ใช่ CSMA/CD เพราะตรวจจับ collision ขณะส่งได้ยาก"
     },
     {
       "q": "ACK ใน 802.11 จำเป็นเพราะอะไร?",
       "options": [
-        "เพื่อเปลี่ยน MAC address",
-        "เพื่อให้ AP ปิดการทำงาน",
         "Sender อาจไม่รู้ว่า collision เกิดที่ receiver จาก hidden terminal",
-        "เพื่อเพิ่ม bandwidth"
+        "เพื่อเปลี่ยน MAC address",
+        "เพื่อเพิ่ม bandwidth",
+        "เพื่อให้ AP ปิดการทำงาน"
       ],
-      "correct": 2,
+      "correct": 0,
       "explain": "ACK เป็นหลักฐานว่า frame ถึงปลายทางจริง; ถ้าไม่มี ACK sender จะสันนิษฐานว่าหาย/ชนแล้ว retransmit"
     },
     {
       "q": "Address 3 ใน 802.11 frame infrastructure mode คือ MAC ของอะไร?",
       "options": [
-        "wireless receiver",
         "wireless transmitter",
         "ตัว AP เองเท่านั้น",
-        "router interface ที่ AP ต่ออยู่"
+        "router interface ที่ AP ต่ออยู่",
+        "wireless receiver"
       ],
-      "correct": 3,
+      "correct": 2,
       "explain": "Address 3 = MAC ของ router interface ที่ AP ต่ออยู่ ใช้ระบุปลายทาง/ต้นทางฝั่ง wired"
     },
     {
       "q": "Association กับ authentication ต่างกันอย่างไร?",
       "options": [
-        "Association เป็นการตกลงเชื่อมต่อ; authentication จริงเกิดแยกภายหลัง",
+        "Authentication เกิดก่อน beacon เสมอ",
         "ทั้งสองเป็นสิ่งเดียวกัน",
         "Association คือการใส่รหัส Wi-Fi",
-        "Authentication เกิดก่อน beacon เสมอ"
+        "Association เป็นการตกลงเชื่อมต่อ; authentication จริงเกิดแยกภายหลัง"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "Beacon/probe/association ยังไม่แลก identity/credentials; WPA2/WPA3/802.1X authentication เกิดภายหลัง"
     },
     {
@@ -4999,8 +4999,8 @@ window.DATA.ch8 = {
       "options": [
         "Scanning และ Roaming",
         "Registration และ PDU Session Establishment",
-        "Beacon และ Probe",
-        "RTS และ CTS"
+        "RTS และ CTS",
+        "Beacon และ Probe"
       ],
       "correct": 1,
       "explain": "Phase 1 Registration ใช้ AMF; Phase 2 PDU Session Establishment ให้ IP และสร้าง data-plane path ไป UPF"
@@ -5008,10 +5008,10 @@ window.DATA.ch8 = {
     {
       "q": "Spatial multiplexing ต่างจาก spatial diversity อย่างไร?",
       "options": [
-        "diversity ใช้ MU-MIMO เท่านั้น",
+        "multiplexing ส่งข้อมูลเดียวกันเพื่อเพิ่ม reliability",
         "ทั้งสองไม่เกี่ยวกับ MIMO",
         "multiplexing ส่งข้อมูลต่างกันหลาย stream เพื่อเพิ่ม rate",
-        "multiplexing ส่งข้อมูลเดียวกันเพื่อเพิ่ม reliability"
+        "diversity ใช้ MU-MIMO เท่านั้น"
       ],
       "correct": 2,
       "explain": "diversity ส่งข้อมูลเดียวกันหลาย path เพื่อ reliability/range; multiplexing ส่งข้อมูลต่างกันเพื่อเพิ่ม data rate"
@@ -5019,12 +5019,12 @@ window.DATA.ch8 = {
     {
       "q": "Mobility ใน Wi-Fi ESS อาศัยอะไร?",
       "options": [
-        "การเปลี่ยน IP ทุกครั้งที่ย้าย AP",
         "การใช้ CSMA/CD",
+        "หลาย BSS ใน subnet เดียวกัน ใช้ SSID เดียวกัน และเชื่อมผ่าน DS",
         "การปิด device ระหว่างย้าย",
-        "หลาย BSS ใน subnet เดียวกัน ใช้ SSID เดียวกัน และเชื่อมผ่าน DS"
+        "การเปลี่ยน IP ทุกครั้งที่ย้าย AP"
       ],
-      "correct": 3,
+      "correct": 1,
       "explain": "ESS มีหลาย BSS ใน layer-3 subnet เดียวกัน ใช้ SSID เดียวกัน เชื่อมผ่าน DS; ใช้ re-association/fast re-auth ภายใน ESS"
     }
   ],
@@ -5032,221 +5032,221 @@ window.DATA.ch8 = {
     {
       "q": "Base station ทำหน้าที่หลักอะไร?",
       "options": [
+        "เก็บ ARP table ของทั้ง Internet",
         "relay packet ระหว่าง wired network กับ wireless host ในพื้นที่ของตน",
-        "เลือกเส้นทาง end-to-end ด้วย OSPF",
         "แปลง domain name เป็น IP",
-        "เก็บ ARP table ของทั้ง Internet"
+        "เลือกเส้นทาง end-to-end ด้วย OSPF"
       ],
-      "correct": 0,
+      "correct": 1,
       "explain": "base station เป็นโครงสร้างพื้นฐานที่เชื่อม wired network และ relay packet กับ wireless host"
     },
     {
       "q": "ข้อใดเป็นตัวอย่าง ad hoc wireless network?",
       "options": [
-        "Ethernet switch ในห้องเรียน",
         "Bluetooth piconet",
+        "4G cell tower",
         "Wi-Fi ในมหาวิทยาลัยที่มี AP",
-        "4G cell tower"
+        "Ethernet switch ในห้องเรียน"
       ],
-      "correct": 1,
+      "correct": 0,
       "explain": "ad hoc network ไม่มี base station/AP; Bluetooth piconet เป็นตัวอย่างใน source"
     },
     {
       "q": "ข้อใดถูกเกี่ยวกับ wireless และ mobility?",
       "options": [
-        "mobile device ใช้ wireless เท่านั้น",
         "mobility คือความเร็วของคลื่นวิทยุ",
         "wireless ไม่จำเป็นต้อง mobile และ mobile ไม่จำเป็นต้อง wireless ตลอดเวลา",
-        "wireless ทุกอุปกรณ์ต้องเคลื่อนที่"
+        "wireless ทุกอุปกรณ์ต้องเคลื่อนที่",
+        "mobile device ใช้ wireless เท่านั้น"
       ],
-      "correct": 2,
+      "correct": 1,
       "explain": "wireless และ mobility เป็นคนละมิติ; AP/IoT อยู่นิ่งได้ และ laptop อาจกลับมาต่อ wired"
     },
     {
       "q": "ถ้า f = 2.4 GHz และ c คือความเร็วแสง ข้อใดถูก?",
       "options": [
-        "wavelength ยาวกว่าคลื่นความถี่ต่ำ",
         "wavelength เท่ากับ c",
         "ไม่สามารถคำนวณได้",
-        "wavelength สั้นกว่าคลื่นความถี่ต่ำ"
+        "wavelength สั้นกว่าคลื่นความถี่ต่ำ",
+        "wavelength ยาวกว่าคลื่นความถี่ต่ำ"
       ],
-      "correct": 3,
+      "correct": 2,
       "explain": "f = c / λ → ความถี่สูงกว่าจะมี wavelength สั้นกว่า"
     },
     {
       "q": "0 dBm เท่ากับกำลังเท่าใด?",
       "options": [
-        "1 mW",
+        "1 W",
         "0 mW",
         "10 mW",
-        "1 W"
+        "1 mW"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "dBm เทียบกับ 1 mW; 0 dBm = 1 mW, 10 dBm = 10 mW, 20 dBm = 100 mW, 30 dBm = 1 W"
     },
     {
       "q": "Radio bandwidth กับ link bandwidth ต่างกันอย่างไร?",
       "options": [
-        "link bandwidth = ความกว้าง channel เป็น MHz",
-        "radio bandwidth = ความกว้าง spectrum (Hz); link bandwidth = อัตราส่งข้อมูล (bps)",
         "ทั้งสองมีหน่วย bps เหมือนกัน",
-        "radio bandwidth = จำนวนเสาอากาศ"
+        "radio bandwidth = จำนวนเสาอากาศ",
+        "radio bandwidth = ความกว้าง spectrum (Hz); link bandwidth = อัตราส่งข้อมูล (bps)",
+        "link bandwidth = ความกว้าง channel เป็น MHz"
       ],
-      "correct": 1,
+      "correct": 2,
       "explain": "source เตือนว่าคำว่า bandwidth มี 2 ความหมาย: spectrum width และ data rate"
     },
     {
       "q": "ข้อใดเป็นแหล่ง noise ที่เกิดแม้ไม่มี transmitter อื่น?",
       "options": [
-        "beacon frame",
-        "RTS/CTS collision",
+        "interference จาก Wi-Fi ข้างบ้าน",
         "thermal noise และ electronic noise",
-        "interference จาก Wi-Fi ข้างบ้าน"
+        "beacon frame",
+        "RTS/CTS collision"
       ],
-      "correct": 2,
+      "correct": 1,
       "explain": "Noise เกิดจาก thermal noise ตามอุณหภูมิและ electronic noise จากความไม่สมบูรณ์ของวงจร"
     },
     {
       "q": "SNR = 0 dB หมายความว่าอะไร?",
       "options": [
-        "ไม่มีสัญญาณเลย",
-        "สัญญาณแรงกว่า noise 10 เท่า",
+        "กำลังสัญญาณเท่ากับกำลัง noise",
         "bandwidth เป็นศูนย์",
-        "กำลังสัญญาณเท่ากับกำลัง noise"
+        "สัญญาณแรงกว่า noise 10 เท่า",
+        "ไม่มีสัญญาณเลย"
       ],
-      "correct": 3,
+      "correct": 0,
       "explain": "SNR(dB) = 10 log10(P_signal/P_noise); 0 dB เมื่อ P_signal = P_noise"
     },
     {
       "q": "Shannon capacity ขึ้นกับอะไร?",
       "options": [
-        "bandwidth และ SNR",
         "MAC address และ IP address",
-        "จำนวน AP และ SSID",
-        "จำนวน packet ที่หาย"
+        "จำนวน packet ที่หาย",
+        "bandwidth และ SNR",
+        "จำนวน AP และ SSID"
       ],
-      "correct": 0,
+      "correct": 2,
       "explain": "C = B · log2(1 + S/N); capacity ขึ้นกับ bandwidth และอัตราส่วนสัญญาณต่อ noise"
     },
     {
       "q": "Hidden terminal ทำให้เกิดปัญหาอะไร?",
       "options": [
-        "Channel ว่างตลอดเวลา",
         "A กับ C ส่งพร้อมกันโดยไม่รู้ว่าอีกฝ่ายส่ง และชนกันที่ B",
-        "ทุก node ได้ยินกันทำให้ส่งเร็วขึ้น",
-        "AP เปลี่ยน MAC address"
+        "AP เปลี่ยน MAC address",
+        "Channel ว่างตลอดเวลา",
+        "ทุก node ได้ยินกันทำให้ส่งเร็วขึ้น"
       ],
-      "correct": 1,
+      "correct": 0,
       "explain": "A กับ C ไม่ได้ยินกัน จึงอาจส่งพร้อมกันและเกิด collision ที่ B; ต้องใช้ ACK และ RTS/CTS"
     },
     {
       "q": "Multipath propagation อาจทำให้เกิดอะไร?",
       "options": [
         "VLAN hopping",
-        "DHCP starvation",
         "ISI และ fading",
+        "DHCP starvation",
         "ARP spoofing"
       ],
-      "correct": 2,
+      "correct": 1,
       "explain": "สัญญาณหลาย copy มาถึงต่างเวลา/phase อาจเสริมหรือหักล้างกัน และทำให้เกิด inter-symbol interference"
     },
     {
       "q": "802.11 ใช้ CSMA/CA เพราะอะไร?",
       "options": [
-        "เพราะ Ethernet ใช้ CSMA/CA",
         "เพราะไม่มี ACK",
         "เพราะใช้สายทองแดง",
-        "ตรวจจับ collision ขณะส่งได้ยาก และ hidden terminal ทำให้ฟังอย่างเดียวไม่พอ"
+        "ตรวจจับ collision ขณะส่งได้ยาก และ hidden terminal ทำให้ฟังอย่างเดียวไม่พอ",
+        "เพราะ Ethernet ใช้ CSMA/CA"
       ],
-      "correct": 3,
+      "correct": 2,
       "explain": "wireless ตรวจจับ collision ระหว่างส่งได้ยาก; CSMA/CA ใช้ avoidance, ACK และ backoff"
     },
     {
       "q": "ACK ใน 802.11 ตอบหลังจากช่วงเวลาใด?",
       "options": [
-        "SIFS",
-        "DIFS",
         "Backoff ทั้งช่วง",
-        "ไม่มีช่วงเวลา"
+        "DIFS",
+        "ไม่มีช่วงเวลา",
+        "SIFS"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "receiver ตอบ ACK หลัง SIFS ซึ่งสั้นกว่า DIFS มาก"
     },
     {
       "q": "RTS/CTS ช่วยแก้ปัญหาใด?",
       "options": [
-        "เปลี่ยน IP subnet",
-        "hidden terminal และ collision ของ data frame ขนาดใหญ่",
         "เพิ่มความเร็ว modulation",
-        "ลดจำนวน MAC address"
+        "ลดจำนวน MAC address",
+        "hidden terminal และ collision ของ data frame ขนาดใหญ่",
+        "เปลี่ยน IP subnet"
       ],
-      "correct": 1,
+      "correct": 2,
       "explain": "RTS/CTS จอง channel ล่วงหน้า; node ที่ได้ยินจะ defer ทำให้ลด collision ของ data frame"
     },
     {
       "q": "ใน infrastructure mode Address 1 ของ frame ที่ device ส่งไป AP คือ MAC ของใคร?",
       "options": [
+        "device",
         "router interface ฝั่ง wired",
         "broadcast address",
-        "AP",
-        "device"
+        "AP"
       ],
-      "correct": 2,
+      "correct": 3,
       "explain": "Device → AP: Address1 = AP's MAC, Address2 = device's MAC, Address3 = router interface's MAC"
     },
     {
       "q": "Association ใน Wi-Fi ยังไม่ถือว่า authentication จริงเพราะอะไร?",
       "options": [
         "เพราะยังไม่ได้ DHCP",
-        "เพราะยังไม่ได้ beacon",
+        "ยังไม่มีการแลกเปลี่ยน identity/credentials จริง; authentication เกิดภายหลัง",
         "เพราะยังไม่ได้ IP address",
-        "ยังไม่มีการแลกเปลี่ยน identity/credentials จริง; authentication เกิดภายหลัง"
+        "เพราะยังไม่ได้ beacon"
       ],
-      "correct": 3,
+      "correct": 1,
       "explain": "association เป็นเพียงคำถามว่า Can we talk?; WPA2/WPA3/802.1X authentication เกิดภายหลัง"
     },
     {
       "q": "5G join Phase 2 (PDU Session Establishment) ทำอะไร?",
       "options": [
-        "allocate IP และสร้าง data-plane path ไปยัง UPF",
-        "ส่ง beacon",
         "เลือก AP จาก RSSI",
-        "ทำ CSMA/CA"
+        "ส่ง beacon",
+        "ทำ CSMA/CA",
+        "allocate IP และสร้าง data-plane path ไปยัง UPF"
       ],
-      "correct": 0,
+      "correct": 3,
       "explain": "SMF เลือก UPF, allocate IP และสร้าง session; PDU = Protocol Data Unit = packet"
     },
     {
       "q": "MIMO spatial diversity ใช้ข้อมูลแบบใด?",
       "options": [
         "เฉพาะ MU-MIMO",
-        "ข้อมูลเดียวกันผ่านหลาย path เพื่อ reliability/range",
+        "เฉพาะ control frame",
         "ข้อมูลต่างกันหลาย stream เพื่อเพิ่ม rate",
-        "เฉพาะ control frame"
+        "ข้อมูลเดียวกันผ่านหลาย path เพื่อ reliability/range"
       ],
-      "correct": 1,
+      "correct": 3,
       "explain": "spatial diversity ส่ง redundant stream ข้อมูลเดียวกันผ่าน antenna หลายตัว; receiver รวมสัญญาณ"
     },
     {
       "q": "MU-MIMO ต่างจาก SU-MIMO อย่างไร?",
       "options": [
-        "SU-MIMO ใช้ได้เฉพาะ 5G",
-        "MU-MIMO ไม่ใช้ beamforming",
         "MU-MIMO ส่งให้ผู้ใช้หลายคนพร้อมกันเพื่อเพิ่ม capacity รวม",
-        "MU-MIMO ใช้ผู้ใช้คนเดียวเสมอ"
+        "MU-MIMO ใช้ผู้ใช้คนเดียวเสมอ",
+        "SU-MIMO ใช้ได้เฉพาะ 5G",
+        "MU-MIMO ไม่ใช้ beamforming"
       ],
-      "correct": 2,
+      "correct": 0,
       "explain": "MU-MIMO ใช้ multiple transmit antennas ส่งให้ผู้ใช้หลายคนพร้อมกันด้วย beamforming/spatial multiplexing"
     },
     {
       "q": "5G handover ขั้นที่ SMF สั่ง UPF ทำอะไร?",
       "options": [
-        "สร้าง beacon ใหม่",
+        "เปลี่ยน tunnel endpoint ไปยัง target base station",
         "เลือก SSID",
-        "เปลี่ยน MAC address ของ device",
-        "เปลี่ยน tunnel endpoint ไปยัง target base station"
+        "สร้าง beacon ใหม่",
+        "เปลี่ยน MAC address ของ device"
       ],
-      "correct": 3,
+      "correct": 0,
       "explain": "SMF สั่ง UPF ให้เปลี่ยน tunnel endpoint ไปยัง target BS; target ตอบ ACK และ source ปล่อย resource"
     }
   ],
@@ -5546,6 +5546,1078 @@ window.DATA.ch8 = {
     {
       "term": "Handover",
       "def": "การเปลี่ยน point of attachment จาก source base station ไป target base station"
+    }
+  ]
+};
+
+window.DATA.ch9 = {
+  "slides": [
+    {
+      "title": "Cover — F5: Security",
+      "short": "เปิดบทเรียน"
+    },
+    {
+      "title": "บทนี้จะเรียนอะไร",
+      "short": "ภาพรวมบท"
+    },
+    {
+      "title": "Network Security คืออะไร",
+      "short": "Security Goals"
+    },
+    {
+      "title": "Alice, Bob และ Trudy",
+      "short": "Actors"
+    },
+    {
+      "title": "ผู้โจมตีทำอะไรได้บ้าง",
+      "short": "Attack Actions"
+    },
+    {
+      "title": "ภาษาของ Cryptography",
+      "short": "Crypto Language"
+    },
+    {
+      "title": "Encryption & Decryption Flow",
+      "short": "Enc / Dec"
+    },
+    {
+      "title": "การทำลาย Encryption Scheme",
+      "short": "Breaking Crypto"
+    },
+    {
+      "title": "Symmetric-Key Cryptography",
+      "short": "Symmetric Key"
+    },
+    {
+      "title": "Substitution Cipher",
+      "short": "Substitution"
+    },
+    {
+      "title": "Polyalphabetic Cipher",
+      "short": "Polyalphabetic"
+    },
+    {
+      "title": "DES — Data Encryption Standard",
+      "short": "DES"
+    },
+    {
+      "title": "AES — Advanced Encryption Standard",
+      "short": "AES"
+    },
+    {
+      "title": "Public-Key Cryptography",
+      "short": "Public Key"
+    },
+    {
+      "title": "Public-Key Requirements",
+      "short": "Requirements"
+    },
+    {
+      "title": "RSA — Key Generation",
+      "short": "RSA Keygen"
+    },
+    {
+      "title": "RSA — Encryption & Decryption",
+      "short": "RSA Enc / Dec"
+    },
+    {
+      "title": "RSA — Worked Example",
+      "short": "RSA Example"
+    },
+    {
+      "title": "RSA Security & Hybrid Cryptography",
+      "short": "RSA Security"
+    },
+    {
+      "title": "Authentication — ap1.0 & ap2.0",
+      "short": "Auth Basics"
+    },
+    {
+      "title": "Authentication — ap3.0 & Playback",
+      "short": "Playback Attack"
+    },
+    {
+      "title": "Authentication — ap4.0 & Nonce",
+      "short": "Nonce"
+    },
+    {
+      "title": "Authentication — ap5.0 & MITM",
+      "short": "MITM"
+    },
+    {
+      "title": "Message Digests & Hash Functions",
+      "short": "Hash Functions"
+    },
+    {
+      "title": "Hash Algorithms & Internet Checksum",
+      "short": "Hash Algorithms"
+    },
+    {
+      "title": "Digital Signatures",
+      "short": "Digital Signatures"
+    },
+    {
+      "title": "Signed Message Digest",
+      "short": "Signed Digest"
+    },
+    {
+      "title": "Certification Authorities (CA)",
+      "short": "CA"
+    },
+    {
+      "title": "Diffie-Hellman Key Agreement",
+      "short": "Diffie-Hellman"
+    },
+    {
+      "title": "TLS — Transport-Layer Security",
+      "short": "TLS"
+    },
+    {
+      "title": "TLS 1.3 Handshake",
+      "short": "TLS Handshake"
+    },
+    {
+      "title": "TLS Records & Data-Stream Attacks",
+      "short": "TLS Records"
+    },
+    {
+      "title": "Network Security Attacks",
+      "short": "Attack Taxonomy"
+    },
+    {
+      "title": "MITM, Replay & Truncation",
+      "short": "MITM / Replay"
+    },
+    {
+      "title": "DoS, SYN Flooding & IP Spoofing",
+      "short": "DoS / Spoofing"
+    },
+    {
+      "title": "Defense Map",
+      "short": "Defense Map"
+    },
+    {
+      "title": "สรุปบทเรียน",
+      "short": "Summary"
+    },
+    {
+      "title": "สูตรจำก่อนสอบ — F5",
+      "short": "Cheat Sheet"
+    },
+    {
+      "title": "แบบทดสอบ F5 12 ข้อ",
+      "short": "Quiz"
+    },
+    {
+      "title": "การ์ดทบทวน — F5",
+      "short": "Flashcards"
+    },
+    {
+      "title": "คำศัพท์ — F5",
+      "short": "Glossary"
+    },
+    {
+      "title": "ข้อสอบหลังเรียน — 20 ข้อ",
+      "short": "Exam"
+    }
+  ],
+  "sections": [
+    {
+      "label": "ภาพรวม Final · F5",
+      "topics": [
+        1,
+        2
+      ]
+    },
+    {
+      "label": "1. Network Security Foundations",
+      "topics": [
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "label": "2. Cryptography & Encryption",
+      "topics": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "label": "3. Public-Key Cryptography",
+      "topics": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "label": "4. Authentication, Integrity & Hashes",
+      "topics": [
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ]
+    },
+    {
+      "label": "5. Digital Signatures & TLS",
+      "topics": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ]
+    },
+    {
+      "label": "6. Network Security Attacks",
+      "topics": [
+        33,
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "label": "ทบทวนและฝึกฝน",
+      "topics": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ]
+    }
+  ],
+  "encSteps": [
+    {
+      "key": "plain",
+      "label": "1 · Plaintext",
+      "title": "ข้อความต้นฉบับ",
+      "detail": "m คือ plaintext ที่ Alice ต้องการส่งให้ Bob — ข้อความนี้ยังอ่านเข้าใจได้",
+      "value": "bob. i love you. alice"
+    },
+    {
+      "key": "key",
+      "label": "2 · Key",
+      "title": "เลือกรหัสลับ",
+      "detail": "cryptography ต้องมี encryption algorithm, decryption algorithm และ key; ใน substitution cipher key คือ mapping จากตัวอักษร 26 ตัว",
+      "value": "abcdefghijklmnopqrstuvwxyz → mnbvcxzasdfghjklpoiuytrewq"
+    },
+    {
+      "key": "cipher",
+      "label": "3 · Ciphertext",
+      "title": "ข้อความที่เข้ารหัสแล้ว",
+      "detail": "Alice เข้ารหัส m ด้วย key แล้วได้ ciphertext; ผู้ที่ไม่ใช่ผู้รับที่ตั้งใจไม่ควรเข้าใจเนื้อหา",
+      "value": "nkn. s gktc wky. mgsbc"
+    },
+    {
+      "key": "back",
+      "label": "4 · Decrypt",
+      "title": "ถอดรหัสกลับมา",
+      "detail": "Bob ใช้ decryption key ที่ตรงกันถอด ciphertext กลับเป็น m เดิม; symmetric key คือใช้ key เดียวกันทั้งสองฝั่ง",
+      "value": "bob. i love you. alice"
+    }
+  ],
+  "rsaSteps": [
+    {
+      "n": 1,
+      "title": "เลือก p และ q",
+      "detail": "เลือกจำนวนเฉพาะขนาดใหญ่ p และ q (source ตัวอย่างเช่น 1024 bits ต่อตัว)"
+    },
+    {
+      "n": 2,
+      "title": "คำนวณ n และ z",
+      "detail": "n = p·q และ z = (p−1)(q−1)"
+    },
+    {
+      "n": 3,
+      "title": "เลือก e",
+      "detail": "เลือก e โดย e < n และ e กับ z ไม่มี common factor (relatively prime)"
+    },
+    {
+      "n": 4,
+      "title": "เลือก d",
+      "detail": "เลือก d ให้ ed − 1 หารด้วย z ลงตัว หรือ ed mod z = 1"
+    },
+    {
+      "n": 5,
+      "title": "ได้ key pair",
+      "detail": "public key = (n,e); private key = (n,d)"
+    }
+  ],
+  "authTabs": [
+    {
+      "name": "ap1.0",
+      "question": "Alice พูดว่า “I am Alice”",
+      "result": "ล้มเหลว",
+      "flaw": "Bob ไม่สามารถ “เห็น” Alice ใน network; Trudy ประกาศตัวเองเป็น Alice ได้",
+      "detail": "เป็น authentication ที่อาศัยเพียงคำกล่าวอ้าง ไม่มีหลักฐานใด ๆ"
+    },
+    {
+      "name": "ap2.0",
+      "question": "ส่ง “I am Alice” พร้อม source IP address ของ Alice",
+      "result": "ล้มเหลว",
+      "flaw": "Trudy สร้าง packet ที่ spoof source address ของ Alice ได้",
+      "detail": "source IP address ไม่ใช่หลักฐานยืนยันตัวตน เพราะแก้ไข field ใน packet ได้"
+    },
+    {
+      "name": "ap3.0",
+      "question": "ส่ง secret password เพื่อพิสูจน์ตัวตน",
+      "result": "ล้มเหลว",
+      "flaw": "playback attack: Trudy บันทึก packet ของ Alice แล้วเล่นซ้ำกับ Bob ภายหลัง",
+      "detail": "แม้ส่ง password ที่เข้ารหัสแล้ว playback attack ก็ยังทำได้"
+    },
+    {
+      "name": "ap4.0",
+      "question": "Bob ส่ง nonce R; Alice ต้องส่ง R ที่เข้ารหัสด้วย shared key",
+      "result": "ผ่าน (ถ้ามี shared key)",
+      "flaw": "ต้องมี shared symmetric key ระหว่าง Alice กับ Bob",
+      "detail": "nonce คือ number (R) used only once-in-a-lifetime; Bob รู้ว่า Alice live และมี key จริง"
+    },
+    {
+      "name": "ap5.0",
+      "question": "ใช้ nonce ร่วมกับ public-key cryptography",
+      "result": "ยังมีช่องโหว่",
+      "flaw": "man-in-the-middle attack: Trudy แสดงตัวเป็น Alice ต่อ Bob และเป็น Bob ต่อ Alice",
+      "detail": "ต้องมี certified public key เพื่อให้แน่ใจว่า public key นั้นเป็นของเจ้าของจริง"
+    }
+  ],
+  "hashDemo": {
+    "m1": "I O U 1\n0 0 . 9\n9 B O B",
+    "m2": "I O U 9\n0 0 . 1\n9 B O B",
+    "ascii1": "49 4F 55 31 · 30 30 2E 39 · 39 42 D2 42",
+    "ascii2": "49 4F 55 39 · 30 30 2E 31 · 39 42 D2 42",
+    "sum": "B2 C1 D2 AC",
+    "note": "ข้อความต่างกัน แต่ Internet checksum ให้ค่าเท่ากัน — จึงไม่ใช่ cryptographic hash function ที่ดี"
+  },
+  "tlsSteps": [
+    {
+      "n": 1,
+      "title": "Client Hello",
+      "detail": "client ส่ง supported cipher suites และ DH key agreement protocol/parameters"
+    },
+    {
+      "n": 2,
+      "title": "Server Hello + Certificate",
+      "detail": "server เลือก cipher suite และ DH parameters พร้อมส่ง server-signed certificate"
+    },
+    {
+      "n": 3,
+      "title": "ตรวจ Certificate + สร้าง Key",
+      "detail": "client ตรวจ server certificate แล้วสร้าง key; จากนั้นจึงส่ง application request เช่น HTTPS GET"
+    },
+    {
+      "n": 4,
+      "title": "Records ที่เข้ารหัส",
+      "detail": "ข้อมูลถูกแบ่งเป็น records;แต่ละ record มี MAC และถูกเข้ารหัสด้วย symmetric key"
+    }
+  ],
+  "attacks": [
+    {
+      "key": "eavesdrop",
+      "name": "Eavesdropping",
+      "goal": "Confidentiality",
+      "example": "Trudy ดักฟัง message ที่ส่งผ่าน channel",
+      "defense": "เข้ารหัส message เพื่อไม่ให้ผู้อื่นเข้าใจเนื้อหา"
+    },
+    {
+      "key": "insert",
+      "name": "Message Insertion",
+      "goal": "Authentication / Integrity",
+      "example": "Trudy แทรก message เข้าไปใน connection",
+      "defense": "ตรวจสอบ authentication และ message integrity"
+    },
+    {
+      "key": "impersonation",
+      "name": "Impersonation / Spoofing",
+      "goal": "Authentication",
+      "example": "Trudy ปลอม source address หรือ field ใด ๆ ใน packet",
+      "defense": "ใช้ authentication ที่พิสูจน์ identity ไม่ใช่แค่ field ใน packet"
+    },
+    {
+      "key": "hijack",
+      "name": "Hijacking",
+      "goal": "Authentication / Session Integrity",
+      "example": "Trudy ตัด sender หรือ receiver แล้วแทรกตัวเองเข้าไปใน connection ที่กำลังดำเนินอยู่",
+      "defense": "ผูก authentication กับ session และตรวจ integrity ของลำดับข้อมูล"
+    },
+    {
+      "key": "dos",
+      "name": "Denial of Service",
+      "goal": "Availability",
+      "example": "ทำให้บริการถูกใช้โดยผู้อื่นไม่ได้ เช่น overload resources",
+      "defense": "ป้องกันด้วย firewall, resource control และการตรวจจับ DoS"
+    }
+  ],
+  "quiz": [
+    {
+      "q": "ข้อใดคือเป้าหมายด้าน confidentiality?",
+      "options": [
+        "ตรวจว่าข้อความไม่ถูกแก้ไข",
+        "ยืนยันว่าผู้ส่งเป็นใคร",
+        "ทำให้เฉพาะผู้ส่งและผู้รับที่ตั้งใจเข้าใจเนื้อหา message",
+        "ทำให้บริการยังเข้าถึงได้"
+      ],
+      "correct": 2,
+      "explain": "confidentiality: only sender, intended receiver should understand message contents; sender encrypts, receiver decrypts"
+    },
+    {
+      "q": "Trudy ดักฟังข้อความบน network โดยไม่แก้ไขข้อความ เป็นการโจมตีเป้าหมายใดโดยตรง?",
+      "options": [
+        "Availability",
+        "Non-repudiation",
+        "Confidentiality",
+        "Routing"
+      ],
+      "correct": 2,
+      "explain": "การ eavesdrop/dักฟังกระทบ confidentiality เพราะผู้อื่นอาจเข้าใจเนื้อหา message"
+    },
+    {
+      "q": "ใน symmetric-key cryptography อะไรคือสิ่งที่ Alice และ Bob ต้องมีร่วมกัน?",
+      "options": [
+        "public key คนละดอก",
+        "shared symmetric key",
+        "certificate จาก CA",
+        "private key คนละดอก"
+      ],
+      "correct": 1,
+      "explain": "symmetric key crypto ใช้ key เดียวกัน (K_S) ทั้ง encryption และ decryption; source ตั้งคำถามว่า Alice กับ Bob ตกลง key กันได้อย่างไร"
+    },
+    {
+      "q": "ข้อใดกล่าวถึง DES ถูกต้องตาม source?",
+      "options": [
+        "hash function ที่ให้ digest 160 บิต",
+        "block cipher ที่ใช้ key 128 บิต",
+        "public-key algorithm",
+        "56-bit symmetric key และ 64-bit plaintext input"
+      ],
+      "correct": 3,
+      "explain": "DES เป็น US encryption standard [NIST 1993] ใช้ 56-bit symmetric key และ 64-bit plaintext input"
+    },
+    {
+      "q": "AES แตกต่างจาก DES ในเรื่องใดตาม source?",
+      "options": [
+        "AES ใช้ 128-bit blocks และ key 128/192/256 บิต",
+        "AES ใช้ key 56 บิตเท่านั้น",
+        "AES ไม่ใช่ symmetric-key",
+        "AES เป็น public-key algorithm"
+      ],
+      "correct": 0,
+      "explain": "AES เป็น symmetric-key NIST standard ที่แทน DES; ประมวลผลเป็น 128-bit blocks และใช้ key 128, 192 หรือ 256 บิต"
+    },
+    {
+      "q": "ใน public-key cryptography กุญแจใดที่ผู้รับเก็บไว้คนเดียว?",
+      "options": [
+        "CA public key",
+        "public encryption key",
+        "private decryption key",
+        "shared session key"
+      ],
+      "correct": 2,
+      "explain": "public encryption key เปิดเผยได้ ส่วน private decryption key รู้เพียงผู้รับ"
+    },
+    {
+      "q": "RSA public key และ private key ตาม source คือข้อใด?",
+      "options": [
+        "(n,d) และ (n,e)",
+        "(n,e) และ (n,d)",
+        "(z,e) และ (p,q)",
+        "(p,q) และ (e,z)"
+      ],
+      "correct": 1,
+      "explain": "ขั้นตอน RSA: public key คือ (n,e), private key คือ (n,d)"
+    },
+    {
+      "q": "เพราะเหตุใด RSA จึงถือว่าปลอดภัย?",
+      "options": [
+        "เพราะใช้ key สั้นกว่า DES",
+        "เพราะ public key ถูกเก็บเป็นความลับ",
+        "เพราะไม่ต้องใช้ modular arithmetic",
+        "เพราะการแยกตัวประกอบ n ขนาดใหญ่ทำได้ยาก"
+      ],
+      "correct": 3,
+      "explain": "ถ้ารู้ (n,e) การหา d ต้องแยกตัวประกอบ n โดยไม่รู้ p และ q; source ระบุว่า factoring a big number is hard"
+    },
+    {
+      "q": "ap4.0 ใช้ nonce เพื่อแก้ปัญหาอะไร?",
+      "options": [
+        "playback attack",
+        "การเลือก cipher suite",
+        "การดักฟัง",
+        "การแยกตัวประกอบ RSA"
+      ],
+      "correct": 0,
+      "explain": "nonce R ถูกใช้เพียงครั้งเดียว; Alice ต้องส่ง R ที่เข้ารหัสด้วย shared key ทำให้ Bob รู้ว่า Alice live และไม่ใช่ packet ที่เล่นซ้ำ"
+    },
+    {
+      "q": "ข้อใดคือคุณสมบัติของ cryptographic hash function ตาม source?",
+      "options": [
+        "ไม่ต้องใช้ key",
+        "ย้อนกลับหา m จาก H(m) ได้ง่าย",
+        "ให้ digest ขนาดเท่าข้อความเดิม",
+        "many-to-1 และให้ fixed-size digest"
+      ],
+      "correct": 3,
+      "explain": "hash function เป็น many-to-1, ให้ fixed-size message digest และการหา m จาก digest เป็น computationally infeasible"
+    },
+    {
+      "q": "Digital signature ช่วยเรื่องใด?",
+      "options": [
+        "เพิ่ม bandwidth",
+        "พิสูจน์ผู้ลงนามและป้องกันการปฏิเสธภายหลัง (non-repudiation)",
+        "เปลี่ยน public key เป็น private key",
+        "ทำให้ ciphertext สั้นลง"
+      ],
+      "correct": 1,
+      "explain": "digital signature เป็น verifiable, nonforgeable และรองรับ non-repudiation: Alice สามารถพิสูจน์ได้ว่า Bob เป็นผู้ลงนาม"
+    },
+    {
+      "q": "TLS ให้บริการใด according to source?",
+      "options": [
+        "confidentiality, integrity และ authentication",
+        "เฉพาะ confidentiality",
+        "เฉพาะ authentication",
+        "เฉพาะ integrity"
+      ],
+      "correct": 0,
+      "explain": "TLS ให้ confidentiality ผ่าน symmetric encryption, integrity ผ่าน cryptographic hashing และ authentication ผ่าน public key cryptography"
+    }
+  ],
+  "exam": [
+    {
+      "q": "ข้อใดไม่ใช่หนึ่งในเป้าหมายความปลอดภัย 4 ข้อที่ source ระบุ?",
+      "options": [
+        "message integrity",
+        "compression",
+        "authentication",
+        "confidentiality"
+      ],
+      "correct": 1,
+      "explain": "เป้าหมายคือ confidentiality, authentication, message integrity และ access/availability"
+    },
+    {
+      "q": "ข้อใดเป็นตัวอย่างของ playback attack?",
+      "options": [
+        "Trudy แทรก packet ใหม่เข้าไป",
+        "Trudy ทำให้ router crash",
+        "Trudy อ่าน public key",
+        "Trudy บันทึก packet ของ Alice แล้วส่งซ้ำภายหลัง"
+      ],
+      "correct": 3,
+      "explain": "playback attack คือการบันทึก packet ของ Alice และเล่นซ้ำกับ Bob ภายหลัง"
+    },
+    {
+      "q": "ap1.0 ล้มเหลวเพราะเหตุใด?",
+      "options": [
+        "เพราะ Bob ไม่เห็น Alice; Trudy ประกาศตัวเป็น Alice ได้",
+        "เพราะ certificate หมดอายุ",
+        "เพราะ nonce ซ้ำ",
+        "เพราะใช้ public key ผิด"
+      ],
+      "correct": 0,
+      "explain": "ap1.0 อาศัยเพียงคำว่า “I am Alice”; ใน network Bob ไม่สามารถเห็น Alice ได้ Trudy จึงประกาศตัวเองเป็น Alice"
+    },
+    {
+      "q": "ap2.0 ใช้ source IP address แล้วยังล้มเหลวเพราะอะไร?",
+      "options": [
+        "IP address เปลี่ยนทุกวินาที",
+        "source IP ถูกเข้ารหัสไม่ได้",
+        "Bob ไม่มี public key",
+        "Trudy spoof source address ของ Alice ได้"
+      ],
+      "correct": 3,
+      "explain": "Trudy สามารถสร้าง packet ที่ spoof source address ของ Alice ได้"
+    },
+    {
+      "q": "ap3.0 ที่ส่ง encrypted password ยังมีปัญหาอะไร?",
+      "options": [
+        "ไม่สามารถใช้ TCP ได้",
+        "ต้องใช้ AES 256 บิตเท่านั้น",
+        "password ยาวเกินไป",
+        "playback attack ยังทำได้"
+      ],
+      "correct": 3,
+      "explain": "source ระบุว่า playback attack still works: Trudy records Alice’s packet and later plays it back to Bob"
+    },
+    {
+      "q": "nonce ตาม source หมายถึงอะไร?",
+      "options": [
+        "key ที่ใช้ตลอดชีวิต",
+        "hash ของ password",
+        "number (R) used only once-in-a-lifetime",
+        "public key ของ CA"
+      ],
+      "correct": 2,
+      "explain": "nonce คือ number (R) ที่ใช้เพียงครั้งเดียวในชีวิต ใช้พิสูจน์ว่า Alice live"
+    },
+    {
+      "q": "ap5.0 ยังมีช่องโหว่ใด?",
+      "options": [
+        "man-in-the-middle attack",
+        "SYN flooding",
+        "brute force DES",
+        "truncation attack"
+      ],
+      "correct": 0,
+      "explain": "Trudy สามารถแสดงตัวเป็น Alice ต่อ Bob และเป็น Bob ต่อ Alice; ต้องอาศัย certified public key"
+    },
+    {
+      "q": "Certification Authority (CA) ทำหน้าที่อะไร?",
+      "options": [
+        "สร้าง symmetric key ให้ทุกคน",
+        "ผูก public key กับ entity และออก certificate ที่ CA ลงนาม",
+        "เข้ารหัสข้อมูลทั้งหมดใน Internet",
+        "ตรวจหา virus ใน packet"
+      ],
+      "correct": 1,
+      "explain": "CA binds public key to particular entity, E; certificate มี public key ของ E และถูก digitally signed โดย CA"
+    },
+    {
+      "q": "Internet checksum ใช้เป็น cryptographic hash ไม่ได้เพราะอะไร?",
+      "options": [
+        "ใช้ public key",
+        "มีข้อความต่างกันแต่ให้ checksum เดียวกันได้ง่าย",
+        "ให้ digest ยาวเกินไป",
+        "ไม่สามารถคำนวณได้"
+      ],
+      "correct": 1,
+      "explain": "source แสดงสองข้อความที่ต่างกันแต่มี checksum B2 C1 D2 AC เหมือนกัน; จึงหา collision ได้ง่าย"
+    },
+    {
+      "q": "MD5 ให้ message digest กี่บิต?",
+      "options": [
+        "160 บิต",
+        "128 บิต",
+        "64 บิต",
+        "56 บิต"
+      ],
+      "correct": 1,
+      "explain": "MD5 computes 128-bit message digest; SHA-1 ให้ 160-bit message digest"
+    },
+    {
+      "q": "Digital signature ของ Bob ถูกสร้างอย่างไรในแบบง่าย?",
+      "options": [
+        "Encrypt m ด้วย public key ของ Bob",
+        "Hash m ด้วย public key ของ Alice",
+        "Encrypt m ด้วย private key ของ Bob",
+        "Encrypt m ด้วย shared key"
+      ],
+      "correct": 2,
+      "explain": "Bob signs m by encrypting with his private key K_B^−; ผู้รับใช้ public key K_B^+ ตรวจสอบ"
+    },
+    {
+      "q": "Digital signature = signed message digest ทำอะไร?",
+      "options": [
+        "ลบ message หลังส่ง",
+        "เข้ารหัสทั้ง message ด้วย public key",
+        "ลงนาม hash ของ message แล้วส่ง message พร้อม signature",
+        "สร้าง certificate"
+      ],
+      "correct": 2,
+      "explain": "Bob ลงนาม H(m) ด้วย private key; Alice hash message ที่ได้รับแล้วเปรียบเทียบกับ digest ที่ถอดด้วย public key"
+    },
+    {
+      "q": "Diffie-Hellman ให้อะไรกับ Alice และ Bob?",
+      "options": [
+        "shared secret ที่คำนวณแยกกันได้โดยไม่ต้องส่ง secret ตรง ๆ",
+        "public key สำหรับเข้ารหัส email",
+        "hash function",
+        "digital certificate"
+      ],
+      "correct": 0,
+      "explain": "Alice และ Bob คำนวณ common shared secret จาก public keys และ private values ของตน โดยไม่ส่ง shared secret โดยตรง"
+    },
+    {
+      "q": "TLS 1.3 handshake แบบ 1 RTT ต่างจาก 0 RTT อย่างไร?",
+      "options": [
+        "0 RTT ไม่ใช้ encryption",
+        "0 RTT ไม่มี certificate",
+        "1 RTT ใช้ UDP",
+        "0 RTT ส่ง application data มากับ hello และอาจเสี่ยง replay"
+      ],
+      "correct": 3,
+      "explain": "0 RTT resumption ให้ client ส่ง encrypted application data ใน hello; source ระบุว่าอาจ vulnerable to replay attacks"
+    },
+    {
+      "q": "ข้อใดเป็นการโจมตีที่เป็นไปได้บน TLS data stream?",
+      "options": [
+        "SHA-1 digest",
+        "RSA key generation",
+        "certificate signing",
+        "reordering และ replay"
+      ],
+      "correct": 3,
+      "explain": "source ระบุ reordering (แทรกแซง sequence # ใน TCP header) และ replay; มี solution ด้วย TLS sequence numbers และ nonce"
+    },
+    {
+      "q": "truncation attack ถูกป้องกันด้วยอะไรใน TLS?",
+      "options": [
+        "record type สำหรับ closure",
+        "ปิด TCP",
+        "เพิ่มขนาด block",
+        "ใช้ public key"
+      ],
+      "correct": 0,
+      "explain": "truncation attack ปลอม TCP close; TLS ใช้ record types โดย type 0 = data, type 1 = close และ MAC คำนวณจาก data, type, sequence #"
+    },
+    {
+      "q": "ข้อใดคือผลของ denial of service (DoS)?",
+      "options": [
+        "ทำให้ public key ถูกแทนที่",
+        "ทำให้บริการถูกใช้โดยผู้อื่นไม่ได้",
+        "ทำให้ hash collision",
+        "ทำให้ message ถูกอ่าน"
+      ],
+      "correct": 1,
+      "explain": "DoS prevent service from being used by others เช่น overloading resources"
+    },
+    {
+      "q": "SYN flooding เป็นการโจมตีแบบใด?",
+      "options": [
+        " eavesdropping",
+        "RSA factoring",
+        "denial of service",
+        "digital signature forgery"
+      ],
+      "correct": 2,
+      "explain": "firewall source ระบุ SYN flooding: attacker establishes many bogus TCP connections, no resources left for real connections"
+    },
+    {
+      "q": "ข้อใดเป็น limitations ของ firewall ตาม source?",
+      "options": [
+        "firewall ไม่รองรับ TCP",
+        "firewall ไม่สามารถ block port ได้",
+        "IP spoofing ทำให้ router ไม่รู้ว่า data มาจาก source จริงหรือไม่",
+        "firewall เข้ารหัส RSA ไม่ได้"
+      ],
+      "correct": 2,
+      "explain": "source ระบุ IP spoofing: router can’t know if data really comes from claimed source; อีกทั้งมี tradeoff และหลาย sites ยังถูกโจมตี"
+    },
+    {
+      "q": "IDS ต่างจาก packet filtering อย่างไร?",
+      "options": [
+        "IDS ทำ deep packet inspection และ examine correlation among multiple packets",
+        "IDS ดูเฉพาะ header",
+        "IDS ใช้แทน cryptography",
+        "IDS ไม่ตรวจ DoS"
+      ],
+      "correct": 0,
+      "explain": "packet filtering ดู TCP/IP headers; IDS ตรวจเนื้อ packet, จับคู่ known virus/attack strings, ตรวจ port scanning/network mapping/DoS"
+    }
+  ],
+  "cheat": [
+    {
+      "term": "Confidentiality",
+      "def": "เฉพาะผู้ส่งและผู้รับที่ตั้งใจเข้าใจ message; ใช้ encryption/decryption"
+    },
+    {
+      "term": "Authentication",
+      "def": "ยืนยันว่า sender/receiver เป็นใครจริง"
+    },
+    {
+      "term": "Message integrity",
+      "def": "ตรวจว่าข้อความไม่ถูกแก้ไขระหว่างส่งหรือภายหลัง"
+    },
+    {
+      "term": "Access & availability",
+      "def": "บริการต้องเข้าถึงและใช้งานได้"
+    },
+    {
+      "term": "m / K(m)",
+      "def": "m = plaintext; K(m) = ciphertext ที่เข้ารหัสด้วย key"
+    },
+    {
+      "term": "Cryptography components",
+      "def": "plaintext, ciphertext, encryption/decryption algorithms, keys"
+    },
+    {
+      "term": "Ciphertext-only attack",
+      "def": "Trudy มีเฉพาะ ciphertext; ใช้ brute force หรือ statistical analysis"
+    },
+    {
+      "term": "Known-plaintext attack",
+      "def": "Trudy มี plaintext ที่ตรงกับ ciphertext"
+    },
+    {
+      "term": "Chosen-plaintext attack",
+      "def": "Trudy ขอ ciphertext ของ plaintext ที่ตนเลือกได้"
+    },
+    {
+      "term": "Symmetric key",
+      "def": "Alice และ Bob ใช้ key เดียวกัน K_S; ปัญหาคือจะตกลง key กันอย่างไร"
+    },
+    {
+      "term": "Substitution cipher",
+      "def": "แทนตัวอักษรหนึ่งด้วยอีกตัว; key คือ mapping 26 ตัว"
+    },
+    {
+      "term": "Polyalphabetic cipher",
+      "def": "ใช้ n substitution ciphers และ cyclic pattern; key ไม่ใช่แค่ n-bit"
+    },
+    {
+      "term": "DES",
+      "def": "56-bit key, 64-bit plaintext, block cipher with CBC; 3DES เข้ารหัส 3 ครั้งด้วย 3 key"
+    },
+    {
+      "term": "AES",
+      "def": "128-bit blocks; key 128/192/256 บิต; brute force ใช้เวลานานมาก"
+    },
+    {
+      "term": "Public key",
+      "def": "public encryption key เปิดเผย; private decryption key รู้เฉพาะผู้รับ"
+    },
+    {
+      "term": "RSA keys",
+      "def": "public (n,e), private (n,d); n=pq, z=(p−1)(q−1), ed mod z = 1"
+    },
+    {
+      "term": "RSA encrypt/decrypt",
+      "def": "c = m^e mod n; m = c^d mod n"
+    },
+    {
+      "term": "RSA security",
+      "def": "ต้องแยกตัวประกอบ n ขนาดใหญ่; factoring a big number is hard"
+    },
+    {
+      "term": "Hybrid cryptography",
+      "def": "public key ใช้แลก session key; symmetric key ใช้ส่งข้อมูลจริง"
+    },
+    {
+      "term": "ap4.0 nonce",
+      "def": "Bob ส่ง R; Alice ส่ง K_A-B(R); R ใช้เพียงครั้งเดียวเพื่อกัน replay"
+    },
+    {
+      "term": "MITM",
+      "def": "Trudy เป็น Alice ต่อ Bob และเป็น Bob ต่อ Alice; แก้ด้วย certified public key"
+    },
+    {
+      "term": "Hash function",
+      "def": "many-to-1, fixed-size digest; หา m จาก H(m) เป็น computationally infeasible"
+    },
+    {
+      "term": "Digital signature",
+      "def": "ลงนามด้วย private key; ตรวจด้วย public key; verifiable, nonforgeable, non-repudiation"
+    },
+    {
+      "term": "CA",
+      "def": "ผูก public key กับ entity; certificate ถูก CA ลงนามด้วย private key"
+    },
+    {
+      "term": "TLS",
+      "def": "confidentiality ด้วย symmetric encryption, integrity ด้วย hashing, authentication ด้วย public key"
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "เป้าหมายความปลอดภัย 4 ข้อ?",
+      "a": "confidentiality, authentication, message integrity, access/availability"
+    },
+    {
+      "q": "Trudy ทำอะไรได้บ้าง?",
+      "a": "eavesdrop, insert messages, impersonation/spoofing, hijacking, denial of service"
+    },
+    {
+      "q": "Symmetric key ต่างจาก public key อย่างไร?",
+      "a": "symmetric ใช้ key เดียวกันทั้งสองฝั่ง; public key ใช้ public encryption key และ private decryption key"
+    },
+    {
+      "q": "DES ใช้ key กี่บิต?",
+      "a": "56-bit symmetric key; plaintext input 64 บิต"
+    },
+    {
+      "q": "AES ใช้ block และ key ขนาดใด?",
+      "a": "128-bit blocks; key 128, 192 หรือ 256 บิต"
+    },
+    {
+      "q": "RSA สร้าง key pair อย่างไร?",
+      "a": "n=pq, z=(p−1)(q−1), ed mod z=1; public=(n,e), private=(n,d)"
+    },
+    {
+      "q": "RSA เข้ารหัส/ถอดรหัสอย่างไร?",
+      "a": "c = m^e mod n; m = c^d mod n"
+    },
+    {
+      "q": "ap4.0 ใช้ nonce ทำอะไร?",
+      "a": "พิสูจน์ว่า Alice live และกัน playback; R ใช้เพียงครั้งเดียว"
+    },
+    {
+      "q": "ap5.0 ยังมีช่องโหว่ใด?",
+      "a": "man-in-the-middle; Trudy ส่ง public key ของตนโดยอ้างว่าเป็นของ Alice"
+    },
+    {
+      "q": "Hash function มีคุณสมบัติอะไร?",
+      "a": "many-to-1, fixed-size digest, หา preimage ได้ยาก"
+    },
+    {
+      "q": "Digital signature ใช้อะไรลงนามและตรวจสอบ?",
+      "a": "ลงนามด้วย private key; ตรวจด้วย public key; รองรับ non-repudiation"
+    },
+    {
+      "q": "TLS ให้บริการอะไร?",
+      "a": "confidentiality (symmetric), integrity (hashing), authentication (public key)"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Network security",
+      "def": "การรักษา confidentiality, authentication, message integrity และ access/availability ของการสื่อสาร"
+    },
+    {
+      "term": "Confidentiality",
+      "def": "เฉพาะผู้ส่งและผู้รับที่ตั้งใจเท่านั้นที่ควรเข้าใจเนื้อหา message"
+    },
+    {
+      "term": "Authentication",
+      "def": "การยืนยันตัวตนระหว่าง sender และ receiver"
+    },
+    {
+      "term": "Message integrity",
+      "def": "การทำให้แน่ใจว่าข้อความไม่ถูกแก้ไขระหว่างส่งหรือภายหลังโดยไม่ถูกตรวจพบ"
+    },
+    {
+      "term": "Access and availability",
+      "def": "บริการต้องสามารถเข้าถึงและใช้งานได้โดยผู้ใช้"
+    },
+    {
+      "term": "Alice / Bob / Trudy",
+      "def": "ผู้ส่ง ผู้รับ และผู้บุกรุกในตัวอย่างมาตรฐานของ network security"
+    },
+    {
+      "term": "Eavesdropping",
+      "def": "การดักฟังหรือ intercept message ใน connection"
+    },
+    {
+      "term": "Impersonation / spoofing",
+      "def": "การปลอม source address หรือ field ใด ๆ ใน packet"
+    },
+    {
+      "term": "Hijacking",
+      "def": "การยึด connection ที่กำลังดำเนินอยู่โดยตัด sender หรือ receiver ออกแล้วแทรกตัวเอง"
+    },
+    {
+      "term": "Denial of service (DoS)",
+      "def": "การทำให้บริการถูกใช้โดยผู้อื่นไม่ได้ เช่น ทำให้ resources overload"
+    },
+    {
+      "term": "Plaintext",
+      "def": "ข้อความต้นฉบับที่อ่านเข้าใจได้ก่อนเข้ารหัส (m)"
+    },
+    {
+      "term": "Ciphertext",
+      "def": "ข้อความที่เข้ารหัสแล้ว"
+    },
+    {
+      "term": "Encryption key",
+      "def": "key ที่ใช้ใน encryption algorithm เพื่อแปลง plaintext เป็น ciphertext"
+    },
+    {
+      "term": "Decryption key",
+      "def": "key ที่ใช้ใน decryption algorithm เพื่อแปลง ciphertext กลับเป็น plaintext"
+    },
+    {
+      "term": "Cryptographic attack",
+      "def": "ความพยายามทำลายความปลอดภัยเพื่อให้ทราบ plaintext หรือ key"
+    },
+    {
+      "term": "Brute force",
+      "def": "การลอง key ที่เป็นไปได้ทั้งหมดจนพบ key ที่ถูกต้อง"
+    },
+    {
+      "term": "Known-plaintext attack",
+      "def": "ผู้โจมตีมี plaintext ที่ตรงกับ ciphertext"
+    },
+    {
+      "term": "Chosen-plaintext attack",
+      "def": "ผู้โจมตีสามารถขอ ciphertext ของ plaintext ที่ตนเลือกได้"
+    },
+    {
+      "term": "Symmetric-key cryptography",
+      "def": "ผู้ส่งและผู้รับใช้ key เดียวกัน (K_S) ในการ encrypt/decrypt"
+    },
+    {
+      "term": "Substitution cipher",
+      "def": "การแทนที่ตัวอักษรหนึ่งด้วยอีกตัว เช่น monoalphabetic mapping 26 ตัว"
+    },
+    {
+      "term": "Polyalphabetic cipher",
+      "def": "ใช้ substitution หลายชุดและ cyclic pattern ในการเลือกชุดสำหรับแต่ละตัวอักษร"
+    },
+    {
+      "term": "DES",
+      "def": "Data Encryption Standard: 56-bit key, 64-bit plaintext, block cipher with cipher block chaining"
+    },
+    {
+      "term": "3DES",
+      "def": "ทำให้ DES ปลอดภัยขึ้นโดยเข้ารหัส 3 ครั้งด้วย 3 key ที่ต่างกัน"
+    },
+    {
+      "term": "AES",
+      "def": "Advanced Encryption Standard: 128-bit blocks, key 128/192/256 บิต"
+    },
+    {
+      "term": "Public-key cryptography",
+      "def": "ใช้ public encryption key ที่เปิดเผยและ private decryption key ที่ผู้รับเก็บไว้"
+    },
+    {
+      "term": "RSA",
+      "def": "public-key algorithm ของ Rivest, Shamir, Adelson; public key (n,e), private key (n,d)"
+    },
+    {
+      "term": "Modular arithmetic",
+      "def": "การคำนวณเศษจากการหาร; ใช้ใน RSA และ Diffie-Hellman"
+    },
+    {
+      "term": "Session key",
+      "def": "symmetric key ที่ใช้เข้ารหัสข้อมูลจริงใน connection หลังแลก key ด้วย public key"
+    },
+    {
+      "term": "Nonce",
+      "def": "number (R) used only once-in-a-lifetime เพื่อพิสูจน์ freshness และกัน replay"
+    },
+    {
+      "term": "Playback attack",
+      "def": "การบันทึก packet ของผู้ใช้แล้วเล่นซ้ำภายหลังเพื่อปลอมตัว"
+    },
+    {
+      "term": "Man-in-the-middle (MITM)",
+      "def": "ผู้โจมตีอยู่ระหว่างสองฝ่ายและแสดงตัวเป็นอีกฝ่ายต่อทั้งสองข้าง"
+    },
+    {
+      "term": "Hash function",
+      "def": "ฟังก์ชัน many-to-1 ที่สร้าง fixed-size message digest จากข้อความ"
+    },
+    {
+      "term": "Message digest",
+      "def": "ค่า fingerprint ขนาดคงที่ที่ได้จาก hash function"
+    },
+    {
+      "term": "Digital signature",
+      "def": "ลายเซ็นดิจิทัลที่ลงนามด้วย private key และตรวจสอบด้วย public key; verifiable, nonforgeable, non-repudiation"
+    },
+    {
+      "term": "Certification Authority (CA)",
+      "def": "องค์กรที่ผูก public key กับ entity และออก certificate ที่ CA ลงนาม"
+    },
+    {
+      "term": "TLS",
+      "def": "Transport-Layer Security: confidentiality, integrity และ authentication สำหรับ connection เหนือ transport layer"
     }
   ]
 };

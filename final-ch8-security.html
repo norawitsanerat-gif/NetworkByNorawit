@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive Digital Textbook — FINAL F5 / Book Chapter 8: Security (Cryptography, RSA, Authentication, Hashes, Digital Signatures, TLS, Network Security Attacks)" />
+  <title>CN · F5 — Security</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body data-page="chapter" data-chapter="9">
+
+<div id="app">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header id="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="เปิดเมนูบทเรียน" title="เมนู">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <div class="brand">
+      <div class="cn-logo" aria-hidden="true">CN</div>
+      <div class="brand-titles">
+        <h1>เครือข่ายคอมพิวเตอร์และอินเทอร์เน็ต</h1>
+        <p id="headerChapterLabel">F5 · BOOK CH.8 · Security</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn" id="homeBtn" aria-label="กลับไปเมนูหลัก" title="เมนูหลัก">
+        <i data-lucide="home"></i>
+      </button>
+      <button class="icon-btn" id="notesBtn" aria-label="เปิดบันทึกย่อ" title="บันทึกย่อ (Notes)">
+        <i data-lucide="notebook-pen"></i>
+      </button>
+
+      <div class="header-progress" aria-label="ความคืบหน้า">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="headerProgressBar">
+          <div class="progress-fill" id="headerProgressFill"></div>
+        </div>
+        <span class="progress-count" id="headerProgressCount">1 / 42</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SHELL ================= -->
+  <div class="shell">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside id="sidebar" aria-label="เมนูบทเรียน">
+      <div class="sidebar-head">
+        <div class="sidebar-head-title">
+          <h2 id="sidebarChapterTitle">F5 · Security</h2>
+          <p id="sidebarChapterSub">FINAL · BOOK CH.8 · 42 หัวข้อ</p>
+        </div>
+        <button class="icon-btn sidebar-close" id="sidebarCloseBtn" aria-label="ปิดเมนูบทเรียน" title="ปิดเมนู">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-info">
+        <i data-lucide="info"></i>
+        <span>คลิกหัวข้อหรือสไลด์เพื่อข้ามไปได้เลย<br />ทุกสไลด์อ้างอิงจาก Chapter 8 Security</span>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav" aria-label="สารบัญสไลด์"></nav>
+      <div class="sidebar-foot">
+        <div class="sf-top"><span>ความคืบหน้า</span><b id="sidebarPct">0%</b></div>
+        <div class="progress-track"><div class="progress-fill" id="sidebarProgressFill"></div></div>
+        <p class="mt-2 text-3" style="font-size:12px" id="sidebarDone">ยังไม่ได้เรียนสไลด์ใดเลย — เริ่มที่ Cover ได้เลย!</p>
+      </div>
+    </aside>
+
+    <!-- ================= STAGE ================= -->
+    <main class="stage">
+
+      <div class="slide-viewport" id="viewport">
+
+        <!-- ============ SLIDE 1 · Network Security ============ -->
+<section class="slide-view" data-title="Network Security" aria-label="สไลด์ 1: Network Security">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">FINAL · F5 · BOOK CHAPTER 8</p>
+    <h2 class="slide-title">Network <span class="grad-text">Security</span></h2>
+    <p class="slide-subtitle">หลักการพื้นฐานของ Network Security · Symmetric-Key และ Public-Key Cryptography · Encryption/Decryption · Cryptographic Hash Functions · Message Integrity &amp; Authentication · Digital Signatures &amp; TLS · Network Security Attacks</p>
+    <div class="visual-box mt-6" style="max-width:780px;margin-left:auto;margin-right:auto">
+      <span class="vb-label">ALICE → ENCRYPT → INTERNET → DECRYPT → BOB</span>
+      <div class="flow-row" style="padding:20px 10px">
+        <div class="pipe-node hot"><b>Alice</b><span>plaintext m</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>K(m)</b><span>ciphertext</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Internet</b><span>Trudy อาจดัก/แทรก</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>K⁻¹</b><span>decrypt</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node hot"><b>Bob</b><span>plaintext m</span></div>
+      </div>
+    </div>
+    <div class="grid-3 mt-5" style="grid-template-columns:repeat(3,1fr);gap:10px">
+      <div class="mini-card"><b>1 · Foundations</b><span>confidentiality, authentication, integrity, availability</span></div>
+      <div class="mini-card"><b>2 · Cryptography</b><span>symmetric key, substitution, DES, AES</span></div>
+      <div class="mini-card"><b>3 · Public Key</b><span>RSA, modular arithmetic, hybrid session key</span></div>
+      <div class="mini-card"><b>4 · Integrity</b><span>hash functions, message digests, authentication</span></div>
+      <div class="mini-card"><b>5 · Signatures &amp; TLS</b><span>digital signature, CA, Diffie-Hellman, TLS 1.3</span></div>
+      <div class="mini-card"><b>6 · Attacks</b><span>eavesdropping, MITM, replay, DoS, IP spoofing</span></div>
+    </div>
+    <div class="flex items-center gap-3 wrap mt-5" style="justify-content:center">
+      <span class="chip">42 สไลด์</span><span class="chip">Quiz 12</span><span class="chip">Exam 20</span><span class="chip">Flashcards 12</span><span class="chip">Glossary 36</span>
+    </div>
+    <div class="mt-6 center"><button class="btn btn-primary btn-lg" id="startBtn9">เริ่มเรียน <i data-lucide="arrow-right"></i></button></div>
+    <p class="source-line center">อ้างอิง: Chapter 8 Security — 7 หัวข้อหลักตามที่กำหนด</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 2 · บทนี้จะเรียน อะไร ============ -->
+<section class="slide-view" data-title="บทนี้จะเรียน อะไร" aria-label="สไลด์ 2: บทนี้จะเรียน อะไร">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ROADMAP · 7 TOPICS</p>
+    <h2 class="slide-title">บทนี้จะเรียน <span class="grad-text">อะไร</span></h2>
+    <p class="slide-subtitle">เริ่มจากเป้าหมายความปลอดภัย → ภาษาของ cryptography → symmetric/public key → authentication และ hash → digital signature/TLS → ปิดท้ายด้วยการโจมตีและแนวป้องกัน</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="shield-check" class="cyan"></i>1. Network Security Foundations <span class="chip" style="margin-left:6px">สไลด์ 3–6</span></h3><p class="card-text small">confidentiality, authentication, message integrity, access/availability; Alice/Bob/Trudy; สิ่งที่ผู้โจมตีทำได้</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="key-round" class="cyan"></i>2. Cryptography &amp; Encryption <span class="chip" style="margin-left:6px">สไลด์ 7–13</span></h3><p class="card-text small">plaintext/ciphertext/key; encryption/decryption; breaking schemes; symmetric key; substitution; DES; AES</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="lock-keyhole" class="cyan"></i>3. Public-Key Cryptography <span class="chip" style="margin-left:6px">สไลด์ 14–19</span></h3><p class="card-text small">public/private key; modular arithmetic; RSA key generation; RSA encryption/decryption; hybrid session keys</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="fingerprint" class="cyan"></i>4. Authentication, Integrity &amp; Hashes <span class="chip" style="margin-left:6px">สไลด์ 20–25</span></h3><p class="card-text small">ap1.0–ap5.0; replay; nonce; MITM; hash properties; MD5/SHA-1; checksum collision</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="file-signature" class="cyan"></i>5. Digital Signatures &amp; TLS <span class="chip" style="margin-left:6px">สไลด์ 26–32</span></h3><p class="card-text small">sign/verify; signed digest; CA; Diffie-Hellman; TLS services; TLS 1.3 handshake; TLS records</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="triangle-alert" class="cyan"></i>6. Network Security Attacks <span class="chip" style="margin-left:6px">สไลด์ 33–36</span></h3><p class="card-text small">eavesdrop, insert, impersonation, hijacking, DoS; MITM; replay; truncation; SYN flooding; IP spoofing</p></div>
+    </div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="target"></i><div><b>โฟกัส 7 หัวข้อหลัก</b>ส่วน IPsec, secure e-mail, Wi-Fi/5G security และ firewalls/IDS เป็นหัวข้อเสริมใน source จึงไม่ใช่เนื้อหาหลักของ F5 — ใช้เฉพาะเป็น defense map หรือตัวอย่างสั้น ๆ</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — สารบัญและ chapter goals, หน้า 2–3</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 3 · Network Security คืออะไร ============ -->
+<section class="slide-view" data-title="Network Security คืออะไร" aria-label="สไลด์ 3: Network Security คืออะไร">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">FOUNDATIONS · SECURITY GOALS</p>
+    <h2 class="slide-title">Network Security <span class="grad-text">คืออะไร</span></h2>
+    <p class="slide-subtitle">network security ไม่ได้มีแค่การเข้ารหัส — source วางเป้าหมายไว้ 4 ข้อที่ต้องมองพร้อมกัน</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="grid-2" style="gap:12px">
+        <div class="card"><h3 class="card-title"><i data-lucide="eye-off" class="cyan"></i>Confidentiality</h3><p class="card-text small">เฉพาะ sender และ intended receiver เท่านั้นที่ควรเข้าใจเนื้อหา message</p><div class="mini-card mt-3"><b>กลไก</b><span>sender encrypts; receiver decrypts</span></div></div>
+        <div class="card"><h3 class="card-title"><i data-lucide="user-check" class="cyan"></i>Authentication</h3><p class="card-text small">sender และ receiver ต้องการยืนยัน identity ของอีกฝ่าย</p><div class="mini-card mt-3"><b>คำถาม</b><span>อีกฝ่ายเป็นใครจริง ๆ?</span></div></div>
+        <div class="card"><h3 class="card-title"><i data-lucide="file-check-2" class="cyan"></i>Message Integrity</h3><p class="card-text small">ต้องการให้แน่ใจว่า message ไม่ถูกแก้ไขทั้งระหว่างส่งหรือภายหลัง โดยไม่ถูกตรวจพบ</p></div>
+        <div class="card"><h3 class="card-title"><i data-lucide="server" class="cyan"></i>Access &amp; Availability</h3><p class="card-text small">services ต้องเข้าถึงและใช้งานได้โดยผู้ใช้</p></div>
+      </div>
+      <div><div class="table-wrap"><table class="data-table"><thead><tr><th>เป้าหมาย</th><th>คำถามที่ตอบ</th><th>ภัยที่เกี่ยวข้อง</th></tr></thead><tbody>
+        <tr><td><b>Confidentiality</b></td><td>ใครอ่านข้อความได้?</td><td>eavesdropping</td></tr>
+        <tr><td><b>Authentication</b></td><td>อีกฝ่ายเป็นใคร?</td><td>impersonation / spoofing</td></tr>
+        <tr><td><b>Message integrity</b></td><td>ข้อความถูกแก้หรือไม่?</td><td>message insertion / tampering</td></tr>
+        <tr><td><b>Availability</b></td><td>บริการยังใช้ได้ไหม?</td><td>denial of service</td></tr>
+      </tbody></table></div><div class="tip-box tip-remember mt-3"><i data-lucide="layers"></i><div><b>มองเป็นชุด</b>การเข้ารหัสอย่างเดียวตอบ confidentiality แต่ไม่ได้ยืนยัน identity หรือกันการเล่นซ้ำโดยอัตโนมัติ</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — What is network security?, หน้า 4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 4 · Alice, Bob และ Trudy ============ -->
+<section class="slide-view" data-title="Alice, Bob และ Trudy" aria-label="สไลด์ 4: Alice, Bob และ Trudy">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">FOUNDATIONS · ACTORS</p>
+    <h2 class="slide-title">Alice, Bob <span class="grad-text">และ Trudy</span></h2>
+    <p class="slide-subtitle">ตัวอย่างมาตรฐานของ network security: Alice กับ Bob ต้องการสื่อสารอย่างปลอดภัย และ Trudy อาจ intercept, delete หรือ add messages</p>
+    <div class="visual-box mt-5"><span class="vb-label">ALICE → CHANNEL → BOB · TRUDY อยู่ตรงกลาง</span>
+      <div class="flow-row" style="padding:22px 10px">
+        <div class="pipe-node hot"><b>Alice</b><span>sender</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>data + control</b><span>messages</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node hot"><b>Bob</b><span>receiver</span></div>
+      </div>
+      <div class="center mt-2"><span class="chip" style="border-color:rgba(244,63,94,.4);color:#fb7185">Trudy: intercept · delete · add</span></div>
+    </div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="globe" class="cyan"></i>Alice/Bob ในชีวิตจริง</h3><ul class="clean-list"><li>Web browser/server สำหรับ electronic transactions เช่น on-line purchases</li><li>On-line banking client/server</li><li>DNS servers</li><li>BGP routers ที่แลกเปลี่ยน routing table updates</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="user-x" class="amber"></i>Trudy ทำอะไรได้</h3><p class="card-text small">Trudy (intruder) อาจ intercept, delete หรือ add messages ระหว่างทาง — เป็นจุดเริ่มต้นของ attack ทุกแบบในบทนี้</p><div class="tip-box tip-note mt-3"><i data-lucide="circle-help"></i><div><b>คำถาม</b>ถ้า Bob ไม่เห็น Alice โดยตรง จะพิสูจน์ได้อย่างไรว่า message มาจาก Alice จริง?</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — Friends and enemies: Alice, Bob, Trudy, หน้า 5–6</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 5 · ผู้โจมตี ทำอะไรได้บ้าง ============ -->
+<section class="slide-view slide-compact" data-title="ผู้โจมตี ทำอะไรได้บ้าง" aria-label="สไลด์ 5: ผู้โจมตี ทำอะไรได้บ้าง">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">FOUNDATIONS · THREAT MODEL</p>
+    <h2 class="slide-title">ผู้โจมตี <span class="grad-text">ทำอะไรได้บ้าง</span></h2>
+    <p class="slide-subtitle">Trudy ไม่ได้ทำได้แค่ดักฟัง — source สรุปสิ่งที่ “bad guy” ทำได้ 5 อย่าง ซึ่งกระทบเป้าหมายความปลอดภัยต่างกัน</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>การโจมตี</th><th>ความหมาย</th><th>เป้าหมายที่กระทบ</th></tr></thead><tbody>
+      <tr><td><b>Eavesdrop</b></td><td>intercept messages ที่ส่งผ่าน connection</td><td>Confidentiality</td></tr>
+      <tr><td><b>Insert messages</b></td><td>actively insert messages เข้าไปใน connection</td><td>Authentication / Integrity</td></tr>
+      <tr><td><b>Impersonation / spoofing</b></td><td>ปลอม source address หรือ field ใด ๆ ใน packet</td><td>Authentication</td></tr>
+      <tr><td><b>Hijacking</b></td><td>“take over” ongoing connection โดยตัด sender/receiver แล้วแทรกตัวเอง</td><td>Authentication / session integrity</td></tr>
+      <tr><td><b>Denial of service</b></td><td>ป้องกันไม่ให้คนอื่นใช้ service เช่น overloading resources</td><td>Availability</td></tr>
+    </tbody></table></div>
+    <div class="grid-3 mt-4" style="gap:10px">
+      <div class="tip-box tip-note"><i data-lucide="eye"></i><div><b> eavesdrop → confidentiality</b>ถ้าข้อความเข้ารหัส ผู้ดักฟังไม่ควรเข้าใจเนื้อหา</div></div>
+      <div class="tip-box tip-warn"><i data-lucide="user-x"></i><div><b>impersonation → authentication</b>source address ไม่ใช่หลักฐาน identity</div></div>
+      <div class="tip-box tip-exam"><i data-lucide="server-off"></i><div><b>DoS → availability</b>บริการต้องยังใช้งานได้</div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — There are bad guys (and girls) out there!, หน้า 7</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 6 · ภาษาของ Cryptography ============ -->
+<section class="slide-view" data-title="ภาษาของ Cryptography" aria-label="สไลด์ 6: ภาษาของ Cryptography">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CRYPTO · LANGUAGE</p>
+    <h2 class="slide-title">ภาษาของ <span class="grad-text">Cryptography</span></h2>
+    <p class="slide-subtitle">ก่อนเข้าใจ algorithm ต้องแยกองค์ประกอบพื้นฐานให้ชัด: plaintext, ciphertext, algorithm และ key</p>
+    <div class="visual-box mt-5"><span class="vb-label">m → ENCRYPT(K_A) → CIPHERTEXT → DECRYPT(K_B) → m</span>
+      <div class="flow-row" style="padding:20px 10px">
+        <div class="pipe-node hot"><b>m</b><span>plaintext</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Encryption</b><span>algorithm + key K_A</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>K_A(m)</b><span>ciphertext</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Decryption</b><span>algorithm + key K_B</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node hot"><b>m</b><span>plaintext เดิม</span></div>
+      </div>
+    </div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="grid-2" style="gap:10px">
+        <div class="mini-card"><b>Plaintext (m)</b><span>ข้อความต้นฉบับที่อ่านเข้าใจได้ก่อนเข้ารหัส</span></div>
+        <div class="mini-card"><b>Ciphertext</b><span>ข้อความที่เข้ารหัสแล้ว</span></div>
+        <div class="mini-card"><b>Algorithms</b><span>encryption/decryption algorithms เป็นคู่กัน แต่อาจทำงานไม่เหมือนกัน</span></div>
+        <div class="mini-card"><b>Keys</b><span>อาจเหมือนหรือต่างกัน เช่น symmetric-key vs asymmetric-key</span></div>
+      </div>
+      <div><div class="formula-box"><div><span class="formula-label">เป้าหมาย</span><b class="mono">m = K_B(K_A(m))</b></div><div><span>Symmetric</span><b>key เดียวกัน</b></div><div><span>Asymmetric</span><b>public + private key</b></div></div><div class="tip-box tip-remember mt-3"><i data-lucide="key-round"></i><div><b>Key ไม่ใช่ algorithm</b>algorithm เปิดเผยได้ แต่ความปลอดภัยขึ้นกับ key ที่ใช้</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — The language of cryptography, หน้า 9</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 7 · Encryption &amp; Decryption Flow ============ -->
+<section class="slide-view" data-title="Encryption &amp; Decryption Flow" aria-label="สไลด์ 7: Encryption &amp; Decryption Flow">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CRYPTO · INTERACTIVE FLOW</p>
+    <h2 class="slide-title">Encryption <span class="grad-text">&amp; Decryption Flow</span></h2>
+    <p class="slide-subtitle">เลือกแต่ละขั้นเพื่อดูว่า plaintext ถูกแปลงเป็น ciphertext และกลับมาเป็น plaintext ได้อย่างไร</p>
+    <div class="tabs mt-4" id="encTabs9"></div>
+    <div class="grid-2" style="align-items:start">
+      <div class="card" style="min-height:220px"><span class="chip">ขั้นตอน</span><h3 class="card-title mt-3" id="encTitle9">—</h3><p class="card-text small" id="encDetail9">—</p><div class="visual-box mt-3"><div class="formula-box"><div><span class="formula-label">ค่าปัจจุบัน</span><b class="mono" id="encValue9" style="white-space:pre-line;text-align:right">—</b></div></div></div></div>
+      <div class="visual-box"><span class="vb-label">SENDER → KEY → CHANNEL → KEY → RECEIVER</span><div class="flow-row" style="padding:16px 8px"><div class="pipe-node hot"><b>Plaintext</b><span>m</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Encrypt</b><span>algorithm + key</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Ciphertext</b><span>K(m)</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Decrypt</b><span>algorithm + key</span></div><span class="flow-arrow">→</span><div class="pipe-node hot"><b>Plaintext</b><span>m เดิม</span></div></div><div class="tip-box tip-note mt-3"><i data-lucide="lightbulb"></i><div><b>ตัวอย่างจาก source</b>monoalphabetic substitution ใช้ mapping 26 ตัว; plaintext <span class="mono">bob. i love you. alice</span> → <span class="mono">nkn. s gktc wky. mgsbc</span></div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — The language of cryptography / Simple encryption scheme, หน้า 9, 12</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 8 · การทำลาย Encryption Scheme ============ -->
+<section class="slide-view" data-title="การทำลาย Encryption Scheme" aria-label="สไลด์ 8: การทำลาย Encryption Scheme">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CRYPTO · ATTACK MODELS</p>
+    <h2 class="slide-title">การทำลาย <span class="grad-text">Encryption Scheme</span></h2>
+    <p class="slide-subtitle">การโจมตีระบบเข้ารหัสแบ่งตามข้อมูลที่ผู้โจมตีมีอยู่ในมือ — ยิ่งมีข้อมูลมาก ยิ่งง่ายขึ้น</p>
+    <div class="grid-3 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="file-lock-2" class="cyan"></i>Ciphertext-only</h3><p class="card-text small">Trudy มีเฉพาะ ciphertext ที่สามารถวิเคราะห์ได้</p><ul class="clean-list mt-3"><li><b>Brute force</b> — search through all keys</li><li><b>Statistical analysis</b></li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="files" class="cyan"></i>Known-plaintext</h3><p class="card-text small">Trudy มี plaintext ที่ตรงกับ ciphertext</p><div class="mini-card mt-3"><b>ตัวอย่าง source</b><span>ใน monoalphabetic cipher ผู้โจมตีหา pairings ของ a, l, i, c, e, b, o ได้</span></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="file-plus-2" class="cyan"></i>Chosen-plaintext</h3><p class="card-text small">Trudy สามารถขอ ciphertext สำหรับ plaintext ที่ตนเลือกได้</p><div class="mini-card mt-3"><b>ผลลัพธ์</b><span>ผู้โจมตีควบคุม input เพื่อเรียนรู้พฤติกรรมของ encryption</span></div></div>
+    </div>
+    <div class="formula-box mt-4"><div><span class="formula-label">เป้าหมายของผู้โจมตี</span><b>ทราบ plaintext หรือ key</b></div><div><span>Ciphertext-only</span><b>ข้อมูลน้อยที่สุด</b></div><div><span>Known / Chosen</span><b>ข้อมูลมากขึ้น</b></div></div>
+    <div class="tip-box tip-exam mt-4"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>brute force ไม่ได้ใช้เฉพาะกับ encryption — source ระบุว่ายังใช้โจมตีระบบยืนยันตัวตนได้ด้วย</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Breaking an encryption scheme, หน้า 10</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 9 · Symmetric-Key Cryptography ============ -->
+<section class="slide-view" data-title="Symmetric-Key Cryptography" aria-label="สไลด์ 9: Symmetric-Key Cryptography">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CRYPTO · SYMMETRIC</p>
+    <h2 class="slide-title">Symmetric-Key <span class="grad-text">Cryptography</span></h2>
+    <p class="slide-subtitle">Alice และ Bob ใช้ key เดียวกัน K_S ทั้ง encryption และ decryption — คำถามสำคัญคือทั้งสองตกลง key กันได้อย่างไร</p>
+    <div class="visual-box mt-5"><span class="vb-label">ALICE ── K_S ──► CIPHERTEXT ── K_S ──► BOB</span>
+      <div class="flow-row" style="padding:22px 10px">
+        <div class="pipe-node hot"><b>Alice</b><span>plaintext m</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Encrypt</b><span>K_S</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Ciphertext</b><span>K_S(m)</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Decrypt</b><span>K_S</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node hot"><b>Bob</b><span>plaintext m</span></div>
+      </div>
+    </div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="key-round" class="cyan"></i>หลักการ</h3><ul class="clean-list"><li>Bob และ Alice share same symmetric key: K_S</li><li>key อาจเป็น substitution pattern ใน monoalphabetic cipher</li><li>ต้องมี key ก่อนจึงจะเริ่มสื่อสารได้</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="circle-help" class="amber"></i>ปัญหาที่ตามมา</h3><p class="card-text">Q: how do Bob and Alice agree on key value?</p><div class="tip-box tip-note mt-3"><i data-lucide="users"></i><div><b>ถ้าไม่เคยพบกัน?</b>public-key cryptography จะเข้ามาแก้ปัญหาเรื่องการตกลง key ในภายหลัง</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — Symmetric key cryptography, หน้า 11</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 10 · Substitution Cipher ============ -->
+<section class="slide-view" data-title="Substitution Cipher" aria-label="สไลด์ 10: Substitution Cipher">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CRYPTO · SUBSTITUTION</p>
+    <h2 class="slide-title">Substitution <span class="grad-text">Cipher</span></h2>
+    <p class="slide-subtitle">substitution cipher คือการแทนที่สิ่งหนึ่งด้วยอีกสิ่งหนึ่ง; monoalphabetic cipher ใช้ mapping จากตัวอักษร 26 ตัว</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>แถว</th><th>ตัวอักษร</th></tr></thead><tbody>
+      <tr><td><b>Plaintext</b></td><td class="mono">a b c d e f g h i j k l m n o p q r s t u v w x y z</td></tr>
+      <tr><td><b>Ciphertext</b></td><td class="mono">m n b v c x z a s d f g h j k l p o i u y t r e w q</td></tr>
+    </tbody></table></div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="replace" class="cyan"></i>ตัวอย่าง</h3><div class="formula-box"><div><span>Plaintext</span><b class="mono">bob. i love you. alice</b></div><div><span>Ciphertext</span><b class="mono">nkn. s gktc wky. mgsbc</b></div></div><p class="text-3 mt-3" style="font-size:12px">ช่องว่างและเครื่องหมายวรรคตอนคงเดิม; ตัวอักษรแต่ละตัวถูกแทนตาม mapping</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="key-round" class="cyan"></i>Key</h3><p class="card-text">Encryption key คือ mapping จาก set ของตัวอักษร 26 ตัว ไปยัง set ของตัวอักษร 26 ตัว</p><div class="tip-box tip-exam mt-3"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>key ไม่ใช่ “ตัวอักษรเลื่อน” เสมอไป — ที่นี่คือ mapping ทั้งชุด</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — Simple encryption scheme, หน้า 12</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 11 · Polyalphabetic Cipher ============ -->
+<section class="slide-view" data-title="Polyalphabetic Cipher" aria-label="สไลด์ 11: Polyalphabetic Cipher">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CRYPTO · POLYALPHABETIC</p>
+    <h2 class="slide-title">Polyalphabetic <span class="grad-text">Cipher</span></h2>
+    <p class="slide-subtitle">ใช้ substitution หลายชุดและเลือกชุดสำหรับแต่ละตัวอักษรตาม cyclic pattern — key จึงไม่ใช่แค่ n-bit pattern</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="layers" class="cyan"></i>แนวคิด</h3><ul class="clean-list"><li>มี n substitution ciphers: M1, M2, …, Mn</li><li>ใช้ cycling pattern เช่น n=4: <span class="mono">M1, M3, M4, M3, M2; …</span></li><li>แต่ละ plaintext symbol ใช้ substitution pattern ถัดไปในลำดับ</li></ul><div class="formula-box mt-3"><div><span class="formula-label">Key</span><b>n substitution ciphers + cyclic pattern</b></div></div></div>
+      <div class="visual-box"><span class="vb-label">ตัวอย่าง: dog → d จาก M1, o จาก M3, g จาก M4</span><div class="flow-row" style="padding:18px 10px"><div class="pipe-node hot"><b>d</b><span>M1</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>o</b><span>M3</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>g</b><span>M4</span></div></div><p class="center text-3 mt-2" style="font-size:12px">pattern เดิมถูกใช้ซ้ำเป็นรอบ ๆ กับ plaintext ที่ยาวขึ้น</p></div>
+    </div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="key-round"></i><div><b>เทียบกับ monoalphabetic</b>monoalphabetic ใช้ mapping ชุดเดียว; polyalphabetic ใช้หลายชุดสลับกันตาม pattern จึงมี key ที่ซับซ้อนกว่า</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — A more sophisticated encryption approach, หน้า 13</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 12 · DES — Data Encryption Standard ============ -->
+<section class="slide-view" data-title="DES — Data Encryption Standard" aria-label="สไลด์ 12: DES — Data Encryption Standard">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CRYPTO · DES</p>
+    <h2 class="slide-title">DES — <span class="grad-text">Data Encryption Standard</span></h2>
+    <p class="slide-subtitle">DES เป็น symmetric block cipher มาตรฐานสหรัฐฯ ที่ใช้ key 56 บิต และเป็นตัวอย่างคลาสสิกของ brute force</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>คุณสมบัติ</th><th>ค่า / คำอธิบาย</th></tr></thead><tbody>
+      <tr><td><b>มาตรฐาน</b></td><td>US encryption standard [NIST 1993]</td></tr>
+      <tr><td><b>Symmetric key</b></td><td>56-bit key</td></tr>
+      <tr><td><b>Plaintext input</b></td><td>64-bit</td></tr>
+      <tr><td><b>รูปแบบ</b></td><td>block cipher with cipher block chaining</td></tr>
+      <tr><td><b>ความปลอดภัย</b></td><td>DES Challenge: 56-bit-key-encrypted phrase ถูก decrypt ด้วย brute force ในเวลาน้อยกว่าหนึ่งวัน; ไม่มี known good analytic attack</td></tr>
+      <tr><td><b>ทำให้ปลอดภัยขึ้น</b></td><td>3DES: encrypt 3 times with 3 different keys</td></tr>
+    </tbody></table></div>
+    <div class="grid-2 mt-4"><div class="tip-box tip-warn"><i data-lucide="timer"></i><div><b>Brute force</b>ลอง key ที่เป็นไปได้ทั้งหมด — source เน้นว่าไม่ได้ใช้เฉพาะกับ encryption แต่ใช้โจมตี authentication ได้ด้วย</div></div><div class="tip-box tip-note"><i data-lucide="layers"></i><div><b>Block cipher</b>ข้อมูลถูกประมวลผลเป็น block และใช้ cipher block chaining</div></div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Symmetric key crypto: DES, หน้า 14</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 13 · AES — Advanced Encryption Standard ============ -->
+<section class="slide-view" data-title="AES — Advanced Encryption Standard" aria-label="สไลด์ 13: AES — Advanced Encryption Standard">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CRYPTO · AES</p>
+    <h2 class="slide-title">AES — <span class="grad-text">Advanced Encryption Standard</span></h2>
+    <p class="slide-subtitle">AES เป็น symmetric-key NIST standard ที่มาแทน DES ในเดือนพฤศจิกายน 2001 และใช้ block/key ขนาดใหญ่กว่า</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="shield-check" class="cyan"></i>AES specification</h3><ul class="clean-list"><li>symmetric-key NIST standard</li><li>แทน DES (Nov 2001)</li><li>processes data in <b>128-bit blocks</b></li><li>key size: <b>128, 192 หรือ 256 บิต</b></li></ul></div>
+      <div class="card center"><div class="big-stat">149 trillion</div><p class="card-text small">จำนวนปีโดยประมาณสำหรับ brute force decryption ของ AES เมื่อเทียบกับ DES ที่ใช้เวลา 1 วินาที</p><div class="mini-card mt-3"><b>ข้อความจาก source</b><span>“brute force decryption (try each key) taking 1 sec on DES, takes 149 trillion years for AES”</span></div></div>
+    </div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="trending-up"></i><div><b>ทำไม AES จึงแข็งแรงกว่า DES</b>key ที่ยาวขึ้นและ block ขนาด 128 บิตทำให้พื้นที่ค้นหาของ brute force ใหญ่ขึ้นมาก</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — AES: Advanced Encryption Standard, หน้า 15</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 14 · Public-Key Cryptography ============ -->
+<section class="slide-view" data-title="Public-Key Cryptography" aria-label="สไลด์ 14: Public-Key Cryptography">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">PUBLIC KEY · CONCEPT</p>
+    <h2 class="slide-title">Public-Key <span class="grad-text">Cryptography</span></h2>
+    <p class="slide-subtitle">public-key cryptography ไม่ต้องมี shared secret key: ผู้ส่งใช้ public key ของผู้รับ และผู้รับใช้ private key ของตน</p>
+    <div class="visual-box mt-5"><span class="vb-label">ALICE → K_B⁺ (PUBLIC) → CIPHERTEXT → K_B⁻ (PRIVATE) → BOB</span>
+      <div class="flow-row" style="padding:22px 10px">
+        <div class="pipe-node hot"><b>Alice</b><span>plaintext m</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>K_B⁺</b><span>Bob’s public key</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>K_B⁺(m)</b><span>ciphertext</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>K_B⁻</b><span>Bob’s private key</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node hot"><b>Bob</b><span>m = K_B⁻(K_B⁺(m))</span></div>
+      </div>
+    </div>
+    <div class="grid-3 mt-4" style="gap:10px">
+      <div class="mini-card"><b>Public encryption key</b><span>known to all; ใช้เข้ารหัสให้เจ้าของ</span></div>
+      <div class="mini-card"><b>Private decryption key</b><span>known only to receiver; ต้องไม่รั่ว</span></div>
+      <div class="mini-card"><b>ไม่ต้อง share secret</b><span>sender และ receiver ไม่ได้ใช้ secret key ร่วมกัน</span></div>
+    </div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="history"></i><div><b>Source note</b>แนวคิดนี้มาจาก Diffie-Hellman (1976) และ RSA (1978); source ระบุว่าเป็นแนวคิดที่เปลี่ยนแปลง cryptography ที่เดิมมีแต่ symmetric key</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Public Key Cryptography, หน้า 16–17</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 15 · Public-Key Requirements ============ -->
+<section class="slide-view" data-title="Public-Key Requirements" aria-label="สไลด์ 15: Public-Key Requirements">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">PUBLIC KEY · REQUIREMENTS</p>
+    <h2 class="slide-title">Public-Key <span class="grad-text">Requirements</span></h2>
+    <p class="slide-subtitle">public-key algorithm ต้องมีสมบัติทางคณิตศาสตร์ที่ทำให้เข้ารหัสแล้วถอดกลับได้ และทำให้การหา private key จาก public key เป็นไปไม่ได้ในทางปฏิบัติ</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="check-check" class="cyan"></i>ข้อกำหนด</h3><ol class="clean-list"><li>ต้องมี K⁺(·) และ K⁻(·) ที่ทำให้ <span class="mono">K⁻(K⁺(m)) = m</span></li><li>เมื่อรู้ public key K⁺ ต้องเป็นไปไม่ได้ที่จะคำนวณ private key K⁻</li></ol><div class="tip-box tip-remember mt-3"><i data-lucide="scale"></i><div><b>Computationally infeasible ≠ Mathematically impossible</b>security ของ public key ขึ้นกับความยากในการคำนวณ ไม่ใช่การพิสูจน์ว่าเป็นไปไม่ได้เชิงตรรกะ</div></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="sigma" class="cyan"></i>Modular arithmetic</h3><div class="formula-box"><div><span class="formula-label">นิยาม</span><b class="mono">x mod n = remainder เมื่อหาร x ด้วย n</b></div><div><span>บวก</span><b class="mono">[(a mod n)+(b mod n)] mod n = (a+b) mod n</b></div><div><span>ลบ</span><b class="mono">[(a mod n)−(b mod n)] mod n = (a−b) mod n</b></div><div><span>คูณ</span><b class="mono">[(a mod n)(b mod n)] mod n = (a·b) mod n</b></div></div><div class="mini-card mt-3"><b>ตัวอย่าง source</b><span>x=14, n=10, d=2 → (14 mod 10)² mod 10 = 4² mod 10 = 6; 14² mod 10 = 6</span></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — Public key encryption algorithms / Prerequisite: modular arithmetic, หน้า 18–19</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 16 · RSA — Key Generation ============ -->
+<section class="slide-view" data-title="RSA — Key Generation" aria-label="สไลด์ 16: RSA — Key Generation">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">PUBLIC KEY · RSA KEYGEN</p>
+    <h2 class="slide-title">RSA — <span class="grad-text">Key Generation</span></h2>
+    <p class="slide-subtitle">RSA สร้าง public/private key pair จากจำนวนเฉพาะขนาดใหญ่สองตัว — เลือกขั้นตอนเพื่อดูการคำนวณ</p>
+    <div class="dhcp-steps mt-4" id="rsaSteps9" style="grid-template-columns:repeat(5,1fr)"></div>
+    <div class="grid-2 mt-3" style="align-items:start">
+      <div class="card"><h3 class="card-title" id="rsaStepTitle9">—</h3><p class="card-text" id="rsaStepDetail9">—</p><div class="formula-box mt-3"><div><span>public key</span><b class="mono">(n, e)</b></div><div><span>private key</span><b class="mono">(n, d)</b></div></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="calculator" class="cyan"></i>สูตรสำคัญ</h3><div class="formula-box"><div><span>n</span><b class="mono">n = p · q</b></div><div><span>z</span><b class="mono">z = (p−1)(q−1)</b></div><div><span>e</span><b class="mono">e &lt; n, relatively prime กับ z</b></div><div><span>d</span><b class="mono">ed mod z = 1</b></div></div><p class="text-3 mt-3" style="font-size:12px">source ระบุตัวอย่าง p และ q ขนาด 1024 bits ต่อตัว</p></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — RSA: getting ready / Creating public/private key pair, หน้า 20–21</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 17 · RSA — Encryption &amp; Decryption ============ -->
+<section class="slide-view" data-title="RSA — Encryption &amp; Decryption" aria-label="สไลด์ 17: RSA — Encryption &amp; Decryption">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">PUBLIC KEY · RSA MATH</p>
+    <h2 class="slide-title">RSA — <span class="grad-text">Encryption &amp; Decryption</span></h2>
+    <p class="slide-subtitle">RSA เข้ารหัส message ที่มองเป็นจำนวนเต็มด้วย public key (n,e) และถอดด้วย private key (n,d)</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="lock" class="cyan"></i>Encrypt</h3><div class="formula-box"><div><span class="formula-label">ciphertext</span><b class="mono">c = m^e mod n</b></div><div><span>เงื่อนไข</span><b class="mono">m &lt; n</b></div></div><p class="card-text small mt-3">message ถูกมองเป็น bit pattern และแทนด้วยจำนวนเต็ม; encryption คือการยกกำลังแล้ว mod n</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="unlock" class="cyan"></i>Decrypt</h3><div class="formula-box"><div><span class="formula-label">plaintext</span><b class="mono">m = c^d mod n</b></div><div><span>ฟังก์ชันรวม</span><b class="mono">m = (m^e mod n)^d mod n</b></div></div><p class="card-text small mt-3">ผู้รับใช้ private key d ที่ตรงกับ public key ที่ใช้เข้ารหัส</p></div>
+    </div>
+    <div class="card mt-4"><h3 class="card-title"><i data-lucide="sparkles" class="cyan"></i>Why does RSA work?</h3><div class="formula-box"><div><span>ต้องแสดงว่า</span><b class="mono">c^d mod n = m</b></div><div><span>เมื่อ</span><b class="mono">n = pq, z = (p−1)(q−1)</b></div><div><span>ได้ว่า</span><b class="mono">c^d mod n = m^(ed mod z) mod n = m¹ mod n = m</b></div></div></div>
+        <p class="source-line">ที่มา: Chapter 8 — RSA: encryption, decryption / Why does RSA work?, หน้า 22, 24–26</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 18 · RSA — Worked Example ============ -->
+<section class="slide-view" data-title="RSA — Worked Example" aria-label="สไลด์ 18: RSA — Worked Example">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">PUBLIC KEY · RSA EXAMPLE</p>
+    <h2 class="slide-title">RSA — <span class="grad-text">Worked Example</span></h2>
+    <p class="slide-subtitle">ตัวอย่างเล็ก ๆ จาก source: Bob เลือก p=5, q=7 แล้วสร้าง key pair และเข้ารหัส/ถอดรหัส message m=12</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>ขั้น</th><th>ค่า</th><th>หมายเหตุ</th></tr></thead><tbody>
+      <tr><td><b>p, q</b></td><td class="mono">5, 7</td><td>จำนวนเฉพาะสองตัว</td></tr>
+      <tr><td><b>n</b></td><td class="mono">35</td><td>n = 5 × 7</td></tr>
+      <tr><td><b>z</b></td><td class="mono">24</td><td>z = (5−1)(7−1)</td></tr>
+      <tr><td><b>e</b></td><td class="mono">5</td><td>e กับ z เป็น relatively prime</td></tr>
+      <tr><td><b>d</b></td><td class="mono">29</td><td>ed − 1 หารด้วย z ลงตัว</td></tr>
+      <tr><td><b>public / private</b></td><td class="mono">(35,5) / (35,29)</td><td>public key / private key</td></tr>
+    </tbody></table></div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="lock" class="cyan"></i>Encrypt m=12</h3><div class="formula-box"><div><span>m^e</span><b class="mono">12^5 = 248832</b></div><div><span>c = m^e mod n</span><b class="mono">248832 mod 35 = 17</b></div></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="unlock" class="cyan"></i>Decrypt c=17</h3><div class="formula-box"><div><span>c^d</span><b class="mono">17^29 (จำนวนมหาศาล)</b></div><div><span>m = c^d mod n</span><b class="mono">17^29 mod 35 = 12</b></div></div></div>
+    </div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="check"></i><div><b>ได้ m เดิมกลับมา</b>12 → 17 → 12; นี่คือสมบัติ K⁻(K⁺(m)) = m ของ RSA</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — RSA example, หน้า 23</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 19 · RSA Security &amp; Hybrid Cryptography ============ -->
+<section class="slide-view" data-title="RSA Security &amp; Hybrid Cryptography" aria-label="สไลด์ 19: RSA Security &amp; Hybrid Cryptography">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">PUBLIC KEY · PRACTICE</p>
+    <h2 class="slide-title">RSA Security <span class="grad-text">&amp; Hybrid Cryptography</span></h2>
+    <p class="slide-subtitle">RSA ปลอดภัยเพราะ factoring จำนวนขนาดใหญ่ทำได้ยาก แต่ exponentiation ของ RSA ก็มีต้นทุนสูง จึงมักใช้ร่วมกับ symmetric key</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="shield-check" class="cyan"></i>Why is RSA secure?</h3><p class="card-text small">ถ้ารู้ Bob’s public key (n,e) การหา d ต้องแยกตัวประกอบ n โดยไม่รู้ p และ q</p><div class="formula-box mt-3"><div><span>ข้อเท็จจริง</span><b>factoring a big number is hard</b></div></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="timer" class="cyan"></i>RSA in practice</h3><ul class="clean-list"><li>exponentiation ใน RSA ใช้ computation มาก</li><li>DES เร็วกว่า RSA อย่างน้อย 100 เท่า</li><li>ใช้ public key เพื่อ establish secure connection</li><li>แล้วสร้าง symmetric session key K_S สำหรับ encrypt data จริง</li></ul></div>
+    </div>
+    <div class="visual-box mt-4"><span class="vb-label">HYBRID: RSA แลก K_S → SYMMETRIC KEY ส่งข้อมูล</span><div class="flow-row" style="padding:18px 10px"><div class="pipe-node hot"><b>Alice</b><span>ต้องการส่ง m</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>RSA</b><span>แลก session key K_S</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>K_S</b><span>symmetric key</span></div><span class="flow-arrow">→</span><div class="pipe-node hot"><b>Bob</b><span>ใช้ K_S ถอดข้อมูล</span></div></div></div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="key-round"></i><div><b>Hybrid cryptography</b>public key แก้ปัญหา “เริ่มต้น/แลก key”; symmetric key ใช้ส่งข้อมูลจริงเพราะประสิทธิภาพสูงกว่า</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Why is RSA secure? / RSA in practice: session keys, หน้า 27–28</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 20 · Authentication — ap1.0 &amp; ap2.0 ============ -->
+<section class="slide-view" data-title="Authentication — ap1.0 &amp; ap2.0" aria-label="สไลด์ 20: Authentication — ap1.0 &amp; ap2.0">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">AUTH · FIRST ATTEMPTS</p>
+    <h2 class="slide-title">Authentication <span class="grad-text">— ap1.0 &amp; ap2.0</span></h2>
+    <p class="slide-subtitle">เป้าหมาย: Bob ต้องการให้ Alice พิสูจน์ identity ของตน — สองความพยายามแรกยังล้มเหลว</p>
+    <div class="tabs mt-4" id="authTabs9"></div>
+    <div class="grid-2" style="align-items:start">
+      <div class="card" style="min-height:210px"><span class="chip" id="authResult9">—</span><h3 class="card-title mt-3" id="authQuestion9">—</h3><p class="card-text small" id="authFlaw9">—</p><p class="text-3 mt-3" id="authDetail9" style="font-size:12.5px">—</p></div>
+      <div><div class="table-wrap"><table class="data-table"><thead><tr><th>Protocol</th><th>สิ่งที่ส่ง</th><th>ช่องโหว่</th></tr></thead><tbody>
+        <tr><td><b>ap1.0</b></td><td>“I am Alice”</td><td>Trudy ประกาศตัวเองว่าเป็น Alice ได้</td></tr>
+        <tr><td><b>ap2.0</b></td><td>“I am Alice” + source IP address</td><td>Trudy spoof source address ได้</td></tr>
+        <tr><td><b>ap3.0</b></td><td>secret password</td><td>playback attack</td></tr>
+        <tr><td><b>ap4.0</b></td><td>nonce R ที่เข้ารหัสด้วย shared key</td><td>ต้องมี shared key</td></tr>
+        <tr><td><b>ap5.0</b></td><td>nonce + public-key cryptography</td><td>man-in-the-middle</td></tr>
+      </tbody></table></div><div class="tip-box tip-exam mt-3"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>source IP address และ password ไม่ได้พิสูจน์ identity; ต้องมีสิ่งที่ผู้โจมตีปลอมไม่ได้หรือใช้ซ้ำไม่ได้</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — Authentication ap1.0–ap5.0, หน้า 31–41</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 21 · ap3.0 &amp; Playback Attack ============ -->
+<section class="slide-view" data-title="ap3.0 &amp; Playback Attack" aria-label="สไลด์ 21: ap3.0 &amp; Playback Attack">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">AUTH · PLAYBACK</p>
+    <h2 class="slide-title">ap3.0 <span class="grad-text">&amp; Playback Attack</span></h2>
+    <p class="slide-subtitle">การส่ง password หรือ encrypted password ยังไม่พอ เพราะ Trudy สามารถบันทึก packet ของ Alice แล้วเล่นซ้ำภายหลัง</p>
+    <div class="visual-box mt-5"><span class="vb-label">ALICE → PACKET → BOB · TRUDY RECORDS → REPLAYS LATER</span>
+      <div class="flow-row" style="padding:20px 10px">
+        <div class="pipe-node hot"><b>Alice</b><span>“I am Alice” + password</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Trudy</b><span>records packet</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Bob</b><span>ตรวจ password ถูก</span></div>
+      </div>
+      <div class="center mt-2"><span class="chip" style="border-color:rgba(244,63,94,.4);color:#fb7185">ภายหลัง: Trudy replay packet เดิม → Bob คิดว่า Alice มาใหม่</span></div>
+    </div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="key" class="cyan"></i>แบบ password ธรรมดา</h3><p class="card-text small">Trudy อ่าน password ได้ถ้าไม่ได้เข้ารหัส; แต่ถึงเข้ารหัสก็ยัง replay ได้</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="lock" class="amber"></i>แบบ encrypted password</h3><p class="card-text small">source ระบุ “playback attack still works: Trudy records Alice’s packet and later plays it back to Bob”</p></div>
+    </div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="clock"></i><div><b>บทเรียน</b>ต้องพิสูจน์ว่า message นี้ “สดใหม่” ไม่ใช่ packet เก่าที่ถูกเล่นซ้ำ → ต้องใช้ nonce หรือกลไก freshness</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Authentication: a third try / a modified third try, หน้า 35–38</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 22 · ap4.0 &amp; Nonce ============ -->
+<section class="slide-view" data-title="ap4.0 &amp; Nonce" aria-label="สไลด์ 22: ap4.0 &amp; Nonce">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">AUTH · NONCE</p>
+    <h2 class="slide-title">ap4.0 <span class="grad-text">&amp; Nonce</span></h2>
+    <p class="slide-subtitle">ap4.0 ใช้ nonce เพื่อบังคับให้ Alice ตอบ challenge ที่สดใหม่ — packet เก่าจึงใช้ซ้ำไม่ได้</p>
+    <div class="visual-box mt-5"><span class="vb-label">BOB → R (NONCE) → ALICE → K_A-B(R) → BOB VERIFIES</span>
+      <div class="flow-row" style="padding:22px 10px">
+        <div class="pipe-node hot"><b>Bob</b><span>ส่ง R</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Alice</b><span>เข้ารหัส R ด้วย shared key</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>K_A-B(R)</b><span>response</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node hot"><b>Bob</b><span>ถอดได้ R → Alice live</span></div>
+      </div>
+    </div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="clock" class="cyan"></i>Nonce คืออะไร</h3><p class="card-text">number (R) used only once-in-a-lifetime</p><div class="mini-card mt-3"><b>ทำไมกัน replay</b><span>Trudy ไม่สามารถคาดเดา R ใหม่ได้ และ packet เก่ามี R คนละค่า</span></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="triangle-alert" class="amber"></i>ข้อจำกัด</h3><p class="card-text small">ap4.0 requires shared symmetric key — ถ้า Alice กับ Bob ยังไม่มี shared key จะใช้ไม่ได้</p><div class="tip-box tip-note mt-3"><i data-lucide="arrow-right"></i><div><b>ทางออก</b>ap5.0 เปลี่ยนไปใช้ public-key cryptography ร่วมกับ nonce</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — Authentication: a fourth try, หน้า 39</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 23 · ap5.0 &amp; Man-in-the-Middle ============ -->
+<section class="slide-view" data-title="ap5.0 &amp; Man-in-the-Middle" aria-label="สไลด์ 23: ap5.0 &amp; Man-in-the-Middle">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">AUTH · MITM</p>
+    <h2 class="slide-title">ap5.0 <span class="grad-text">&amp; Man-in-the-Middle</span></h2>
+    <p class="slide-subtitle">ap5.0 ใช้ nonce กับ public key แต่ยังมีช่องโหว่ถ้า Bob ไม่รู้ว่า public key ที่ได้รับเป็นของ Alice จริง</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="user-check" class="cyan"></i>ขั้นตอนปกติ</h3><ol class="clean-list"><li>Bob ส่ง nonce R</li><li>Alice ส่ง K_A⁻(R)</li><li>Bob ขอ public key ของ Alice</li><li>Bob ตรวจด้วย K_A⁺ แล้วได้ R กลับมา</li></ol><div class="formula-box mt-3"><div><span>ตรวจสอบ</span><b class="mono">K_A⁺(K_A⁻(R)) = R</b></div></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="user-x" class="amber"></i>MITM</h3><ul class="clean-list"><li>Trudy แสดงตัวเป็น Alice ต่อ Bob</li><li>และแสดงตัวเป็น Bob ต่อ Alice</li><li>Trudy ส่ง public key ของตน โดยบอกว่าเป็นของ Alice</li><li>Bob คำนวณ K_T⁺(K_T⁻(R)) = R แล้วคิดว่ากำลังคุยกับ Alice</li></ul></div>
+    </div>
+    <div class="visual-box mt-4"><span class="vb-label">ALICE ← TRUDY → BOB · TRUDY อยู่ตรงกลางทั้งสองฝั่ง</span><div class="flow-row" style="padding:16px 10px"><div class="pipe-node"><b>Alice</b><span>คิดว่าคุยกับ Bob</span></div><span class="flow-arrow">↔</span><div class="pipe-node hot"><b>Trudy</b><span>MITM</span></div><span class="flow-arrow">↔</span><div class="pipe-node"><b>Bob</b><span>คิดว่าคุยกับ Alice</span></div></div></div>
+    <div class="tip-box tip-exam mt-4"><i data-lucide="certificate"></i><div><b>จุดที่ผิด</b>Bob ไม่มีวิธีตรวจว่า public key เป็นของ Alice จริง — ต้องมี certified public key จาก CA</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Authentication: ap5.0 / there’s still a flaw!, หน้า 40–41</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 24 · Message Digests &amp; Hash Functions ============ -->
+<section class="slide-view" data-title="Message Digests &amp; Hash Functions" aria-label="สไลด์ 24: Message Digests &amp; Hash Functions">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">INTEGRITY · HASH</p>
+    <h2 class="slide-title">Message Digests <span class="grad-text">&amp; Hash Functions</span></h2>
+    <p class="slide-subtitle">hash function ย่อข้อความขนาดใหญ่ให้เป็น fingerprint ขนาดคงที่ — ใช้ตรวจ integrity และเป็นส่วนประกอบของ digital signature</p>
+    <div class="visual-box mt-5"><span class="vb-label">LARGE MESSAGE m → HASH H → FIXED-SIZE DIGEST H(m)</span>
+      <div class="flow-row" style="padding:22px 10px">
+        <div class="pipe-node hot"><b>Message m</b><span>ขนาดใหญ่</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>H(·)</b><span>hash function</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node hot"><b>H(m)</b><span>message digest</span></div>
+      </div>
+    </div>
+    <div class="grid-3 mt-4" style="gap:10px">
+      <div class="card"><h3 class="card-title"><i data-lucide="git-merge" class="cyan"></i>Many-to-1</h3><p class="card-text small">ข้อความหลายข้อความสามารถ map ไปยัง digest ค่าเดียวได้</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="ruler" class="cyan"></i>Fixed-size</h3><p class="card-text small">digest มีขนาดคงที่ ไม่ว่าข้อความต้นฉบับจะยาวแค่ไหน</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="search-x" class="cyan"></i>Preimage hard</h3><p class="card-text small">เมื่อได้ digest x การหา m ที่ทำให้ H(m)=x เป็น computationally infeasible</p></div>
+    </div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="file-check-2"></i><div><b>ทำไมต้อง hash</b>public-key encryption ของข้อความยาวมีต้นทุนสูง; hash ช่วยให้เหลือ fingerprint ขนาดสั้นที่ลงนามได้</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Message digests, หน้า 45</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 25 · Hash Algorithms &amp; Internet Checksum ============ -->
+<section class="slide-view" data-title="Hash Algorithms &amp; Internet Checksum" aria-label="สไลด์ 25: Hash Algorithms &amp; Internet Checksum">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">INTEGRITY · ALGORITHMS</p>
+    <h2 class="slide-title">Hash Algorithms <span class="grad-text">&amp; Internet Checksum</span></h2>
+    <p class="slide-subtitle">Internet checksum มีบางสมบัติของ hash แต่ไม่ใช่ cryptographic hash เพราะหา collision ได้ง่าย</p>
+    <div class="tabs mt-4" id="hashTabs9"><button class="tab-btn active" data-hash="0">ข้อความ A</button><button class="tab-btn" data-hash="1">ข้อความ B</button></div>
+    <div class="grid-2" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="binary" class="cyan"></i>ตัวอย่างจาก source</h3><pre class="mono" id="hashMsg9" style="white-space:pre-line;font-size:13px;line-height:1.8;color:var(--text-2)">I O U 1
+0 0 . 9
+9 B O B</pre><div class="formula-box mt-3"><div><span>ASCII</span><b class="mono" id="hashAscii9" style="font-size:11px;text-align:right">49 4F 55 31 · 30 30 2E 39 · 39 42 D2 42</b></div><div><span>Internet checksum</span><b class="mono" id="hashSum9">B2 C1 D2 AC</b></div></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="shield-alert" class="amber"></i>ทำไมไม่ปลอดภัย</h3><p class="card-text small">ข้อความ A และ B ต่างกัน แต่ให้ checksum <b>B2 C1 D2 AC</b> เหมือนกัน</p><div class="mini-card mt-3"><b>ผลลัพธ์</b><span>หา message อื่นที่มี hash value เดียวกันได้ง่าย → ไม่เหมาะเป็น cryptographic hash</span></div></div>
+    </div>
+    <div class="grid-2 mt-4"><div class="mini-card"><b>MD5</b><span>widely used (RFC 1321); 128-bit message digest; 4-step process</span></div><div class="mini-card"><b>SHA-1</b><span>US standard [NIST, FIPS PUB 180-1]; 160-bit message digest</span></div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Internet checksum / Hash function algorithms, หน้า 46, 48</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 26 · Digital Signatures ============ -->
+<section class="slide-view" data-title="Digital Signatures" aria-label="สไลด์ 26: Digital Signatures">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">SIGNATURES · CONCEPT</p>
+    <h2 class="slide-title">Digital <span class="grad-text">Signatures</span></h2>
+    <p class="slide-subtitle">digital signature เป็นเทคนิคทาง cryptography ที่เทียบได้กับลายเซ็น handwritten: พิสูจน์ผู้ลงนามและป้องกันการปฏิเสธภายหลัง</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="pen-line" class="cyan"></i>สมบัติ</h3><ul class="clean-list"><li><b>Verifiable</b> — recipient พิสูจน์ได้ว่า Bob เป็นผู้ลงนาม</li><li><b>Nonforgeable</b> — คนอื่นลงนามแทน Bob ไม่ได้</li><li><b>Non-repudiation</b> — Alice นำ m และ signature ไปพิสูจน์ใน court ได้ว่า Bob ลงนาม</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="key-round" class="cyan"></i>แบบง่าย</h3><p class="card-text small">Bob signs m by encrypting with his private key K_B⁻</p><div class="formula-box mt-3"><div><span>Signed message</span><b class="mono">m, K_B⁻(m)</b></div><div><span>Verify</span><b class="mono">K_B⁺(K_B⁻(m)) = m</b></div></div><p class="text-3 mt-3" style="font-size:12px">ถ้าผลลัพธ์เท่ากับ m แสดงว่าผู้ลงนามต้องใช้ private key ของ Bob</p></div>
+    </div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="scale"></i><div><b>Private key = ลงนาม; public key = ตรวจสอบ</b>นี่คือการใช้ public-key cryptography ในทิศทางกลับกับการเข้ารหัส confidential message</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Digital signatures, หน้า 43–44</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 27 · Signed Message Digest ============ -->
+<section class="slide-view" data-title="Signed Message Digest" aria-label="สไลด์ 27: Signed Message Digest">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">SIGNATURES · SIGNED DIGEST</p>
+    <h2 class="slide-title">Signed <span class="grad-text">Message Digest</span></h2>
+    <p class="slide-subtitle">ในทางปฏิบัติ Bob ไม่ได้ลงนามทั้ง message แต่ลงนาม hash ของ message แล้วส่ง message พร้อม signature</p>
+    <div class="visual-box mt-5"><span class="vb-label">BOB: m → H(m) → K_B⁻(H(m)) → SEND m + SIGNATURE</span>
+      <div class="flow-row" style="padding:18px 8px">
+        <div class="pipe-node hot"><b>Message m</b><span>large</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Hash H</b><span>H(m)</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Private key</b><span>K_B⁻</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Signature</b><span>K_B⁻(H(m))</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node hot"><b>Send</b><span>m + signature</span></div>
+      </div>
+    </div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="send" class="cyan"></i>Alice ตรวจสอบ</h3><ol class="clean-list"><li>hash message m ที่ได้รับ → H(m)</li><li>ถอด signature ด้วย Bob’s public key → K_B⁺(K_B⁻(H(m)))</li><li>เปรียบเทียบสองค่า</li></ol></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="check-check" class="cyan"></i>ถ้าเท่ากัน</h3><p class="card-text small">message ไม่ถูกแก้ไข และ signature ถูกสร้างโดยผู้ที่ถือ private key ของ Bob</p><div class="formula-box mt-3"><div><span>ตรวจ</span><b class="mono">H(m) = K_B⁺(signature)</b></div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — Digital signature = signed message digest, หน้า 47</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 28 · Certification Authorities (CA) ============ -->
+<section class="slide-view" data-title="Certification Authorities (CA)" aria-label="สไลด์ 28: Certification Authorities (CA)">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">SIGNATURES · TRUST</p>
+    <h2 class="slide-title">Certification <span class="grad-text">Authorities (CA)</span></h2>
+    <p class="slide-subtitle">ถ้า Bob ไม่รู้ว่า public key เป็นของใครจริง เขาอาจถูกหลอก — CA ออก certificate ที่ผูก identity กับ public key</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="pizza" class="amber"></i>แรงจูงใจ: pizza prank</h3><p class="card-text small">Trudy สร้าง e-mail order ปลอม ลงนามด้วย private key ของตน แล้วส่ง public key ของตนให้ Pizza Store โดยบอกว่าเป็นของ Bob — ร้านตรวจ signature ผ่านและส่งพิซซ่าให้ Bob</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="badge-check" class="cyan"></i>CA ทำอะไร</h3><ul class="clean-list"><li>entity (person, website, router) ลงทะเบียน public key กับ CA</li><li>CA สร้าง certificate ที่ผูก identity E กับ E’s public key</li><li>certificate ถูก digitally signed ด้วย CA’s private key</li></ul></div>
+    </div>
+    <div class="visual-box mt-4"><span class="vb-label">BOB’S IDENTITY + K_B⁺ → CA SIGNS → CERTIFICATE → ALICE VERIFIES WITH CA PUBLIC KEY</span><div class="flow-row" style="padding:16px 8px"><div class="pipe-node"><b>Identity + K_B⁺</b><span>ข้อมูลของ Bob</span></div><span class="flow-arrow">→</span><div class="pipe-node hot"><b>CA</b><span>private key</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Certificate</b><span>CA signature</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Alice</b><span>ตรวจด้วย CA public key</span></div></div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Need for certified public keys / Public key Certification Authorities, หน้า 50–52</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 29 · Diffie-Hellman Key Agreement ============ -->
+<section class="slide-view" data-title="Diffie-Hellman Key Agreement" aria-label="สไลด์ 29: Diffie-Hellman Key Agreement">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">TLS · SHARED KEY</p>
+    <h2 class="slide-title">Diffie-Hellman <span class="grad-text">Key Agreement</span></h2>
+    <p class="slide-subtitle">Diffie-Hellman ให้ Alice และ Bob คำนวณ shared secret ได้โดยไม่ต้องส่ง secret นั้นตรง ๆ — แต่ใช้ algorithm คนละตัวกับ RSA</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="users" class="cyan"></i>Public values</h3><ul class="clean-list"><li>Bob เลือก large prime p และ g &lt; p</li><li>Alice เลือก private value S_A</li><li>Bob เลือก private value S_B</li><li>Alice’s public key: <span class="mono">K_A⁺ = g^S_A mod p</span></li><li>Bob’s public key: <span class="mono">K_B⁺ = g^S_B mod p</span></li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="key-round" class="cyan"></i>Shared secret</h3><div class="formula-box"><div><span>Alice คำนวณ</span><b class="mono">(K_B⁺)^S_A mod p</b></div><div><span>Bob คำนวณ</span><b class="mono">(K_A⁺)^S_B mod p</b></div><div><span>ผลลัพธ์</span><b>ค่าเท่ากัน</b></div></div><p class="text-3 mt-3" style="font-size:12px">ทั้งสองฝ่ายคำนวณ common shared secret ได้เอง โดยไม่เคยส่ง secret นี้ผ่าน Internet</p></div>
+    </div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="network"></i><div><b>ใช้ใน TLS</b>Diffie-Hellman เป็น key agreement protocol ที่ TLS 1.3 ต้องใช้สำหรับ key exchange ตาม source</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Using Public-Key Cryptography to Agree on a Shared Key, หน้า 54–55</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 30 · TLS — Transport-Layer Security ============ -->
+<section class="slide-view" data-title="TLS — Transport-Layer Security" aria-label="สไลด์ 30: TLS — Transport-Layer Security">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">TLS · SERVICES</p>
+    <h2 class="slide-title">TLS — <span class="grad-text">Transport-Layer Security</span></h2>
+    <p class="slide-subtitle">TLS เป็น security protocol เหนือ transport layer ที่รวมเทคนิคทั้งหมดในบทนี้ไว้ด้วยกัน</p>
+    <div class="grid-3 mt-5" style="gap:10px">
+      <div class="card center"><h3 class="card-title"><i data-lucide="eye-off" class="cyan"></i>Confidentiality</h3><p class="card-text small">via symmetric encryption</p></div>
+      <div class="card center"><h3 class="card-title"><i data-lucide="file-check-2" class="cyan"></i>Integrity</h3><p class="card-text small">via cryptographic hashing</p></div>
+      <div class="card center"><h3 class="card-title"><i data-lucide="user-check" class="cyan"></i>Authentication</h3><p class="card-text small">via public key cryptography</p></div>
+    </div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="globe" class="cyan"></i>การใช้งาน</h3><ul class="clean-list"><li>widely deployed security protocol above transport layer</li><li>supported by almost all browsers/web servers: HTTPS (port 443)</li><li>SSL deprecated [2015]</li><li>TLS 1.3: RFC 8846 [2018]</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="layers" class="cyan"></i>สิ่งที่ต้องมี</h3><ul class="clean-list"><li><b>Handshake</b> — ใช้ certificates/private keys เพื่อ authenticate และ exchange/create shared secret</li><li><b>Key derivation</b> — derive set of keys จาก shared secret</li><li><b>Data transfer</b> — stream data เป็น records</li><li><b>Connection closure</b> — special messages เพื่อปิดอย่างปลอดภัย</li></ul></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — Transport-layer security (TLS) / what’s needed?, หน้า 62–64</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 31 · TLS 1.3 Handshake ============ -->
+<section class="slide-view" data-title="TLS 1.3 Handshake" aria-label="สไลด์ 31: TLS 1.3 Handshake">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">TLS · HANDSHAKE</p>
+    <h2 class="slide-title">TLS 1.3 <span class="grad-text">Handshake</span></h2>
+    <p class="slide-subtitle">TLS 1.3 ใช้ 1 RTT สำหรับ handshake ปกติ และรองรับ 0 RTT เมื่อ resuming connection — แต่ 0 RTT มีความเสี่ยง replay</p>
+    <div class="dhcp-steps mt-4" id="tlsSteps9" style="grid-template-columns:repeat(4,1fr)"></div>
+    <div class="grid-2 mt-3" style="align-items:start">
+      <div class="card"><h3 class="card-title" id="tlsStepTitle9">—</h3><p class="card-text" id="tlsStepDetail9">—</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="timer" class="amber"></i>1 RTT vs 0 RTT</h3><p class="card-text small"><b>1 RTT:</b> client hello → server hello + certificate → client ตรวจ certificate และสร้าง key → ส่ง application request</p><p class="card-text small mt-2"><b>0 RTT:</b> initial hello มี encrypted application data; ใช้ “resumption master secret” จาก connection ก่อนหน้า; source ระบุว่า vulnerable to replay attacks — อาจ OK สำหรับ HTTP GET หรือ request ที่ไม่เปลี่ยน server state</p></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — TLS 1.3 handshake: 1 RTT / 0 RTT, หน้า 72–73</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 32 · TLS Records &amp; Data-Stream Attacks ============ -->
+<section class="slide-view slide-compact" data-title="TLS Records &amp; Data-Stream Attacks" aria-label="สไลด์ 32: TLS Records &amp; Data-Stream Attacks">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">TLS · RECORDS</p>
+    <h2 class="slide-title">TLS Records <span class="grad-text">&amp; Data-Stream Attacks</span></h2>
+    <p class="slide-subtitle">TCP เป็น byte stream แต่ TLS แบ่งข้อมูลเป็น records เพื่อให้ตรวจ MAC ได้ทีละส่วน และใช้ sequence number/nonce กันการโจมตี</p>
+    <div class="visual-box mt-5"><span class="vb-label">TLS RECORD: DATA | MAC | LENGTH</span><div class="flow-row" style="padding:16px 8px"><div class="pipe-node hot"><b>Data</b><span>payload</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>MAC</b><span>integrity</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Length</b><span>record length</span></div></div><p class="center text-3 mt-2" style="font-size:12px">record ถูกเข้ารหัสด้วย symmetric key K_c แล้วจึงส่งให้ TCP</p></div>
+    <div class="grid-3 mt-4" style="gap:10px">
+      <div class="card"><h3 class="card-title"><i data-lucide="shuffle" class="amber"></i>Reordering</h3><p class="card-text small">MITM intercept TCP segments และสลับลำดับโดยแก้ sequence # ใน TCP header ที่ไม่ได้เข้ารหัส</p><div class="mini-card mt-2"><b>ป้องกัน</b><span>TLS sequence numbers ใส่ใน MAC</span></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="repeat" class="amber"></i>Replay</h3><p class="card-text small">ผู้โจมตีส่งข้อมูลเดิมซ้ำ</p><div class="mini-card mt-2"><b>ป้องกัน</b><span>TLS sequence numbers + nonce</span></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="scissors" class="amber"></i>Truncation</h3><p class="card-text small">forge TCP close segment ทำให้ฝ่ายหนึ่งคิดว่าข้อมูลหมดก่อนจริง</p><div class="mini-card mt-2"><b>ป้องกัน</b><span>record type: 0=data, 1=close; MAC ใช้ data, type, sequence #</span></div></div>
+    </div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="list-checks"></i><div><b>TLS 1.3 cipher suite</b>เหลือ 5 choices จาก 37 ใน TLS 1.2; ต้องใช้ Diffie-Hellman สำหรับ key exchange; ใช้ authenticated encryption; 4 ชุดใช้ AES; HMAC ใช้ SHA</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — t-tls: encrypting data / connection close / TLS 1.3 cipher suite, หน้า 66–69, 71</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 33 · Network Security Attacks ============ -->
+<section class="slide-view" data-title="Network Security Attacks" aria-label="สไลด์ 33: Network Security Attacks">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ATTACKS · TAXONOMY</p>
+    <h2 class="slide-title">Network Security <span class="grad-text">Attacks</span></h2>
+    <p class="slide-subtitle">การโจมตีในบทนี้เชื่อมโยงโดยตรงกับเป้าหมายความปลอดภัย — เลือกการโจมตีเพื่อดูว่ากระทบอะไรและป้องกันอย่างไร</p>
+    <div class="tabs mt-4" id="attackTabs9"></div>
+    <div class="grid-2" style="align-items:start">
+      <div class="card" style="min-height:220px"><span class="chip" id="attackGoal9">—</span><h3 class="card-title mt-3" id="attackName9">—</h3><p class="card-text small" id="attackExample9">—</p><div class="tip-box tip-remember mt-3"><i data-lucide="shield-check"></i><div><b>แนวป้องกัน</b><span id="attackDefense9">—</span></div></div></div>
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>Attack</th><th>Goal ที่ถูกกระทบ</th></tr></thead><tbody>
+        <tr><td>Eavesdropping</td><td>Confidentiality</td></tr>
+        <tr><td>Message insertion</td><td>Authentication / Integrity</td></tr>
+        <tr><td>Impersonation / spoofing</td><td>Authentication</td></tr>
+        <tr><td>Hijacking</td><td>Authentication / session integrity</td></tr>
+        <tr><td>Denial of service</td><td>Availability</td></tr>
+      </tbody></table></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — What can a bad guy do? / Firewalls: why, หน้า 7, 112, 120</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 34 · MITM, Replay &amp; Truncation ============ -->
+<section class="slide-view" data-title="MITM, Replay &amp; Truncation" aria-label="สไลด์ 34: MITM, Replay &amp; Truncation">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ATTACKS · PROTOCOL LEVEL</p>
+    <h2 class="slide-title">MITM, Replay <span class="grad-text">&amp; Truncation</span></h2>
+    <p class="slide-subtitle">การโจมตีบางแบบไม่ได้ทำลาย encryption โดยตรง แต่โจมตี “บริบท” ของข้อมูล เช่น ตัวตน ลำดับ หรือจุดสิ้นสุด connection</p>
+    <div class="grid-3 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="user-x" class="amber"></i>Man-in-the-Middle</h3><p class="card-text small">Trudy อยู่ระหว่าง Alice กับ Bob และแสดงตัวเป็นอีกฝ่ายต่อทั้งสองข้าง</p><div class="mini-card mt-3"><b>ตัวอย่าง</b><span>ap5.0: Trudy ส่ง public key ของตนโดยบอกว่าเป็นของ Alice</span></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="repeat" class="amber"></i>Replay</h3><p class="card-text small">บันทึก packet ที่ถูกต้องแล้วเล่นซ้ำภายหลัง</p><div class="mini-card mt-3"><b>ตัวอย่าง</b><span>ap3.0: password หรือ encrypted password ถูก replay</span></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="scissors" class="amber"></i>Truncation</h3><p class="card-text small">forge TCP connection close ทำให้ฝ่ายหนึ่งคิดว่าข้อมูลน้อยกว่าความจริง</p><div class="mini-card mt-3"><b>ตัวอย่าง</b><span>TLS record type ใช้แยก data กับ close</span></div></div>
+    </div>
+    <div class="formula-box mt-4"><div><span>Replay defense</span><b>nonce / sequence number</b></div><div><span>Truncation defense</span><b>record type + MAC over data/type/sequence</b></div><div><span>MITM defense</span><b>certified public key</b></div></div>
+    <div class="tip-box tip-exam mt-4"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>encryption อย่างเดียวไม่พอ — ต้องผูก identity, freshness และลำดับข้อมูลเข้าไปด้วย</div></div>
+        <p class="source-line">ที่มา: Chapter 8 — ap5.0 / t-tls data stream / connection close, หน้า 41, 68–69</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 35 · DoS, SYN Flooding &amp; IP Spoofing ============ -->
+<section class="slide-view" data-title="DoS, SYN Flooding &amp; IP Spoofing" aria-label="สไลด์ 35: DoS, SYN Flooding &amp; IP Spoofing">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ATTACKS · AVAILABILITY</p>
+    <h2 class="slide-title">DoS, SYN Flooding <span class="grad-text">&amp; IP Spoofing</span></h2>
+    <p class="slide-subtitle">นอกจากอ่านหรือแก้ข้อมูล ผู้โจมตีอาจทำให้บริการล่ม หรือปลอมแหล่งที่มาของ packet เพื่อหลบการตรวจสอบ</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>Attack</th><th>กลไก</th><th>ผลกระทบ</th></tr></thead><tbody>
+      <tr><td><b>Denial of Service</b></td><td>overload resources หรือป้องกันไม่ให้คนอื่นใช้ service</td><td>Availability</td></tr>
+      <tr><td><b>SYN flooding</b></td><td>attacker สร้าง bogus TCP connections จำนวนมาก</td><td>ไม่มี resources เหลือสำหรับ “real” connections</td></tr>
+      <tr><td><b>IP spoofing</b></td><td>ปลอม source address ใน packet</td><td>router ไม่รู้ว่า data มาจาก source จริงหรือไม่</td></tr>
+    </tbody></table></div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="server-off" class="amber"></i>ผลต่อ firewall</h3><ul class="clean-list"><li>firewall ช่วย prevent DoS ได้บางส่วน</li><li>แต่ IP spoofing ทำให้ตรวจ source ไม่ได้แน่นอน</li><li>หลาย sites ที่ป้องกันสูงก็ยังถูกโจมตี</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="scan-line" class="cyan"></i>สิ่งที่ช่วยตรวจ</h3><ul class="clean-list"><li>stateful packet filter ตรวจ connection state</li><li>IDS ตรวจ deep packet inspection และ correlation หลาย packet</li><li>ตรวจ port scanning, network mapping และ DoS</li></ul></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — bad guys / Firewalls: why / Limitations of firewalls, หน้า 7, 112, 120–121</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 36 · Defense Map ============ -->
+<section class="slide-view slide-compact" data-title="Defense Map" aria-label="สไลด์ 36: Defense Map">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ATTACKS · DEFENSES</p>
+    <h2 class="slide-title">Defense <span class="grad-text">Map</span></h2>
+    <p class="slide-subtitle">เทคนิคในบทนี้ไม่ได้แยกกัน — แต่ละชั้นตอบเป้าหมายความปลอดภัยคนละด้าน และประกอบกันเป็น defense in depth</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>เป้าหมาย</th><th>เทคนิคที่เกี่ยวข้อง</th></tr></thead><tbody>
+        <tr><td><b>Confidentiality</b></td><td>symmetric encryption, public-key encryption, TLS</td></tr>
+        <tr><td><b>Authentication</b></td><td>nonce, public-key authentication, certificate/CA, TLS handshake</td></tr>
+        <tr><td><b>Integrity</b></td><td>hash, MAC, digital signature, TLS records</td></tr>
+        <tr><td><b>Availability</b></td><td>firewall, stateful filtering, IDS, DoS prevention</td></tr>
+      </tbody></table></div>
+      <div><div class="visual-box"><span class="vb-label">CRYPTO → AUTH → INTEGRITY → TLS → OPERATIONAL SECURITY</span><div class="flow-row" style="padding:16px 8px"><div class="pipe-node hot"><b>Crypto</b><span>encrypt</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Auth</b><span>identity</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Hash / Sig</b><span>integrity</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>TLS</b><span>secure channel</span></div><span class="flow-arrow">→</span><div class="pipe-node hot"><b>Firewall / IDS</b><span>operational</span></div></div></div><div class="tip-box tip-note mt-3"><i data-lucide="layers"></i><div><b>Defense in depth</b>ไม่มีกลไกเดียวที่ตอบทุกเป้าหมาย; ต้องเลือกใช้ให้ตรงกับภัย</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 8 — Network Security summary / IDS, หน้า 121–123</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 37 · สรุป บทเรียน ============ -->
+<section class="slide-view" data-title="สรุป บทเรียน" aria-label="สไลด์ 37: สรุป บทเรียน">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">REVIEW · SUMMARY</p>
+    <h2 class="slide-title">สรุป <span class="grad-text">บทเรียน</span></h2>
+    <p class="slide-subtitle">ทบทวน 7 หัวข้อหลักของ F5 — จากเป้าหมายความปลอดภัยถึงการโจมตีและแนวป้องกัน</p>
+    <div class="grid-3 mt-5" style="gap:10px">
+      <div class="card"><h3 class="card-title"><i data-lucide="shield-check" class="cyan"></i>Foundations</h3><p class="card-text small">confidentiality · authentication · message integrity · access/availability; Alice/Bob/Trudy</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="key-round" class="cyan"></i>Symmetric</h3><p class="card-text small">shared K_S; substitution; DES 56-bit; AES 128-bit blocks / 128–256-bit keys</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="lock-keyhole" class="cyan"></i>Public Key</h3><p class="card-text small">public encrypt / private decrypt; RSA (n,e)/(n,d); hybrid session key</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="user-check" class="cyan"></i>Auth</h3><p class="card-text small">ap1.0–ap5.0; replay; nonce; MITM; CA</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="fingerprint" class="cyan"></i>Hash / Signature</h3><p class="card-text small">many-to-1 fixed-size digest; MD5 128; SHA-1 160; sign private / verify public</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="triangle-alert" class="cyan"></i>Attacks / TLS</h3><p class="card-text small">eavesdrop, insert, impersonation, hijack, DoS; TLS = confidentiality + integrity + authentication</p></div>
+    </div>
+    <div class="formula-box mt-4"><div><span>RSA</span><b class="mono">c = m^e mod n · m = c^d mod n</b></div><div><span>TLS 1.3</span><b>1 RTT; 0 RTT replay risk</b></div><div><span>Defense</span><b>crypto + auth + hash + TLS + firewall/IDS</b></div></div>
+        <p class="source-line">ที่มา: Chapter 8 — Network Security (summary), หน้า 123</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 38 · สูตรจำก่อนสอบ — F5 ============ -->
+<section class="slide-view" data-title="สูตรจำก่อนสอบ — F5" aria-label="สไลด์ 38: สูตรจำก่อนสอบ — F5">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CHEAT SHEET · F5</p>
+    <h2 class="slide-title">สูตรจำก่อนสอบ <span class="grad-text">— F5</span></h2>
+    <p class="slide-subtitle">25 จุดที่ต้องจำ — สรุปสั้นที่สุดของทั้งบท</p>
+    <div class="cheat-grid mt-4" id="cheatGrid9"></div>
+        <p class="source-line">ที่มา: Chapter 8 — สรุปจากทุกหัวข้อ</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 39 · แบบทดสอบ F5 12 ข้อ ============ -->
+<section class="slide-view quiz-slide" data-title="แบบทดสอบ F5 12 ข้อ" aria-label="สไลด์ 39: แบบทดสอบ F5 12 ข้อ">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">QUIZ · 12 QUESTIONS</p>
+    <h2 class="slide-title">แบบทดสอบ <span class="grad-text">F5 12 ข้อ</span></h2>
+    <p class="slide-subtitle">เลือกคำตอบที่ถูกที่สุด — ตอบแล้วดูเฉลยทันที และกลับไปทบทวนสไลด์ได้</p>
+    <div id="quiz9"></div>
+    <p class="source-line">คะแนนดีที่สุดจะถูกเก็บแยกในบท F5</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 40 · การ์ดทบทวน — F5 ============ -->
+<section class="slide-view" data-title="การ์ดทบทวน — F5" aria-label="สไลด์ 40: การ์ดทบทวน — F5">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">FLASHCARDS · 12</p>
+    <h2 class="slide-title">การ์ดทบทวน <span class="grad-text">— F5</span></h2>
+    <p class="slide-subtitle">คลิกการ์ดเพื่อพลิกดูคำตอบ แล้วเลื่อนไปการ์ดถัดไป</p>
+    <div class="flashcard-wrap mt-4">
+      <div class="flashcard" id="flashcard9" role="button" tabindex="0" aria-label="การ์ดทบทวน พลิกได้">
+        <div class="flashcard-face flashcard-front">
+          <span class="fc-eyebrow">QUESTION</span>
+          <p class="fc-q" id="fcQ9">—</p>
+          <span class="flashcard-hint">คลิกเพื่อพลิกการ์ด 🔄</span>
+        </div>
+        <div class="flashcard-face flashcard-back">
+          <span class="fc-eyebrow" style="color:var(--success)">ANSWER</span>
+          <p class="fc-a" id="fcA9">—</p>
+        </div>
+      </div>
+      <div class="flex items-center justify-center gap-3 mt-4 wrap">
+        <button class="btn btn-ghost" id="fcPrev9"><i data-lucide="chevron-left"></i> ก่อนหน้า</button>
+        <span class="chip" id="fcCounter9">1 / 12</span>
+        <button class="btn btn-ghost" id="fcNext9">ถัดไป <i data-lucide="chevron-right"></i></button>
+        <button class="btn btn-primary" id="fcShuffle9"><i data-lucide="shuffle"></i> สับการ์ด</button>
+      </div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 8 — 7 หัวข้อหลัก</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 41 · คำศัพท์ — F5 ============ -->
+<section class="slide-view" data-title="คำศัพท์ — F5" aria-label="สไลด์ 41: คำศัพท์ — F5">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">GLOSSARY · 36 TERMS</p>
+    <h2 class="slide-title">คำศัพท์ <span class="grad-text">— F5</span></h2>
+    <p class="slide-subtitle">ค้นหาคำศัพท์หรือคำอธิบาย แล้วคลิกเพื่อเปิด/ปิดคำนิยาม</p>
+    <div class="search-box mt-5">
+      <i data-lucide="search"></i>
+      <input type="search" id="glossarySearch9" placeholder="ค้นหา เช่น RSA, nonce, hash, TLS, MITM" aria-label="ค้นหาคำศัพท์" autocomplete="off" />
+    </div>
+    <p class="mt-3"><span class="chip" id="glossaryCount9">36 คำศัพท์</span></p>
+    <div class="glossary-list mt-2" id="glossaryList9"></div>
+    <p class="source-line">ที่มา: Chapter 8 — คำศัพท์จากทุกหัวข้อ</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 42 · ข้อสอบหลังเรียน — 20 ข้อ ============ -->
+<section class="slide-view quiz-slide" data-title="ข้อสอบหลังเรียน — 20 ข้อ" aria-label="สไลด์ 42: ข้อสอบหลังเรียน — 20 ข้อ">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">POST-LESSON EXAM · 20 QUESTIONS</p>
+    <h2 class="slide-title">ข้อสอบหลังเรียน <span class="grad-text">— 20 ข้อ</span></h2>
+    <p class="slide-subtitle">เรียนครบทุกสไลด์ก่อนถึงจะเข้าสอบได้ — ตอบแล้วดูเฉลยทันที</p>
+    <div id="quizExam9"></div>
+  </div>
+</section>
+
+</div><!-- /viewport -->
+
+      <!-- ================= BOTTOM BAR ================= -->
+      <footer class="bottombar">
+        <button class="bb-nav-btn" id="prevBtn" aria-label="สไลด์ก่อนหน้า">
+          <i data-lucide="chevron-left"></i><span class="bb-label">ก่อนหน้า</span>
+        </button>
+
+        <div class="bb-center">
+          สไลด์ <b id="bbCounter">1</b> / <b id="bbTotal">42</b>
+        </div>
+
+        <div class="bb-tools">
+          <button class="icon-btn" id="fullscreenBtn" aria-label="ขยายสไลด์เต็มจอ" title="ขยายสไลด์">
+            <i data-lucide="maximize-2"></i>
+          </button>
+          <button class="icon-btn" id="printSlidesBtn" aria-label="พิมพ์สไลด์ทั้งหมด" title="พิมพ์สไลด์ทั้งหมด">
+            <i data-lucide="printer"></i>
+          </button>
+          <button class="icon-btn" id="printCardsBtn" aria-label="พิมพ์การ์ดสรุป" title="พิมพ์การ์ดสรุป">
+            <i data-lucide="file-output"></i>
+          </button>
+        </div>
+
+        <button class="bb-nav-btn next" id="nextBtn" aria-label="สไลด์ถัดไป">
+          <span class="bb-label">ถัดไป</span><i data-lucide="chevron-right"></i>
+        </button>
+      </footer>
+
+    </main>
+  </div><!-- /shell -->
+</div><!-- /app -->
+
+<!-- ================= DRAWER BACKDROP ================= -->
+<div id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- ================= NOTES PANEL ================= -->
+<aside class="notes-panel" id="notesPanel" aria-label="บันทึกย่อ">
+  <div class="flex items-center justify-between" style="padding:16px 20px;border-bottom:1px solid var(--border)">
+    <div>
+      <b style="font-size:15px">📝 บันทึกย่อ (Notes)</b>
+      <p class="text-3" style="font-size:12px" id="notesLabel">สไลด์ที่กำลังเรียน</p>
+    </div>
+    <button class="icon-btn" id="notesCloseBtn" aria-label="ปิดบันทึกย่อ"><i data-lucide="x"></i></button>
+  </div>
+  <textarea id="notesTextarea" placeholder="เขียนสิ่งที่ต้องจำจากสไลด์นี้...&#10;เช่น:&#10;- Confidentiality / Authentication / Integrity / Availability&#10;- Symmetric key ใช้ key เดียว; Public key ใช้ public + private&#10;- RSA: c = m^e mod n, m = c^d mod n&#10;- TLS = confidentiality + integrity + authentication" aria-label="บันทึกย่อ"></textarea>
+  <div class="text-3" style="padding:10px 20px 14px;font-size:12px;border-top:1px solid var(--border)">
+    💾 บันทึกอัตโนมัติลงในเครื่องของคุณ (localStorage)
+  </div>
+</aside>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ================= COMPLETION OVERLAY ================= -->
+<div id="completionOverlay" role="dialog" aria-modal="true" aria-label="จบบทเรียน">
+  <div class="card center" style="max-width:440px;position:relative;padding:40px 32px;z-index:1">
+    <div style="font-size:56px" class="float-y">🎉</div>
+    <h2 class="slide-title mt-4" style="font-size:28px">F5 Complete!</h2>
+    <p class="text-2 mt-2" id="completionMsg">คุณเรียนครบทั้ง 42 สไลด์ของ Security แล้ว — เยี่ยมมาก! <b class="grad-text">Keep Learning!</b></p>
+    <div class="grid-3 mt-5" style="grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneSlides">42</b><p class="text-3" style="font-size:12px">สไลด์</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneScore">–</b><p class="text-3" style="font-size:12px">คะแนน Quiz</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px">100%</b><p class="text-3" style="font-size:12px">ความคืบหน้า</p></div>
+    </div>
+    <div class="flex items-center gap-3 mt-6 wrap" style="justify-content:center">
+      <button class="btn btn-ghost" id="completionCloseBtn">ปิด 🎊</button>
+      <button class="btn btn-primary" id="completionRestartBtn"><i data-lucide="rotate-ccw"></i> เรียนใหม่อีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PRINT AREA ================= -->
+<div id="printArea" aria-hidden="true"></div>
+
+<!-- App scripts -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

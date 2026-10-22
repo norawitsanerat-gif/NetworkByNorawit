@@ -1,7 +1,7 @@
 # FINAL TRACK — Architecture & Navigation
 
 > เอกสารตัดสินใจเชิงโครงสร้างสำหรับเพิ่มเนื้อหา Final (Chapter 4–8) โดยไม่กระทบมิดเทอมเดิม
-> สถานะ: F1–F4 เปิดเรียนแล้ว · วันที่: 2026-10-22
+> สถานะ: F1–F5 เปิดเรียนแล้ว · วันที่: 2026-10-22
 
 ## 1. ปัญหาที่ต้องแก้
 
@@ -55,7 +55,7 @@ FINAL · F1–F5
   [F2] BOOK CH.5 · Network Layer: Control Plane   ← เปิดเรียนแล้ว
   [F3] BOOK CH.6 · The Link Layer and LANs        ← เปิดเรียนแล้ว
   [F4] BOOK CH.7 · Wireless and Mobile Networks   ← เปิดเรียนแล้ว
-  [F5] BOOK CH.8 · Security                       ← เร็ว ๆ นี้
+  [F5] BOOK CH.8 · Security                       ← เปิดเรียนแล้ว
 ```
 
 - การ์ดแต่ละใบมี `data-chapter` เป็น internal ID (5–9)
@@ -81,6 +81,7 @@ FINAL · F1–F5
 - F2 ใช้ไฟล์ `Chapter 5 Network Layer_ Control Plane.md` เท่านั้น
 - F3 ใช้ไฟล์ `Chapter 6 The Link Layer and LANs.md` เท่านั้น
 - F4 ใช้ไฟล์ `Chapter 7 Wireless and Mobile Networks.md` เท่านั้น
+- F5 ใช้ไฟล์ `Chapter_8_v9.0_Security.pdf` เท่านั้น
 - ข้อเท็จจริง ตัวเลข ตัวอย่าง และตาราง ต้องตรงกับสไลด์ต้นฉบับ
 - ภาษาไทยใช้เพื่ออธิบาย/แปลจากสไลด์ ไม่เพิ่มข้อเท็จจริงใหม่
 - สไลด์เนื้อหาทุกสไลด์มีป้าย `ที่มา:` ระบุหัวข้อของ source
@@ -89,9 +90,9 @@ FINAL · F1–F5
 
 - มิดเทอม: `test.html` เดิม (4 ชุด × 80 ข้อ) — ไม่แตะ
 - ไฟนอล: `final-test.html` แยกหน้า
-- F1–F4 มี Quiz 12 ข้อ + Exam 20 ข้อ
-- `final-test.html` ปัจจุบันเป็นชุด F1 20 ข้อ และยังไม่รวม F2/F3/F4
-- เมื่อครบ F1–F5 จะรวมเป็นชุดข้อสอบไฟนอลแยกจากมิดเทอม
+- F1–F5 มี Quiz 12 ข้อ + Exam 20 ข้อ
+- `final-test.html` ปัจจุบันเป็นชุด F1 20 ข้อ และยังไม่รวม F2/F3/F4/F5
+- เมื่อรวมทุกบท F1–F5 จะรวมเป็นชุดข้อสอบไฟนอลแยกจากมิดเทอม
 
 ## 8. Acceptance Criteria (Phase 1)
 
@@ -105,5 +106,6 @@ FINAL · F1–F5
 - [x] F3 เปิดเรียนแล้ว (40 สไลด์ + Quiz 12 + Exam 20)
 - [x] F4 เปิดเรียนแล้ว (42 สไลด์ + Quiz 12 + Exam 20 + Flashcards 12 + Glossary 36 + Cheat 25)
 - [x] Print slides: F1 27 หน้า, F2 31 หน้า, F3 40 หน้า, F4 42 หน้า; Print cards: 3 หน้า
-- [x] เมนู dual-track ใช้งานได้จริง (M1–M4 + F1–F4)
-- [x] ภาพรวมเมนู: 220 สไลด์ · 08 บทพร้อมเรียน
+- [x] F5 เปิดเรียนแล้ว (42 สไลด์ + Quiz 12 + Exam 20 + Flashcards 12 + Glossary 36 + Cheat 25)
+- [x] เมนู dual-track ใช้งานได้จริง (M1–M4 + F1–F5)
+- [x] ภาพรวมเมนู: 262 สไลด์ · 09 บทพร้อมเรียน

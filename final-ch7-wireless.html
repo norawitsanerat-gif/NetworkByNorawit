@@ -711,9 +711,14 @@
     <p class="slide-subtitle">คลิกการ์ดเพื่อพลิกดูคำตอบ แล้วเลื่อนไปการ์ดถัดไป</p>
     <div class="flashcard-wrap mt-4">
       <div class="flashcard" id="flashcard8" role="button" tabindex="0" aria-label="การ์ดทบทวน พลิกได้">
-        <div class="flashcard-inner">
-          <div class="flashcard-face front"><span class="fc-label">QUESTION</span><p id="fcQ8">—</p></div>
-          <div class="flashcard-face back"><span class="fc-label">ANSWER</span><p id="fcA8">—</p></div>
+        <div class="flashcard-face flashcard-front">
+          <span class="fc-eyebrow">QUESTION</span>
+          <p class="fc-q" id="fcQ8">—</p>
+          <span class="flashcard-hint">คลิกเพื่อพลิกการ์ด 🔄</span>
+        </div>
+        <div class="flashcard-face flashcard-back">
+          <span class="fc-eyebrow" style="color:var(--success)">ANSWER</span>
+          <p class="fc-a" id="fcA8">—</p>
         </div>
       </div>
       <div class="flex items-center justify-center gap-3 mt-4 wrap">
@@ -733,8 +738,12 @@
     <p class="slide-eyebrow">GLOSSARY · 36 TERMS</p>
     <h2 class="slide-title">คำศัพท์ <span class="grad-text">— F4</span></h2>
     <p class="slide-subtitle">ค้นหาคำศัพท์หรือคำอธิบาย แล้วคลิกเพื่อเปิด/ปิดคำนิยาม</p>
-    <div class="flex items-center gap-3 mt-4 wrap"><input id="glossarySearch8" class="input" type="search" placeholder="ค้นหา เช่น SNR, CSMA/CA, BSS, MIMO, handover" aria-label="ค้นหาคำศัพท์" /><span class="chip" id="glossaryCount8">36 คำศัพท์</span></div>
-    <div class="glossary-list mt-4" id="glossaryList8"></div>
+    <div class="search-box mt-5">
+      <i data-lucide="search"></i>
+      <input type="search" id="glossarySearch8" placeholder="ค้นหา เช่น SNR, CSMA/CA, BSS, MIMO, handover" aria-label="ค้นหาคำศัพท์" autocomplete="off" />
+    </div>
+    <p class="mt-3"><span class="chip" id="glossaryCount8">36 คำศัพท์</span></p>
+    <div class="glossary-list mt-2" id="glossaryList8"></div>
     <p class="source-line">ที่มา: Chapter 7 — คำศัพท์จากทุกหัวข้อ</p>
   </div>
 </section>

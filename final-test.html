@@ -178,6 +178,14 @@
   "use strict";
   var QS = (window.DATA && window.DATA.ch5 && window.DATA.ch5.exam) || [];
   var KEY = "cn_final_exam_f1";
+  // สลับลำดับตัวเลือกของ F1 ใหม่ (เดิมเฉลยวน 1,2,3,4) → คำตอบ index ที่บันทึกไว้เดิมใช้ไม่ได้
+  (function migrateOptionOrder() {
+    try {
+      if (localStorage.getItem("cn_option_order_final_v1")) return;
+      localStorage.removeItem(KEY);
+      localStorage.setItem("cn_option_order_final_v1", "true");
+    } catch (e) {}
+  })();
   var st = load();
   var qi = 0;
 
