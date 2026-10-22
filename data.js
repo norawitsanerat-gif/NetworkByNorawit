@@ -2281,7 +2281,7 @@ window.DATA.ch6 = {
     },
     {
       "title": "บทนี้จะเรียนอะไร",
-      "short": "Roadmap"
+      "short": "ภาพรวมบท"
     },
     {
       "title": "Control Plane คืออะไร",
@@ -2401,6 +2401,13 @@ window.DATA.ch6 = {
     }
   ],
   "sections": [
+    {
+      "label": "ภาพรวม Final · F2",
+      "topics": [
+        1,
+        2
+      ]
+    },
     {
       "label": "1. Control Plane & Routing",
       "topics": [
@@ -3284,7 +3291,7 @@ window.DATA.ch7 = {
     },
     {
       "title": "บทนี้จะเรียนอะไร",
-      "short": "Roadmap"
+      "short": "ภาพรวมบท"
     },
     {
       "title": "Link Layer ทำงานอะไร",
@@ -3440,6 +3447,13 @@ window.DATA.ch7 = {
     }
   ],
   "sections": [
+    {
+      "label": "ภาพรวม Final · F3",
+      "topics": [
+        1,
+        2
+      ]
+    },
     {
       "label": "1. Link Layer & Error Detection",
       "topics": [
@@ -4428,7 +4442,7 @@ window.DATA.ch8 = {
     },
     {
       "title": "บทนี้จะเรียนอะไร",
-      "short": "Roadmap"
+      "short": "ภาพรวมบท"
     },
     {
       "title": "ทำไม Wireless ถึงสำคัญ",
@@ -4592,6 +4606,13 @@ window.DATA.ch8 = {
     }
   ],
   "sections": [
+    {
+      "label": "ภาพรวม Final · F4",
+      "topics": [
+        1,
+        2
+      ]
+    },
     {
       "label": "1. Wireless Networks",
       "topics": [
