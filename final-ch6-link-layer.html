@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive Digital Textbook — FINAL F3 / Book Chapter 6: The Link Layer and LANs (Routing, SDN, Link-State, Distance-Vector, Dijkstra, Bellman-Ford, OSPF, BGP)" />
+  <title>CN · F3 — The Link Layer and LANs</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body data-page="chapter" data-chapter="7">
+
+<div id="app">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header id="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="เปิดเมนูบทเรียน" title="เมนู">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <div class="brand">
+      <div class="cn-logo" aria-hidden="true">CN</div>
+      <div class="brand-titles">
+        <h1>เครือข่ายคอมพิวเตอร์และอินเทอร์เน็ต</h1>
+        <p id="headerChapterLabel">F3 · BOOK CH.6 · The Link Layer and LANs</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn" id="homeBtn" aria-label="กลับไปเมนูหลัก" title="เมนูหลัก">
+        <i data-lucide="home"></i>
+      </button>
+      <button class="icon-btn" id="notesBtn" aria-label="เปิดบันทึกย่อ" title="บันทึกย่อ (Notes)">
+        <i data-lucide="notebook-pen"></i>
+      </button>
+
+      <div class="header-progress" aria-label="ความคืบหน้า">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="headerProgressBar">
+          <div class="progress-fill" id="headerProgressFill"></div>
+        </div>
+        <span class="progress-count" id="headerProgressCount">1 / 40</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SHELL ================= -->
+  <div class="shell">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside id="sidebar" aria-label="เมนูบทเรียน">
+      <div class="sidebar-head">
+        <div class="sidebar-head-title">
+          <h2 id="sidebarChapterTitle">F3 · The Link Layer and LANs</h2>
+          <p id="sidebarChapterSub">FINAL · BOOK CH.6 · 40 หัวข้อ</p>
+        </div>
+        <button class="icon-btn sidebar-close" id="sidebarCloseBtn" aria-label="ปิดเมนูบทเรียน" title="ปิดเมนู">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-info">
+        <i data-lucide="info"></i>
+        <span>คลิกหัวข้อหรือสไลด์เพื่อข้ามไปได้เลย<br />ทุกสไลด์อ้างอิงจาก Chapter 6 The Link Layer and LANs</span>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav" aria-label="สารบัญสไลด์"></nav>
+      <div class="sidebar-foot">
+        <div class="sf-top"><span>ความคืบหน้า</span><b id="sidebarPct">0%</b></div>
+        <div class="progress-track"><div class="progress-fill" id="sidebarProgressFill"></div></div>
+        <p class="mt-2 text-3" style="font-size:12px" id="sidebarDone">ยังไม่ได้เรียนสไลด์ใดเลย — เริ่มที่ Cover ได้เลย!</p>
+      </div>
+    </aside>
+
+    <!-- ================= STAGE ================= -->
+    <main class="stage">
+
+      <div class="slide-viewport" id="viewport">
+
+        <!-- ============ SLIDE 1 · Cover — F3: The Link Layer and LANs ============ -->
+<section class="slide-view" data-title="Cover — F3: The Link Layer and LANs" aria-label="สไลด์ 1: Cover — F3: The Link Layer and LANs">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">FINAL · F3 · BOOK CHAPTER 6</p>
+    <h2 class="slide-title">The Link Layer <span class="grad-text">and LANs</span></h2>
+
+    <p class="slide-subtitle" style="max-width:720px;margin:10px auto 0">หน้าที่และบริการของ Link Layer · Error Detection/Correction · Parity &amp; CRC · Multiple Access Protocols · Ethernet, MAC Address &amp; ARP · Switches, MAC Learning &amp; VLANs</p>
+
+    <div class="visual-box mt-6" style="max-width:700px;margin-left:auto;margin-right:auto">
+      <span class="vb-label">DATAGRAM → FRAME → LINK → NODE ถัดไป</span>
+      <div class="flow-row" style="padding:20px 10px">
+        <div class="pipe-node hot"><b>Datagram</b><span>network layer</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Frame</b><span>encapsulation</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Link</b><span>wire / wireless</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Node</b><span>adjacent</span></div>
+      </div>
+    </div>
+
+    <div class="grid-3 mt-5" style="grid-template-columns:repeat(3,1fr);gap:10px">
+      <div class="mini-card"><b>1 · Link Layer</b><span>services, NIC, reliability</span></div>
+      <div class="mini-card"><b>2 · Errors</b><span>parity, checksum, CRC</span></div>
+      <div class="mini-card"><b>3 · Multiple Access</b><span>TDMA, ALOHA, CSMA/CD</span></div>
+      <div class="mini-card"><b>4 · Ethernet</b><span>frame, MAC, ARP</span></div>
+      <div class="mini-card"><b>5 · Switches</b><span>self-learning, forwarding</span></div>
+      <div class="mini-card"><b>6 · VLANs</b><span>trunk, 802.1Q</span></div>
+    </div>
+
+    <div class="flex items-center gap-3 wrap mt-5" style="justify-content:center">
+      <span class="chip">40 สไลด์</span><span class="chip">Quiz 12</span><span class="chip">Flashcards 12</span><span class="chip">Exam 20</span>
+    </div>
+    <div class="mt-6 center"><button class="btn btn-primary btn-lg" id="startBtn7">เริ่มเรียน <i data-lucide="arrow-right"></i></button></div>
+    <p class="source-line center">อ้างอิง: Chapter 6 The Link Layer and LANs — 6 หัวข้อหลักตามที่กำหนด</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 2 · บทนี้จะเรียนอะไร ============ -->
+<section class="slide-view" data-title="บทนี้จะเรียนอะไร" aria-label="สไลด์ 2: บทนี้จะเรียนอะไร">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ROADMAP · 6 TOPICS</p>
+    <h2 class="slide-title">จาก Link Layer <span class="grad-text">ถึง VLANs</span></h2>
+
+    <p class="slide-subtitle">เรียนตามลำดับจากล่างขึ้นบน: ส่ง frame ระหว่าง node → ตรวจ error → แชร์ medium → Ethernet/MAC/ARP → switch/VLAN</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="cable" class="cyan"></i>1. Link Layer &amp; Error Detection</h3><p class="card-text small">หน้าที่ บริการของ link, reliability สองระดับ, parity, 2D parity, internet checksum, CRC</p><span class="chip mt-3">สไลด์ 3–12</span></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="share-2" class="cyan"></i>2. Multiple Access</h3><p class="card-text small">shared channel, ideal MAC, TDMA/FDMA/CDMA, ALOHA, CSMA/CD, taking turns, cable access</p><span class="chip mt-3">สไลด์ 13–19</span></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="ethernet-port" class="cyan"></i>3. Ethernet, MAC &amp; ARP</h3><p class="card-text small">Ethernet frame, MAC address, MAC vs IP, ARP, การเปลี่ยน MAC ข้าม subnet</p><span class="chip mt-3">สไลด์ 20–27</span></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="network" class="cyan"></i>4. Switches &amp; VLANs</h3><p class="card-text small">self-learning, filter/forward/flood, switch vs router, port-based VLAN, trunk, 802.1Q</p><span class="chip mt-3">สไลด์ 28–34</span></div>
+    </div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="target"></i><div><b>โฟกัส 6 หัวข้อหลัก</b>สไลด์ทั้งชุดอิงจาก Chapter 6 ส่วน MPLS, Datacenter Networks และ A Day in the Life of a Web Request เป็นหัวข้อเสริมใน source จึงไม่นับเป็นเนื้อหาหลักของ F3</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — สารบัญและหัวข้อ 1–7</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 3 · Link Layer ทำงานอะไร ============ -->
+<section class="slide-view" data-title="Link Layer ทำงานอะไร" aria-label="สไลด์ 3: Link Layer ทำงานอะไร">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">LINK LAYER · OVERVIEW</p>
+    <h2 class="slide-title">Link Layer <span class="grad-text">ส่งระหว่าง node ที่ติดกัน</span></h2>
+
+    <p class="slide-subtitle">ส่ง datagram จาก node หนึ่งไปยัง node ที่อยู่ติดกันทางกายภาพ ผ่าน link หนึ่งเส้น</p>
+    <div class="grid-2 mt-5">
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>คำ</th><th>ความหมาย</th></tr></thead><tbody>
+        <tr><td><b>Node</b></td><td>host หรือ router</td></tr>
+        <tr><td><b>Link</b></td><td>ช่องทางสื่อสารระหว่าง node ที่ติดกัน เช่น copper, fiber, radio</td></tr>
+        <tr><td><b>Frame</b></td><td>packet ของ layer 2 ที่ <b>encapsulate datagram</b></td></tr>
+        <tr><td><b>NIC</b></td><td>Network Interface Card — implement link + physical layer</td></tr>
+      </tbody></table></div>
+      <div class="visual-box"><span class="vb-label">HOST STACK · NIC ต่อ SYSTEM BUS</span>
+        <div class="pipeline" style="padding:14px 8px">
+          <div class="pipe-node"><b>application</b><span>layer 5–7</span></div><span class="flow-arrow">↓</span>
+          <div class="pipe-node"><b>transport</b><span>layer 4</span></div><span class="flow-arrow">↓</span>
+          <div class="pipe-node"><b>network</b><span>layer 3</span></div><span class="flow-arrow">↓</span>
+          <div class="pipe-node hot"><b>NIC</b><span>link + physical</span></div>
+        </div>
+        <p class="center text-3" style="font-size:12px;padding-bottom:10px">NIC = hardware + software + firmware · ต่อ system bus เช่น PCI</p>
+      </div>
+    </div>
+    <div class="grid-2 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="send" class="cyan"></i>Sending side</h3><ul class="clean-list"><li>ห่อ datagram เป็น frame</li><li>เพิ่ม error-checking bits</li><li>ทำ reliable transfer / flow control ตาม link</li><li>ส่ง frame ลง physical layer</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="inbox" class="cyan"></i>Receiving side</h3><ul class="clean-list"><li>ตรวจ error</li><li>ทำ reliable transfer / flow control ตาม link</li><li>ดึง datagram ออกจาก frame</li><li>ส่ง datagram ขึ้น layer บน</li></ul></div>
+    </div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="route"></i><div><b>datagram เดียว อาจใช้หลาย link protocol</b>เช่น Wi-Fi → Ethernet → cellular; แต่ละ link ให้บริการไม่เหมือนกัน บาง link มี reliable data transfer บาง link ไม่มี</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 1.1, 1.5, 1.6</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 4 · บริการของ Link Layer ============ -->
+<section class="slide-view" data-title="บริการของ Link Layer" aria-label="สไลด์ 4: บริการของ Link Layer">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">LINK LAYER · SERVICES</p>
+    <h2 class="slide-title">บริการหลัก <span class="grad-text">6 อย่าง</span></h2>
+
+    <p class="slide-subtitle">Framing/link access, reliable delivery, flow control, error detection, error correction และ duplex</p>
+    <div class="grid-3 mt-5" style="gap:10px">
+      <div class="card"><h3 class="card-title"><i data-lucide="box" class="cyan"></i>Framing, link access</h3><p class="card-text small">ห่อ datagram เป็น frame พร้อม header/trailer; shared medium ต้องมี channel access; ใส่ MAC address ของ source/destination</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="refresh-cw" class="cyan"></i>Reliable delivery</h3><p class="card-text small">ส่งระหว่าง node ที่ติดกันให้ reliable ด้วย ACK/retransmission — มักใช้บน wireless ที่ error สูง</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="gauge" class="cyan"></i>Flow control</h3><p class="card-text small">ปรับจังหวะระหว่าง sender กับ receiver ที่ติดกัน ไม่ให้ผู้ส่งเร็วเกินผู้รับ</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="scan-search" class="cyan"></i>Error detection</h3><p class="card-text small">ตรวจ error จาก attenuation/noise; ถ้าพบอาจสั่ง retransmission หรือทิ้ง frame</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="wrench" class="cyan"></i>Error correction</h3><p class="card-text small">ระบุตำแหน่งและแก้ bit error ได้เอง โดยไม่ต้อง retransmission</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="arrow-left-right" class="cyan"></i>Half / Full duplex</h3><p class="card-text small">half-duplex ส่งได้แต่ไม่พร้อมกัน; full-duplex ส่งพร้อมกันได้ทั้งสองทิศทาง</p></div>
+    </div>
+    <div class="grid-2 mt-4">
+      <div class="tip-box tip-warn"><i data-lucide="triangle-alert"></i><div><b>ไม่ใช่ทุก link ต้อง reliable</b>source ระบุว่ามักไม่ใช้ reliable delivery บน fiber/copper ที่ bit error ต่ำ แต่ใช้บน wireless ที่ error rate สูง</div></div>
+      <div class="tip-box tip-remember"><i data-lucide="layers"></i><div><b>Framing ≠ IP addressing</b>frame header มี MAC address ของ source/destination ซึ่งต่างจาก IP address ใน datagram</div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 1.3</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 5 · Link-level vs End-to-End Reliability ============ -->
+<section class="slide-view" data-title="Link-level vs End-to-End Reliability" aria-label="สไลด์ 5: Link-level vs End-to-End Reliability">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">RELIABILITY · TWO LEVELS</p>
+    <h2 class="slide-title">Link-level <span class="grad-text">กับ End-to-end</span></h2>
+
+    <p class="slide-subtitle">ทำไมบางระบบมี reliable delivery ทั้งที่ link และปลายทาง — แต่ไม่ควรทำทุก link</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>ประเด็น</th><th>Link-level</th><th>End-to-end</th></tr></thead><tbody>
+      <tr><td><b>ขอบเขต</b></td><td>เฉพาะ link เดียว</td><td>ต้นทางถึงปลายทาง</td></tr>
+      <tr><td><b>ตัวอย่าง</b></td><td>Wi-Fi ส่ง frame แล้วรอ ACK จาก access point</td><td>TCP รับประกัน byte stream ครบและถูกต้อง</td></tr>
+      <tr><td><b>จุดแข็ง</b></td><td>แก้ loss ที่เกิดบ่อยบน link นั้นได้เร็ว</td><td>รับประกันตลอดเส้นทาง</td></tr>
+      <tr><td><b>ต้นทุน</b></td><td>ACK/retransmission ต่อ link</td><td>retransmission จากปลายทางอาจช้ากว่า</td></tr>
+    </tbody></table></div>
+    <div class="grid-3 mt-4">
+      <div class="mini-card"><b>1 · Wireless error สูง</b><span>ถ้ารอ TCP retransmit จากปลายทางอาจช้าเกินไป เพราะ loss เกิดที่ link นี้บ่อย</span></div>
+      <div class="mini-card"><b>2 · เร็วและถูกกว่า</b><span>retransmit เฉพาะ link เดียวใช้เวลาน้อยกว่าการส่งใหม่ตลอดเส้นทาง</span></div>
+      <div class="mini-card"><b>3 · เลือกตาม link</b><span>link error ต่ำมักไม่ทำ link-level reliability; link error สูง เช่น wireless ทำ</span></div>
+    </div>
+    <div class="tip-box tip-warn mt-4"><i data-lucide="scale"></i><div><b>Trade-off</b>ถ้าทุก link ทำ reliable delivery จะสิ้นเปลือง เพราะ TCP รับประกัน end-to-end อยู่แล้ว — จึงเลือกใช้ตามลักษณะ link</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 1.4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 6 · Error Detection Model ============ -->
+<section class="slide-view" data-title="Error Detection Model" aria-label="สไลด์ 6: Error Detection Model">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ERRORS · MODEL</p>
+    <h2 class="slide-title">D + EDC <span class="grad-text">บน noisy link</span></h2>
+
+    <p class="slide-subtitle">Sender ส่ง data D พร้อม redundancy EDC; receiver ใช้ EDC' ตรวจว่าข้อมูลที่ได้ยังถูกหรือไม่</p>
+    <div class="visual-box mt-5"><span class="vb-label">SENDER → NOISY LINK → RECEIVER</span>
+      <div class="flow-row" style="padding:18px 10px">
+        <div class="pipe-node hot"><b>D</b><span>data bits</span></div><span class="flow-arrow">+</span>
+        <div class="pipe-node"><b>EDC</b><span>redundancy</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>noisy link</b><span>error อาจเกิด</span></div><span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>D' + EDC'</b><span>ตรวจที่ receiver</span></div>
+      </div>
+    </div>
+    <div class="grid-3 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="alert-circle" class="cyan"></i>ไม่รับประกัน 100%</h3><p class="card-text small">protocol อาจตรวจไม่พบ error บางรูปแบบ แต่โอกาสน้อย</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="maximize" class="cyan"></i>EDC ใหญ่ขึ้น</h3><p class="card-text small">ตรวจและแก้ได้ดีขึ้น แต่สิ้นเปลือง bandwidth มากขึ้น</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="split" class="cyan"></i>Detection vs Correction</h3><p class="card-text small">detection รู้ว่ามี error แล้วมักส่งใหม่; correction ระบุ/แก้ bit ผิดได้เอง</p></div>
+    </div>
+    <div class="grid-2 mt-4">
+      <div class="formula-box"><div><span class="formula-label">Hamming distance</span><b>d_min</b></div><div><span>ตรวจ error ได้สูงสุด</span><b>d_min − 1 บิต</b></div><div><span>แก้ไข error ได้สูงสุด</span><b>⌊(d_min − 1) / 2⌋ บิต</b></div></div>
+      <div class="tip-box tip-note"><i data-lucide="lightbulb"></i><div><b>ตัวอย่าง</b>single parity: d_min = 2 → ตรวจ 1 บิต แก้ไม่ได้<br>2D parity: d_min = 4 → ตรวจ 3 บิต แก้ได้ 1 บิต</div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 2.1–2.4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 7 · วิธีตรวจและแก้ Error ============ -->
+<section class="slide-view" data-title="วิธีตรวจและแก้ Error" aria-label="สไลด์ 7: วิธีตรวจและแก้ Error">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ERRORS · METHODS</p>
+    <h2 class="slide-title">เลือกวิธีให้ตรง <span class="grad-text">กับงาน</span></h2>
+
+    <p class="slide-subtitle">Parity, 2D parity, internet checksum, CRC และ FEC — แลกความแข็งแรงกับ redundancy</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>วิธี</th><th>Redundancy</th><th>ตรวจจับ</th><th>แก้ไข</th><th>ใช้ที่</th></tr></thead><tbody>
+      <tr><td><b>Single parity</b></td><td>1 บิต</td><td>error จำนวนคี่ (รวม single-bit)</td><td>ไม่ได้</td><td>การเรียนรู้, ระบบง่าย ๆ</td></tr>
+      <tr><td><b>Two-dimensional parity</b></td><td>row + column parity</td><td>error หลายรูปแบบ</td><td>single-bit</td><td>หน่วยความจำ, link ง่าย ๆ</td></tr>
+      <tr><td><b>Internet checksum</b></td><td>16 บิต</td><td>หลายรูปแบบ แต่ค่อนข้างอ่อน</td><td>ไม่ได้</td><td>TCP, UDP</td></tr>
+      <tr><td><b>CRC</b></td><td>32 บิต (โดยทั่วไป)</td><td>burst error ได้ดีมาก</td><td>ไม่ได้</td><td>Ethernet, 802.11 Wi-Fi</td></tr>
+      <tr><td><b>FEC / Hamming code</b></td><td>หลายบิต</td><td>ดี</td><td>ได้ตามกำลังของ code</td><td>Wireless, ดาวเทียม, storage</td></tr>
+    </tbody></table></div>
+    <div class="grid-2 mt-4">
+      <div class="tip-box tip-exam"><i data-lucide="graduation-cap"></i><div><b>Exam Tip</b>CRC เป็น <b>detection</b> ไม่ใช่ correction — ตรวจพบแล้วทิ้ง frame แล้วให้ layer บนจัดการต่อ</div></div>
+      <div class="tip-box tip-remember"><i data-lucide="binary"></i><div><b>Hamming</b>single parity d_min = 2 ตรวจ 1 บิต; 2D parity d_min = 4 ตรวจ 3 บิต และแก้ 1 บิต</div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 2.3–2.4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 8 · Single-Bit Parity ============ -->
+<section class="slide-view" data-title="Single-Bit Parity" aria-label="สไลด์ 8: Single-Bit Parity">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">PARITY · SINGLE BIT</p>
+    <h2 class="slide-title">Even parity <span class="grad-text">1 บิต</span></h2>
+
+    <p class="slide-subtitle">เพิ่ม parity bit 1 บิตเพื่อให้จำนวน 1 ทั้งหมดเป็นเลขคู่ (even) หรือเลขคี่ (odd)</p>
+    <div class="card mt-5">
+      <p class="mono" style="font-size:15px;letter-spacing:.08em;color:var(--cyan)">0111000110101011</p>
+      <p class="text-2 mt-2">ข้อมูลมี 1 อยู่ <b>9 ตัว</b> (เลขคี่) → even parity เติม <b>1</b> ทำให้เป็น 10 ตัว (เลขคู่)</p>
+      <p class="mono mt-3" style="font-size:16px;letter-spacing:.1em">0111000110101011 <span style="color:var(--accent)">1</span></p>
+    </div>
+    <div class="grid-2 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="check-check" class="cyan"></i>ฝั่งรับ</h3><ul class="clean-list"><li>นับจำนวน 1 ของ d บิตที่ได้รับ</li><li>คำนวณ parity แล้วเทียบกับ parity bit ที่ได้รับ</li><li>ถ้าไม่ตรง → ตรวจพบ error</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="triangle-alert" class="amber"></i>ข้อจำกัด</h3><ul class="clean-list"><li>บิตพลิก 2 ตำแหน่งอาจทำให้จำนวน 1 ยังเป็นเลขคู่ → ตรวจไม่พบ</li><li>ตรวจจับ error จำนวนคี่ได้ทั้งหมด แต่ error จำนวนคู่จะหลุด</li><li>ระบุตำแหน่งหรือแก้ไข error ไม่ได้</li></ul></div>
+    </div>
+    <div class="tip-box tip-warn mt-4"><i data-lucide="circle-alert"></i><div><b>สรุป</b>single parity = ง่ายมาก แต่แก้ error ไม่ได้ และไม่ Catch error จำนวนคู่</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 3.1</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 9 · Two-Dimensional Parity ============ -->
+<section class="slide-view" data-title="Two-Dimensional Parity" aria-label="สไลด์ 9: Two-Dimensional Parity">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">PARITY · 2D</p>
+    <h2 class="slide-title">Row + Column <span class="grad-text">Parity</span></h2>
+
+    <p class="slide-subtitle">จัดข้อมูลเป็นตาราง i × j แล้วเพิ่ม row parity และ column parity — ลองคลิกบิตเพื่อจำลอง error</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div>
+        <div class="card" style="padding:14px"><div id="parityGrid7"></div></div>
+        <div class="flex gap-2 wrap mt-3">
+          <button class="btn btn-ghost" id="paritySingle7">ลอง single-bit</button>
+          <button class="btn btn-ghost" id="parityRect7">ลอง 4-bit rectangle</button>
+          <button class="btn btn-ghost" id="parityReset7">รีเซ็ต</button>
+        </div>
+      </div>
+      <div>
+        <div id="parityInfo7" class="lpm-result"></div>
+        <div class="card mt-3"><h3 class="card-title"><i data-lucide="crosshair" class="cyan"></i>วิธีอ่าน</h3><ul class="clean-list"><li>ถ้า parity ผิดที่แถว r และคอลัมน์ c → บิต (r,c) ผิด</li><li>แก้ single-bit error ได้โดยไม่ต้อง retransmission</li><li>ตรวจ 2–3 บิตได้ แต่แก้ไม่ได้</li><li>4 บิตที่เป็นสี่เหลี่ยมมุมฉากอาจทำให้ parity ยังถูก → ตรวจไม่พบ</li></ul></div>
+      </div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 3.2 · ตารางตัวอย่างจาก source: r2 c3 พลิก</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 10 · CRC Concept ============ -->
+<section class="slide-view" data-title="CRC Concept" aria-label="สไลด์ 10: CRC Concept">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CRC · CONCEPT</p>
+    <h2 class="slide-title">Cyclic Redundancy <span class="grad-text">Check</span></h2>
+
+    <p class="slide-subtitle">มองข้อมูลเป็น binary/polynomial แล้วหารแบบ modulo 2 — ซึ่งก็คือ XOR โดยไม่มีตัวทด</p>
+    <div class="grid-2 mt-5">
+      <div class="formula-box"><div><span class="formula-label">D</span><b>data bits (k บิต)</b></div><div><span class="formula-label">G</span><b>generator r + 1 บิต</b></div><div><span class="formula-label">R</span><b>CRC bits r บิต</b></div><div><span class="formula-label">ส่ง</span><b class="mono">D · 2^r XOR R</b></div><div><span class="formula-label">คำนวณ</span><b class="mono">R = remainder[(D · 2^r) / G]</b></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="send" class="cyan"></i>ฝั่งส่ง</h3><ol class="clean-list"><li>นำ D · 2^r มาหารด้วย G แบบ mod 2 (XOR)</li><li>เอาเศษ r บิตมาเป็น R</li><li>ส่ง D ตามด้วย R</li></ol><h3 class="card-title mt-3"><i data-lucide="inbox" class="cyan"></i>ฝั่งรับ</h3><ol class="clean-list"><li>รับ &lt;D', R'&gt;</li><li>หารทั้งก้อนด้วย G</li><li>เศษ 0 → ไม่พบ error; เศษไม่ 0 → ตรวจพบและทิ้ง frame</li></ol></div>
+    </div>
+    <div class="tip-box tip-exam mt-4"><i data-lucide="graduation-cap"></i><div><b>จำขนาด</b>G มี r + 1 บิต → R มี r บิต · CRC เป็น detection ไม่ใช่ correction · mod 2 = XOR ไม่มี carry</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 4.1–4.3</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 11 · CRC Worked Example ============ -->
+<section class="slide-view" data-title="CRC Worked Example" aria-label="สไลด์ 11: CRC Worked Example">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CRC · EXAMPLE</p>
+    <h2 class="slide-title">D = 101110 <span class="grad-text">G = 1001</span></h2>
+
+    <p class="slide-subtitle">D 6 บิต, G 4 บิต → r = 3, D · 2^3 = 101110000 — คลิกแถวเพื่อดูแต่ละขั้น</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="table-wrap"><table class="data-table mono-table"><thead><tr><th>ขั้น</th><th>Window 4 บิต</th><th>ซ้ายสุด</th><th>XOR G?</th><th>ผล</th></tr></thead><tbody id="crcRows7"></tbody></table></div>
+      <div><div class="card" style="border-color:rgba(34,211,238,.4)"><p class="card-text" id="crcDetail7" style="min-height:52px">—</p></div>
+      <div class="formula-box mt-3"><div><span class="formula-label">D · 2^3</span><b class="mono">101110000</b></div><div><span class="formula-label">R</span><b class="mono">011</b></div><div><span class="formula-label">ส่ง</span><b class="mono">101110011</b></div><div><span class="formula-label">ตรวจ</span><b>101110011 ÷ 1001 เศษ 000 → ผ่าน</b></div></div></div>
+    </div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="lightbulb"></i><div><b>วิธีอ่านตาราง</b>เริ่มจาก 4 บิตแรก 1011; ถ้าบิตซ้ายสุดเป็น 1 ให้ XOR ด้วย 1001; shift บิตถัดไปของ dividend เข้าทางขวา แล้วทำซ้ำจนครบทุกบิต</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 4.4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 12 · CRC Properties & Checksum ============ -->
+<section class="slide-view" data-title="CRC Properties & Checksum" aria-label="สไลด์ 12: CRC Properties & Checksum">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CRC · PROPERTIES</p>
+    <h2 class="slide-title">CRC แข็งแรง <span class="grad-text">กว่า checksum</span></h2>
+
+    <p class="slide-subtitle">CRC ตรวจจับ error ได้ดีโดยเฉพาะ burst error และ implement ใน hardware ได้เร็ว</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="shield-check" class="cyan"></i>คุณสมบัติ CRC</h3><ul class="clean-list"><li>ตรวจจับ single-bit error ได้ทั้งหมด (ถ้า G มีอย่างน้อย 2 พจน์)</li><li>ตรวจจับ burst error ที่ยาว ≤ r บิตได้ทั้งหมด</li><li>burst ที่ยาวกว่า r อาจตรวจพบได้ขึ้นอยู่กับรูปแบบ</li><li>ถ้า G มี factor (x + 1) ตรวจจับ error จำนวนบิตคี่ได้ทั้งหมด</li><li>CRC-32 พลาดประมาณ 2^-32 หรือ 1 ใน 4.3 พันล้าน</li><li>Implement ด้วย shift register + XOR</li></ul></div>
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>ประเด็น</th><th>Internet Checksum</th><th>CRC</th></tr></thead><tbody>
+        <tr><td><b>หลักการ</b></td><td>บวก one's complement</td><td>หาร polynomial mod 2</td></tr>
+        <tr><td><b>ความแข็งแรง</b></td><td>อ่อนกว่า โดยเฉพาะ burst</td><td>แข็งแรงกว่ามาก</td></tr>
+        <tr><td><b>ต้นทุน</b></td><td>software ถูก</td><td>hardware ถูกและเร็ว</td></tr>
+        <tr><td><b>ใช้ที่</b></td><td>TCP, UDP</td><td>Ethernet, 802.11, storage</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="tip-box tip-exam mt-4"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>CRC ตรวจพบ error แล้ว <b>ทิ้ง frame</b> — การแก้ไขต้องใช้ FEC หรือ retransmission จาก layer บน</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 4.5–4.6</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 13 · Link Types & Shared Channel ============ -->
+<section class="slide-view" data-title="Link Types & Shared Channel" aria-label="สไลด์ 13: Link Types & Shared Channel">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MULTIPLE ACCESS · SHARED</p>
+    <h2 class="slide-title">Point-to-point <span class="grad-text">vs Broadcast</span></h2>
+
+    <p class="slide-subtitle">Multiple access protocol ใช้เฉพาะ shared medium — point-to-point link ไม่ต้องมี</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>ประเภท</th><th>ลักษณะ</th><th>ตัวอย่าง</th></tr></thead><tbody>
+      <tr><td><b>Point-to-point</b></td><td>มี 2 node และ channel เฉพาะของตัวเอง</td><td>switch กับ host, PPP สำหรับ dial-up</td></tr>
+      <tr><td><b>Broadcast / shared medium</b></td><td>หลาย node ใช้ medium เดียวกัน</td><td>Ethernet เก่า, cable upstream, 802.11 WLAN, 4G/5G, satellite</td></tr>
+    </tbody></table></div>
+    <div class="grid-2 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="radio" class="cyan"></i>ปัญหาของ shared channel</h3><ul class="clean-list"><li>มี single shared broadcast channel</li><li>หลาย node ส่งพร้อมกัน → interference</li><li>collision เมื่อได้รับสัญญาณตั้งแต่ 2 สัญญาณขึ้นไปพร้อมกัน</li><li>ต้องใช้ distributed algorithm กำหนดว่าใครส่งเมื่อไร</li><li>การประสานงานใช้ channel เดียวกัน เพราะไม่มี out-of-band channel</li></ul></div>
+      <div class="visual-box"><span class="vb-label">SHARED MEDIUM · หลาย node แย่งช่องเดียว</span><div class="pipeline" style="padding:18px 8px"><div class="pipe-node hot"><b>Node A</b><span>ส่ง</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Shared</b><span>medium</span></div><span class="flow-arrow">←</span><div class="pipe-node"><b>Node B</b><span>ส่งพร้อมกัน → ชน</span></div></div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 5.1–5.2</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 14 · Ideal MAC & Taxonomy ============ -->
+<section class="slide-view" data-title="Ideal MAC & Taxonomy" aria-label="สไลด์ 14: Ideal MAC & Taxonomy">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MULTIPLE ACCESS · TAXONOMY</p>
+    <h2 class="slide-title">MAC ที่ดี <span class="grad-text">และ 3 ตระกูล</span></h2>
+
+    <p class="slide-subtitle">Ideal protocol ให้ throughput สูง fair decentralized และง่าย — แต่ protocol จริงต้องแลก</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="target" class="cyan"></i>Ideal multiple access (R bps)</h3><ul class="clean-list"><li>node เดียวต้องการส่ง → ใช้ rate R เต็ม</li><li>M node ต้องการส่ง → average R/M ต่อ node</li><li>fully decentralized — ไม่มี special node, ไม่ต้อง sync clock/slot</li><li>simple — ง่ายและถูก</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="git-branch" class="cyan"></i>คำว่า random</h3><p class="card-text small">ไม่ได้หมายถึงข้อมูลสุ่ม แต่หมายถึงการใช้ randomization ตัดสินใจว่าหลัง collision จะรอหรือลองใหม่เมื่อไร เพื่อลดโอกาสชนซ้ำในจังหวะเดิม</p></div>
+    </div>
+    <div class="table-wrap mt-4"><table class="data-table"><thead><tr><th>ประเภท</th><th>แนวคิด</th><th>ตัวอย่าง</th><th>ข้อดี</th><th>ข้อเสีย</th></tr></thead><tbody>
+      <tr><td><b>Channel partitioning</b></td><td>แบ่งเวลา/ความถี่/code ให้ node ใช้ exclusive</td><td>TDMA, FDMA, CDMA</td><td>ไม่มี collision, fair ที่ load สูง</td><td>สิ้นเปลืองเมื่อ load ต่ำ, delay</td></tr>
+      <tr><td><b>Random access</b></td><td>ไม่แบ่ง channel, ยอมให้ชนแล้ว recover</td><td>ALOHA, Slotted ALOHA, CSMA, CSMA/CD, CSMA/CA</td><td>ง่าย, efficient ที่ load ต่ำ</td><td>collision overhead ที่ load สูง</td></tr>
+      <tr><td><b>Taking turns</b></td><td>node ผลัดกันส่ง</td><td>Polling, Token passing</td><td>ได้ข้อดีของสองแบบแรก</td><td>overhead, latency, single point of failure</td></tr>
+    </tbody></table></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 5.3–5.4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 15 · Channel Partitioning ============ -->
+<section class="slide-view" data-title="Channel Partitioning" aria-label="สไลด์ 15: Channel Partitioning">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MULTIPLE ACCESS · PARTITIONING</p>
+    <h2 class="slide-title">TDMA · FDMA <span class="grad-text">· CDMA</span></h2>
+
+    <p class="slide-subtitle">แบ่ง channel เป็นชิ้นเล็ก ๆ แล้วจัดสรรให้ station ใช้แบบ exclusive → ไม่เกิด collision</p>
+    <div class="grid-3 mt-5" style="gap:10px">
+      <div class="card"><h3 class="card-title"><i data-lucide="clock" class="cyan"></i>TDMA</h3><p class="card-text small">เข้าถึง channel เป็น rounds; แต่ละ station ได้ fixed-length slot; slot ที่ไม่มีใครใช้จะ idle</p><div class="mini-note mt-3">6-station LAN, station 1,3,4 ส่ง → slots 2,5,6 ว่าง</div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="audio-lines" class="cyan"></i>FDMA</h3><p class="card-text small">แบ่ง spectrum เป็น frequency bands; station ได้ band คงที่; band ที่ว่างก็ idle</p><div class="mini-note mt-3">ข้อดี/ข้อเสียคล้าย TDMA แต่แบ่งตามความถี่</div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="binary" class="cyan"></i>CDMA</h3><p class="card-text small">ทุก station ส่งพร้อมกันได้โดยใช้ orthogonal codes แล้วแยกสัญญาณที่ receiver; ใช้มากใน cellular</p></div>
+    </div>
+    <div class="grid-2 mt-4">
+      <div class="tip-box tip-remember"><i data-lucide="check" class="cyan"></i><div><b>ข้อดี</b>ไม่มี collision และให้ fairness แน่นอน</div></div>
+      <div class="tip-box tip-warn"><i data-lucide="triangle-alert"></i><div><b>ข้อเสีย</b>slot/band ว่างเสียเปล่า; ต้อง synchronize; delay สูงเมื่อ load ต่ำ</div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 5.5–5.7</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 16 · Slotted & Pure ALOHA ============ -->
+<section class="slide-view" data-title="Slotted & Pure ALOHA" aria-label="สไลด์ 16: Slotted & Pure ALOHA">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">RANDOM ACCESS · ALOHA</p>
+    <h2 class="slide-title">ALOHA <span class="grad-text">37% vs 18%</span></h2>
+
+    <p class="slide-subtitle">Random access ส่งที่ full rate โดยไม่ประสานงานล่วงหน้า — จึงเกิด collision และต้อง retransmit</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="grid-2x2" class="cyan"></i>Slotted ALOHA</h3><ul class="clean-list"><li>frame ขนาดเท่ากัน; เวลาแบ่งเป็น slot = 1 frame</li><li>เริ่มส่งได้เฉพาะต้น slot; ทุก node synchronized</li><li>ชน → retransmit ใน slot ถัดไปด้วย probability p</li><li>p* = 1/N → max efficiency (1 − 1/N)^(N−1) → 1/e ≈ 0.37</li></ul><p class="mini-note mt-2">ต้อง sync clock; มี collision และ idle slot</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="timer" class="cyan"></i>Pure (Unslotted) ALOHA</h3><ul class="clean-list"><li>ไม่แบ่ง slot; frame มาถึง → ส่งทันที</li><li>frame ที่ t0 ชนกับช่วง [t0−1, t0+1]</li><li>vulnerable period = 2 frame times</li><li>max efficiency = 1/(2e) ≈ 0.18</li></ul><p class="mini-note mt-2">แย่กว่า Slotted ประมาณครึ่งหนึ่ง</p></div>
+    </div>
+    <div class="table-wrap mt-4"><table class="data-table"><thead><tr><th>N</th><th>Efficiency ที่ p = 1/N</th></tr></thead><tbody><tr><td>5</td><td>0.4096</td></tr><tr><td>10</td><td>0.3874</td></tr><tr><td>100</td><td>0.3697</td></tr><tr><td>∞</td><td>0.3679 ≈ 1/e</td></tr></tbody></table></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 5.9–5.10</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 17 · CSMA & CSMA/CD ============ -->
+<section class="slide-view" data-title="CSMA & CSMA/CD" aria-label="สไลด์ 17: CSMA & CSMA/CD">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">RANDOM ACCESS · CSMA</p>
+    <h2 class="slide-title">ฟังก่อนส่ง <span class="grad-text">แล้วหยุดเมื่อชน</span></h2>
+
+    <p class="slide-subtitle">CSMA ลด collision ด้วยการฟัง channel ก่อนส่ง; CSMA/CD ตรวจจับ collision ระหว่างส่งและหยุดทันที</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="ear" class="cyan"></i>CSMA</h3><ul class="clean-list"><li> listen before transmit</li><li>channel ว่าง → ส่งทั้ง frame</li><li>channel ไม่ว่าง → defer</li><li>ยังชนได้เพราะ propagation delay ทำให้ไม่ได้ยินการส่งที่เพิ่งเริ่มของกันและกัน</li><li>เมื่อชน → เสียเวลาส่งทั้ง packet</li></ul></div>
+      <div class="card" style="border-color:rgba(34,211,238,.4)"><h3 class="card-title"><i data-lucide="zap" class="cyan"></i>CSMA/CD</h3><ul class="clean-list"><li>ตรวจ collision ระหว่างส่ง</li><li>ตรวจพบ → abort การส่งทันที</li><li>ลดเวลาที่เสียไปกับ collision</li><li>ตรวจจับง่ายบน wired แต่ยากบน wireless</li><li>Wi-Fi ใช้ CSMA/CA ไม่ใช่ CSMA/CD</li></ul></div>
+    </div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="messages-square"></i><div><b>Analogy</b>CSMA = ฟังก่อนพูด; CSMA/CD = “นักสนทนาผู้สุภาพ” ที่หยุดพูดทันทีเมื่อได้ยินคนอื่นพูดทับ</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 5.11–5.12</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 18 · Ethernet CSMA/CD & Backoff ============ -->
+<section class="slide-view" data-title="Ethernet CSMA/CD & Backoff" aria-label="สไลด์ 18: Ethernet CSMA/CD & Backoff">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CSMA/CD · BACKOFF</p>
+    <h2 class="slide-title">Binary Exponential <span class="grad-text">Backoff</span></h2>
+
+    <p class="slide-subtitle">หลัง collision ครั้งที่ m เลือก K จาก {0, …, 2^m − 1} แล้วรอ K × 512 bit times</p>
+    <div class="card mt-5"><h3 class="card-title"><i data-lucide="list-ordered" class="cyan"></i>ลำดับการทำงาน</h3><ol class="clean-list"><li>NIC รับ datagram แล้วสร้าง frame</li><li>ตรวจ channel: idle → ส่ง; busy → รอจน idle</li><li>ส่งจบโดยไม่พบการส่งอื่น → เสร็จ</li><li>ระหว่างส่งพบการส่งอื่น → abort และส่ง jam signal</li><li>เข้า binary exponential backoff แล้วกลับไปขั้น 2</li></ol></div>
+    <div class="mt-4"><div class="dhcp-steps" id="backoffTabs7" style="grid-template-columns:repeat(6,1fr)"></div></div>
+    <div class="card mt-3" style="border-color:rgba(34,211,238,.4)"><p class="card-text" id="backoffDetail7" style="min-height:24px">—</p></div>
+    <div class="grid-2 mt-4">
+      <div class="formula-box"><div><span class="formula-label">Efficiency</span><b class="mono">1 / (1 + 5 · t_prop / t_trans)</b></div><div><span>t_prop</span><span>max propagation delay</span></div><div><span>t_trans</span><span>เวลาส่ง frame ใหญ่สุด</span></div></div>
+      <div class="tip-box tip-warn"><i data-lucide="triangle-alert"></i><div><b>ข้อจำกัดจริง</b>Ethernet จำกัดจำนวนลองใหม่โดยทั่วไป 16 ครั้ง แล้วทิ้ง frame; ยิ่งชนหลายครั้ง backoff ยิ่งนาน</div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 5.13</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 19 · Taking Turns & Cable Access ============ -->
+<section class="slide-view" data-title="Taking Turns & Cable Access" aria-label="สไลด์ 19: Taking Turns & Cable Access">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MULTIPLE ACCESS · HYBRID</p>
+    <h2 class="slide-title">ผลัดกันส่ง <span class="grad-text">และระบบจริง</span></h2>
+
+    <p class="slide-subtitle">Taking turns พยายามได้ข้อดีของ partitioning (load สูง) และ random access (load ต่ำ)</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="megaphone" class="cyan"></i>Polling</h3><ul class="clean-list"><li>central controller เชิญ node ให้ส่งทีละตัว</li><li>มักใช้กับ device ที่ “โง่”</li><li>ข้อกังวล: polling overhead, latency, single point of failure</li><li>ตัวอย่าง: Bluetooth</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="ticket" class="cyan"></i>Token passing</h3><ul class="clean-list"><li>control token ส่งต่อตามลำดับ</li><li>node ที่ถือ token จึงส่งได้</li><li>ข้อกังวล: token overhead, latency, token หาย</li><li>ตัวอย่าง: Token Ring, FDDI</li></ul></div>
+    </div>
+    <div class="card mt-4"><h3 class="card-title"><i data-lucide="cable" class="cyan"></i>Cable Access Network (HFC) — ผสมหลายเทคนิค</h3><ul class="clean-list"><li>Downstream: หลายช่อง FDM แบบ broadcast สูงถึง 1.6 Gbps ต่อ channel; CMTS ตัวเดียวส่งเข้า channel</li><li>Upstream: หลาย channel สูงถึง 1 Gbps ต่อ channel</li><li>ผู้ใช้ contend (random access) เพื่อแย่ง upstream time slots บางส่วน; slot อื่น assign แบบ TDM</li><li>DOCSIS: downstream MAP frame กำหนดว่า upstream slot ใดเป็นของใคร; คำขอใช้ random access + binary backoff</li></ul></div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="lightbulb"></i><div><b>บทเรียน</b>ระบบจริงมัก <b>ผสม</b> channel partitioning กับ random access ไม่ได้ใช้แบบเดียวตลอด</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 5.14–5.15</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 20 · Ethernet Basics, Topology & Standards ============ -->
+<section class="slide-view" data-title="Ethernet Basics, Topology & Standards" aria-label="สไลด์ 20: Ethernet Basics, Topology & Standards">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ETHERNET · BASICS</p>
+    <h2 class="slide-title">Ethernet <span class="grad-text">wired LAN หลัก</span></h2>
+
+    <p class="slide-subtitle">Ethernet เป็น wired LAN technology ที่ dominant — ง่าย ถูก และพัฒนาความเร็วต่อเนื่อง</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="cable" class="cyan"></i>ลักษณะสำคัญ</h3><ul class="clean-list"><li>LAN technology แรกที่แพร่หลาย</li><li>พัฒนาความเร็ว 10 Mbps → 400 Gbps</li><li>ปัจจุบันรวมหลายความเร็วใน chip เดียว</li><li>ทุกมาตรฐานใช้ MAC protocol และ frame format เดียวกัน</li><li>ต่างกันที่ความเร็วและ physical media</li></ul></div>
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>Topology</th><th>ลักษณะ</th><th>Collision domain</th></tr></thead><tbody>
+        <tr><td><b>Bus</b></td><td>coaxial cable, นิยมถึงกลางยุค 90s</td><td>ทุก node อยู่ใน domain เดียวกัน</td></tr>
+        <tr><td><b>Switched</b></td><td>มี active layer-2 switch กลาง</td><td>แต่ละ spoke แยกกัน; node ไม่ชนกัน</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="table-wrap mt-4"><table class="data-table"><thead><tr><th>มาตรฐาน</th><th>Media</th><th>ความหมาย</th></tr></thead><tbody>
+      <tr><td class="mono">1000BASE-T</td><td>Copper twisted pair</td><td>1 Gbps</td></tr>
+      <tr><td class="mono">1000BASE-SX</td><td>Fiber (short wavelength)</td><td>1 Gbps</td></tr>
+      <tr><td class="mono">1000BASE-LX</td><td>Fiber (long wavelength)</td><td>1 Gbps</td></tr>
+      <tr><td class="mono">1000BASE-CX</td><td>Copper (twinax)</td><td>1 Gbps</td></tr>
+    </tbody></table></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 6.1–6.2, 6.5</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 21 · Ethernet Frame Structure ============ -->
+<section class="slide-view" data-title="Ethernet Frame Structure" aria-label="สไลด์ 21: Ethernet Frame Structure">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ETHERNET · FRAME</p>
+    <h2 class="slide-title">โครงสร้าง <span class="grad-text">Ethernet frame</span></h2>
+
+    <p class="slide-subtitle">Preamble → Dest MAC → Src MAC → Type → Data → CRC — คลิกแต่ละ field เพื่ออ่านหน้าที่</p>
+    <div class="eth-frame mt-5">
+      <div class="eth-seg pre"><b>Preamble</b><span>8 B</span></div>
+      <div class="eth-seg"><b>Dest MAC</b><span>6 B</span></div>
+      <div class="eth-seg"><b>Src MAC</b><span>6 B</span></div>
+      <div class="eth-seg type"><b>Type</b><span>2 B</span></div>
+      <div class="eth-seg data"><b>Data</b><span>46–1500 B</span></div>
+      <div class="eth-seg crc"><b>CRC</b><span>4 B</span></div>
+    </div>
+    <div class="seg-tabs mt-4" id="ethFieldTabs7" role="tablist"></div>
+    <div class="card mt-3" style="border-color:rgba(34,211,238,.4)"><p class="card-text" id="ethFieldDetail7" style="min-height:42px">—</p></div>
+    <div class="grid-3 mt-4">
+      <div class="mini-card"><b>เล็กสุด 64 B</b><span>6 + 6 + 2 + 46 + 4 = 64; data ขั้นต่ำ 46 B</span></div>
+      <div class="mini-card"><b>ใหญ่สุด 1518 B</b><span>1500 payload + 18 bytes overhead</span></div>
+      <div class="mini-card"><b>พร้อม VLAN 1522 B</b><span>802.1Q tag เพิ่มอีก 4 ไบต์</span></div>
+    </div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="lightbulb"></i><div><b>ทำไม data ต้อง ≥ 46 B?</b>เพื่อให้ frame อย่างน้อย 64 ไบต์ ซึ่งสัมพันธ์กับ slot time 512 bit times ในการตรวจจับ collision ของ CSMA/CD</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 6.3</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 22 · Ethernet: Unreliable & Connectionless ============ -->
+<section class="slide-view" data-title="Ethernet: Unreliable & Connectionless" aria-label="สไลด์ 22: Ethernet: Unreliable & Connectionless">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ETHERNET · SEMANTICS</p>
+    <h2 class="slide-title">Connectionless <span class="grad-text">& Unreliable</span></h2>
+
+    <p class="slide-subtitle">Ethernet ไม่มี handshaking และไม่ส่ง ACK/NAK — ปล่อยให้ layer บนจัดการ reliability</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="unplug" class="cyan"></i>Connectionless</h3><p class="card-text">ไม่มี handshaking ระหว่าง sending NIC กับ receiving NIC</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="mail-x" class="cyan"></i>Unreliable</h3><p class="card-text">receiving NIC ไม่ส่ง ACK หรือ NAK กลับไป; frame ที่ถูกทิ้งจะกู้คืนได้ก็ต่อเมื่อ layer บนใช้ reliable data transfer เช่น TCP</p></div>
+    </div>
+    <div class="visual-box mt-4"><span class="vb-label">MAC PROTOCOL ของ ETHERNET</span><div class="pipeline" style="padding:18px 8px"><div class="pipe-node hot"><b>unslotted CSMA/CD</b><span>shared medium</span></div><span class="flow-arrow">+</span><div class="pipe-node"><b>binary backoff</b><span>หลังชน</span></div></div></div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="quote"></i><div><b>สำคัญ</b>“unreliable” ของ Ethernet ไม่ได้แปลว่า Ethernet แย่ แต่หมายถึงมันไม่ทำ retransmission เอง — ปล่อยให้ TCP จัดการ end-to-end</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 6.4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 23 · MAC Address ============ -->
+<section class="slide-view" data-title="MAC Address" aria-label="สไลด์ 23: MAC Address">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ETHERNET · MAC ADDRESS</p>
+    <h2 class="slide-title">48 บิต <span class="grad-text">local &amp; portable</span></h2>
+
+    <p class="slide-subtitle">MAC address ใช้ส่ง frame ภายใน link/subnet — ฝังใน NIC ROM และเขียนเป็น hexadecimal</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="badge" class="cyan"></i>ลักษณะ</h3><ul class="clean-list"><li>ขนาด 48 บิต (LAN ส่วนใหญ่)</li><li>ฝังใน NIC ROM แต่บางครั้งตั้งด้วย software ได้</li><li>เขียนเป็น hexadecimal เช่น 1A-2F-BB-76-09-AD</li><li>IEEE บริหาร address space; ผู้ผลิตซื้อช่วง (3 ไบต์แรก = OUI)</li><li>ทำให้มั่นใจว่า MAC address ไม่ซ้ำกัน</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="move" class="cyan"></i>Flat &amp; portable</h3><p class="card-text">MAC เป็น flat address → ย้าย interface จาก LAN หนึ่งไปอีก LAN หนึ่งได้ โดย MAC ยังเหมือนเดิม</p><p class="card-text mt-2">IP address ไม่ portable เพราะขึ้นกับ IP subnet ที่ node ต่ออยู่</p><div class="flex gap-2 wrap mt-3"><span class="chip mono">48-bit</span><span class="chip">hex</span><span class="chip">portable</span></div></div>
+    </div>
+    <div class="grid-2 mt-4">
+      <div class="tip-box tip-exam"><i data-lucide="radio" class="cyan"></i><div><b>Broadcast MAC</b><span class="mono">FF-FF-FF-FF-FF-FF</span> — ทุก interface ใน LAN รับ frame นี้</div></div>
+      <div class="tip-box tip-note"><i data-lucide="info"></i><div><b>Multicast</b>บิต LSB ของไบต์แรกของ destination MAC ใช้แยก unicast/multicast</div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 6.6</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 24 · MAC vs IP Address ============ -->
+<section class="slide-view" data-title="MAC vs IP Address" aria-label="สไลด์ 24: MAC vs IP Address">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">COMPARE · MAC VS IP</p>
+    <h2 class="slide-title">คนละชั้น <span class="grad-text">คนละขอบเขต</span></h2>
+
+    <p class="slide-subtitle">MAC ใช้ local link และ switch; IP ใช้ end-to-end และ router</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>ประเด็น</th><th>MAC Address</th><th>IP Address</th></tr></thead><tbody>
+      <tr><td><b>Layer</b></td><td>2 (link)</td><td>3 (network)</td></tr>
+      <tr><td><b>ขนาด</b></td><td>48 บิต</td><td>32 บิต (IPv4)</td></tr>
+      <tr><td><b>ขอบเขต</b></td><td>local link / subnet</td><td>end-to-end ทั่วอินเทอร์เน็ต</td></tr>
+      <tr><td><b>การกำหนด</b></td><td>IEEE + ผู้ผลิต (ฝังใน ROM)</td><td>ผู้ดูแลเครือข่าย / DHCP</td></tr>
+      <tr><td><b>Portability</b></td><td>portable</td><td>ขึ้นกับ subnet</td></tr>
+      <tr><td><b>ใช้โดย</b></td><td>switch</td><td>router</td></tr>
+      <tr><td><b>Analogy</b></td><td>เลขประจำตัว</td><td>ที่อยู่ไปรษณีย์</td></tr>
+    </tbody></table></div>
+    <div class="grid-2 mt-4">
+      <div class="tip-box tip-remember"><i data-lucide="id-card"></i><div><b>MAC</b>เหมือนเลขบัตรประชาชน — ติดตัวไปไหนก็เหมือนเดิม</div></div>
+      <div class="tip-box tip-note"><i data-lucide="mail"></i><div><b>IP</b>เหมือนที่อยู่ไปรษณีย์ — เปลี่ยนที่อยู่ก็เปลี่ยน</div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 6.7</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 25 · ARP: Concept & Table ============ -->
+<section class="slide-view" data-title="ARP: Concept & Table" aria-label="สไลด์ 25: ARP: Concept & Table">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ARP · CONCEPT</p>
+    <h2 class="slide-title">IP → MAC <span class="grad-text">ภายใน LAN</span></h2>
+
+    <p class="slide-subtitle">ถ้ารู้ IP address ของ interface จะหา MAC address ได้อย่างไร? คำตอบคือ ARP + ARP table</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="table" class="cyan"></i>ARP table</h3><p class="card-text">แต่ละ IP node (host, router) บน LAN เก็บ mapping:</p><div class="formula-box mt-3"><div><span class="formula-label">entry</span><b class="mono">&lt;IP address; MAC address; TTL&gt;</b></div></div><ul class="clean-list mt-3"><li>TTL = เวลาที่ mapping จะถูกลืม</li><li>ตำรากล่าวถึงประมาณ 20 นาที; ตัวอย่างในสไลด์แสดง 500 วินาที</li></ul></div>
+      <div class="visual-box"><span class="vb-label">ARP ทำงานใน LAN · plug-and-play</span><div class="pipeline" style="padding:18px 8px"><div class="pipe-node hot"><b>IP ที่รู้</b><span>137.196.7.14</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>ARP</b><span>ถามใน LAN</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>MAC</b><span>58-23-D7-FA-20-B0</span></div></div><p class="center text-3" style="font-size:12px;padding-bottom:10px">ARP เป็น plug-and-play ไม่ต้องตั้งค่าเอง</p></div>
+    </div>
+    <div class="tip-box tip-warn mt-4"><i data-lucide="shield-alert"></i><div><b>ไม่มี authentication</b>จึงเสี่ยง ARP spoofing — ผู้โจมตีตอบ MAC ของตัวเองเพื่อดัก traffic; ในทางปฏิบัติมีกลไกเช่น Dynamic ARP Inspection</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 6.8</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 26 · ARP in Action ============ -->
+<section class="slide-view" data-title="ARP in Action" aria-label="สไลด์ 26: ARP in Action">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ARP · IN ACTION</p>
+    <h2 class="slide-title">Query broadcast <span class="grad-text">Reply unicast</span></h2>
+
+    <p class="slide-subtitle">A ต้องการส่ง datagram ไป B บน LAN 137.196.7.0/24 — คลิกแต่ละขั้น</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div><div class="dhcp-steps" id="arpSteps7" style="grid-template-columns:repeat(3,1fr)"></div><div class="card mt-3" style="border-color:rgba(34,211,238,.4)"><p class="card-text" id="arpDetail7" style="min-height:92px">—</p></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="map-pin" class="cyan"></i>ข้อมูลในตัวอย่าง</h3><ul class="clean-list"><li><b>A:</b> IP 137.196.7.23 · MAC 71-65-F7-2B-08-53</li><li><b>B:</b> IP 137.196.7.14 · MAC 58-23-D7-FA-20-B0</li><li><b>LAN:</b> 137.196.7.0/24</li></ul><div class="table-wrap mt-3"><table class="data-table"><thead><tr><th>ข้อความ</th><th>ส่งแบบ</th></tr></thead><tbody><tr><td>ARP query</td><td>Broadcast FF-FF-FF-FF-FF-FF</td></tr><tr><td>ARP reply</td><td>Unicast ไปยังผู้ถาม</td></tr></tbody></table></div></div>
+    </div>
+    <div class="tip-box tip-exam mt-4"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>ARP query เป็น broadcast แต่ ARP reply เป็น unicast — เพราะผู้ตอบรู้ MAC ของผู้ถามแล้วจาก query</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 6.9</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 27 · Routing to Another Subnet ============ -->
+<section class="slide-view" data-title="Routing to Another Subnet" aria-label="สไลด์ 27: Routing to Another Subnet">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ARP · INTER-SUBNET</p>
+    <h2 class="slide-title">IP คงที่ <span class="grad-text">MAC เปลี่ยนทุก hop</span></h2>
+
+    <p class="slide-subtitle">A อยู่ 111.111.111.0/24 ส่งไป B ที่ 222.222.222.0/24 ผ่าน router R</p>
+    <div class="table-wrap mt-5"><table class="data-table mono-table"><thead><tr><th>Hop</th><th>Link</th><th>Source MAC</th><th>Destination MAC</th><th>Source IP</th><th>Destination IP</th></tr></thead><tbody>
+      <tr><td>A → R</td><td>111.111.111.0/24</td><td>74-29-9C-E8-FF-55</td><td>E6-E9-00-17-BB-4B</td><td>111.111.111.111</td><td>222.222.222.222</td></tr>
+      <tr><td>R → B</td><td>222.222.222.0/24</td><td>1A-23-F9-CD-06-9B</td><td>49-BD-D2-C7-56-2A</td><td>111.111.111.111</td><td>222.222.222.222</td></tr>
+    </tbody></table></div>
+    <div class="grid-2 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="corner-down-right" class="cyan"></i>ขั้นตอน</h3><ol class="clean-list"><li>A รู้ว่าปลายทางต่าง subnet → ส่งให้ default gateway R</li><li>A ใช้ ARP หา MAC ของ R (ไม่ใช่ B) แล้วสร้าง frame</li><li>R ดึง datagram ขึ้น IP layer, ค้น forwarding table, เลือก interface ด้าน B</li><li>R สร้าง frame ใหม่ไป B; B รับ frame แล้วส่ง datagram ขึ้น IP layer</li></ol></div>
+      <div class="tip-box tip-remember"><i data-lucide="lightbulb"></i><div><b>หลักที่ต้องจำ</b>Source/Destination IP <b>คงเดิมตลอดเส้นทาง</b> แต่ Source/Destination MAC <b>เปลี่ยนทุก hop</b> ตาม link ที่กำลังส่ง</div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 6.10</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 28 · Switch Basics & Simultaneous Transmissions ============ -->
+<section class="slide-view" data-title="Switch Basics & Simultaneous Transmissions" aria-label="สไลด์ 28: Switch Basics & Simultaneous Transmissions">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">SWITCH · BASICS</p>
+    <h2 class="slide-title">Link-layer device <span class="grad-text">ที่โปร่งใส</span></h2>
+
+    <p class="slide-subtitle">Switch เป็น active link-layer device: store-and-forward frame, ดู MAC, เลือก outgoing link</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="network" class="cyan"></i>คุณสมบัติสำคัญ</h3><ul class="clean-list"><li>Store และ forward Ethernet frame</li><li>ตรวจ MAC address ของ frame ที่เข้ามา</li><li>เลือก forward ไปยัง outgoing link หนึ่งหรือหลาย link</li><li>Transparent — host ไม่รู้ว่ามี switch อยู่</li><li>Plug-and-play, self-learning — ไม่ต้องตั้งค่า</li></ul></div>
+      <div class="visual-box"><span class="vb-label">6 INTERFACE · DEDICATED LINK + BUFFER</span><div class="pipeline" style="padding:12px 8px;gap:8px"><div class="pipe-node hot"><b>A</b><span>port 1</span></div><div class="pipe-node"><b>B</b><span>port 2</span></div><div class="pipe-node"><b>C</b><span>port 3</span></div><div class="pipe-node"><b>A'</b><span>port 4</span></div><div class="pipe-node"><b>B'</b><span>port 5</span></div><div class="pipe-node"><b>C'</b><span>port 6</span></div></div></div>
+    </div>
+    <div class="grid-2 mt-4">
+      <div class="tip-box tip-remember"><i data-lucide="check" class="cyan"></i><div><b>ส่งพร้อมกันได้</b>A → A' และ B → B' ใช้คนละ outgoing port จึงไม่ชนกัน; แต่ละ link เป็น collision domain ของตัวเอง และทำงาน full duplex</div></div>
+      <div class="tip-box tip-warn"><i data-lucide="triangle-alert"></i><div><b>แย่ง port เดียวกัน</b>A → A' และ C → A' ส่งพร้อมกันไม่ได้ เพราะแย่ง outgoing port 4</div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 7.1–7.2</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 29 · Switch Table & Self-Learning ============ -->
+<section class="slide-view" data-title="Switch Table & Self-Learning" aria-label="สไลด์ 29: Switch Table & Self-Learning">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">SWITCH · LEARNING</p>
+    <h2 class="slide-title">เรียนรู้จาก <span class="grad-text">Source MAC</span></h2>
+
+    <p class="slide-subtitle">Switch table เก็บ &lt;MAC, interface, timestamp&gt; และสร้างจาก self-learning ไม่ใช่ routing protocol</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="book-open" class="cyan"></i>Self-learning</h3><ol class="clean-list"><li>ดู source MAC ของ frame</li><li>เรียนรู้ว่า host อยู่ที่ incoming LAN segment/port ใด</li><li>บันทึก (MAC, port) พร้อม timestamp</li><li>ถ้าไม่มี traffic จาก MAC นั้นอีก entry จะถูก aging ออก (ตัวอย่าง TTL 60 วินาที)</li></ol></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="filter" class="cyan"></i>Filter / Forward / Flood</h3><div class="table-wrap mt-2"><table class="data-table"><thead><tr><th>การกระทำ</th><th>เกิดเมื่อ</th></tr></thead><tbody><tr><td><b>Filter</b></td><td>destination อยู่ segment เดียวกับขาเข้า → drop</td></tr><tr><td><b>Forward</b></td><td>รู้ destination และอยู่คนละ segment → ส่งออกพอร์ตเดียว</td></tr><tr><td><b>Flood</b></td><td>ไม่รู้ destination → ส่งทุกพอร์ตยกเว้นขาเข้า</td></tr></tbody></table></div></div>
+    </div>
+    <div class="tip-box tip-warn mt-4"><i data-lucide="repeat"></i><div><b>Loop</b>ถ้ามี loop ระหว่าง switch, frame broadcast/flood อาจวนไม่หยุด → broadcast storm; ใช้ Spanning Tree Protocol (STP) บล็อก link ซ้ำซ้อน</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 7.3–7.5, 7.7</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 30 · Switch Learning Simulation ============ -->
+<section class="slide-view" data-title="Switch Learning Simulation" aria-label="สไลด์ 30: Switch Learning Simulation">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">SWITCH · SIMULATION</p>
+    <h2 class="slide-title">ลองเดิน switch table <span class="grad-text">ทีละ frame</span></h2>
+
+    <p class="slide-subtitle">เริ่มจาก switch table ว่าง — คลิกแต่ละเหตุการณ์เพื่อดูการเรียนรู้และการ forward/flood</p>
+    <div class="dhcp-steps mt-5" id="switchSteps7" style="grid-template-columns:repeat(4,1fr)"></div>
+    <div class="grid-3 mt-3">
+      <div class="card" style="grid-column:span 2"><h3 class="card-title"><i data-lucide="activity" class="cyan"></i>เหตุการณ์</h3><p class="card-text" id="switchDetail7" style="min-height:64px">—</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="table" class="cyan"></i>Switch table</h3><div class="flex gap-2 wrap mt-2" id="switchTable7"></div></div>
+    </div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="lightbulb"></i><div><b>ข้อสังเกต</b>frame แรก ๆ มักถูก flood เพราะยังไม่รู้ตำแหน่ง; เมื่อเรียนรู้แล้ว traffic ต่อไปจะถูก forward เฉพาะพอร์ต; ถ้า destination อยู่พอร์ตเดียวกับขาเข้า → drop</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 7.6 · พอร์ต 1=A, 2=B, 3=C, 4=A', 5=B', 6=C'</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 31 · Switch vs Router ============ -->
+<section class="slide-view" data-title="Switch vs Router" aria-label="สไลด์ 31: Switch vs Router">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">COMPARE · SWITCH VS ROUTER</p>
+    <h2 class="slide-title">Layer 2 <span class="grad-text">vs Layer 3</span></h2>
+
+    <p class="slide-subtitle">ทั้งคู่เป็น store-and-forward และมี forwarding table แต่ดูคนละ address และแยก broadcast domain ต่างกัน</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>ประเด็น</th><th>Switch</th><th>Router</th></tr></thead><tbody>
+      <tr><td><b>Layer</b></td><td>2 (link)</td><td>3 (network)</td></tr>
+      <tr><td><b>หน่วยข้อมูล</b></td><td>frame</td><td>datagram</td></tr>
+      <tr><td><b>Address ที่ดู</b></td><td>MAC</td><td>IP</td></tr>
+      <tr><td><b>การสร้างตาราง</b></td><td>เรียนรู้จาก source MAC + flooding</td><td>routing algorithm</td></tr>
+      <tr><td><b>Collision domain</b></td><td>แยกต่อพอร์ต</td><td>แยกต่อ interface</td></tr>
+      <tr><td><b>Broadcast domain</b></td><td>โดยทั่วไปหนึ่งเดียว (ยกเว้น VLAN)</td><td>แยกแต่ละ interface</td></tr>
+      <tr><td><b>ความเร็ว/ราคา</b></td><td>เร็วและถูกกว่า</td><td>ช้ากว่าและแพงกว่า</td></tr>
+    </tbody></table></div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="check" class="cyan"></i><div><b>สิ่งที่เหมือนกัน</b>ทั้งคู่เป็น store-and-forward และมี forwarding table</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 7.8</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 32 · VLAN Motivation & Port-Based VLAN ============ -->
+<section class="slide-view" data-title="VLAN Motivation & Port-Based VLAN" aria-label="สไลด์ 32: VLAN Motivation & Port-Based VLAN">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">VLAN · MOTIVATION</p>
+    <h2 class="slide-title">LAN เสมือน <span class="grad-text">บน switch เดียว</span></h2>
+
+    <p class="slide-subtitle">LAN ใหญ่ขึ้น → broadcast หนัก และย้ายผู้ใช้ยาก — VLAN แก้ด้วยการแบ่ง LAN ทาง logical</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="radio-tower" class="amber"></i>ปัญหา 1 · Single broadcast domain</h3><ul class="clean-list"><li>broadcast traffic layer 2 เช่น ARP, DHCP, unknown MAC วิ่งทั่ว LAN</li><li>เกิดปัญหา efficiency, security, privacy</li><li>เครือข่ายใหญ่ขึ้น → broadcast ยิ่งหนัก</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="building-2" class="amber"></i>ปัญหา 2 · Administrative issues</h3><ul class="clean-list"><li>ผู้ใช้ CS ย้ายไปห้อง EE ที่ต่อ switch EE</li><li>แต่ยังต้องการอยู่ logically ในเครือข่าย CS</li><li>LAN แบนแบบเดิมทำได้ยาก</li></ul></div>
+    </div>
+    <div class="card mt-4"><h3 class="card-title"><i data-lucide="layers" class="cyan"></i>Port-based VLAN</h3><p class="card-text">switch ตัวเดียวตั้ง group พอร์ตเป็น VLAN ต่าง ๆ ได้ — ทำงานเหมือน switch เสมือนหลายตัว</p><div class="grid-2 mt-3"><div class="mini-card"><b>EE VLAN</b><span>ports 1–8</span></div><div class="mini-card"><b>CS VLAN</b><span>ports 9–15</span></div></div><ul class="clean-list mt-3"><li><b>Traffic isolation:</b> frame เข้า/ออกพอร์ต 1–8 ไปถึงเฉพาะพอร์ต 1–8</li><li>กำหนด VLAN ตาม MAC address ของ endpoint ได้; พอร์ตย้าย VLAN ได้</li><li><b>Inter-VLAN forwarding</b> ต้องใช้ routing (layer 3)</li></ul></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 7.9–7.10</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 33 · VLAN Trunk & 802.1Q ============ -->
+<section class="slide-view" data-title="VLAN Trunk & 802.1Q" aria-label="สไลด์ 33: VLAN Trunk & 802.1Q">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">VLAN · TRUNK</p>
+    <h2 class="slide-title">802.1Q <span class="grad-text">tag หลัง Source MAC</span></h2>
+
+    <p class="slide-subtitle">เมื่อ VLAN อยู่หลาย switch ต้องมี trunk port ที่บรรทุก frame หลาย VLAN พร้อม VLAN ID</p>
+    <div class="vlan-frame mt-5">
+      <div class="eth-seg pre"><b>Preamble</b><span>8 B</span></div>
+      <div class="eth-seg"><b>Dest MAC</b><span>6 B</span></div>
+      <div class="eth-seg"><b>Src MAC</b><span>6 B</span></div>
+      <div class="eth-seg tag"><b>TPID 0x8100</b><span>2 B</span></div>
+      <div class="eth-seg tag2"><b>TCI</b><span>2 B</span></div>
+      <div class="eth-seg type"><b>Type</b><span>2 B</span></div>
+      <div class="eth-seg data"><b>Data</b><span>46–1500 B</span></div>
+      <div class="eth-seg crc"><b>CRC</b><span>4 B</span></div>
+    </div>
+    <div class="grid-2 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="tag" class="cyan"></i>ส่วนของ 802.1Q</h3><ul class="clean-list"><li><b>TPID</b> 2 B = 0x8100 บอกว่าเป็น 802.1Q tag</li><li><b>TCI</b> 2 B: VLAN ID 12 บิต, priority 3 บิต, DEI 1 บิต</li><li>VLAN ID ใช้งานได้ 1–4094 (0 และ 4095 สงวน)</li><li>tag แทรกหลัง source MAC</li><li>CRC คำนวณใหม่หลังใส่ tag; frame สูงสุด 1522 B</li></ul></div>
+      <div class="visual-box"><span class="vb-label">TRUNK · หลาย VLAN ระหว่าง SWITCH</span><div class="pipeline" style="padding:16px 8px"><div class="pipe-node hot"><b>Switch 1</b><span>EE + CS</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Trunk</b><span>802.1Q tags</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Switch 2</b><span>EE + CS</span></div></div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 7.11–7.12</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 34 · Access Port, Benefits & EVPN ============ -->
+<section class="slide-view" data-title="Access Port, Benefits & EVPN" aria-label="สไลด์ 34: Access Port, Benefits & EVPN">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">VLAN · OPERATIONS</p>
+    <h2 class="slide-title">Access <span class="grad-text">vs Trunk</span></h2>
+
+    <p class="slide-subtitle">Access port ต่อ host แบบไม่มี tag; trunk port ต่อ switch กับ switch พร้อม 802.1Q tag</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>Access Port</th><th>Trunk Port</th></tr></thead><tbody>
+      <tr><td>เป็นของ VLAN เดียว</td><td>บรรทุกหลาย VLAN</td></tr>
+      <tr><td>frame ไป host เป็นแบบไม่มี tag</td><td>frame ระหว่าง switch มี 802.1Q tag</td></tr>
+      <tr><td>ใช้ต่อ PC, printer, AP</td><td>ใช้เชื่อม switch กับ switch</td></tr>
+      <tr><td>ตัวอย่าง: พอร์ต 1–8 ของ EE</td><td>ตัวอย่าง: uplink ระหว่าง S1 กับ S2</td></tr>
+    </tbody></table></div>
+    <div class="grid-2 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="check-circle-2" class="cyan"></i>ข้อดี</h3><ul class="clean-list"><li>ลดขนาด broadcast domain → efficiency ดีขึ้น</li><li>เพิ่ม security/privacy ระหว่างแผนก</li><li>ยืดหยุ่น: ย้ายผู้ใช้โดยไม่ต้องเดินสายใหม่</li><li>ประหยัด: switch ชุดเดียวแทนหลายชุด</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="triangle-alert" class="amber"></i>ข้อจำกัด</h3><ul class="clean-list"><li>ต้องบริหาร VLAN/หมายเลข/membership ให้ดี</li><li>สื่อสารระหว่าง VLAN ต้องผ่าน router หรือ Layer-3 switch</li><li>trunk/loop ตั้งค่าไม่ดีอาจเกิดปัญหาและความซับซ้อน</li><li>ไม่ได้แทน security ระดับสูงทั้งหมด — แยก layer 2 เท่านั้น</li></ul></div>
+    </div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="network"></i><div><b>EVPN / VXLAN (เพิ่มเติม)</b>เชื่อม layer-2 Ethernet switches ทางตรรกะโดยใช้ IP เป็น underlay; Ethernet frame ถูกบรรจุใน IP datagram ผ่าน UDP; อุปกรณ์ปลาย tunnel เรียกว่า VTEP (RFC 7348)</div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 7.13–7.15</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 35 · สรุปบทเรียน ============ -->
+<section class="slide-view" data-title="สรุปบทเรียน" aria-label="สไลด์ 35: สรุปบทเรียน">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">REVIEW · SUMMARY</p>
+    <h2 class="slide-title">F3 <span class="grad-text">ในหนึ่งหน้า</span></h2>
+
+    <p class="slide-subtitle">ทวน 6 หัวข้อหลักและตัวเลขที่ออกสอบบ่อย</p>
+    <div class="grid-3 mt-5" style="gap:10px">
+      <div class="card"><h3 class="card-title"><i data-lucide="cable" class="cyan"></i>Link Layer</h3><p class="card-text small">ส่ง datagram ระหว่าง node ที่ติดกัน; frame encapsulate datagram; NIC = link + physical</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="scan-search" class="cyan"></i>Errors</h3><p class="card-text small">single parity ตรวจ error คี่; 2D parity แก้ single-bit; CRC = polynomial mod 2; detection ไม่ใช่ correction</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="share-2" class="cyan"></i>Multiple Access</h3><p class="card-text small">partitioning / random / taking turns; Slotted ALOHA 37%; Pure 18%; CSMA/CD abort + jam</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="ethernet-port" class="cyan"></i>Ethernet / MAC</h3><p class="card-text small">frame 64–1518 B (1522 พร้อม VLAN); MAC 48 บิต; IP 32 บิต; ARP query broadcast, reply unicast</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="network" class="cyan"></i>Switch</h3><p class="card-text small">self-learning จาก source MAC; forward/filter/flood; switch = layer 2, router = layer 3</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="tags" class="cyan"></i>VLAN</h3><p class="card-text small">แบ่ง broadcast domain; access = 1 VLAN; trunk = หลาย VLAN + 802.1Q; ระหว่าง VLAN ต้อง routing</p></div>
+    </div>
+    <div class="formula-box mt-4"><div><span class="formula-label">ตัวเลขสำคัญ</span><b>64 B · 1518 B · 1522 B</b></div><div><span>MAC / IPv4</span><b>48 บิต / 32 บิต</b></div><div><span>ALOHA</span><b>1/e ≈ 37% · 1/(2e) ≈ 18%</b></div><div><span>VLAN ID</span><b>12 บิต · 1–4094</b></div></div>
+    <p class="source-line">ที่มา: Chapter 6 — หัวข้อ 9.1–9.5</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 36 · สูตรจำก่อนสอบ — F3 ============ -->
+<section class="slide-view" data-title="สูตรจำก่อนสอบ — F3" aria-label="สไลด์ 36: สูตรจำก่อนสอบ — F3">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CHEAT SHEET · F3</p>
+    <h2 class="slide-title">25 จุด <span class="grad-text">ที่ต้องจำ</span></h2>
+
+    <p class="slide-subtitle">สรุปสั้นที่สุดของทั้งบท — ใช้ก่อนสอบหรือทบทวนเร็ว</p>
+    <div class="cheat-grid mt-4" id="cheatGrid7"></div>
+    <p class="source-line">ที่มา: Chapter 6 — สรุปจากทุกหัวข้อ</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 37 · แบบทดสอบ F3 12 ข้อ ============ -->
+<section class="slide-view quiz-slide" data-title="แบบทดสอบ F3 12 ข้อ" aria-label="สไลด์ 37: แบบทดสอบ F3 12 ข้อ">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">QUIZ · 12 QUESTIONS</p>
+    <h2 class="slide-title">Quiz <span class="grad-text">12 ข้อ</span></h2>
+
+    <p class="slide-subtitle">เลือกคำตอบที่ถูกที่สุด — ตอบแล้วดูเฉลยทันที และกลับไปทบทวนสไลด์ได้</p>
+    <div id="quiz7"></div>
+    <p class="source-line">คะแนนดีที่สุดจะถูกเก็บแยกในบท F3</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 38 · การ์ดทบทวน — F3 ============ -->
+<section class="slide-view" data-title="การ์ดทบทวน — F3" aria-label="สไลด์ 38: การ์ดทบทวน — F3">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">FLASHCARDS · 12</p>
+    <h2 class="slide-title">พลิกการ์ด <span class="grad-text">ทบทวนเร็ว</span></h2>
+
+    <p class="slide-subtitle">คลิกการ์ดเพื่อพลิกดูคำตอบ แล้วเลื่อนไปการ์ดถัดไป</p>
+    <div class="flashcard-wrap mt-4">
+      <div class="flashcard" id="flashcard7" role="button" tabindex="0" aria-label="การ์ดทบทวน พลิกได้">
+        <div class="flashcard-inner">
+          <div class="flashcard-face front"><span class="fc-label">QUESTION</span><p id="fcQ7">—</p></div>
+          <div class="flashcard-face back"><span class="fc-label">ANSWER</span><p id="fcA7">—</p></div>
+        </div>
+      </div>
+      <div class="flex items-center justify-center gap-3 mt-4 wrap">
+        <button class="btn btn-ghost" id="fcPrev7"><i data-lucide="chevron-left"></i> ก่อนหน้า</button>
+        <span class="chip" id="fcCounter7">1 / 12</span>
+        <button class="btn btn-ghost" id="fcNext7">ถัดไป <i data-lucide="chevron-right"></i></button>
+        <button class="btn btn-primary" id="fcShuffle7"><i data-lucide="shuffle"></i> สับการ์ด</button>
+      </div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 6 — 6 หัวข้อหลัก</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 39 · คำศัพท์ — F3 ============ -->
+<section class="slide-view" data-title="คำศัพท์ — F3" aria-label="สไลด์ 39: คำศัพท์ — F3">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">GLOSSARY · 36 TERMS</p>
+    <h2 class="slide-title">Glossary <span class="grad-text">36 คำ</span></h2>
+
+    <p class="slide-subtitle">ค้นหาคำศัพท์หรือคำอธิบาย แล้วคลิกเพื่อเปิด/ปิดคำนิยาม</p>
+    <div class="flex items-center gap-3 mt-4 wrap"><input id="glossarySearch7" class="input" type="search" placeholder="ค้นหา เช่น parity, CRC, ARP, VLAN" aria-label="ค้นหาคำศัพท์" /><span class="chip" id="glossaryCount7">36 คำศัพท์</span></div>
+    <div class="glossary-list mt-4" id="glossaryList7"></div>
+    <p class="source-line">ที่มา: Chapter 6 — คำศัพท์จากทุกหัวข้อ</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 40 · ข้อสอบหลังเรียน — 20 ข้อ ============ -->
+<section class="slide-view quiz-slide" data-title="ข้อสอบหลังเรียน — 20 ข้อ" aria-label="สไลด์ 40: ข้อสอบหลังเรียน — 20 ข้อ">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">POST-LESSON EXAM · 20 QUESTIONS</p>
+    <h2 class="slide-title">Exam <span class="grad-text">20 ข้อ</span></h2>
+
+    <p class="slide-subtitle">เรียนครบทุกสไลด์ก่อนถึงจะเข้าสอบได้ — ตอบแล้วดูเฉลยทันที</p>
+    <div id="quizExam7"></div>
+  </div>
+</section>
+
+</div><!-- /viewport -->
+
+      <!-- ================= BOTTOM BAR ================= -->
+      <footer class="bottombar">
+        <button class="bb-nav-btn" id="prevBtn" aria-label="สไลด์ก่อนหน้า">
+          <i data-lucide="chevron-left"></i><span class="bb-label">ก่อนหน้า</span>
+        </button>
+
+        <div class="bb-center">
+          สไลด์ <b id="bbCounter">1</b> / <b id="bbTotal">40</b>
+        </div>
+
+        <div class="bb-tools">
+          <button class="icon-btn" id="fullscreenBtn" aria-label="ขยายสไลด์เต็มจอ" title="ขยายสไลด์">
+            <i data-lucide="maximize-2"></i>
+          </button>
+          <button class="icon-btn" id="printSlidesBtn" aria-label="พิมพ์สไลด์ทั้งหมด" title="พิมพ์สไลด์ทั้งหมด">
+            <i data-lucide="printer"></i>
+          </button>
+          <button class="icon-btn" id="printCardsBtn" aria-label="พิมพ์การ์ดสรุป" title="พิมพ์การ์ดสรุป">
+            <i data-lucide="file-output"></i>
+          </button>
+        </div>
+
+        <button class="bb-nav-btn next" id="nextBtn" aria-label="สไลด์ถัดไป">
+          <span class="bb-label">ถัดไป</span><i data-lucide="chevron-right"></i>
+        </button>
+      </footer>
+
+    </main>
+  </div><!-- /shell -->
+</div><!-- /app -->
+
+<!-- ================= DRAWER BACKDROP ================= -->
+<div id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- ================= NOTES PANEL ================= -->
+<aside class="notes-panel" id="notesPanel" aria-label="บันทึกย่อ">
+  <div class="flex items-center justify-between" style="padding:16px 20px;border-bottom:1px solid var(--border)">
+    <div>
+      <b style="font-size:15px">📝 บันทึกย่อ (Notes)</b>
+      <p class="text-3" style="font-size:12px" id="notesLabel">สไลด์ที่กำลังเรียน</p>
+    </div>
+    <button class="icon-btn" id="notesCloseBtn" aria-label="ปิดบันทึกย่อ"><i data-lucide="x"></i></button>
+  </div>
+  <textarea id="notesTextarea" placeholder="เขียนสิ่งที่ต้องจำจากสไลด์นี้...&#10;เช่น:&#10;- The Link Layer and LANs = routing&#10;- LS = Dijkstra · DV = Bellman-Ford&#10;- BGP = inter-AS path vector" aria-label="บันทึกย่อ"></textarea>
+  <div class="text-3" style="padding:10px 20px 14px;font-size:12px;border-top:1px solid var(--border)">
+    💾 บันทึกอัตโนมัติลงในเครื่องของคุณ (localStorage)
+  </div>
+</aside>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ================= COMPLETION OVERLAY ================= -->
+<div id="completionOverlay" role="dialog" aria-modal="true" aria-label="จบบทเรียน">
+  <div class="card center" style="max-width:440px;position:relative;padding:40px 32px;z-index:1">
+    <div style="font-size:56px" class="float-y">🎉</div>
+    <h2 class="slide-title mt-4" style="font-size:28px">F3 Complete!</h2>
+    <p class="text-2 mt-2" id="completionMsg">คุณเรียนครบทุกสไลด์แล้ว — ยอดเยี่ยมมาก! <b class="grad-text">Keep Learning!</b></p>
+    <div class="grid-3 mt-5" style="grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneSlides">40</b><p class="text-3" style="font-size:12px">สไลด์</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneScore">–</b><p class="text-3" style="font-size:12px">คะแนน Quiz</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px">100%</b><p class="text-3" style="font-size:12px">ความคืบหน้า</p></div>
+    </div>
+    <div class="flex items-center gap-3 mt-6 wrap" style="justify-content:center">
+      <button class="btn btn-ghost" id="completionCloseBtn">ปิด 🎊</button>
+      <button class="btn btn-primary" id="completionRestartBtn"><i data-lucide="rotate-ccw"></i> เรียนใหม่อีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PRINT AREA ================= -->
+<div id="printArea" aria-hidden="true"></div>
+
+<!-- App scripts -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

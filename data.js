@@ -1364,6 +1364,638 @@ window.DATA.ch4 = {
 };
 
 /* ==========================================================================
+   FINAL TRACK — F1: CHAPTER 4 NETWORK LAYER: DATA PLANE
+   Source of truth: Chapter_4_v9.0_Network_Layer_Data_Plane.pptx
+   Internal ID = 5 · Book Chapter = 4
+   ========================================================================== */
+window.DATA.ch5 = {
+  title: "Network Layer: Data Plane",
+  thai: "Network Layer: Data Plane (ชั้นเครือข่าย — ระนาบข้อมูล)",
+  code: "F1",
+  bookChapter: 4,
+  source: "Chapter_4_v9.0_Network_Layer_Data_Plane.pptx",
+
+  slides: [
+    { title: "Cover — F1: Network Layer: Data Plane", short: "เปิดบทเรียน" },
+    { title: "บทนี้จะเรียนอะไร", short: "ภาพรวมบท" },
+    { title: "บริการและโปรโตคอลของ Network Layer", short: "Services & Protocols" },
+    { title: "Forwarding vs Routing", short: "Forwarding vs Routing" },
+    { title: "Data Plane vs Control Plane", short: "Data / Control Plane" },
+    { title: "Per-router Control Plane vs SDN", short: "Per-router / SDN" },
+    { title: "Service Model และ Best-effort", short: "Service Model" },
+    { title: "ภาพรวมสถาปัตยกรรม Router", short: "Router Architecture" },
+    { title: "หน้าที่ของ Input Port", short: "Input Port" },
+    { title: "Forwarding Table & Destination-based Forwarding", short: "Forwarding Table" },
+    { title: "Longest Prefix Matching — หลักการ", short: "LPM หลักการ" },
+    { title: "Longest Prefix Matching — ตัวอย่าง", short: "LPM ตัวอย่าง" },
+    { title: "Switching Fabrics", short: "Switching Fabrics" },
+    { title: "Input Port Queuing & HOL Blocking", short: "Input Queuing / HOL" },
+    { title: "Output Port Queuing, Buffer & Scheduling", short: "Output Queuing" },
+    { title: "รูปแบบ IP Datagram", short: "IP Datagram" },
+    { title: "IP Addressing — Interface & Dotted-decimal", short: "IP Addressing" },
+    { title: "Subnet และ Subnet Mask", short: "Subnets" },
+    { title: "CIDR", short: "CIDR" },
+    { title: "การได้มาซึ่ง IP Address — DHCP", short: "DHCP" },
+    { title: "Hierarchical Addressing และ Route Aggregation", short: "Route Aggregation" },
+    { title: "สรุปบทเรียน", short: "สรุปบทเรียน" },
+    { title: "สรุปสูตรก่อนสอบ", short: "สูตรจำก่อนสอบ" },
+    { title: "Quiz — แบบทดสอบ F1", short: "แบบทดสอบ" },
+    { title: "Flashcards — การ์ดทบทวน", short: "การ์ดทบทวน" },
+    { title: "Glossary — คำศัพท์", short: "คำศัพท์" },
+    { title: "ข้อสอบหลังเรียน — 20 ข้อ", short: "ข้อสอบหลังเรียน" }
+  ],
+
+  sections: [
+    { label: "ภาพรวม Final · F1", topics: [1, 2] },
+    { label: "1. Network Layer & Planes", topics: [3, 4, 5, 6, 7] },
+    { label: "2. Router, Forwarding & LPM", topics: [8, 9, 10, 11, 12, 13, 14, 15] },
+    { label: "3. IPv4 Addressing & Subnetting", topics: [16, 17, 18, 19] },
+    { label: "4. IP Address in Action", topics: [20, 21] },
+    { label: "ทบทวนและฝึกฝน", topics: [22, 23, 24, 25, 26, 27] }
+  ],
+
+  /* ---------- Service model table (PPTX 4-10) ---------- */
+  serviceModel: [
+    { arch: "Internet", model: "best effort", bandwidth: "ไม่มี", loss: "ไม่", order: "ไม่", timing: "ไม่" },
+    { arch: "ATM", model: "Constant Bit Rate", bandwidth: "อัตราคงที่", loss: "มี", order: "มี", timing: "มี" },
+    { arch: "ATM", model: "Available Bit Rate", bandwidth: "ขั้นต่ำที่รับประกัน", loss: "ไม่", order: "มี", timing: "ไม่" },
+    { arch: "Internet", model: "Intserv Guaranteed (RFC 1633)", bandwidth: "มี", loss: "มี", order: "มี", timing: "มี" },
+    { arch: "Internet", model: "Diffserv (RFC 2475)", bandwidth: "เป็นไปได้", loss: "อาจจะ", order: "อาจจะ", timing: "ไม่" }
+  ],
+
+  /* ---------- Longest prefix matching (PPTX 4-18 … 4-22) ---------- */
+  lpm: {
+    rows: [
+      { range: "11001000  00010111  00010***  ********", iface: 0, prefix: "11001000 00010111 00010", bits: 21 },
+      { range: "11001000  00010111  00011000  ********", iface: 1, prefix: "11001000 00010111 00011000", bits: 24 },
+      { range: "11001000  00010111  00011***  ********", iface: 2, prefix: "11001000 00010111 00011", bits: 21 },
+      { range: "otherwise", iface: 3, prefix: "—", bits: 0 }
+    ],
+    examples: [
+      {
+        id: 0,
+        dest: "11001000  00010111  00011000  10101010",
+        decimal: "200.23.24.170",
+        winner: 1,
+        iface: 1,
+        explain: "Prefix 11001000 00010111 00011000 (24 บิต) ยาวกว่า 11001000 00010111 00011 (21 บิต) จึงเลือก interface 1"
+      },
+      {
+        id: 1,
+        dest: "11001000  00010111  00010110  10100001",
+        decimal: "200.23.22.161",
+        winner: 0,
+        iface: 0,
+        explain: "ตรงกับ prefix 11001000 00010111 00010 (21 บิต) → interface 0"
+      }
+    ]
+  },
+
+  /* ---------- Router parts (PPTX 4-14, 4-15) ---------- */
+  routerParts: [
+    { key: "input", label: "Input ports", desc: "line termination → link layer protocol (รับข้อมูล) → lookup, forwarding, queueing — ใช้ forwarding table ในหน่วยความจำของ input port" },
+    { key: "fabric", label: "High-speed switching fabric", desc: "ย้าย packet จาก input link ไปยัง output link ที่เหมาะสม — switching rate ที่ดีควรเป็น N เท่าของ line rate" },
+    { key: "output", label: "Output ports", desc: "line termination → link layer protocol (ส่งข้อมูล) — เก็บ datagram ใน buffer และจัดคิวส่งออก" },
+    { key: "processor", label: "Routing processor", desc: "ส่วน control plane (ซอฟต์แวร์) — ทำงานในระดับมิลลิวินาที ขณะที่ data plane (ฮาร์ดแวร์) ทำงานในระดับนาโนวินาที" }
+  ],
+
+  /* ---------- Switching fabrics (PPTX 4-25 … 4-28) ---------- */
+  fabrics: [
+    { key: "memory", label: "Switching via memory", desc: "router รุ่นแรก: คอมพิวเตอร์ทั่วไปที่ switching อยู่ภายใต้การควบคุมของ CPU โดยตรง; packet ถูกคัดลอกไปยังหน่วยความจำของระบบ; ความเร็วจำกัดด้วย memory bandwidth (2 bus crossings ต่อ datagram)" },
+    { key: "bus", label: "Switching via a bus", desc: "datagram จากหน่วยความจำ input port ไปยังหน่วยความจำ output port ผ่าน shared bus; bus contention: ความเร็ว switching จำกัดด้วย bus bandwidth; bus 32 Gbps, Cisco 5600: ความเร็วเพียงพอสำหรับ access router" },
+    { key: "net", label: "Switching via interconnection network", desc: "Crossbar, Clos networks และ interconnection network อื่น ๆ; multistage switch: nxn switch จากหลาย stage ของ switch ขนาดเล็กลง; แบ่ง datagram เป็น fixed-length cells, switch cells แล้ว reassemble ที่ทางออก; Cisco CRS: 8 switching planes, each 3-stage, up to 100's Tbps" }
+  ],
+
+  /* ---------- IP address example (PPTX 4-44) ---------- */
+  ipExample: {
+    dotted: "223.1.1.1",
+    octets: [223, 1, 1, 1],
+    binary: ["11011111", "00000001", "00000001", "00000001"]
+  },
+
+  /* ---------- Subnets (PPTX 4-47 … 4-49) ---------- */
+  subnets: [
+    { cidr: "223.1.1.0/24", hosts: ["223.1.1.1", "223.1.1.2", "223.1.1.3", "223.1.1.4"] },
+    { cidr: "223.1.2.0/24", hosts: ["223.1.2.1", "223.1.2.2", "223.1.2.9"] },
+    { cidr: "223.1.3.0/24", hosts: ["223.1.3.1", "223.1.3.2", "223.1.3.27"] }
+  ],
+
+  /* ---------- CIDR example (PPTX 4-50) ---------- */
+  cidr: {
+    cidr: "200.23.16.0/23",
+    binary: "11001000  00010111  00010000  00000000",
+    prefix: 23,
+    subnetBits: "11001000  00010111  0001000",
+    hostBits: "0  00000000"
+  },
+
+  /* ---------- DHCP (PPTX 4-52 … 4-57) ---------- */
+  dhcp: [
+    {
+      key: 1,
+      name: "DHCP discover",
+      from: "client → broadcast",
+      src: "0.0.0.0, 68",
+      dest: "255.255.255.255, 67",
+      yiaddr: "0.0.0.0",
+      xid: "654",
+      lifetime: "—",
+      msg: "Broadcast: มี DHCP server อยู่ตรงนั้นไหม?"
+    },
+    {
+      key: 2,
+      name: "DHCP offer",
+      from: "server → broadcast",
+      src: "223.1.2.5, 67",
+      dest: "255.255.255.255, 68",
+      yiaddr: "223.1.2.4",
+      xid: "654",
+      lifetime: "3600 วินาที",
+      msg: "Broadcast: ฉันเป็น DHCP server! นี่คือ IP address ที่คุณใช้ได้"
+    },
+    {
+      key: 3,
+      name: "DHCP request",
+      from: "client → broadcast",
+      src: "0.0.0.0, 68",
+      dest: "255.255.255.255, 67",
+      yiaddr: "223.1.2.4",
+      xid: "655",
+      lifetime: "3600 วินาที",
+      msg: "Broadcast: OK ฉันต้องการใช้ IP address นี้!"
+    },
+    {
+      key: 4,
+      name: "DHCP ACK",
+      from: "server → broadcast",
+      src: "223.1.2.5, 67",
+      dest: "255.255.255.255, 68",
+      yiaddr: "223.1.2.4",
+      xid: "655",
+      lifetime: "3600 วินาที",
+      msg: "Broadcast: OK คุณได้รับ IP address นี้แล้ว!"
+    }
+  ],
+
+  /* ---------- Hierarchical addressing (PPTX 4-58 … 4-60) ---------- */
+  hierarchy: {
+    ispBlock: "200.23.16.0/20",
+    orgs: [
+      "200.23.16.0/23",
+      "200.23.18.0/23",
+      "200.23.20.0/23",
+      "…",
+      "200.23.30.0/23"
+    ],
+    flyByNight: "200.23.16.0/20",
+    ispsRUs: "199.31.0.0/16",
+    moreSpecific: "200.23.18.0/23"
+  },
+
+  /* ---------- Quiz 12 ข้อ (อิง PPTX 4-4 … 4-50) ---------- */
+  quiz: [
+    {
+      "q": "Network Layer ทำหน้าที่อะไรในมุมมอง end-to-end?",
+      "options": [
+        "ส่ง transport segment จาก sending host ไปยัง receiving host",
+        "เข้ารหัสข้อมูลทั้งหมดก่อนส่งออก",
+        "แปลงสัญญาณไฟฟ้าให้เป็นบิต 0/1",
+        "กำหนดหมายเลข port ของแต่ละ process"
+      ],
+      "correct": 0,
+      "explain": "สไลด์ 4-4: transport segment จาก sending ไป receiving host — sender ห่อ segment เป็น datagram, receiver ส่ง segment ขึ้นไปให้ transport layer protocol"
+    },
+    {
+      "q": "Forwarding คืออะไร?",
+      "options": [
+        "กำหนด route ที่ packet จะใช้จาก source ไป destination",
+        "ย้าย packet จาก input link ของ router ไปยัง output link ที่เหมาะสม",
+        "คำนวณเส้นทางทั้งเครือข่ายล่วงหน้า",
+        "เปลี่ยน IP address ต้นทางเป็น NAT address"
+      ],
+      "correct": 1,
+      "explain": "สไลด์ 4-5: forwarding = ย้าย packet จาก input link ของ router ไปยัง output link ที่เหมาะสม"
+    },
+    {
+      "q": "Routing คืออะไร?",
+      "options": [
+        "move packets from input link to output link ภายใน router เดียว",
+        "เก็บ packet ไว้ใน buffer เมื่อคิวเต็ม",
+        "กำหนด route ที่ packet จะใช้จาก source ไป destination",
+        "แบ่ง datagram เป็น fragment"
+      ],
+      "correct": 2,
+      "explain": "สไลด์ 4-5: routing = กำหนด route ที่ packet จะใช้จาก source ไป destination — ใช้ routing algorithms"
+    },
+    {
+      "q": "ข้อใดอธิบาย Data Plane ถูกต้อง?",
+      "options": [
+        "logic ทั้งเครือข่าย — ตัดสินใจเส้นทางตลอด end-to-end path",
+        "ทำงานใน remote controller เท่านั้น",
+        "เป็นส่วนที่คำนวณ routing table ทั้งเครือข่าย",
+        "ฟังก์ชัน local ต่อ router — ตัดสินใจว่า datagram ที่เข้ามาที่ input port จะถูกส่งไป output port ใด"
+      ],
+      "correct": 3,
+      "explain": "สไลด์ 4-6: Data plane = ฟังก์ชัน local ต่อ router; ตัดสินใจว่า datagram ที่เข้ามาที่ input port ของ router จะถูก forward ไปยัง output port ใด"
+    },
+    {
+      "q": "Control Plane ต่างจาก Data Plane อย่างไร?",
+      "options": [
+        "Control plane เป็น logic ทั้งเครือข่าย — กำหนดว่า datagram จะถูก route ระหว่าง router ตามเส้นทาง end-to-end อย่างไร",
+        "Control plane เป็นฟังก์ชัน local ต่อ router",
+        "Control plane ทำงานในระดับนาโนวินาที",
+        "Control plane ทำงานเฉพาะใน host ไม่เกี่ยวกับ router"
+      ],
+      "correct": 0,
+      "explain": "สไลด์ 4-6: Control plane = logic ทั้งเครือข่าย; กำหนดว่า datagram จะถูก route ระหว่าง router ตามเส้นทาง end-to-end จาก source host ไป destination host อย่างไร"
+    },
+    {
+      "q": "SDN control plane ทำงานอย่างไร?",
+      "options": [
+        "routing algorithm ทำงานแยกใน router ทุกตัว",
+        "remote controller คำนวณและติดตั้ง forwarding table ลงใน router",
+        "router ทุกตัวคำนวณ forwarding table ของตัวเองโดยไม่สื่อสารกัน",
+        "ใช้เฉพาะ static route ที่ตั้งด้วยมือ"
+      ],
+      "correct": 1,
+      "explain": "สไลด์ 4-8: Software-Defined Networking (SDN) control plane — remote controller คำนวณและติดตั้ง forwarding table ลงใน router"
+    },
+    {
+      "q": "Internet service model เป็นแบบใด?",
+      "options": [
+        "รับประกันการส่งถึงภายในเวลาไม่เกิน 40 msec",
+        "ส่ง datagram ตามลำดับทุกกรณี",
+        "best effort — ไม่รับประกันการส่งถึง, timing/order หรือ bandwidth",
+        "รับประกัน bandwidth ขั้นต่ำให้แต่ละ flow"
+      ],
+      "correct": 2,
+      "explain": "สไลด์ 4-10: Internet 'best effort' service model — ไม่รับประกันการส่ง datagram, timing หรือลำดับการส่ง และ bandwidth ที่มีให้ end-to-end flow"
+    },
+    {
+      "q": "Input port ใช้ forwarding table ที่ใด?",
+      "options": [
+        "ใน routing processor เท่านั้น",
+        "ใน output port buffer",
+        "ใน DNS server",
+        "ในหน่วยความจำ input port — ใช้ค่าใน header เพื่อ lookup output port"
+      ],
+      "correct": 3,
+      "explain": "สไลด์ 4-15: decentralized switching — ใช้ค่าใน header เพื่อ lookup output port จาก forwarding table ในหน่วยความจำ input port ('match plus action')"
+    },
+    {
+      "q": "Longest prefix matching ใช้หลักการใด?",
+      "options": [
+        "ใช้ address prefix ที่ยาวที่สุดซึ่ง match destination address",
+        "เลือก prefix ที่สั้นที่สุดที่ match",
+        "เลือก interface ที่มีหมายเลขน้อยที่สุด",
+        "สุ่มเลือกหนึ่งในรายการที่ match"
+      ],
+      "correct": 0,
+      "explain": "สไลด์ 4-18: เมื่อค้นหา forwarding table entry สำหรับ destination address ที่กำหนด ให้ใช้ address prefix ที่ยาวที่สุดซึ่ง match destination address"
+    },
+    {
+      "q": "Destination 11001000 00010111 00011000 10101010 ควรออก interface ใด?",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "correct": 1,
+      "explain": "สไลด์ 4-18: ตรงกับ 11001000 00010111 00011000 (24 บิต) ซึ่งยาวกว่า 11001000 00010111 00011 (21 บิต) → interface 1"
+    },
+    {
+      "q": "Switching via memory ถูกจำกัดความเร็วด้วยอะไร?",
+      "options": [
+        "ความเร็วของลิงก์ภายนอกเท่านั้น",
+        "จำนวน port สูงสุด 8 port",
+        "memory bandwidth (2 bus crossings ต่อ datagram)",
+        "ความเร็วของ DNS resolver"
+      ],
+      "correct": 2,
+      "explain": "สไลด์ 4-25: ความเร็วจำกัดด้วย memory bandwidth (2 bus crossings ต่อ datagram)"
+    },
+    {
+      "q": "HOL (Head-of-the-Line) blocking คืออะไร?",
+      "options": [
+        "packet ถูกส่งออกก่อนกำหนด",
+        "router ทำการ fragmentation อัตโนมัติ",
+        "output port เปลี่ยน IP address ต้นทาง",
+        "datagram ที่อยู่หัวคิวขวาง datagram อื่นในคิวไม่ให้เคลื่อนที่ต่อไป"
+      ],
+      "correct": 3,
+      "explain": "สไลด์ 4-29: Head-of-the-Line (HOL) blocking — datagram ที่อยู่หัวคิวขวาง datagram อื่นในคิวไม่ให้เคลื่อนที่ต่อไป"
+    }
+  ],
+
+  /* ---------- Exam 20 ข้อ (อิง PPTX 4-4 … 4-60) ---------- */
+  exam: [
+    {
+      "q": "Sender ใน Network Layer ทำอะไรกับ segment?",
+      "options": [
+        "ห่อ segment ให้เป็น datagram",
+        "แบ่ง segment เป็น frame",
+        "เข้ารหัส segment ด้วย public key",
+        "เปลี่ยน segment เป็นบิต"
+      ],
+      "correct": 0,
+      "explain": "สไลด์ 4-4: sender ห่อ segment เป็น datagram แล้วส่งต่อให้ link layer"
+    },
+    {
+      "q": "ข้อใดคือ forwarding?",
+      "options": [
+        "กำหนด route ที่ packet จะใช้จาก source ไป destination",
+        "ย้าย packet จาก input link ของ router ไปยัง output link ที่เหมาะสม",
+        "คำนวณเส้นทางทั้งเครือข่าย",
+        "กำหนด service model ของ ISP"
+      ],
+      "correct": 1,
+      "explain": "สไลด์ 4-5: forwarding = ย้าย packet จาก input link ของ router ไปยัง output link ที่เหมาะสม"
+    },
+    {
+      "q": "ข้อใดคือ routing?",
+      "options": [
+        "move packet ภายใน router เดียว",
+        "เก็บ packet ใน output buffer",
+        "กำหนด route ที่ packet จะใช้จาก source ไป destination",
+        "ตรวจ checksum ของ IP header"
+      ],
+      "correct": 2,
+      "explain": "สไลด์ 4-5: routing = determine route taken by packets from source to destination"
+    },
+    {
+      "q": "Data Plane ทำงานแบบใด?",
+      "options": [
+        "logic ทั้งเครือข่าย",
+        "ฟังก์ชันของ remote controller",
+        "ฟังก์ชันใน application layer",
+        "ฟังก์ชัน local ต่อ router"
+      ],
+      "correct": 3,
+      "explain": "สไลด์ 4-6: Data plane = ฟังก์ชัน local ต่อ router"
+    },
+    {
+      "q": "Control Plane ทำงานแบบใด?",
+      "options": [
+        "logic ทั้งเครือข่าย",
+        "ฟังก์ชัน local ต่อ router",
+        "อยู่ใน link layer",
+        "ทำงานเฉพาะใน host"
+      ],
+      "correct": 0,
+      "explain": "สไลด์ 4-6: Control plane = logic ทั้งเครือข่าย"
+    },
+    {
+      "q": "SDN controller ทำอะไร?",
+      "options": [
+        "ส่ง packet แทน router ทุกตัว",
+        "คำนวณและติดตั้ง forwarding table ลงใน router",
+        "ทำหน้าที่เป็น DHCP server",
+        "แปลง IP เป็น MAC address"
+      ],
+      "correct": 1,
+      "explain": "สไลด์ 4-8: remote controller คำนวณและติดตั้ง forwarding table ลงใน router"
+    },
+    {
+      "q": "Internet best-effort service model ไม่รับประกันสิ่งใด?",
+      "options": [
+        "เฉพาะ checksum",
+        "เฉพาะหมายเลข port",
+        "การส่งถึง, timing/order และ bandwidth",
+        "เฉพาะ MAC address"
+      ],
+      "correct": 2,
+      "explain": "สไลด์ 4-10: ไม่รับประกันการส่ง datagram, timing หรือลำดับการส่ง และ bandwidth ที่มีให้ end-to-end flow"
+    },
+    {
+      "q": "Input port มีลำดับการทำงานอย่างไร?",
+      "options": [
+        "lookup → line termination → link layer",
+        "queueing → lookup → line termination",
+        "link layer → queueing → line termination",
+        "line termination → link layer protocol (รับข้อมูล) → lookup, forwarding, queueing"
+      ],
+      "correct": 3,
+      "explain": "สไลด์ 4-15: line termination (physical: รับข้อมูลระดับบิต) → link layer protocol (รับข้อมูล) → lookup, forwarding, queueing"
+    },
+    {
+      "q": "Destination-based forwarding ใช้อะไรในการตัดสินใจ?",
+      "options": [
+        "destination IP address เท่านั้น",
+        "source IP address เท่านั้น",
+        "TCP port เท่านั้น",
+        "MAC address เท่านั้น"
+      ],
+      "correct": 0,
+      "explain": "สไลด์ 4-16: destination-based forwarding: forward โดยดูเฉพาะ destination IP address (แบบ traditional)"
+    },
+    {
+      "q": "Longest prefix matching เลือกอะไร?",
+      "options": [
+        "prefix ที่สั้นที่สุดที่ match",
+        "prefix ที่ยาวที่สุดที่ match destination address",
+        "entry แรกในตาราง",
+        "entry สุดท้ายในตาราง"
+      ],
+      "correct": 1,
+      "explain": "สไลด์ 4-18: ใช้ address prefix ที่ยาวที่สุดซึ่ง match destination address"
+    },
+    {
+      "q": "Destination 11001000 00010111 00011000 10101010 ออก interface ใด?",
+      "options": [
+        "0",
+        "2",
+        "1",
+        "3"
+      ],
+      "correct": 2,
+      "explain": "สไลด์ 4-18: match 11001000 00010111 00011000 (24 บิต) → interface 1"
+    },
+    {
+      "q": "Destination 11001000 00010111 00010110 10100001 ออก interface ใด?",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "0"
+      ],
+      "correct": 3,
+      "explain": "สไลด์ 4-18: match 11001000 00010111 00010 (21 บิต) → interface 0"
+    },
+    {
+      "q": "TCAM ใช้ประโยชน์อย่างไรใน longest prefix matching?",
+      "options": [
+        "ส่ง address ให้ TCAM แล้วดึง address ได้ใน one clock cycle โดยไม่ขึ้นกับขนาด table",
+        "เก็บ packet buffer ขนาดใหญ่",
+        "แปลง IP เป็น MAC",
+        "ทำ fragmentation"
+      ],
+      "correct": 0,
+      "explain": "สไลด์ 4-22: content addressable — ส่ง address ให้ TCAM: ดึง address ได้ใน one clock cycle โดยไม่ขึ้นกับขนาด table"
+    },
+    {
+      "q": "Switching via memory ถูกจำกัดด้วยอะไร?",
+      "options": [
+        "bus contention",
+        "memory bandwidth (2 bus crossings ต่อ datagram)",
+        "จำนวน switching plane",
+        "ความเร็ว DNS"
+      ],
+      "correct": 1,
+      "explain": "สไลด์ 4-25: ความเร็วจำกัดด้วย memory bandwidth (2 bus crossings ต่อ datagram)"
+    },
+    {
+      "q": "HOL blocking เกิดจากอะไร?",
+      "options": [
+        "output buffer ว่างเกินไป",
+        "link layer ส่ง frame เร็วเกินไป",
+        "datagram ที่หัวคิวบล็อก datagram อื่นในคิวไม่ให้เคลื่อนที่",
+        "IP address ซ้ำกัน"
+      ],
+      "correct": 2,
+      "explain": "สไลด์ 4-29: queued datagram at front of queue prevents others in queue from moving forward"
+    },
+    {
+      "q": "IP address คืออะไร?",
+      "options": [
+        "identifier 48 บิตของ MAC address",
+        "หมายเลข port 16 บิต",
+        "ชื่อโดเมนสำหรับ DNS",
+        "identifier 32 บิตที่ผูกกับแต่ละ host หรือ router interface"
+      ],
+      "correct": 3,
+      "explain": "สไลด์ 4-44: IP address: identifier 32 บิตที่ผูกกับแต่ละ host หรือ router interface"
+    },
+    {
+      "q": "Subnet mask /24 หมายถึงอะไร?",
+      "options": [
+        "high-order 24 บิตเป็น subnet part ของ IP address",
+        "host part มี 24 บิต",
+        "มี 24 subnets ในเครือข่าย",
+        "ใช้ได้กับ 24 เครื่องเท่านั้น"
+      ],
+      "correct": 0,
+      "explain": "สไลด์ 4-48: subnet mask: /24 (high-order 24 บิต: subnet part ของ IP address)"
+    },
+    {
+      "q": "CIDR 200.23.16.0/23 หมายถึงอะไร?",
+      "options": [
+        "host portion มี 23 บิต",
+        "subnet portion ของ address มี 23 บิต",
+        "มี 23 host ใน subnet",
+        "เป็น class B address"
+      ],
+      "correct": 1,
+      "explain": "สไลด์ 4-50: รูปแบบ CIDR address a.b.c.d/x โดย x คือจำนวนบิตใน subnet portion ของ address"
+    },
+    {
+      "q": "ลำดับ DHCP 4 ขั้นถูกต้องคือข้อใด?",
+      "options": [
+        "offer → discover → ACK → request",
+        "request → ACK → discover → offer",
+        "discover → offer → request → ACK",
+        "ACK → request → offer → discover"
+      ],
+      "correct": 2,
+      "explain": "สไลด์ 4-52: host broadcast DHCP discover [optional] → DHCP server ตอบกลับด้วย DHCP offer [optional] → host ขอ IP: DHCP request → DHCP server ส่ง address: DHCP ack"
+    },
+    {
+      "q": "Route aggregation ช่วยอะไร?",
+      "options": [
+        "เพิ่มจำนวน IP address ใน subnet",
+        "ลดขนาด IP header",
+        "เปลี่ยน best-effort เป็น guaranteed",
+        "โฆษณาเส้นทางแบบสรุป เช่น 200.23.16.0/20 แทนหลาย /23"
+      ],
+      "correct": 3,
+      "explain": "สไลด์ 4-59: hierarchical addressing ช่วยให้โฆษณา routing information ได้อย่างมีประสิทธิภาพ — 'ส่งอะไรก็ได้ที่ address ขึ้นต้นด้วย 200.23.16.0/20'"
+    }
+  ],
+
+  cheat: [
+    { term: "Network Layer", def: "ส่ง transport segment จาก sending → receiving host · PDU = datagram" },
+    { term: "Forwarding", def: "ย้าย packet จาก input link → output link (local, ต่อ router)" },
+    { term: "Routing", def: "กำหนด route จาก source → destination (network-wide)" },
+    { term: "Data Plane", def: "ฟังก์ชัน local ต่อ router · hardware · ระดับนาโนวินาที" },
+    { term: "Control Plane", def: "logic ทั้งเครือข่าย · software · ระดับมิลลิวินาที" },
+    { term: "Control Plane 2 แบบ", def: "traditional routing algorithms ใน router / remote controller ของ SDN" },
+    { term: "Internet Service Model", def: "best effort — ไม่รับประกันการส่งถึง, timing/order และ bandwidth" },
+    { term: "Router", def: "input ports → high-speed switching fabric → output ports + routing processor" },
+    { term: "Input Port", def: "line termination → link layer → lookup/forwarding/queueing" },
+    { term: "Forwarding Table", def: "อยู่ในหน่วยความจำ input port · ใช้ค่าใน header · match plus action" },
+    { term: "Destination-based", def: "forward โดยดู destination IP address เท่านั้น" },
+    { term: "Longest Prefix Matching", def: "เลือก prefix ที่ยาวที่สุดที่ match destination" },
+    { term: "TCAM", def: "ดึง address ได้ใน one clock cycle โดยไม่ขึ้นกับขนาด table" },
+    { term: "Switching via Memory", def: "2 bus crossings ต่อ datagram · จำกัดด้วย memory bandwidth" },
+    { term: "Switching via Bus", def: "shared bus · bus contention · 32 Gbps Cisco 5600" },
+    { term: "Interconnection Network", def: "crossbar / multistage / Clos · แบ่งเป็น fixed-length cells" },
+    { term: "HOL Blocking", def: "packet หัวคิวบล็อก packet อื่นในคิว" },
+    { term: "Output Queuing", def: "buffer เมื่อ datagram มาจาก fabric เร็วกว่าความเร็วส่งของ link" },
+    { term: "Buffer Rule", def: "RFC 3439: RTT × C · N flows: RTT × C / √N" },
+    { term: "Scheduling", def: "FCFS/FIFO · priority · round robin · weighted fair queueing" },
+    { term: "IP Address", def: "32-bit identifier ต่อ host/router interface" },
+    { term: "Subnet", def: "อุปกรณ์ที่ reach ถึงกันได้โดยไม่ผ่าน router · subnet part = high-order bits" },
+    { term: "CIDR", def: "a.b.c.d/x · x = จำนวนบิตของ subnet portion" },
+    { term: "DHCP", def: "discover → offer → request → ACK · ports 67/68" },
+    { term: "Route Aggregation", def: "โฆษณา 200.23.16.0/20 แทนหลาย /23" }
+  ],
+
+  flashcards: [
+    { q: "Network Layer ส่งอะไรจากต้นทางถึงปลายทาง?", a: "transport segment จาก sending ไป receiving host — sender ห่อ segment เป็น datagram" },
+    { q: "Forwarding กับ Routing ต่างกันอย่างไร?", a: "Forwarding = ย้าย packet จาก input link ไป output link (local) · Routing = กำหนด route จาก source → destination (network-wide)" },
+    { q: "Data Plane คืออะไร?", a: "ฟังก์ชัน local ต่อ router — ตัดสินใจว่า datagram ที่เข้ามาที่ input port จะถูกส่งไป output port ใด" },
+    { q: "Control Plane คืออะไร?", a: "logic ทั้งเครือข่าย — กำหนดว่า datagram จะถูก route ระหว่าง router ตามเส้นทาง end-to-end อย่างไร" },
+    { q: "Control Plane มี 2 แนวทางอะไรบ้าง?", a: "traditional routing algorithms ใน router · remote controller ของ SDN คำนวณ/ติดตั้ง forwarding table" },
+    { q: "Internet service model เป็นแบบใด?", a: "best effort — ไม่รับประกันการส่งถึง, timing/order และ bandwidth" },
+    { q: "Forwarding table อยู่ที่ไหนใน router?", a: "ในหน่วยความจำ input port — ใช้ค่าใน header เพื่อ lookup output port (match plus action)" },
+    { q: "Longest prefix matching คืออะไร?", a: "ใช้ address prefix ที่ยาวที่สุดซึ่ง match destination address" },
+    { q: "LPM ตัวอย่าง 11001000 00010111 00011000 10101010 ออก interface ใด?", a: "interface 1 — match prefix 11001000 00010111 00011000 (24 บิต)" },
+    { q: "Switching fabrics มี 3 แบบอะไรบ้าง?", a: "via memory · via bus · via interconnection network (crossbar/multistage/Clos)" },
+    { q: "Subnet คืออะไร?", a: "device interfaces ที่สามารถ reach ถึงกันได้โดยไม่ผ่าน intervening router — subnet part = common high-order bits" },
+    { q: "DHCP 4 ขั้นคืออะไร?", a: "discover → offer → request → ACK (ports 67/68)" }
+  ],
+
+  glossary: [
+    { term: "Network Layer", def: "ชั้นที่ส่ง transport segment จาก sending host ไปยัง receiving host — PDU คือ datagram" },
+    { term: "Datagram", def: "PDU ของ Network Layer — segment ที่ถูก encapsulate พร้อม IP header" },
+    { term: "Forwarding", def: "การย้าย packet จาก input link ของ router ไปยัง output link ที่เหมาะสม" },
+    { term: "Routing", def: "การกำหนดเส้นทางที่ packet จะเดินทางจาก source ไป destination" },
+    { term: "Routing Algorithm", def: "อัลกอริทึมที่ใช้คำนวณเส้นทาง — อยู่ใน control plane" },
+    { term: "Data Plane", def: "ฟังก์ชัน local ต่อ router — ตัดสินใจ forwarding ของ datagram ที่เข้ามาที่ input port" },
+    { term: "Control Plane", def: "logic ทั้งเครือข่าย — กำหนดว่า datagram จะถูก route ระหว่าง router ตามเส้นทาง end-to-end" },
+    { term: "Per-router Control Plane", def: "routing algorithm อยู่ใน router แต่ละตัวและแลกเปลี่ยนข้อมูลกัน" },
+    { term: "SDN", def: "Software-Defined Networking — remote controller คำนวณ/ติดตั้ง forwarding table" },
+    { term: "Best-effort", def: "service model ของ Internet — ไม่รับประกันการส่งถึง, timing/order และ bandwidth" },
+    { term: "Router", def: "อุปกรณ์ที่มี input ports, switching fabric, output ports และ routing processor" },
+    { term: "Input Port", def: "line termination → link layer protocol → lookup/forwarding/queueing" },
+    { term: "Line Termination", def: "ส่วน physical layer — รับข้อมูลระดับบิต" },
+    { term: "Decentralized Switching", def: "ใช้ค่าใน header + forwarding table ในหน่วยความจำ input port เพื่อเลือก output port" },
+    { term: "Forwarding Table", def: "ตารางใน router ที่ใช้ lookup output port — เรียกอีกชื่อว่า flow table ใน generalized forwarding" },
+    { term: "Match plus Action", def: "แนวคิดการ match ค่าใน header แล้วทำ action เช่น forward/drop/modify" },
+    { term: "Destination-based Forwarding", def: "forward โดยพิจารณา destination IP address เท่านั้น" },
+    { term: "Longest Prefix Matching", def: "เลือก address prefix ที่ยาวที่สุดซึ่ง match destination address" },
+    { term: "TCAM", def: "Ternary Content Addressable Memory — ดึง address ได้ใน one clock cycle โดยไม่ขึ้นกับขนาด table" },
+    { term: "Switching Fabric", def: "ส่วนที่ย้าย packet จาก input link ไปยัง output link" },
+    { term: "Switching via Memory", def: "packet ถูก copy เข้า system memory — จำกัดด้วย memory bandwidth (2 bus crossings)" },
+    { term: "Switching via Bus", def: "ใช้ shared bus — จำกัดด้วย bus bandwidth และเกิด bus contention" },
+    { term: "Interconnection Network", def: "crossbar/multistage/Clos — ใช้ parallelism และแบ่ง datagram เป็น fixed-length cells" },
+    { term: "HOL Blocking", def: "datagram ที่หัวคิวบล็อก datagram อื่นในคิวไม่ให้เคลื่อนที่" },
+    { term: "Output Port Queuing", def: "buffering เมื่อ datagram มาจาก fabric เร็วกว่า link transmission rate" },
+    { term: "Buffer Management", def: "drop policy เช่น tail drop, priority; marking เช่น ECN, RED" },
+    { term: "Packet Scheduling", def: "เลือก packet ถัดไปที่จะส่ง — FCFS/FIFO, priority, round robin, WFQ" },
+    { term: "IP Address", def: "32-bit identifier ที่ผูกกับแต่ละ host หรือ router interface" },
+    { term: "Interface", def: "จุดเชื่อมต่อระหว่าง host/router กับ physical link" },
+    { term: "Subnet", def: "device interfaces ที่ reach ถึงกันได้โดยไม่ผ่าน intervening router" },
+    { term: "Subnet Mask", def: "เช่น /24 — high-order 24 bits เป็น subnet part" },
+    { term: "CIDR", def: "Classless InterDomain Routing — a.b.c.d/x โดย x คือจำนวนบิตของ subnet portion" },
+    { term: "DHCP", def: "Dynamic Host Configuration Protocol — host ได้ IP อัตโนมัติเมื่อเข้าสู่ network" },
+    { term: "DHCP Lease", def: "ระยะเวลาที่ host ใช้ address ได้ — สามารถ renew ได้" },
+    { term: "Route Aggregation", def: "การโฆษณาเส้นทางแบบสรุป เช่น 200.23.16.0/20 แทนหลาย /23" },
+    { term: "Hierarchical Addressing", def: "การจัด address แบบลำดับชั้นเพื่อให้โฆษณา routing information ได้อย่างมีประสิทธิภาพ" }
+  ]
+};
+
+/* ==========================================================================
    POOL 2 — ข้อสอบเพิ่ม 80 ข้อ (ระดับกลาง–ยาก) สำหรับข้อสอบรวม test.html
    ========================================================================== */
 window.DATA.extraExam = [
@@ -1629,3 +2261,3270 @@ window.DATA.extraExam2 = [
   { q: "4-tuple (10.0.0.1:5000 → 8.8.8.8:80) — เลข 5000 หมายถึงอะไร?", options: ["Source Port ของฝั่ง Client", "Destination Port", "IP ต้นทาง", "ค่า Checksum"], correct: 0, explain: "5000 เป็น Source Port (Ephemeral) ที่ Client สุ่มใช้ ส่วน 80 คือ Destination Port ของ HTTP Server", ch: 4 },
   { q: "TCP รับประกันอะไรให้ Application?", options: ["ความเร็วสูงสุดเสมอ", "ข้อมูลครบถ้วนและเรียงลำดับถูกต้อง", "ไม่มี Error ตลอดกาล", "ใช้กับ UDP ได้"], correct: 1, explain: "TCP รับประกันความครบถ้วน + เรียงลำดับ (ถ้าจำเป็น) ผ่าน Seq/ACK/Retransmit", ch: 4 }
 ];
+
+
+
+/* ==========================================================================
+   FINAL F2 — Network Layer: Control Plane (Chapter 5)
+   Source: Chapter 5 Network Layer_ Control Plane.md (Kurose & Ross 9th ed.)
+   ========================================================================== */
+window.DATA.ch6 = {
+  "title": "Network Layer: Control Plane",
+  "thai": "Network Layer: Control Plane (ชั้นเครือข่าย — ระนาบควบคุม)",
+  "code": "F2",
+  "bookChapter": 5,
+  "source": "Chapter 5 Network Layer_ Control Plane.md",
+  "slides": [
+    {
+      "title": "Cover — F2: Network Layer: Control Plane",
+      "short": "เปิดบทเรียน"
+    },
+    {
+      "title": "บทนี้จะเรียนอะไร",
+      "short": "Roadmap"
+    },
+    {
+      "title": "Control Plane คืออะไร",
+      "short": "Control Plane"
+    },
+    {
+      "title": "Routing vs Forwarding",
+      "short": "Routing vs Forwarding"
+    },
+    {
+      "title": "Per-router Control",
+      "short": "Per-router"
+    },
+    {
+      "title": "SDN Control Plane",
+      "short": "SDN"
+    },
+    {
+      "title": "SDN เมื่อ Link ล่ม",
+      "short": "SDN Link Failure"
+    },
+    {
+      "title": "Graph Abstraction",
+      "short": "Graph"
+    },
+    {
+      "title": "จำแนก Routing Algorithm",
+      "short": "Algorithm Types"
+    },
+    {
+      "title": "Link-State (LS)",
+      "short": "Link-State"
+    },
+    {
+      "title": "Distance-Vector (DV)",
+      "short": "Distance-Vector"
+    },
+    {
+      "title": "LS vs DV",
+      "short": "LS vs DV"
+    },
+    {
+      "title": "Dijkstra Algorithm",
+      "short": "Dijkstra"
+    },
+    {
+      "title": "Dijkstra ตัวอย่าง",
+      "short": "Dijkstra Example"
+    },
+    {
+      "title": "Dijkstra ผลลัพธ์และข้อจำกัด",
+      "short": "Dijkstra Result"
+    },
+    {
+      "title": "Bellman-Ford Equation",
+      "short": "Bellman-Ford"
+    },
+    {
+      "title": "DV Update & Convergence",
+      "short": "DV Convergence"
+    },
+    {
+      "title": "Count-to-Infinity",
+      "short": "Count-to-Infinity"
+    },
+    {
+      "title": "Autonomous System (AS)",
+      "short": "AS"
+    },
+    {
+      "title": "Intra-AS Protocols",
+      "short": "Intra-AS"
+    },
+    {
+      "title": "OSPF",
+      "short": "OSPF"
+    },
+    {
+      "title": "BGP Basics",
+      "short": "BGP"
+    },
+    {
+      "title": "BGP Messages & Attributes",
+      "short": "BGP Messages"
+    },
+    {
+      "title": "BGP Policy & Route Selection",
+      "short": "BGP Policy"
+    },
+    {
+      "title": "Intra-AS vs Inter-AS",
+      "short": "Intra vs Inter"
+    },
+    {
+      "title": "สรุปบทเรียน",
+      "short": "สรุป"
+    },
+    {
+      "title": "สูตรจำก่อนสอบ — F2",
+      "short": "Cheat Sheet"
+    },
+    {
+      "title": "แบบทดสอบ F2 12 ข้อ",
+      "short": "Quiz"
+    },
+    {
+      "title": "การ์ดทบทวน — F2",
+      "short": "Flashcards"
+    },
+    {
+      "title": "คำศัพท์ — F2",
+      "short": "Glossary"
+    },
+    {
+      "title": "ข้อสอบหลังเรียน 20 ข้อ",
+      "short": "Exam"
+    }
+  ],
+  "sections": [
+    {
+      "label": "1. Control Plane & Routing",
+      "topics": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "label": "2. Routing Algorithms",
+      "topics": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ]
+    },
+    {
+      "label": "3. Routing Protocols & AS",
+      "topics": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ]
+    },
+    {
+      "label": "ทบทวนและฝึกฝน",
+      "topics": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ]
+    }
+  ],
+  "cpPlanes": {
+    "data": {
+      "title": "Data plane",
+      "desc": "Forwarding: ย้าย packet จาก input ของ router ไปยัง output ที่เหมาะสม — ทำเป็นรายแพ็กเก็ตและต้องเร็วมาก",
+      "scope": "per-packet",
+      "time": "เร็วมาก"
+    },
+    "control": {
+      "title": "Control plane",
+      "desc": "Routing: กำหนดเส้นทางที่ packet จะเดินจากต้นทางถึงปลายทาง — คำนวณนานกว่า แล้วนำผลไปเติมใน forwarding table",
+      "scope": "network-wide",
+      "time": "คำนวณนานกว่า"
+    }
+  },
+  "cpStruct": {
+    "per": {
+      "title": "Per-router control (แบบดั้งเดิม)",
+      "desc": "router ทุกตัวมี routing algorithm ของตัวเอง แล้วคุยกันเองเพื่อคำนวณ forwarding table"
+    },
+    "sdn": {
+      "title": "Logically centralized control (SDN)",
+      "desc": "remote controller ตัวเดียวในเชิงตรรกะคำนวณ forwarding table แล้วติดตั้งลง router ผ่าน control agent (CA) ในแต่ละ router"
+    }
+  },
+  "sdnSteps": [
+    {
+      "key": "1",
+      "name": "port-status",
+      "from": "switch → controller",
+      "detail": "switch ส่ง OpenFlow port-status ไปบอก controller ว่า link เปลี่ยนแปลง"
+    },
+    {
+      "key": "2",
+      "name": "อัปเดต link",
+      "from": "controller",
+      "detail": "controller อัปเดตสถานะ link ในมุมมอง topology ของตน"
+    },
+    {
+      "key": "3",
+      "name": "เรียก Dijkstra",
+      "from": "controller",
+      "detail": "แอป Dijkstra ที่ลงทะเบียนไว้ถูกเรียกให้ทำงาน"
+    },
+    {
+      "key": "4",
+      "name": "คำนวณเส้นทาง",
+      "from": "controller",
+      "detail": "คำนวณเส้นทางใหม่จาก topology ที่อัปเดตแล้ว"
+    },
+    {
+      "key": "5",
+      "name": "flow table",
+      "from": "controller",
+      "detail": "ส่งผลให้ส่วนคำนวณ flow table เตรียมตารางใหม่"
+    },
+    {
+      "key": "6",
+      "name": "ติดตั้ง table",
+      "from": "controller → switch",
+      "detail": "controller ติดตั้ง table ใหม่ผ่าน OpenFlow"
+    }
+  ],
+  "dijkstra": [
+    {
+      "step": 0,
+      "n": "u",
+      "vals": [
+        "2,u",
+        "5,u",
+        "1,u",
+        "∞",
+        "∞"
+      ],
+      "detail": "Initialization: N' = {u}; D(v)=2 ผ่าน u, D(w)=5 ผ่าน u, D(x)=1 ผ่าน u, D(y)=∞, D(z)=∞"
+    },
+    {
+      "step": 1,
+      "n": "ux",
+      "vals": [
+        "2,u",
+        "4,x",
+        "–",
+        "2,x",
+        "∞"
+      ],
+      "detail": "เลือก x เพราะ D(x)=1 ต่ำสุด: D(w)=min(5, 1+3)=4 และ D(y)=min(∞, 1+1)=2"
+    },
+    {
+      "step": 2,
+      "n": "uxy",
+      "vals": [
+        "2,u",
+        "3,y",
+        "–",
+        "–",
+        "4,y"
+      ],
+      "detail": "เลือก y: D(w)=min(4, 2+1)=3 และ D(z)=min(∞, 2+2)=4"
+    },
+    {
+      "step": 3,
+      "n": "uxyv",
+      "vals": [
+        "–",
+        "3,y",
+        "–",
+        "–",
+        "4,y"
+      ],
+      "detail": "เลือก v: ไม่มีเพื่อนบ้านที่ให้ค่า D ต่ำลงกว่าเดิม"
+    },
+    {
+      "step": 4,
+      "n": "uxyvw",
+      "vals": [
+        "–",
+        "–",
+        "–",
+        "–",
+        "4,y"
+      ],
+      "detail": "เลือก w: ไม่มีเพื่อนบ้านที่ให้ค่า D ต่ำลงกว่าเดิม"
+    },
+    {
+      "step": 5,
+      "n": "uxyvwz",
+      "vals": [
+        "–",
+        "–",
+        "–",
+        "–",
+        "–"
+      ],
+      "detail": "เลือก z: ครบทุก node ใน N' แล้ว ได้ least-cost-path tree จาก u"
+    }
+  ],
+  "dvNews": {
+    "good": {
+      "title": "Good news travels fast",
+      "desc": "ถ้า cost ของ link ลดลง เช่น x–y ลดจาก 4 เป็น 1 → y ตรวจพบและอัปเดต DV → แจ้ง z → z คำนวณใหม่และแจ้งต่อ ใช้เวลาไม่กี่รอบก็ลู่เข้า"
+    },
+    "bad": {
+      "title": "Bad news travels slow (count-to-infinity)",
+      "desc": "ถ้า cost ของ x–y เพิ่มเป็น 60 แต่ z ยังบอกว่าไป x ได้ที่ cost 5 (ซึ่งจริง ๆ ต้องผ่าน y): y คิดว่าผ่าน z = 6 แล้วแจ้ง z → z คิดว่าผ่าน y = 7 แล้วแจ้ง y → y เป็น 8 → z เป็น 9 … ค่าไต่ขึ้นจนถึงค่าจริง"
+    }
+  },
+  "bgpSteps": [
+    {
+      "key": "1",
+      "name": "Local preference",
+      "detail": "เกณฑ์แรกคือ local preference ตาม policy ของ AS"
+    },
+    {
+      "key": "2",
+      "name": "AS-PATH สั้นสุด",
+      "detail": "ถ้า local preference เท่ากัน เลือกเส้นทางที่มี AS-PATH สั้นที่สุด"
+    },
+    {
+      "key": "3",
+      "name": "NEXT-HOP ใกล้สุด",
+      "detail": "ถ้ายังเท่ากัน เลือก NEXT-HOP ที่ใกล้ที่สุด — แนวคิด hot potato"
+    },
+    {
+      "key": "4",
+      "name": "เกณฑ์อื่น ๆ",
+      "detail": "หากยังตัดสินไม่ได้ ใช้เกณฑ์เพิ่มเติมอื่น ๆ ตามนโยบายของผู้ให้บริการ"
+    }
+  ],
+  "quiz": [
+    {
+      "q": "Control plane รับผิดชอบงานใด?",
+      "options": [
+        "Routing เพื่อกำหนดเส้นทางจากต้นทางถึงปลายทาง",
+        "ตรวจ checksum ของ IP header",
+        "เก็บ packet ไว้ใน output buffer",
+        "Forwarding packet ภายใน router"
+      ],
+      "correct": 0,
+      "explain": "Control plane = routing: กำหนดเส้นทางที่ packet จะเดินจากต้นทางถึงปลายทาง แล้วนำผลไปเติมใน forwarding table"
+    },
+    {
+      "q": "ข้อใดอธิบาย Forwarding ได้ถูกต้อง?",
+      "options": [
+        "กำหนดเส้นทางทั้งเครือข่าย",
+        "ย้าย packet จาก input ของ router ไปยัง output ที่เหมาะสม",
+        "คำนวณ shortest path ด้วย Dijkstra",
+        "แลกเปลี่ยน distance vector กับเพื่อนบ้าน"
+      ],
+      "correct": 1,
+      "explain": "Forwarding เป็นงานรายแพ็กเก็ตของ data plane: ย้าย packet จาก input ไป output ที่เหมาะสม"
+    },
+    {
+      "q": "Per-router control plane ทำงานอย่างไร?",
+      "options": [
+        "ไม่ต้องใช้ forwarding table เลย",
+        "มี controller กลางคำนวณ forwarding table ให้ทุก router",
+        "router ทุกตัวมี routing algorithm ของตัวเองและคุยกันเพื่อคำนวณ forwarding table",
+        "ใช้เฉพาะ static route ที่ตั้งค่าด้วยมือ"
+      ],
+      "correct": 2,
+      "explain": "Per-router control: router แต่ละตัวมี routing algorithm และแลกเปลี่ยนข้อมูลกันเพื่อสร้าง local forwarding table ของตัวเอง"
+    },
+    {
+      "q": "SDN controller อยู่ที่ใด?",
+      "options": [
+        "อยู่ใน host ปลายทางทุกเครื่อง",
+        "อยู่ใน DNS server",
+        "อยู่ใน switch ทุกตัว",
+        "เป็น remote controller แบบ logically centralized"
+      ],
+      "correct": 3,
+      "explain": "SDN ใช้ remote controller ตัวเดียวในเชิงตรรกะ (logically centralized) คำนวณ forwarding table แล้วติดตั้งลง router"
+    },
+    {
+      "q": "Southbound API ใช้เชื่อมส่วนใดกับส่วนใด?",
+      "options": [
+        "SDN controller กับ switch",
+        "host กับ router",
+        "AS หนึ่งกับอีก AS หนึ่ง",
+        "network-control app กับ SDN controller"
+      ],
+      "correct": 0,
+      "explain": "Northbound API = app ↔ controller; Southbound API = controller ↔ switch (เช่น OpenFlow)"
+    },
+    {
+      "q": "Router ที่รัน Link-State รู้ข้อมูลอะไร?",
+      "options": [
+        "รู้เฉพาะ cost ไปยังเพื่อนบ้านโดยตรง",
+        "รู้ topology และ link cost ทั้งหมดของเครือข่าย",
+        "รู้เฉพาะ forwarding table ของตัวเอง",
+        "รู้เฉพาะเส้นทางที่เคยเรียนมา"
+      ],
+      "correct": 1,
+      "explain": "Link-State ใช้ link-state broadcast ทำให้ทุก node มี topology และ link cost ครบเหมือนกัน แล้วจึงรัน Dijkstra"
+    },
+    {
+      "q": "Distance-Vector ใช้สมการใดในการอัปเดต?",
+      "options": [
+        "Hot potato",
+        "Dijkstra",
+        "Bellman-Ford",
+        "AS-PATH"
+      ],
+      "correct": 2,
+      "explain": "DV ใช้สมการ Bellman-Ford: D_x(y) = min_v { c(x,v) + D_v(y) } โดยแลกเปลี่ยน DV กับเพื่อนบ้าน"
+    },
+    {
+      "q": "Dijkstra เลือก node ใดในแต่ละรอบ?",
+      "options": [
+        "node ที่มีหมายเลขมากที่สุด",
+        "node ที่มี link มากที่สุด",
+        "node ที่อยู่ใกล้ source ที่สุดทางกายภาพ",
+        "node ที่มี D ต่ำสุดและยังไม่อยู่ใน N'"
+      ],
+      "correct": 3,
+      "explain": "Dijkstra เลือก w ที่ไม่อยู่ใน N' และมี D(w) ต่ำสุด แล้วเพิ่ม w เข้า N' จากนั้นอัปเดต D ของเพื่อนบ้าน"
+    },
+    {
+      "q": "ความซับซ้อนของ Dijkstra ในสไลด์เป็นเท่าใด?",
+      "options": [
+        "O(n²)",
+        "O(log n)",
+        "O(n³)",
+        "O(n)"
+      ],
+      "correct": 0,
+      "explain": "จำนวน comparisons ประมาณ n(n+1)/2 = O(n²) และสามารถทำให้เป็น O(n log n) ได้ด้วย implementation ที่ดีกว่า"
+    },
+    {
+      "q": "ใน Bellman-Ford next hop คือเพื่อนบ้านประเภทใด?",
+      "options": [
+        "controller ที่อยู่ศูนย์กลาง",
+        "เพื่อนบ้านที่ให้ค่า c(x,v) + D_v(y) ต่ำที่สุด",
+        "เพื่อนบ้านที่มีหมายเลข ID ต่ำที่สุด",
+        "เพื่อนบ้านที่มี link cost สูงที่สุด"
+      ],
+      "correct": 1,
+      "explain": "D_x(y) = min_v { c(x,v) + D_v(y) } — v ที่ให้ค่าต่ำสุดคือ next hop บนเส้นทางไป y"
+    },
+    {
+      "q": "Count-to-infinity เกิดกับ routing algorithm แบบใด?",
+      "options": [
+        "BGP",
+        "Link-State",
+        "Distance-Vector",
+        "OSPF"
+      ],
+      "correct": 2,
+      "explain": "Count-to-infinity เป็นปัญหาของ DV เมื่อข่าวร้าย (cost เพิ่ม) แพร่ช้า ทำให้ค่า cost ไต่ขึ้นทีละน้อยจนถึงค่าจริง"
+    },
+    {
+      "q": "ข้อใดจับคู่ OSPF และ BGP ได้ถูกต้อง?",
+      "options": [
+        "ทั้งคู่เป็น distance-vector",
+        "ทั้งคู่ใช้ UDP ในการแลกเปลี่ยนข้อมูล",
+        "OSPF = inter-AS, BGP = intra-AS",
+        "OSPF = intra-AS link-state, BGP = inter-AS path vector"
+      ],
+      "correct": 3,
+      "explain": "OSPF เป็น intra-AS link-state ที่ใช้ Dijkstra; BGP เป็น inter-AS path vector ที่ใช้ TCP และให้ความสำคัญกับ policy"
+    }
+  ],
+  "exam": [
+    {
+      "q": "Data plane มีหน้าที่หลักอะไร?",
+      "options": [
+        "Forwarding packet จาก input ไปยัง output ที่เหมาะสม",
+        "คำนวณ forwarding table ด้วย Dijkstra",
+        "แลกเปลี่ยน reachability ระหว่าง AS",
+        "Routing เพื่อกำหนดเส้นทางทั้งเครือข่าย"
+      ],
+      "correct": 0,
+      "explain": "Data plane = forwarding: ย้าย packet จาก input ของ router ไปยัง output ที่เหมาะสม ทำเป็นรายแพ็กเก็ต"
+    },
+    {
+      "q": "Control plane มีหน้าที่หลักอะไร?",
+      "options": [
+        "ตรวจ checksum ของ packet",
+        "Routing เพื่อกำหนดเส้นทางจากต้นทางถึงปลายทาง",
+        "Forwarding packet ภายใน router",
+        "เก็บ packet ใน buffer"
+      ],
+      "correct": 1,
+      "explain": "Control plane = routing: กำหนดเส้นทางที่ packet จะเดิน แล้วนำผลไปเติมใน forwarding table"
+    },
+    {
+      "q": "ข้อใดเป็นความต่างที่ถูกต้องระหว่าง Forwarding กับ Routing?",
+      "options": [
+        "Routing ทำงานเร็วกว่า Forwarding เสมอ",
+        "Forwarding = network-wide, Routing = local per-router",
+        "Forwarding = ย้าย packet input→output, Routing = กำหนดเส้นทาง source→destination",
+        "ทั้งคู่ทำงานใน control plane เหมือนกัน"
+      ],
+      "correct": 2,
+      "explain": "Forwarding เป็น local/per-packet ที่ router; Routing เป็น network-wide ที่กำหนดเส้นทางจากต้นทางถึงปลายทาง"
+    },
+    {
+      "q": "Per-router control plane มีลักษณะอย่างไร?",
+      "options": [
+        "มี controller กลางเพียงตัวเดียวติดตั้ง table ให้ทุก router",
+        "ไม่มี forwarding table ใน router",
+        "ใช้ได้เฉพาะกับ BGP เท่านั้น",
+        "router ทุกตัวมี routing algorithm ของตัวเองและคุยกันเอง"
+      ],
+      "correct": 3,
+      "explain": "Per-router control เป็นแบบดั้งเดิม: router แต่ละตัวมี routing algorithm และแลกเปลี่ยนข้อมูลกับ router อื่น"
+    },
+    {
+      "q": "ข้อใดกล่าวถึง SDN ถูกต้อง?",
+      "options": [
+        "remote controller แบบ logically centralized คำนวณ forwarding table แล้วติดตั้งลง router",
+        "router ทุกตัวต้องรัน routing algorithm แยกกันโดยไม่มี controller",
+        "SDN ใช้ได้เฉพาะใน AS เดียว",
+        "SDN ไม่ต้องใช้ API ใด ๆ"
+      ],
+      "correct": 0,
+      "explain": "SDN ใช้ remote controller ตัวเดียวในเชิงตรรกะ และติดตั้ง forwarding table ลง router ผ่าน control agent"
+    },
+    {
+      "q": "Northbound API ใช้เชื่อมอะไร?",
+      "options": [
+        "AS กับ AS",
+        "network-control app กับ SDN controller",
+        "SDN controller กับ switch",
+        "Router กับ Router"
+      ],
+      "correct": 1,
+      "explain": "Northbound API อยู่ระหว่าง network-control apps กับ SDN controller; Southbound API อยู่ระหว่าง controller กับ switch"
+    },
+    {
+      "q": "เมื่อ link ล่ม ขั้นแรกที่ switch ส่งไปยัง controller คืออะไร?",
+      "options": [
+        "OSPF LSA",
+        "DHCP discover",
+        "OpenFlow port-status",
+        "BGP UPDATE"
+      ],
+      "correct": 2,
+      "explain": "switch ส่ง OpenFlow port-status ไปบอก controller จากนั้น controller อัปเดตสถานะ link และเรียกแอป Dijkstra"
+    },
+    {
+      "q": "เพราะเหตุใดจึงต้องแบ่งเครือข่ายออกเป็น Autonomous System (AS)?",
+      "options": [
+        "เพื่อให้ทุก AS ใช้ routing protocol เดียวกันเท่านั้น",
+        "เพื่อเพิ่มจำนวน router ในเครือข่าย",
+        "เพื่อให้ forwarding table ใหญ่ขึ้น",
+        "เพื่อลด scale ของตารางและการแลกเปลี่ยน routing information และรองรับ administrative autonomy"
+      ],
+      "correct": 3,
+      "explain": "AS ช่วยแก้ปัญหา scale (ปลายทางเป็นพันล้าน) และ administrative autonomy (แต่ละเครือข่ายควบคุม routing ของตัวเอง)"
+    },
+    {
+      "q": "Global routing algorithm หมายถึงอะไร?",
+      "options": [
+        "router รู้ topology และ link cost ทั้งหมด",
+        "router รู้เฉพาะ cost ไปเพื่อนบ้านโดยตรง",
+        "router ไม่ต้องใช้ forwarding table",
+        "router ใช้เฉพาะ static route"
+      ],
+      "correct": 0,
+      "explain": "Global algorithm ให้ทุก router รู้ topology และ link cost ทั้งหมด — ตัวอย่างคือ Link-State"
+    },
+    {
+      "q": "Link-State routing ใช้ algorithm ใดคำนวณเส้นทาง?",
+      "options": [
+        "AS-PATH",
+        "Dijkstra",
+        "Bellman-Ford",
+        "Hot potato"
+      ],
+      "correct": 1,
+      "explain": "Link-State ให้ทุก node รู้ topology ทั้งหมด แล้วแต่ละ router รัน Dijkstra เพื่อหา least-cost path"
+    },
+    {
+      "q": "Distance-Vector routing ใช้สมการใด?",
+      "options": [
+        "BGP",
+        "Dijkstra",
+        "Bellman-Ford",
+        "OSPF"
+      ],
+      "correct": 2,
+      "explain": "DV ใช้สมการ Bellman-Ford และแลกเปลี่ยน distance vector กับเพื่อนบ้านเป็นระยะ"
+    },
+    {
+      "q": "Link-State มี message complexity ประมาณเท่าใด?",
+      "options": [
+        "O(n)",
+        "O(log n)",
+        "O(1)",
+        "O(n²)"
+      ],
+      "correct": 3,
+      "explain": "แต่ละ router broadcast link state ไปทุกตัว รวมแล้วประมาณ O(n²) messages"
+    },
+    {
+      "q": "จากตัวอย่าง Dijkstra หลังจากเลือก x แล้ว ค่า D(w) เป็นเท่าใด?",
+      "options": [
+        "4",
+        "5",
+        "∞",
+        "3"
+      ],
+      "correct": 0,
+      "explain": "D(w) = min(5, D(x)+c(x,w)) = min(5, 1+3) = 4 ผ่าน x"
+    },
+    {
+      "q": "จากผล Dijkstra ที่ router u ถ้าจะไป w ต้องใช้ link ใด?",
+      "options": [
+        "link (u,v)",
+        "link (u,x)",
+        "link (u,w)",
+        "link (u,z)"
+      ],
+      "correct": 1,
+      "explain": "Forwarding table ที่ u: ไป v ใช้ (u,v); ปลายทาง w, x, y, z ใช้ link (u,x)"
+    },
+    {
+      "q": "Dijkstra อาจเกิด oscillation เมื่อใด?",
+      "options": [
+        "เมื่อใช้ TCP แทน UDP",
+        "เมื่อ AS มีขนาดใหญ่เกินไป",
+        "เมื่อ link cost ขึ้นกับปริมาณ traffic ทำให้เส้นทางสลับไปมา",
+        "เมื่อ router มี forwarding table ไม่พอ"
+      ],
+      "correct": 2,
+      "explain": "ถ้า link cost ขึ้นกับ traffic การย้ายเส้นทางจะเปลี่ยน cost และอาจทำให้ต้องย้ายกลับไปมาหรือ oscillation"
+    },
+    {
+      "q": "จากตัวอย่าง Bellman-Ford ในสไลด์ ถ้าเพื่อนบ้านรายงาน D_v(z)=5, D_w(z)=3, D_x(z)=3 และใช้ค่า 2+5, 1+3, 5+3 ข้อใดคือ D_u(z)?",
+      "options": [
+        "D_u(z) = max{2+5, 1+3, 5+3} = 8",
+        "D_u(z) = 2+5+1+3+5+3 = 19",
+        "D_u(z) = 0",
+        "D_u(z) = min{2+5, 1+3, 5+3} = 4"
+      ],
+      "correct": 3,
+      "explain": "ตัวอย่างในสไลด์: D_u(z) = min{2+5, 1+3, 5+3} = 4 และ next hop คือ x"
+    },
+    {
+      "q": "Count-to-infinity เป็นปัญหาของ DV เพราะอะไร?",
+      "options": [
+        "ข่าวร้ายแพร่ช้าและ router อาจเข้าใจผิดว่าไปปลายทางได้ผ่านเพื่อนบ้านที่จริง ๆ แล้วต้องผ่านตัวเอง",
+        "ทุก router รู้ topology ทั้งหมดพร้อมกัน",
+        "OSPF ใช้ Dijkstra",
+        "BGP ใช้ TCP"
+      ],
+      "correct": 0,
+      "explain": "DV อาศัยค่าประมาณจากเพื่อนบ้าน เมื่อ cost เพิ่มขึ้น ข่าวร้ายแพร่ช้าและเกิด routing loop/count-to-infinity"
+    },
+    {
+      "q": "ข้อใดจับคู่ OSPF และ BGP ได้ถูกต้อง?",
+      "options": [
+        "ทั้งคู่เป็น protocol ของ data plane",
+        "OSPF = intra-AS link-state, BGP = inter-AS path vector",
+        "OSPF = inter-AS path vector, BGP = intra-AS link-state",
+        "ทั้งคู่เป็น distance-vector"
+      ],
+      "correct": 1,
+      "explain": "OSPF เป็น intra-AS link-state ที่ใช้ Dijkstra; BGP เป็น inter-AS path vector ที่ใช้ TCP และ policy"
+    },
+    {
+      "q": "BGP route selection พิจารณาข้อใดก่อน?",
+      "options": [
+        "NEXT-HOP ที่ไกลที่สุด",
+        "จำนวน interface ของ router",
+        "Local preference ตาม policy",
+        "AS-PATH ที่ยาวที่สุด"
+      ],
+      "correct": 2,
+      "explain": "ลำดับของ BGP: local preference → AS-PATH สั้นที่สุด → NEXT-HOP ใกล้ที่สุด (hot potato) → เกณฑ์อื่น ๆ"
+    },
+    {
+      "q": "ข้อความ BGP ชนิดใดใช้ประกาศ path ใหม่ หรือถอน path เก่า?",
+      "options": [
+        "KEEPALIVE",
+        "NOTIFICATION",
+        "OPEN",
+        "UPDATE"
+      ],
+      "correct": 3,
+      "explain": "UPDATE ใช้ประกาศ path ใหม่หรือถอน path เก่า; OPEN เปิด connection, KEEPALIVE รักษา connection, NOTIFICATION แจ้ง error"
+    }
+  ],
+  "cheat": [
+    {
+      "term": "Control plane",
+      "def": "routing — กำหนดเส้นทางจาก source ถึง destination แล้วเติม forwarding table"
+    },
+    {
+      "term": "Data plane",
+      "def": "forwarding — ย้าย packet จาก input ไป output ที่เหมาะสม เป็นรายแพ็กเก็ต"
+    },
+    {
+      "term": "Forwarding",
+      "def": "local, per-packet, เร็วมาก"
+    },
+    {
+      "term": "Routing",
+      "def": "network-wide, คำนวณนานกว่า, ใช้ routing algorithm"
+    },
+    {
+      "term": "Path",
+      "def": "ลำดับของ router ที่ packet ผ่าน"
+    },
+    {
+      "term": "Graph",
+      "def": "G = (N, E); N = router, E = link"
+    },
+    {
+      "term": "c(a,b) = ∞",
+      "def": "ไม่มี link ตรงระหว่าง a กับ b — อาจยังไปได้ผ่าน router อื่น"
+    },
+    {
+      "term": "Global algorithm",
+      "def": "รู้ topology และ link cost ทั้งหมด → Link-State"
+    },
+    {
+      "term": "Decentralized",
+      "def": "รู้เฉพาะ cost ไปเพื่อนบ้าน แล้วแลกเปลี่ยนข้อมูล → Distance-Vector"
+    },
+    {
+      "term": "Static vs Dynamic",
+      "def": "static เปลี่ยนช้า; dynamic เปลี่ยนเร็วตามรอบหรือเมื่อ cost เปลี่ยน"
+    },
+    {
+      "term": "Link-State",
+      "def": "ทุก node รู้ topology ทั้งหมดผ่าน LS broadcast แล้วรัน Dijkstra"
+    },
+    {
+      "term": "Distance-Vector",
+      "def": "แต่ละ node ส่ง DV ให้เพื่อนบ้านและใช้ Bellman-Ford อัปเดต"
+    },
+    {
+      "term": "LS messages",
+      "def": "O(n²) messages"
+    },
+    {
+      "term": "DV convergence",
+      "def": "เวลาไม่แน่นอน อาจเกิด routing loop และ count-to-infinity"
+    },
+    {
+      "term": "LS oscillation",
+      "def": "เกิดเมื่อ link cost ขึ้นกับปริมาณ traffic"
+    },
+    {
+      "term": "Dijkstra",
+      "def": "เลือก D ต่ำสุดที่ยังไม่อยู่ใน N' → เพิ่มเข้า N' → อัปเดตเพื่อนบ้าน"
+    },
+    {
+      "term": "Dijkstra complexity",
+      "def": "O(n²); ทำเป็น O(n log n) ได้ด้วย implementation ที่ดีกว่า"
+    },
+    {
+      "term": "Bellman-Ford",
+      "def": "D_x(y) = min_v { c(x,v) + D_v(y) }"
+    },
+    {
+      "term": "BF next hop",
+      "def": "เพื่อนบ้าน v ที่ให้ค่า c(x,v)+D_v(y) ต่ำสุด"
+    },
+    {
+      "term": "AS",
+      "def": "Autonomous System หรือ domain — กลุ่ม router ที่อยู่ในความดูแลเดียวกัน"
+    },
+    {
+      "term": "Intra-AS",
+      "def": "routing ภายใน AS เดียวกัน"
+    },
+    {
+      "term": "Inter-AS",
+      "def": "routing ระหว่าง AS ผ่าน gateway router"
+    },
+    {
+      "term": "OSPF",
+      "def": "intra-AS link-state, ใช้ Dijkstra, ส่ง LSA ตรงบน IP, มี authentication"
+    },
+    {
+      "term": "BGP",
+      "def": "inter-AS path vector, ใช้ TCP, ให้ policy มาก่อน performance"
+    },
+    {
+      "term": "BGP selection",
+      "def": "local pref → AS-PATH สั้นสุด → NEXT-HOP ใกล้สุด → เกณฑ์อื่น"
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Control plane ทำอะไร?",
+      "a": "Routing — กำหนดเส้นทางจากต้นทางถึงปลายทาง แล้วนำผลไปเติมใน forwarding table"
+    },
+    {
+      "q": "Forwarding ต่างจาก Routing อย่างไร?",
+      "a": "Forwarding = ย้าย packet จาก input ไป output ที่เหมาะสม (local/per-packet) · Routing = กำหนดเส้นทางทั้งเครือข่าย (network-wide)"
+    },
+    {
+      "q": "Per-router control กับ SDN ต่างกันอย่างไร?",
+      "a": "Per-router: router ทุกตัวมี routing algorithm ของตัวเอง · SDN: remote controller แบบ logically centralized คำนวณและติดตั้ง forwarding table"
+    },
+    {
+      "q": "Northbound API และ Southbound API คืออะไร?",
+      "a": "Northbound = network-control app ↔ SDN controller · Southbound = SDN controller ↔ switch เช่น OpenFlow"
+    },
+    {
+      "q": "Link-State ทำงานอย่างไร?",
+      "a": "ทุก node รู้ topology และ link cost ทั้งหมดผ่าน LS broadcast แล้วแต่ละ router รัน Dijkstra"
+    },
+    {
+      "q": "Distance-Vector ทำงานอย่างไร?",
+      "a": "แต่ละ node เก็บ DV แล้วส่งให้เพื่อนบ้าน ใช้ Bellman-Ford อัปเดต — iterative, asynchronous, distributed, self-stopping"
+    },
+    {
+      "q": "Dijkstra เลือก node อย่างไร?",
+      "a": "เลือก w ที่ไม่อยู่ใน N' และมี D(w) ต่ำสุด → เพิ่มเข้า N' → อัปเดต D(v) = min(D(v), D(w)+c(w,v))"
+    },
+    {
+      "q": "สมการ Bellman-Ford คืออะไร?",
+      "a": "D_x(y) = min_v { c(x,v) + D_v(y) } — v ที่ให้ค่าต่ำสุดคือ next hop"
+    },
+    {
+      "q": "Count-to-infinity กับ Oscillation ต่างกัน?",
+      "a": "Count-to-infinity เกิดกับ DV เมื่อข่าวร้ายแพร่ช้า · Oscillation เกิดกับ LS เมื่อ link cost ขึ้นกับ traffic"
+    },
+    {
+      "q": "Autonomous System (AS) คืออะไร?",
+      "a": "กลุ่ม router/เครือข่ายที่อยู่ในความดูแลเดียวกัน ใช้แก้ปัญหา scale และ administrative autonomy"
+    },
+    {
+      "q": "OSPF มีคุณสมบัติสำคัญอะไร?",
+      "a": "Intra-AS link-state, flood LSA ตรงบน IP, เลือก metric ได้, ใช้ Dijkstra, มี authentication และรองรับ hierarchical OSPF"
+    },
+    {
+      "q": "BGP ใช้เลือก route ตามลำดับใด?",
+      "a": "Local preference → AS-PATH สั้นที่สุด → NEXT-HOP ใกล้ที่สุด (hot potato) → เกณฑ์อื่น ๆ"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Control Plane",
+      "def": "ระนาบที่ทำ routing — กำหนดเส้นทางจากต้นทางถึงปลายทางแล้วเติมผลลง forwarding table"
+    },
+    {
+      "term": "Data Plane",
+      "def": "ระนาบที่ทำ forwarding — ย้าย packet จาก input ไป output ที่เหมาะสมใน router"
+    },
+    {
+      "term": "Routing",
+      "def": "การกำหนดเส้นทางที่ packet จะเดินจาก source ไป destination ในระดับ network-wide"
+    },
+    {
+      "term": "Forwarding",
+      "def": "การย้าย packet จาก input link ไปยัง output link ที่เหมาะสม เป็นงาน local/per-packet"
+    },
+    {
+      "term": "Path",
+      "def": "ลำดับของ router ที่ packet ผ่านจากต้นทางไปปลายทาง"
+    },
+    {
+      "term": "Graph G=(N,E)",
+      "def": "แบบจำลองเครือข่ายเป็นกราฟ: N = เซต router, E = เซต link"
+    },
+    {
+      "term": "Link cost c(a,b)",
+      "def": "cost ของ link ตรงระหว่าง a กับ b; ถ้าไม่มี link ตรงให้เป็น ∞"
+    },
+    {
+      "term": "Global Routing Algorithm",
+      "def": "algorithm ที่ทุก router รู้ topology และ link cost ทั้งหมด — เช่น Link-State"
+    },
+    {
+      "term": "Decentralized Routing Algorithm",
+      "def": "algorithm ที่ router รู้เฉพาะ cost ไปเพื่อนบ้าน แล้วแลกเปลี่ยนข้อมูลกัน — เช่น Distance-Vector"
+    },
+    {
+      "term": "Link-State (LS)",
+      "def": "ทุก node รู้ topology ทั้งหมดผ่าน link-state broadcast และรัน Dijkstra"
+    },
+    {
+      "term": "Distance-Vector (DV)",
+      "def": "แต่ละ node เก็บค่าประมาณ cost ไปทุกปลายทางและส่ง DV ให้เพื่อนบ้าน ใช้ Bellman-Ford"
+    },
+    {
+      "term": "Dijkstra",
+      "def": "algorithm หา least-cost path จาก source ไปทุก node โดยเลือก D ต่ำสุดที่ยังไม่อยู่ใน N'"
+    },
+    {
+      "term": "N'",
+      "def": "เซตของ node ที่รู้ least-cost path แน่นอนแล้วใน Dijkstra"
+    },
+    {
+      "term": "D(v)",
+      "def": "ค่าประมาณปัจจุบันของ cost ต่ำสุดจาก source ไปยัง v"
+    },
+    {
+      "term": "p(v)",
+      "def": "predecessor ของ v — node ก่อนหน้าบนเส้นทางที่เลือก"
+    },
+    {
+      "term": "Bellman-Ford",
+      "def": "สมการ D_x(y) = min_v { c(x,v) + D_v(y) } ใช้ใน Distance-Vector"
+    },
+    {
+      "term": "Convergence",
+      "def": "ภาวะที่ค่าประมาณของ routing ลู่เข้าสู่ค่าจริงและไม่เปลี่ยนอีก"
+    },
+    {
+      "term": "Count-to-Infinity",
+      "def": "ปัญหา DV เมื่อข่าวร้ายแพร่ช้า ทำให้ค่า cost ไต่ขึ้นทีละน้อยจนถึงค่าจริง"
+    },
+    {
+      "term": "Oscillation",
+      "def": "ปัญหา LS เมื่อ link cost ขึ้นกับ traffic ทำให้เส้นทางสลับไปมาไม่หยุด"
+    },
+    {
+      "term": "Autonomous System (AS)",
+      "def": "กลุ่ม router/เครือข่ายที่อยู่ในความดูแลเดียวกัน เรียกอีกอย่างว่า domain"
+    },
+    {
+      "term": "Intra-AS",
+      "def": "routing ภายใน AS เดียวกัน — router ทุกตัวใน AS ต้องรัน protocol เดียวกัน"
+    },
+    {
+      "term": "Inter-AS",
+      "def": "routing ระหว่าง AS ผ่าน gateway router ที่ขอบ AS"
+    },
+    {
+      "term": "Gateway Router",
+      "def": "router ที่ขอบ AS ทำทั้ง intra-AS และ inter-AS routing"
+    },
+    {
+      "term": "RIP",
+      "def": "intra-AS protocol แบบ Distance-Vector แลกเปลี่ยน DV ทุก 30 วินาที"
+    },
+    {
+      "term": "EIGRP",
+      "def": "intra-AS protocol แบบ Distance-Vector เดิมเป็นของ Cisco และเปิดเป็นมาตรฐานในปี 2013"
+    },
+    {
+      "term": "OSPF",
+      "def": "intra-AS link-state protocol ใช้ Dijkstra และ flood LSA ตรงบน IP"
+    },
+    {
+      "term": "LSA",
+      "def": "Link-State Advertisement — ข้อมูล link state ที่ router flood ไปทุก router ใน AS"
+    },
+    {
+      "term": "Area Border Router",
+      "def": "router ที่สรุประยะทางไปปลายทางใน area ของตนแล้วประกาศใน backbone"
+    },
+    {
+      "term": "Backbone Router",
+      "def": "router ที่รัน OSPF เฉพาะใน backbone"
+    },
+    {
+      "term": "Boundary Router",
+      "def": "router ที่เชื่อมต่อกับ AS อื่น"
+    },
+    {
+      "term": "BGP",
+      "def": "inter-AS path vector protocol ใช้ TCP และให้ความสำคัญกับ policy"
+    },
+    {
+      "term": "eBGP",
+      "def": "การรับ/ประกาศ reachability ระหว่าง AS เพื่อนบ้าน"
+    },
+    {
+      "term": "iBGP",
+      "def": "การกระจายข้อมูล reachability ให้ router ภายใน AS เดียวกัน"
+    },
+    {
+      "term": "AS-PATH",
+      "def": "BGP attribute ที่เก็บรายชื่อ AS ที่ประกาศเส้นทางผ่านมา"
+    },
+    {
+      "term": "NEXT-HOP",
+      "def": "BGP attribute ที่ระบุ router ภายใน AS ซึ่งเป็นทางออกไปยัง AS ถัดไป"
+    },
+    {
+      "term": "Hot Potato",
+      "def": "การเลือก gateway ที่มี intra-domain cost ต่ำสุด โดยไม่สนใจ cost ฝั่ง inter-domain"
+    }
+  ]
+};
+
+
+window.DATA.ch7 = {
+  "slides": [
+    {
+      "title": "Cover — F3: The Link Layer and LANs",
+      "short": "เปิดบทเรียน"
+    },
+    {
+      "title": "บทนี้จะเรียนอะไร",
+      "short": "Roadmap"
+    },
+    {
+      "title": "Link Layer ทำงานอะไร",
+      "short": "Link Layer"
+    },
+    {
+      "title": "บริการของ Link Layer",
+      "short": "Services"
+    },
+    {
+      "title": "Link-level vs End-to-End Reliability",
+      "short": "Reliability"
+    },
+    {
+      "title": "Error Detection Model",
+      "short": "Error Model"
+    },
+    {
+      "title": "วิธีตรวจและแก้ Error",
+      "short": "Detection Methods"
+    },
+    {
+      "title": "Single-Bit Parity",
+      "short": "Single Parity"
+    },
+    {
+      "title": "Two-Dimensional Parity",
+      "short": "2D Parity"
+    },
+    {
+      "title": "CRC Concept",
+      "short": "CRC Concept"
+    },
+    {
+      "title": "CRC Worked Example",
+      "short": "CRC Example"
+    },
+    {
+      "title": "CRC Properties & Checksum",
+      "short": "CRC Properties"
+    },
+    {
+      "title": "Link Types & Shared Channel",
+      "short": "Shared Channel"
+    },
+    {
+      "title": "Ideal MAC & Taxonomy",
+      "short": "MAC Taxonomy"
+    },
+    {
+      "title": "Channel Partitioning",
+      "short": "TDMA / FDMA / CDMA"
+    },
+    {
+      "title": "Slotted & Pure ALOHA",
+      "short": "ALOHA"
+    },
+    {
+      "title": "CSMA & CSMA/CD",
+      "short": "CSMA"
+    },
+    {
+      "title": "Ethernet CSMA/CD & Backoff",
+      "short": "Backoff"
+    },
+    {
+      "title": "Taking Turns & Cable Access",
+      "short": "Taking Turns"
+    },
+    {
+      "title": "Ethernet Basics, Topology & Standards",
+      "short": "Ethernet"
+    },
+    {
+      "title": "Ethernet Frame Structure",
+      "short": "Frame"
+    },
+    {
+      "title": "Ethernet: Unreliable & Connectionless",
+      "short": "Unreliable"
+    },
+    {
+      "title": "MAC Address",
+      "short": "MAC"
+    },
+    {
+      "title": "MAC vs IP Address",
+      "short": "MAC vs IP"
+    },
+    {
+      "title": "ARP: Concept & Table",
+      "short": "ARP"
+    },
+    {
+      "title": "ARP in Action",
+      "short": "ARP Steps"
+    },
+    {
+      "title": "Routing to Another Subnet",
+      "short": "Inter-subnet"
+    },
+    {
+      "title": "Switch Basics & Simultaneous Transmissions",
+      "short": "Switch"
+    },
+    {
+      "title": "Switch Table & Self-Learning",
+      "short": "Learning"
+    },
+    {
+      "title": "Switch Learning Simulation",
+      "short": "Switch Simulation"
+    },
+    {
+      "title": "Switch vs Router",
+      "short": "Switch vs Router"
+    },
+    {
+      "title": "VLAN Motivation & Port-Based VLAN",
+      "short": "VLAN"
+    },
+    {
+      "title": "VLAN Trunk & 802.1Q",
+      "short": "Trunk / 802.1Q"
+    },
+    {
+      "title": "Access Port, Benefits & EVPN",
+      "short": "VLAN Benefits"
+    },
+    {
+      "title": "สรุปบทเรียน",
+      "short": "สรุป"
+    },
+    {
+      "title": "สูตรจำก่อนสอบ — F3",
+      "short": "Cheat Sheet"
+    },
+    {
+      "title": "แบบทดสอบ F3 12 ข้อ",
+      "short": "Quiz"
+    },
+    {
+      "title": "การ์ดทบทวน — F3",
+      "short": "Flashcards"
+    },
+    {
+      "title": "คำศัพท์ — F3",
+      "short": "Glossary"
+    },
+    {
+      "title": "ข้อสอบหลังเรียน — 20 ข้อ",
+      "short": "Exam"
+    }
+  ],
+  "sections": [
+    {
+      "label": "1. Link Layer & Error Detection",
+      "topics": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "label": "2. Multiple Access Protocols",
+      "topics": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "label": "3. Ethernet, MAC & ARP",
+      "topics": [
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ]
+    },
+    {
+      "label": "4. Switches & VLANs",
+      "topics": [
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
+      ]
+    },
+    {
+      "label": "ทบทวนและฝึกฝน",
+      "topics": [
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ]
+    }
+  ],
+  "errorMethods": [
+    {
+      "method": "Single parity",
+      "redundancy": "1 บิต",
+      "detect": "error จำนวนคี่ (รวม single-bit)",
+      "correct": "ไม่ได้",
+      "use": "การเรียนรู้, ระบบง่าย ๆ"
+    },
+    {
+      "method": "Two-dimensional parity",
+      "redundancy": "row + column parity",
+      "detect": "error หลายรูปแบบ",
+      "correct": "single-bit",
+      "use": "หน่วยความจำ, link ง่าย ๆ"
+    },
+    {
+      "method": "Internet checksum",
+      "redundancy": "16 บิต",
+      "detect": "หลายรูปแบบ แต่ค่อนข้างอ่อน",
+      "correct": "ไม่ได้",
+      "use": "TCP, UDP"
+    },
+    {
+      "method": "CRC",
+      "redundancy": "32 บิต (โดยทั่วไป)",
+      "detect": "burst error ได้ดีมาก",
+      "correct": "ไม่ได้",
+      "use": "Ethernet, 802.11 Wi-Fi"
+    },
+    {
+      "method": "FEC / Hamming code",
+      "redundancy": "หลายบิต",
+      "detect": "ดี",
+      "correct": "ได้ตามกำลังของ code",
+      "use": "Wireless, ดาวเทียม, storage"
+    }
+  ],
+  "parity": {
+    "rows": [
+      [
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        1,
+        1,
+        0
+      ],
+      [
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    ],
+    "rowParity": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "colParity": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "crcSteps": [
+    {
+      "key": "เริ่ม",
+      "window": "1011",
+      "left": "1",
+      "xor": "ใช่",
+      "result": "0010"
+    },
+    {
+      "key": "shift บิต 1",
+      "window": "0101",
+      "left": "0",
+      "xor": "ไม่",
+      "result": "0101"
+    },
+    {
+      "key": "shift บิต 0",
+      "window": "1010",
+      "left": "1",
+      "xor": "ใช่",
+      "result": "0011"
+    },
+    {
+      "key": "shift บิต 0",
+      "window": "0110",
+      "left": "0",
+      "xor": "ไม่",
+      "result": "0110"
+    },
+    {
+      "key": "shift บิต 0",
+      "window": "1100",
+      "left": "1",
+      "xor": "ใช่",
+      "result": "0101"
+    },
+    {
+      "key": "shift บิต 0",
+      "window": "1010",
+      "left": "1",
+      "xor": "ใช่",
+      "result": "0011"
+    }
+  ],
+  "aloha": [
+    {
+      "n": "5",
+      "eff": "0.4096"
+    },
+    {
+      "n": "10",
+      "eff": "0.3874"
+    },
+    {
+      "n": "100",
+      "eff": "0.3697"
+    },
+    {
+      "n": "∞",
+      "eff": "0.3679 ≈ 1/e"
+    }
+  ],
+  "backoff": [
+    {
+      "m": "1",
+      "range": "0–1",
+      "count": "2"
+    },
+    {
+      "m": "2",
+      "range": "0–3",
+      "count": "4"
+    },
+    {
+      "m": "3",
+      "range": "0–7",
+      "count": "8"
+    },
+    {
+      "m": "4",
+      "range": "0–15",
+      "count": "16"
+    },
+    {
+      "m": "10",
+      "range": "0–1023",
+      "count": "1024"
+    },
+    {
+      "m": "> 10",
+      "range": "0–1023 (cap)",
+      "count": "1024"
+    }
+  ],
+  "ethFields": [
+    {
+      "field": "Preamble (รวม SFD)",
+      "size": "8 B",
+      "detail": "ซิงโครไนซ์ clock: 7 ไบต์ของ 10101010 ตามด้วย 1 ไบต์ 10101011 (SFD)"
+    },
+    {
+      "field": "Dest MAC",
+      "size": "6 B",
+      "detail": "MAC address ปลายทาง"
+    },
+    {
+      "field": "Src MAC",
+      "size": "6 B",
+      "detail": "MAC address ต้นทาง"
+    },
+    {
+      "field": "Type",
+      "size": "2 B",
+      "detail": "ระบุ protocol ชั้นบน เช่น IPv4 0x0800, ARP 0x0806, VLAN 0x8100"
+    },
+    {
+      "field": "Data",
+      "size": "46–1500 B",
+      "detail": "payload เป็น IP datagram; ถ้าเล็กกว่า 46 ไบต์ต้องมี padding"
+    },
+    {
+      "field": "CRC",
+      "size": "4 B",
+      "detail": "ตรวจ error ที่ receiver; ถ้าพบ error จะทิ้ง frame"
+    }
+  ],
+  "arpSteps": [
+    {
+      "key": "1",
+      "name": "A หา MAC ของ B",
+      "detail": "A ยังไม่มี mapping ของ B จึงส่ง ARP query แบบ broadcast ด้วย destination MAC FF-FF-FF-FF-FF-FF โดยถามว่าใครมี IP 137.196.7.14"
+    },
+    {
+      "key": "2",
+      "name": "B ตอบกลับ",
+      "detail": "B เห็นว่าถาม IP ของตัวเอง จึงส่ง ARP reply แบบ unicast กลับไปยัง MAC ของ A พร้อมแจ้ง MAC ของตัวเอง"
+    },
+    {
+      "key": "3",
+      "name": "A บันทึก mapping",
+      "detail": "A บันทึก 137.196.7.14 → 58-23-D7-FA-20-B0 ลง ARP table พร้อม TTL แล้วจึงส่ง frame ไป B ได้"
+    }
+  ],
+  "switchSteps": [
+    {
+      "key": "1",
+      "event": "A ส่ง frame ไป A'",
+      "learn": "A อยู่พอร์ต 1",
+      "known": "ไม่รู้ A'",
+      "action": "flood ไป 2,3,4,5,6",
+      "table": "A → 1"
+    },
+    {
+      "key": "2",
+      "event": "A' ตอบกลับ A",
+      "learn": "A' อยู่พอร์ต 4",
+      "known": "รู้ A อยู่พอร์ต 1",
+      "action": "forward เฉพาะพอร์ต 1",
+      "table": "A → 1, A' → 4"
+    },
+    {
+      "key": "3",
+      "event": "B ส่ง frame ไป B'",
+      "learn": "B อยู่พอร์ต 2",
+      "known": "ไม่รู้ B'",
+      "action": "flood ไป 1,3,4,5,6",
+      "table": "A → 1, A' → 4, B → 2"
+    },
+    {
+      "key": "4",
+      "event": "B' ตอบกลับ B",
+      "learn": "B' อยู่พอร์ต 5",
+      "known": "รู้ B อยู่พอร์ต 2",
+      "action": "forward เฉพาะพอร์ต 2",
+      "table": "A → 1, A' → 4, B → 2, B' → 5"
+    }
+  ],
+  "quiz": [
+    {
+      "q": "Link layer มีหน้าที่หลักอะไร?",
+      "options": [
+        "ส่ง datagram ระหว่าง node ที่อยู่ติดกันผ่าน link หนึ่งเส้น",
+        "เลือกเส้นทางจากต้นทางถึงปลายทางทั่วอินเทอร์เน็ต",
+        "จัดลำดับ segment และรับประกัน byte stream",
+        "แปลง domain name เป็น IP address"
+      ],
+      "correct": 0,
+      "explain": "Link layer ส่ง datagram จาก node หนึ่งไปยัง node ที่อยู่ติดกันทางกายภาพผ่าน link หนึ่งเส้น"
+    },
+    {
+      "q": "Frame ต่างจาก datagram อย่างไร?",
+      "options": [
+        "Frame เป็นตาราง MAC address ของ switch",
+        "Frame เป็น packet layer 2 ที่ห่อ datagram พร้อม header/trailer",
+        "Frame เป็น packet layer 3 ที่มี IP address",
+        "Frame เป็นสัญญาณ physical ที่ไม่มี header"
+      ],
+      "correct": 1,
+      "explain": "Frame คือ packet ของ layer 2 ซึ่ง encapsulate datagram ของ network layer"
+    },
+    {
+      "q": "Link-level reliable delivery มักใช้กับ link แบบใด?",
+      "options": [
+        "ทุก link โดยไม่คำนึงถึง error",
+        "เฉพาะ point-to-point link",
+        "Wireless ที่มี error rate สูง",
+        "Fiber ที่มี bit error ต่ำ"
+      ],
+      "correct": 2,
+      "explain": "source ระบุว่ามักไม่ใช้บน fiber/copper ที่ error ต่ำ แต่ใช้บน wireless ที่ error rate สูง"
+    },
+    {
+      "q": "Single parity แบบ even parity ตรวจ error 2 บิตได้หรือไม่?",
+      "options": [
+        "ได้ เพราะ parity ตรวจได้ทุก error",
+        "ได้ แต่แก้ไขไม่ได้",
+        "ได้เฉพาะ error ที่ติดกัน",
+        "ไม่ได้ เพราะจำนวน 1 อาจยังเป็นเลขคู่เหมือนเดิม"
+      ],
+      "correct": 3,
+      "explain": "single parity ตรวจจับ error จำนวนคี่ได้ แต่ error จำนวนคู่จะหลุด"
+    },
+    {
+      "q": "Two-dimensional parity แก้ไข error ได้แบบใด?",
+      "options": [
+        "single-bit error",
+        "error 2 บิตทุกรูปแบบ",
+        "error 3 บิตทุกรูปแบบ",
+        "4 บิตที่เรียงเป็นสี่เหลี่ยม"
+      ],
+      "correct": 0,
+      "explain": "2D parity ระบุแถวและคอลัมน์ที่ผิด จึงแก้ single-bit error ได้โดยไม่ต้อง retransmission"
+    },
+    {
+      "q": "CRC ใช้หลักการใด?",
+      "options": [
+        "แฮช MAC address ด้วย MD5",
+        "หารพหุนามแบบ modulo 2 ด้วย XOR",
+        "บวกแบบ one's complement 16 บิต",
+        "นับจำนวน 1 แล้วเติม parity"
+      ],
+      "correct": 1,
+      "explain": "CRC มองข้อมูลเป็น binary/polynomial แล้วหารด้วย G แบบ mod 2 ซึ่งก็คือ XOR"
+    },
+    {
+      "q": "Multiple access protocol ใช้กับ link ประเภทใด?",
+      "options": [
+        "Fiber ที่มี channel เฉพาะ",
+        "Router ภายใน backbone",
+        "Broadcast / shared medium",
+        "Point-to-point link"
+      ],
+      "correct": 2,
+      "explain": "multiple access ใช้เฉพาะ shared medium เพราะต้องมีกติกาว่าใครส่งได้และส่งเมื่อไร"
+    },
+    {
+      "q": "Slotted ALOHA มีประสิทธิภาพสูงสุดเท่าใด?",
+      "options": [
+        "1/(2e) ≈ 18%",
+        "50%",
+        "100%",
+        "1/e ≈ 37%"
+      ],
+      "correct": 3,
+      "explain": "Slotted ALOHA สูงสุด 1/e ≈ 0.37 เมื่อ p = 1/N"
+    },
+    {
+      "q": "CSMA/CD ทำอะไรเมื่อตรวจพบ collision ระหว่างส่ง?",
+      "options": [
+        "abort การส่งและส่ง jam signal",
+        "ส่ง frame ต่อจนจบ",
+        "รอ ACK จาก receiver",
+        "เปลี่ยน MAC address ใหม่"
+      ],
+      "correct": 0,
+      "explain": "CSMA/CD หยุดส่งทันทีเมื่อตรวจพบการส่งอื่น แล้วส่ง jam signal และเข้าสู่ binary exponential backoff"
+    },
+    {
+      "q": "802.1Q VLAN tag มี VLAN ID กี่บิต?",
+      "options": [
+        "4 บิต (ใช้งาน 1–14)",
+        "12 บิต (ใช้งาน 1–4094)",
+        "8 บิต (ใช้งาน 1–254)",
+        "16 บิต (ใช้งาน 1–65534)"
+      ],
+      "correct": 1,
+      "explain": "802.1Q ใช้ VLAN ID 12 บิต โดยใช้งานได้ 1–4094 ส่วน 0 และ 4095 สงวนไว้"
+    },
+    {
+      "q": "ARP query ส่งแบบใด?",
+      "options": [
+        "Multicast ไปยัง router เท่านั้น",
+        "Anycast ไปยัง DNS server",
+        "Broadcast ด้วย FF-FF-FF-FF-FF-FF",
+        "Unicast ไปยัง MAC ของผู้ถาม"
+      ],
+      "correct": 2,
+      "explain": "ARP query ใช้ broadcast เพราะยังไม่รู้ว่าใครมี IP ปลายทาง ส่วน ARP reply เป็น unicast"
+    },
+    {
+      "q": "Switch เรียนรู้ตำแหน่ง host จากอะไร?",
+      "options": [
+        "Destination MAC ใน routing table",
+        "IP address จาก DHCP",
+        "VLAN ID จาก router",
+        "Source MAC และ incoming port ของ frame"
+      ],
+      "correct": 3,
+      "explain": "Self-learning switch ดู source MAC ของ frame แล้วบันทึกว่า host อยู่ที่ incoming LAN segment/port ใด"
+    }
+  ],
+  "exam": [
+    {
+      "q": "Link layer ส่งข้อมูลระหว่างอะไร?",
+      "options": [
+        "node ที่อยู่ติดกันทางกายภาพผ่าน link หนึ่งเส้น",
+        "host ต้นทางกับ host ปลายทางทั่วอินเทอร์เน็ต",
+        "application กับ transport layer",
+        "router สองตัวที่อยู่คนละ AS"
+      ],
+      "correct": 0,
+      "explain": "Link layer รับผิดชอบการส่ง datagram ระหว่าง node ที่อยู่ติดกันผ่าน link หนึ่งเส้น"
+    },
+    {
+      "q": "NIC implement layer ใด?",
+      "options": [
+        "เฉพาะ physical layer",
+        "Link layer และ physical layer",
+        "Network layer และ transport layer",
+        "Application layer เท่านั้น"
+      ],
+      "correct": 1,
+      "explain": "NIC implement ทั้ง link layer และ physical layer และต่อเข้ากับ system bus ของ host"
+    },
+    {
+      "q": "ข้อใดไม่ใช่บริการของ Link Layer?",
+      "options": [
+        "Flow control ระหว่าง sender กับ receiver ที่ติดกัน",
+        "Error detection",
+        "เลือกเส้นทาง end-to-end ด้วย routing algorithm",
+        "Framing และ link access"
+      ],
+      "correct": 2,
+      "explain": "Routing end-to-end เป็นหน้าที่ของ network layer/control plane ไม่ใช่บริการ link layer"
+    },
+    {
+      "q": "เพราะเหตุใดจึงอาจมีทั้ง link-level และ end-to-end reliability?",
+      "options": [
+        "TCP ไม่สามารถรับประกันข้อมูลได้",
+        "Link layer ต้องรับประกันตลอดเส้นทาง",
+        "Ethernet มี ACK ทุก frame",
+        "Wireless มี error สูงและการ retransmit เฉพาะ link เร็วกว่า"
+      ],
+      "correct": 3,
+      "explain": "source ระบุ wireless error สูง, retransmit เฉพาะ link เร็ว/ถูกกว่า และ TCP รับประกัน end-to-end อยู่แล้ว"
+    },
+    {
+      "q": "ข้อใดถูกเกี่ยวกับ error detection?",
+      "options": [
+        "ไม่สามารถรับประกันได้ 100% และ EDC ที่ใหญ่ขึ้นช่วยได้แต่มี overhead",
+        "ตรวจ error ได้ 100% ถ้าใช้ parity",
+        "EDC ยิ่งเล็กยิ่งตรวจได้ดี",
+        "Detection แก้ bit error ได้เองเสมอ"
+      ],
+      "correct": 0,
+      "explain": "protocol อาจตรวจไม่พบ error บางรูปแบบ; EDC ใหญ่ขึ้นตรวจ/แก้ได้ดีขึ้นแต่สิ้นเปลือง bandwidth"
+    },
+    {
+      "q": "วิธีใดใช้แก้ไข error ได้เองโดยไม่ต้อง retransmission?",
+      "options": [
+        "CRC",
+        "FEC / Hamming code",
+        "Single parity",
+        "Internet checksum"
+      ],
+      "correct": 1,
+      "explain": "FEC/Hamming code มี redundancy พอที่จะระบุและแก้ bit error; CRC และ checksum เป็น detection"
+    },
+    {
+      "q": "Single parity แบบ even parity ตรวจจับ error ประเภทใดได้?",
+      "options": [
+        "error 2 บิตทุกกรณี",
+        "burst error ทุกความยาว",
+        "error จำนวนบิตเป็นเลขคี่",
+        "error จำนวนบิตเป็นเลขคู่ทั้งหมด"
+      ],
+      "correct": 2,
+      "explain": "single parity ตรวจจับ error จำนวนคี่ได้ทั้งหมด แต่ error จำนวนคู่จะหลุด"
+    },
+    {
+      "q": "ข้อจำกัดของ two-dimensional parity คืออะไร?",
+      "options": [
+        "แก้ไข error 2 บิตได้ทุกกรณี",
+        "ใช้ได้เฉพาะ fiber",
+        "ต้องใช้ generator G ขนาด 32 บิต",
+        "4 บิตที่เรียงเป็นสี่เหลี่ยมมุมฉากอาจตรวจไม่พบ"
+      ],
+      "correct": 3,
+      "explain": "4 บิตที่เรียงเป็น 2×2 อาจทำให้ parity ของแต่ละแถวและคอลัมน์ยังถูก จึงตรวจไม่พบ"
+    },
+    {
+      "q": "CRC ฝั่งส่งคำนวณ R อย่างไร?",
+      "options": [
+        "R = remainder[(D · 2^r) / G] แบบ mod 2",
+        "R = D + G แบบ one's complement",
+        "R = จำนวน 1 ใน D mod 2",
+        "R = MAC address ของ sender"
+      ],
+      "correct": 0,
+      "explain": "shift D ไปทางซ้าย r บิต แล้วหารด้วย G แบบ mod 2 เศษ r บิตคือ R"
+    },
+    {
+      "q": "CRC ฝั่งรับถือว่าผ่านเมื่อใด?",
+      "options": [
+        "MAC destination ตรงกับตัวเอง",
+        "เศษจากการหาร <D', R'> ด้วย G เป็น 0",
+        "เศษมีค่าเท่ากับ 1",
+        "parity bit ตรงกัน"
+      ],
+      "correct": 1,
+      "explain": "ถ้าเศษเป็น 0 ถือว่าไม่พบ error; ถ้าไม่เป็น 0 ตรวจพบ error และทิ้ง frame"
+    },
+    {
+      "q": "CRC ตรวจจับ burst error ที่ยาวเท่าใดได้ทั้งหมด?",
+      "options": [
+        "ยาว 2r บิตทุกกรณี",
+        "เฉพาะ single-bit",
+        "ยาว ≤ r บิต",
+        "ยาว > r บิตทุกกรณี"
+      ],
+      "correct": 2,
+      "explain": "CRC ตรวจจับ burst error ที่ยาว ≤ r บิตได้ทั้งหมด; ที่ยาวกว่าอาจตรวจพบได้ขึ้นอยู่กับรูปแบบ"
+    },
+    {
+      "q": "ข้อใดกล่าวถึง shared channel ถูกต้อง?",
+      "options": [
+        "ทุก node มี channel เฉพาะของตัวเอง",
+        "ไม่ต้องใช้ multiple access protocol",
+        "ใช้ได้เฉพาะ fiber",
+        "หลาย node ใช้ medium เดียวกันและอาจเกิด collision"
+      ],
+      "correct": 3,
+      "explain": "shared/broadcast medium มี single shared channel; ถ้าหลาย node ส่งพร้อมกันจะเกิด interference/collision"
+    },
+    {
+      "q": "Port-based VLAN ช่วยอะไร?",
+      "options": [
+        "แบ่ง broadcast domain ทาง logical บน switch เดียว",
+        "เพิ่มความเร็วของ physical link",
+        "เปลี่ยน MAC address ของ host อัตโนมัติ",
+        "ทำให้ทุกพอร์ตอยู่ใน broadcast domain เดียวกัน"
+      ],
+      "correct": 0,
+      "explain": "port-based VLAN จัดกลุ่มพอร์ตเป็น VLAN ต่าง ๆ ทำให้ frame ถูกจำกัดอยู่ใน broadcast domain ของ VLAN นั้น"
+    },
+    {
+      "q": "ข้อใดอธิบายความต่างของ switch กับ router ถูกต้อง?",
+      "options": [
+        "switch แยก broadcast domain; router ไม่แยก",
+        "switch ใช้ MAC/layer 2; router ใช้ IP/layer 3",
+        "switch ใช้ IP; router ใช้ MAC",
+        "ทั้งคู่สร้าง forwarding table ด้วย routing algorithm"
+      ],
+      "correct": 1,
+      "explain": "switch เป็น link-layer device ดู MAC address; router เป็น network-layer device ดู IP address"
+    },
+    {
+      "q": "CSMA ยังเกิด collision ได้เพราะอะไร?",
+      "options": [
+        "CSMA ใช้ slot แบบ TDMA",
+        "receiver ไม่ส่ง ACK",
+        "propagation delay ทำให้ node ไม่ได้ยินการส่งของกันทันที",
+        "CSMA ไม่ฟัง channel ก่อนส่ง"
+      ],
+      "correct": 2,
+      "explain": "CSMA ฟังก่อนส่ง แต่ propagation delay ทำให้สอง node อาจไม่เห็นการส่งที่เพิ่งเริ่มของกันและกัน"
+    },
+    {
+      "q": "หลัง collision ครั้งที่ m ใน Ethernet CSMA/CD เลือก K จากช่วงใด?",
+      "options": [
+        "{1, 2, ..., m}",
+        "{0, 1, ..., m}",
+        "{0, 1, ..., 2m}",
+        "{0, 1, ..., 2^m − 1}"
+      ],
+      "correct": 3,
+      "explain": "binary exponential backoff เลือก K จาก {0,...,2^m−1} แล้วรอ K × 512 bit times"
+    },
+    {
+      "q": "Ethernet frame ขนาดเล็กสุดนับจาก Dest MAC ถึง CRC คือเท่าใด?",
+      "options": [
+        "64 ไบต์",
+        "46 ไบต์",
+        "1518 ไบต์",
+        "1522 ไบต์"
+      ],
+      "correct": 0,
+      "explain": "6+6+2+46+4 = 64 ไบต์; data ขั้นต่ำ 46 ไบต์เพื่อให้ frame อย่างน้อย 64 ไบต์"
+    },
+    {
+      "q": "MAC address ต่างจาก IP address อย่างไร?",
+      "options": [
+        "MAC เปลี่ยนทุก hop; IP คงที่",
+        "MAC 48 บิตและ portable; IP 32 บิตและขึ้นกับ subnet",
+        "MAC 32 บิต; IP 48 บิต",
+        "MAC ใช้ routing; IP ใช้ forwarding"
+      ],
+      "correct": 1,
+      "explain": "MAC เป็น flat address 48 บิต ใช้ local link และ portable; IPv4 32 บิตขึ้นกับ subnet"
+    },
+    {
+      "q": "เมื่อส่ง datagram ข้าม subnet ข้อใดคงเดิม?",
+      "options": [
+        "Source MAC และ Source IP",
+        "Destination MAC และ Destination IP",
+        "Source IP และ Destination IP",
+        "Source MAC และ Destination MAC"
+      ],
+      "correct": 2,
+      "explain": "IP ต้นทาง/ปลายทางคงเดิมตลอดเส้นทาง แต่ MAC ของ source/destination เปลี่ยนทุก hop"
+    },
+    {
+      "q": "Switch ไม่รู้ destination MAC ควรทำอะไร?",
+      "options": [
+        "drop frame ทันที",
+        "forward ไปเฉพาะ port 1",
+        "ส่งกลับไปยัง source",
+        "flood ไปทุก interface ยกเว้น incoming interface"
+      ],
+      "correct": 3,
+      "explain": "ถ้าไม่พบ entry ใน switch table จะ flood ไปทุก interface ยกเว้นขาเข้า"
+    }
+  ],
+  "cheat": [
+    {
+      "term": "Link layer",
+      "def": "ส่ง datagram ระหว่าง node ที่อยู่ติดกันผ่าน link หนึ่งเส้น"
+    },
+    {
+      "term": "Frame",
+      "def": "packet layer 2 ที่ encapsulate datagram พร้อม header/trailer"
+    },
+    {
+      "term": "NIC",
+      "def": "implement link + physical layer; ต่อ system bus; hardware + software + firmware"
+    },
+    {
+      "term": "Link services",
+      "def": "framing/link access, reliable delivery, flow control, error detection, error correction, half/full duplex"
+    },
+    {
+      "term": "Reliable delivery",
+      "def": "มักใช้บน wireless error สูง; มักไม่ใช้บน fiber/copper error ต่ำ"
+    },
+    {
+      "term": "Detection limit",
+      "def": "error detection ไม่รับประกัน 100%; EDC ใหญ่ขึ้นตรวจได้ดีขึ้นแต่ overhead สูง"
+    },
+    {
+      "term": "Detection vs correction",
+      "def": "detection รู้ว่ามี error; correction ระบุ/แก้ bit ได้เอง เช่น FEC"
+    },
+    {
+      "term": "Single parity",
+      "def": "1 บิต; ตรวจ error จำนวนคี่; error จำนวนคู่หลุด; แก้ไม่ได้"
+    },
+    {
+      "term": "2D parity",
+      "def": "row + column parity; แก้ single-bit; 4-bit rectangle อาจตรวจไม่พบ"
+    },
+    {
+      "term": "Internet checksum",
+      "def": "16-bit one's complement sum; ใช้ TCP/UDP; อ่อนกว่า CRC"
+    },
+    {
+      "term": "CRC",
+      "def": "หาร polynomial mod 2 (XOR); G ขนาด r+1 บิต; R ขนาด r บิต"
+    },
+    {
+      "term": "CRC sender",
+      "def": "R = remainder[(D·2^r)/G]; ส่ง D·2^r XOR R"
+    },
+    {
+      "term": "CRC receiver",
+      "def": "หาร <D',R'> ด้วย G; เศษ 0 = ผ่าน; เศษไม่ 0 = error"
+    },
+    {
+      "term": "CRC properties",
+      "def": "detect single-bit และ burst ≤ r; CRC-32 พลาดประมาณ 2^-32"
+    },
+    {
+      "term": "Multiple access",
+      "def": "ใช้กับ shared/broadcast medium เท่านั้น"
+    },
+    {
+      "term": "Ideal MAC",
+      "def": "node เดียวได้ R; M node ได้ R/M; fully decentralized; simple"
+    },
+    {
+      "term": "MAC taxonomy",
+      "def": "channel partitioning, random access, taking turns"
+    },
+    {
+      "term": "TDMA/FDMA",
+      "def": "แบ่งเวลา/ความถี่; ไม่ชน; slot หรือ band ว่างจะ idle"
+    },
+    {
+      "term": "ALOHA",
+      "def": "Slotted สูงสุด 1/e ≈ 37%; Pure สูงสุด 1/(2e) ≈ 18%"
+    },
+    {
+      "term": "CSMA",
+      "def": "listen before transmit; ยังชนได้เพราะ propagation delay"
+    },
+    {
+      "term": "CSMA/CD",
+      "def": "ตรวจ collision ระหว่างส่ง; abort + jam; wired; binary exponential backoff"
+    },
+    {
+      "term": "Backoff",
+      "def": "หลังชนครั้งที่ m: K ∈ {0,...,2^m−1}; รอ K × 512 bit times"
+    },
+    {
+      "term": "Ethernet frame",
+      "def": "min 64 B; max 1518 B; VLAN tag เพิ่มเป็น 1522 B"
+    },
+    {
+      "term": "MAC/ARP",
+      "def": "MAC 48-bit flat/portable; ARP query broadcast, reply unicast; IP คงที่ MAC เปลี่ยนทุก hop"
+    },
+    {
+      "term": "Switch/VLAN",
+      "def": "self-learning จาก source MAC; flood/forward/filter; 802.1Q VID 12 บิต 1–4094"
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Link layer ส่งข้อมูลระหว่างอะไร?",
+      "a": "node ที่อยู่ติดกันทางกายภาพ ผ่าน link หนึ่งเส้น"
+    },
+    {
+      "q": "Frame และ NIC คืออะไร?",
+      "a": "Frame = packet layer 2 ที่ห่อ datagram; NIC implement link + physical layer"
+    },
+    {
+      "q": "Link-level กับ end-to-end reliability ต่างกันอย่างไร?",
+      "a": "Link-level ดูแล link เดียว; end-to-end ดูแลต้นทางถึงปลายทาง เช่น TCP"
+    },
+    {
+      "q": "Detection กับ correction ต่างกันอย่างไร?",
+      "a": "Detection รู้ว่ามี error; correction ระบุ/แก้ bit ได้เองโดยไม่ต้อง retransmission"
+    },
+    {
+      "q": "Single parity ตรวจ error แบบใดได้?",
+      "a": "ตรวจ error จำนวนคี่; error จำนวนคู่หลุด; แก้ไขไม่ได้"
+    },
+    {
+      "q": "Two-dimensional parity แก้ error ได้แบบใด?",
+      "a": "แก้ single-bit ได้; ตรวจ 2–3 บิตได้แต่แก้ไม่ได้; 4-bit rectangle อาจหลุด"
+    },
+    {
+      "q": "CRC คำนวณและตรวจอย่างไร?",
+      "a": "R = remainder[D·2^r / G]; ส่ง D·2^r XOR R; ฝั่งรับหารด้วย G แล้วดูว่าเศษเป็น 0"
+    },
+    {
+      "q": "Multiple access ใช้เมื่อใด?",
+      "a": "ใช้กับ shared/broadcast medium ที่หลาย node ใช้ channel เดียวกัน"
+    },
+    {
+      "q": "Slotted ALOHA กับ Pure ALOHA ต่างกันอย่างไร?",
+      "a": "Slotted สูงสุด 37% (1/e); Pure สูงสุด 18% (1/(2e))"
+    },
+    {
+      "q": "CSMA/CD ทำงานอย่างไร?",
+      "a": "ฟังก่อนส่ง; ถ้าตรวจพบ collision ระหว่างส่งให้ abort + jam signal แล้ว backoff"
+    },
+    {
+      "q": "MAC address กับ IP address ต่างกันอย่างไร?",
+      "a": "MAC 48 บิต local/portable; IPv4 32 บิต end-to-end และขึ้นกับ subnet; ARP แปลง IP → MAC"
+    },
+    {
+      "q": "Switch เรียนรู้และส่ง frame อย่างไร?",
+      "a": "เรียนรู้ source MAC + incoming port; รู้ destination → forward/filter; ไม่รู้ → flood"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Link layer",
+      "def": "ชั้นที่ส่ง datagram ระหว่าง node ที่อยู่ติดกันทางกายภาพผ่าน link หนึ่งเส้น"
+    },
+    {
+      "term": "Frame",
+      "def": "packet ของ layer 2 ที่ encapsulate datagram พร้อม header และ trailer"
+    },
+    {
+      "term": "NIC",
+      "def": "Network Interface Card ที่ implement link layer และ physical layer"
+    },
+    {
+      "term": "Framing",
+      "def": "การห่อ datagram เป็น frame โดยเพิ่ม header/trailer"
+    },
+    {
+      "term": "Reliable delivery",
+      "def": "การส่งข้อมูลระหว่าง node ที่ติดกันให้ reliable ด้วย ACK/retransmission เมื่อ link รองรับ"
+    },
+    {
+      "term": "Flow control",
+      "def": "การปรับจังหวะระหว่าง sender กับ receiver ที่อยู่ติดกันไม่ให้ผู้ส่งเร็วเกินผู้รับ"
+    },
+    {
+      "term": "EDC",
+      "def": "Error Detection and Correction bits หรือ redundancy ที่เพิ่มเข้าไปเพื่อตรวจ/แก้ error"
+    },
+    {
+      "term": "Parity bit",
+      "def": "บิตเพิ่มเติมเพื่อทำให้จำนวน 1 เป็นเลขคู่หรือเลขคี่ตามที่กำหนด"
+    },
+    {
+      "term": "Single parity",
+      "def": "parity 1 บิต ตรวจ error จำนวนคี่ แต่ไม่แก้ error"
+    },
+    {
+      "term": "Two-dimensional parity",
+      "def": "parity ทั้งแถวและคอลัมน์ สามารถแก้ single-bit error ได้"
+    },
+    {
+      "term": "Internet checksum",
+      "def": "checksum 16 บิตแบบ one's complement sum ใช้ใน TCP/UDP"
+    },
+    {
+      "term": "CRC",
+      "def": "Cyclic Redundancy Check ใช้หาร polynomial แบบ modulo 2 เพื่อตรวจ error"
+    },
+    {
+      "term": "Generator G",
+      "def": "bit pattern ขนาด r+1 บิตที่ใช้หารใน CRC"
+    },
+    {
+      "term": "Hamming distance",
+      "def": "ระยะห่างน้อยสุดระหว่าง codeword ใช้บอกความสามารถตรวจ/แก้ error"
+    },
+    {
+      "term": "Multiple access",
+      "def": "protocol ที่กำหนดว่า node ใดใช้ shared channel ได้เมื่อไร"
+    },
+    {
+      "term": "Collision",
+      "def": "เหตุการณ์ที่ node ได้รับสัญญาณตั้งแต่ 2 สัญญาณขึ้นไปพร้อมกัน"
+    },
+    {
+      "term": "TDMA",
+      "def": "แบ่งเวลาเป็น slot แล้วจัดสรรให้ station ใช้แบบ fixed-length"
+    },
+    {
+      "term": "FDMA",
+      "def": "แบ่ง spectrum เป็น frequency bands แล้วจัดสรรให้ station"
+    },
+    {
+      "term": "CDMA",
+      "def": "ให้ทุก station ส่งพร้อมกันโดยใช้ code ที่แตกต่างกันแล้วแยกที่ receiver"
+    },
+    {
+      "term": "Slotted ALOHA",
+      "def": "ALOHA ที่แบ่งเวลาเป็น slot; ประสิทธิภาพสูงสุด 1/e ≈ 37%"
+    },
+    {
+      "term": "Pure ALOHA",
+      "def": "ALOHA ที่ไม่แบ่ง slot; vulnerable period 2 frame times; สูงสุด 1/(2e) ≈ 18%"
+    },
+    {
+      "term": "CSMA",
+      "def": "Carrier Sense Multiple Access — ฟัง channel ก่อนส่ง"
+    },
+    {
+      "term": "CSMA/CD",
+      "def": "CSMA ที่ตรวจ collision ระหว่างส่งและ abort การส่งทันที"
+    },
+    {
+      "term": "Binary exponential backoff",
+      "def": "หลัง collision ครั้งที่ m เลือก K ∈ {0,...,2^m−1} แล้วรอ K × 512 bit times"
+    },
+    {
+      "term": "Polling",
+      "def": "MAC แบบ taking turns ที่ central controller เชิญ node ให้ส่งทีละตัว"
+    },
+    {
+      "term": "Token passing",
+      "def": "MAC แบบ taking turns ที่ส่ง control token ต่อกันเป็นลำดับ"
+    },
+    {
+      "term": "Ethernet",
+      "def": "wired LAN technology ที่ dominant ใช้ frame format และ MAC protocol ร่วมกัน"
+    },
+    {
+      "term": "MAC address",
+      "def": "address 48 บิตของ interface ใช้ส่ง frame ภายใน local link; เป็น flat และ portable"
+    },
+    {
+      "term": "ARP",
+      "def": "Address Resolution Protocol ใช้แปลง IP address เป็น MAC address ภายใน LAN"
+    },
+    {
+      "term": "ARP table",
+      "def": "ตาราง mapping <IP address, MAC address, TTL> ของแต่ละ IP node"
+    },
+    {
+      "term": "Switch",
+      "def": "link-layer device ที่ store-and-forward frame ตาม MAC address"
+    },
+    {
+      "term": "Self-learning",
+      "def": "switch เรียนรู้ mapping จาก source MAC และ incoming port โดยอัตโนมัติ"
+    },
+    {
+      "term": "VLAN",
+      "def": "LAN เสมือนที่แบ่ง broadcast domain ทาง logical บน infrastructure ทางกายภาพชุดเดียว"
+    },
+    {
+      "term": "802.1Q",
+      "def": "มาตรฐาน tag สำหรับ VLAN: TPID 0x8100, TCI, VLAN ID 12 บิต"
+    },
+    {
+      "term": "Access port",
+      "def": "พอร์ตที่เป็นของ VLAN เดียว และส่ง frame แบบไม่มี tag ไปยัง host"
+    },
+    {
+      "term": "Trunk port",
+      "def": "พอร์ตที่บรรทุก frame ของหลาย VLAN ระหว่าง switch ด้วย 802.1Q tag"
+    }
+  ]
+};
+
+
+window.DATA.ch8 = {
+  "slides": [
+    {
+      "title": "Cover — F4: Wireless and Mobile Networks",
+      "short": "เปิดบทเรียน"
+    },
+    {
+      "title": "บทนี้จะเรียนอะไร",
+      "short": "Roadmap"
+    },
+    {
+      "title": "ทำไม Wireless ถึงสำคัญ",
+      "short": "Why Wireless"
+    },
+    {
+      "title": "องค์ประกอบหลัก 4 อย่าง",
+      "short": "Components"
+    },
+    {
+      "title": "Infrastructure vs Ad Hoc",
+      "short": "Network Types"
+    },
+    {
+      "title": "Wireless ≠ Mobility",
+      "short": "Wireless vs Mobility"
+    },
+    {
+      "title": "Edge Network vs Core Network",
+      "short": "Edge & Core"
+    },
+    {
+      "title": "Applications & Requirements",
+      "short": "Applications"
+    },
+    {
+      "title": "Radio Wave & Spectrum",
+      "short": "Radio Basics"
+    },
+    {
+      "title": "dBm & Power",
+      "short": "Power / dBm"
+    },
+    {
+      "title": "PSD & Bandwidth",
+      "short": "Bandwidth"
+    },
+    {
+      "title": "Interference & Noise",
+      "short": "Interference"
+    },
+    {
+      "title": "SNR & Shannon Capacity",
+      "short": "SNR / Shannon"
+    },
+    {
+      "title": "Path Loss & Hidden Terminal",
+      "short": "Path / Hidden"
+    },
+    {
+      "title": "Multipath, Coherence & Fading",
+      "short": "Multipath"
+    },
+    {
+      "title": "Modulation & Adaptive Modulation",
+      "short": "Modulation"
+    },
+    {
+      "title": "802.11 Architecture",
+      "short": "802.11 Arch"
+    },
+    {
+      "title": "Wi-Fi Bands & Standards",
+      "short": "Wi-Fi Standards"
+    },
+    {
+      "title": "CSMA/CA",
+      "short": "CSMA/CA"
+    },
+    {
+      "title": "Backoff & RTS/CTS",
+      "short": "Backoff / RTS"
+    },
+    {
+      "title": "802.11 Frame Format",
+      "short": "802.11 Frame"
+    },
+    {
+      "title": "Frame Types & OFDM/OFDMA",
+      "short": "Types / OFDM"
+    },
+    {
+      "title": "802.11 vs Ethernet",
+      "short": "Wi-Fi vs Ethernet"
+    },
+    {
+      "title": "Discovery: Beacon & Probe",
+      "short": "Discovery"
+    },
+    {
+      "title": "Association & AP Selection",
+      "short": "Association"
+    },
+    {
+      "title": "5G RAN & Join",
+      "short": "5G Access"
+    },
+    {
+      "title": "RAN Stack & Scheduling",
+      "short": "RAN / Scheduling"
+    },
+    {
+      "title": "MIMO Basics",
+      "short": "MIMO"
+    },
+    {
+      "title": "Spatial Diversity",
+      "short": "Diversity"
+    },
+    {
+      "title": "Spatial Multiplexing",
+      "short": "Multiplexing"
+    },
+    {
+      "title": "MU-MIMO & Tradeoffs",
+      "short": "MU-MIMO"
+    },
+    {
+      "title": "Mobility Spectrum",
+      "short": "Mobility Types"
+    },
+    {
+      "title": "Wi-Fi ESS Mobility",
+      "short": "ESS Mobility"
+    },
+    {
+      "title": "5G Handover",
+      "short": "Handover"
+    },
+    {
+      "title": "Handover Timeline & Performance",
+      "short": "Handover Perf"
+    },
+    {
+      "title": "Wi-Fi vs 5G Mobility",
+      "short": "Mobility Compare"
+    },
+    {
+      "title": "สรุปบทเรียน",
+      "short": "Summary"
+    },
+    {
+      "title": "สูตรจำก่อนสอบ — F4",
+      "short": "Cheat Sheet"
+    },
+    {
+      "title": "แบบทดสอบ F4 12 ข้อ",
+      "short": "Quiz"
+    },
+    {
+      "title": "การ์ดทบทวน — F4",
+      "short": "Flashcards"
+    },
+    {
+      "title": "คำศัพท์ — F4",
+      "short": "Glossary"
+    },
+    {
+      "title": "ข้อสอบหลังเรียน — 20 ข้อ",
+      "short": "Exam"
+    }
+  ],
+  "sections": [
+    {
+      "label": "1. Wireless Networks",
+      "topics": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "label": "2. Radio & Channel",
+      "topics": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    {
+      "label": "3. Wi-Fi & IEEE 802.11",
+      "topics": [
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ]
+    },
+    {
+      "label": "4. Access & Association",
+      "topics": [
+        24,
+        25,
+        26,
+        27
+      ]
+    },
+    {
+      "label": "5. MIMO",
+      "topics": [
+        28,
+        29,
+        30,
+        31
+      ]
+    },
+    {
+      "label": "6. Mobility",
+      "topics": [
+        32,
+        33,
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "label": "ทบทวนและฝึกฝน",
+      "topics": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ]
+    }
+  ],
+  "dbm": [
+    {
+      "label": "0 dBm",
+      "mw": "1 mW",
+      "note": "จุดอ้างอิง: 0 dBm = 1 mW"
+    },
+    {
+      "label": "10 dBm",
+      "mw": "10 mW",
+      "note": "กำลังเพิ่ม 10 dB = กำลังเพิ่ม 10 เท่า"
+    },
+    {
+      "label": "20 dBm",
+      "mw": "100 mW",
+      "note": "20 dBm = 100 mW"
+    },
+    {
+      "label": "30 dBm",
+      "mw": "1 W",
+      "note": "30 dBm = 1 W"
+    },
+    {
+      "label": "250 mW",
+      "mw": "≈ 24 dBm",
+      "note": "ตัวอย่างกำลังส่งมือถือสูงสุดทั่วไป 250 mW ≈ 24 dBm"
+    }
+  ],
+  "csmaModes": [
+    {
+      "id": "basic",
+      "name": "Basic CSMA/CA",
+      "summary": "ฟัง channel → รอ DIFS → ส่ง DATA → รอ ACK หลัง SIFS",
+      "steps": [
+        {
+          "n": "1",
+          "label": "Channel idle → DIFS",
+          "detail": "ถ้าตรวจพบว่า channel idle เป็นเวลา DIFS → ส่ง frame ได้ทันที; 802.11 ไม่ทำ collision detection ระหว่างส่ง"
+        },
+        {
+          "n": "2",
+          "label": "Channel busy → backoff",
+          "detail": "ถ้า channel busy → เริ่ม random backoff; timer นับถอยหลังขณะ channel idle และเมื่อ timer หมดจึงส่ง"
+        },
+        {
+          "n": "3",
+          "label": "DATA",
+          "detail": "ส่ง data frame ไปยัง AP/ receiver"
+        },
+        {
+          "n": "4",
+          "label": "ACK หลัง SIFS",
+          "detail": "receiver ได้รับ frame ถูกต้อง → ตอบ ACK หลัง SIFS"
+        },
+        {
+          "n": "5",
+          "label": "ไม่ได้รับ ACK",
+          "detail": "sender เพิ่ม random backoff interval แล้วลองใหม่ เพราะอาจเกิด collision ที่ receiver จาก hidden terminal"
+        }
+      ],
+      "note": "SIFS สั้นกว่า DIFS มาก ทำให้ ACK/CTS มีสิทธิ์ส่งก่อน station อื่น"
+    },
+    {
+      "id": "rts",
+      "name": "RTS / CTS",
+      "summary": "จอง channel ด้วย RTS/CTS ก่อนส่ง DATA ขนาดใหญ่",
+      "steps": [
+        {
+          "n": "1",
+          "label": "RTS",
+          "detail": "Sender ส่ง RTS ไปยัง AP/BS ด้วย CSMA; RTS อาจชนได้แต่มีขนาดสั้น และระบุ duration ของการส่ง data ที่จะตามมา"
+        },
+        {
+          "n": "2",
+          "label": "CTS broadcast",
+          "detail": "AP/BS ตอบ CTS แบบ broadcast พร้อมระบุ duration"
+        },
+        {
+          "n": "3",
+          "label": "Node อื่น defer",
+          "detail": "ทุก node ที่ได้ยิน RTS/CTS จะ defer การส่ง"
+        },
+        {
+          "n": "4",
+          "label": "DATA",
+          "detail": "Sender ส่ง DATA หลังจอง channel แล้ว"
+        },
+        {
+          "n": "5",
+          "label": "ACK",
+          "detail": "Receiver ตอบ ACK เมื่อได้รับ data ถูกต้อง"
+        }
+      ],
+      "note": "RTS/CTS แก้ hidden terminal และลด collision ของ data frame ขนาดใหญ่ แต่มี overhead และ RTS ยังชนกันได้"
+    }
+  ],
+  "frameFields": [
+    {
+      "field": "Frame Control",
+      "size": "2 B",
+      "detail": "type (management/control/data), subtype, toAP/fromAP, retry, power management, more data ฯลฯ"
+    },
+    {
+      "field": "Duration",
+      "size": "2 B",
+      "detail": "ระยะเวลาจอง channel ใช้กับ RTS/CTS"
+    },
+    {
+      "field": "Address 1",
+      "size": "6 B",
+      "detail": "MAC ของ receiver (wireless host หรือ AP)"
+    },
+    {
+      "field": "Address 2",
+      "size": "6 B",
+      "detail": "MAC ของ transmitter (wireless host หรือ AP)"
+    },
+    {
+      "field": "Address 3",
+      "size": "6 B",
+      "detail": "MAC ของ router interface ที่ AP ต่ออยู่"
+    },
+    {
+      "field": "Sequence Control",
+      "size": "2 B",
+      "detail": "sequence number สำหรับ reliable transfer"
+    },
+    {
+      "field": "Address 4",
+      "size": "6 B",
+      "detail": "ใช้เฉพาะ ad hoc mode"
+    },
+    {
+      "field": "Payload",
+      "size": "0–2312 B",
+      "detail": "IP datagram หรือ control/management message"
+    },
+    {
+      "field": "CRC",
+      "size": "4 B",
+      "detail": "ตรวจ error"
+    }
+  ],
+  "discoveryModes": [
+    {
+      "id": "beacon",
+      "name": "Beaconing",
+      "label": "Passive scanning",
+      "summary": "AP ส่ง beacon frame แบบ broadcast เป็นระยะ; device ฟัง",
+      "steps": [
+        "AP ส่ง beacon (broadcast) เป็นระยะ",
+        "Device ที่ต้องการเชื่อมต่อฟัง beacon",
+        "ได้ข้อมูลเครือข่ายโดยไม่ต้องส่งคำขอเอง"
+      ],
+      "tradeoff": "ประหยัดพลังงานของ device แต่ต้องรอ beacon"
+    },
+    {
+      "id": "probe",
+      "name": "Probing",
+      "label": "Active scanning",
+      "summary": "Device ส่ง probe request แบบ broadcast; AP ตอบ probe response",
+      "steps": [
+        "Device ส่ง probe request (broadcast)",
+        "AP1, AP2, ... ที่ได้ยินตอบ probe response",
+        "Device รวบรวมผลและเลือก AP"
+      ],
+      "tradeoff": "ค้นหาเร็ว แต่ device ต้องส่งและรอคำตอบ"
+    }
+  ],
+  "handoverSteps": [
+    {
+      "n": "1",
+      "name": "เลือก target BS",
+      "detail": "Source BS เลือก target BS จากผลการวัดสัญญาณ/load แล้วส่ง Handover Request ไปยัง target"
+    },
+    {
+      "n": "2",
+      "name": "Target pre-allocate + HR ACK",
+      "detail": "Target BS pre-allocate radio resources (time slots/RBs) และตอบ HR ACK พร้อมข้อมูลที่จำเป็น"
+    },
+    {
+      "n": "3",
+      "name": "แจ้ง mobile",
+      "detail": "Source BS แจ้ง mobile ถึง base station ใหม่; mobile เริ่มส่งผ่าน target ได้ — ในมุมของ mobile เหมือน handover เสร็จแล้ว"
+    },
+    {
+      "n": "4",
+      "name": "Forward data",
+      "detail": "Source BS หยุดส่ง datagram ไป mobile โดยตรง แล้ว forward ไปยัง target BS เพื่อให้ target ส่งต่อทาง radio"
+    },
+    {
+      "n": "5",
+      "name": "แจ้ง AMF/SMF",
+      "detail": "Target BS แจ้ง AMF/SMF ว่าตนเป็น base station ใหม่ของ mobile"
+    },
+    {
+      "n": "6",
+      "name": "UPF tunnel switch",
+      "detail": "SMF สั่ง UPF ให้เปลี่ยน tunnel endpoint ไปยัง target BS; target ตอบ ACK กลับ source; source ปล่อย resource"
+    },
+    {
+      "n": "7",
+      "name": "Data ผ่าน tunnel ใหม่",
+      "detail": "Datagram ของ mobile ไหลผ่าน tunnel ใหม่จาก target BS ไปยัง UPF"
+    }
+  ],
+  "quiz": [
+    {
+      "q": "องค์ประกอบพื้นฐาน 4 อย่างของ wireless network คืออะไร?",
+      "options": [
+        "wireless host, base station, wireless link, wireless device radio",
+        "router, switch, hub, modem",
+        "AP, SSID, BSSID, channel",
+        "DNS, DHCP, ARP, NAT"
+      ],
+      "correct": 0,
+      "explain": "source ระบุองค์ประกอบหลัก 4 อย่าง: wireless hosts, base station, wireless link และ wireless device radio"
+    },
+    {
+      "q": "ข้อใดอธิบายความสัมพันธ์ wireless กับ mobility ถูกต้อง?",
+      "options": [
+        "mobility หมายถึงใช้คลื่นวิทยุเท่านั้น",
+        "wireless กับ mobility เป็นคนละมิติ; อุปกรณ์ wireless อาจอยู่นิ่งก็ได้",
+        "wireless ทุกชนิดต้องเคลื่อนที่เสมอ",
+        "mobile device ต้องใช้ wireless ตลอดเวลา"
+      ],
+      "correct": 1,
+      "explain": "AP/IoT sensor อยู่นิ่งได้ ขณะที่ laptop อาจย้ายที่แล้วกลับมาต่อ Ethernet"
+    },
+    {
+      "q": "ความถี่สูงขึ้นส่งผลต่อ wavelength อย่างไร?",
+      "options": [
+        "wavelength ไม่เปลี่ยน",
+        "wavelength เป็นศูนย์",
+        "wavelength สั้นลง เพราะ f = c / λ",
+        "wavelength ยาวขึ้น"
+      ],
+      "correct": 2,
+      "explain": "f = c / λ ดังนั้นความถี่สูงขึ้น → wavelength สั้นลง"
+    },
+    {
+      "q": "SNR สูงหมายความว่าอย่างไร?",
+      "options": [
+        "noise แรงกว่าสัญญาณ",
+        "กำลังสัญญาณเท่ากับ noise",
+        "bandwidth เป็นศูนย์",
+        "แยกสัญญาณจาก noise ได้ง่ายขึ้น ส่งข้อมูลได้เร็ว/ผิดพลาดน้อย"
+      ],
+      "correct": 3,
+      "explain": "SNR คืออัตราส่วนกำลังสัญญาณต่อ noise; SNR สูงแยกสัญญาณได้ง่ายกว่า"
+    },
+    {
+      "q": "Hidden terminal เกิดจากอะไร?",
+      "options": [
+        "A กับ C ไม่ได้ยินกัน แต่ส่งพร้อมกันแล้วชนกันที่ B",
+        "ทุก node ได้ยินกันพร้อมกัน",
+        "AP ส่ง beacon ถี่เกินไป",
+        "MAC address ซ้ำกัน"
+      ],
+      "correct": 0,
+      "explain": "A กับ B ได้ยินกัน, B กับ C ได้ยินกัน, แต่ A กับ C ไม่ได้ยินกัน จึงชนกันที่ B"
+    },
+    {
+      "q": "Wi-Fi ใช้ MAC protocol ใด?",
+      "options": [
+        "Token passing",
+        "CSMA/CA",
+        "CSMA/CD",
+        "TDMA only"
+      ],
+      "correct": 1,
+      "explain": "802.11 ใช้ CSMA/CA (Collision Avoidance) ไม่ใช่ CSMA/CD เพราะตรวจจับ collision ขณะส่งได้ยาก"
+    },
+    {
+      "q": "ACK ใน 802.11 จำเป็นเพราะอะไร?",
+      "options": [
+        "เพื่อเปลี่ยน MAC address",
+        "เพื่อให้ AP ปิดการทำงาน",
+        "Sender อาจไม่รู้ว่า collision เกิดที่ receiver จาก hidden terminal",
+        "เพื่อเพิ่ม bandwidth"
+      ],
+      "correct": 2,
+      "explain": "ACK เป็นหลักฐานว่า frame ถึงปลายทางจริง; ถ้าไม่มี ACK sender จะสันนิษฐานว่าหาย/ชนแล้ว retransmit"
+    },
+    {
+      "q": "Address 3 ใน 802.11 frame infrastructure mode คือ MAC ของอะไร?",
+      "options": [
+        "wireless receiver",
+        "wireless transmitter",
+        "ตัว AP เองเท่านั้น",
+        "router interface ที่ AP ต่ออยู่"
+      ],
+      "correct": 3,
+      "explain": "Address 3 = MAC ของ router interface ที่ AP ต่ออยู่ ใช้ระบุปลายทาง/ต้นทางฝั่ง wired"
+    },
+    {
+      "q": "Association กับ authentication ต่างกันอย่างไร?",
+      "options": [
+        "Association เป็นการตกลงเชื่อมต่อ; authentication จริงเกิดแยกภายหลัง",
+        "ทั้งสองเป็นสิ่งเดียวกัน",
+        "Association คือการใส่รหัส Wi-Fi",
+        "Authentication เกิดก่อน beacon เสมอ"
+      ],
+      "correct": 0,
+      "explain": "Beacon/probe/association ยังไม่แลก identity/credentials; WPA2/WPA3/802.1X authentication เกิดภายหลัง"
+    },
+    {
+      "q": "การ join 5G มี 2 phase หลักอะไร?",
+      "options": [
+        "Scanning และ Roaming",
+        "Registration และ PDU Session Establishment",
+        "Beacon และ Probe",
+        "RTS และ CTS"
+      ],
+      "correct": 1,
+      "explain": "Phase 1 Registration ใช้ AMF; Phase 2 PDU Session Establishment ให้ IP และสร้าง data-plane path ไป UPF"
+    },
+    {
+      "q": "Spatial multiplexing ต่างจาก spatial diversity อย่างไร?",
+      "options": [
+        "diversity ใช้ MU-MIMO เท่านั้น",
+        "ทั้งสองไม่เกี่ยวกับ MIMO",
+        "multiplexing ส่งข้อมูลต่างกันหลาย stream เพื่อเพิ่ม rate",
+        "multiplexing ส่งข้อมูลเดียวกันเพื่อเพิ่ม reliability"
+      ],
+      "correct": 2,
+      "explain": "diversity ส่งข้อมูลเดียวกันหลาย path เพื่อ reliability/range; multiplexing ส่งข้อมูลต่างกันเพื่อเพิ่ม data rate"
+    },
+    {
+      "q": "Mobility ใน Wi-Fi ESS อาศัยอะไร?",
+      "options": [
+        "การเปลี่ยน IP ทุกครั้งที่ย้าย AP",
+        "การใช้ CSMA/CD",
+        "การปิด device ระหว่างย้าย",
+        "หลาย BSS ใน subnet เดียวกัน ใช้ SSID เดียวกัน และเชื่อมผ่าน DS"
+      ],
+      "correct": 3,
+      "explain": "ESS มีหลาย BSS ใน layer-3 subnet เดียวกัน ใช้ SSID เดียวกัน เชื่อมผ่าน DS; ใช้ re-association/fast re-auth ภายใน ESS"
+    }
+  ],
+  "exam": [
+    {
+      "q": "Base station ทำหน้าที่หลักอะไร?",
+      "options": [
+        "relay packet ระหว่าง wired network กับ wireless host ในพื้นที่ของตน",
+        "เลือกเส้นทาง end-to-end ด้วย OSPF",
+        "แปลง domain name เป็น IP",
+        "เก็บ ARP table ของทั้ง Internet"
+      ],
+      "correct": 0,
+      "explain": "base station เป็นโครงสร้างพื้นฐานที่เชื่อม wired network และ relay packet กับ wireless host"
+    },
+    {
+      "q": "ข้อใดเป็นตัวอย่าง ad hoc wireless network?",
+      "options": [
+        "Ethernet switch ในห้องเรียน",
+        "Bluetooth piconet",
+        "Wi-Fi ในมหาวิทยาลัยที่มี AP",
+        "4G cell tower"
+      ],
+      "correct": 1,
+      "explain": "ad hoc network ไม่มี base station/AP; Bluetooth piconet เป็นตัวอย่างใน source"
+    },
+    {
+      "q": "ข้อใดถูกเกี่ยวกับ wireless และ mobility?",
+      "options": [
+        "mobile device ใช้ wireless เท่านั้น",
+        "mobility คือความเร็วของคลื่นวิทยุ",
+        "wireless ไม่จำเป็นต้อง mobile และ mobile ไม่จำเป็นต้อง wireless ตลอดเวลา",
+        "wireless ทุกอุปกรณ์ต้องเคลื่อนที่"
+      ],
+      "correct": 2,
+      "explain": "wireless และ mobility เป็นคนละมิติ; AP/IoT อยู่นิ่งได้ และ laptop อาจกลับมาต่อ wired"
+    },
+    {
+      "q": "ถ้า f = 2.4 GHz และ c คือความเร็วแสง ข้อใดถูก?",
+      "options": [
+        "wavelength ยาวกว่าคลื่นความถี่ต่ำ",
+        "wavelength เท่ากับ c",
+        "ไม่สามารถคำนวณได้",
+        "wavelength สั้นกว่าคลื่นความถี่ต่ำ"
+      ],
+      "correct": 3,
+      "explain": "f = c / λ → ความถี่สูงกว่าจะมี wavelength สั้นกว่า"
+    },
+    {
+      "q": "0 dBm เท่ากับกำลังเท่าใด?",
+      "options": [
+        "1 mW",
+        "0 mW",
+        "10 mW",
+        "1 W"
+      ],
+      "correct": 0,
+      "explain": "dBm เทียบกับ 1 mW; 0 dBm = 1 mW, 10 dBm = 10 mW, 20 dBm = 100 mW, 30 dBm = 1 W"
+    },
+    {
+      "q": "Radio bandwidth กับ link bandwidth ต่างกันอย่างไร?",
+      "options": [
+        "link bandwidth = ความกว้าง channel เป็น MHz",
+        "radio bandwidth = ความกว้าง spectrum (Hz); link bandwidth = อัตราส่งข้อมูล (bps)",
+        "ทั้งสองมีหน่วย bps เหมือนกัน",
+        "radio bandwidth = จำนวนเสาอากาศ"
+      ],
+      "correct": 1,
+      "explain": "source เตือนว่าคำว่า bandwidth มี 2 ความหมาย: spectrum width และ data rate"
+    },
+    {
+      "q": "ข้อใดเป็นแหล่ง noise ที่เกิดแม้ไม่มี transmitter อื่น?",
+      "options": [
+        "beacon frame",
+        "RTS/CTS collision",
+        "thermal noise และ electronic noise",
+        "interference จาก Wi-Fi ข้างบ้าน"
+      ],
+      "correct": 2,
+      "explain": "Noise เกิดจาก thermal noise ตามอุณหภูมิและ electronic noise จากความไม่สมบูรณ์ของวงจร"
+    },
+    {
+      "q": "SNR = 0 dB หมายความว่าอะไร?",
+      "options": [
+        "ไม่มีสัญญาณเลย",
+        "สัญญาณแรงกว่า noise 10 เท่า",
+        "bandwidth เป็นศูนย์",
+        "กำลังสัญญาณเท่ากับกำลัง noise"
+      ],
+      "correct": 3,
+      "explain": "SNR(dB) = 10 log10(P_signal/P_noise); 0 dB เมื่อ P_signal = P_noise"
+    },
+    {
+      "q": "Shannon capacity ขึ้นกับอะไร?",
+      "options": [
+        "bandwidth และ SNR",
+        "MAC address และ IP address",
+        "จำนวน AP และ SSID",
+        "จำนวน packet ที่หาย"
+      ],
+      "correct": 0,
+      "explain": "C = B · log2(1 + S/N); capacity ขึ้นกับ bandwidth และอัตราส่วนสัญญาณต่อ noise"
+    },
+    {
+      "q": "Hidden terminal ทำให้เกิดปัญหาอะไร?",
+      "options": [
+        "Channel ว่างตลอดเวลา",
+        "A กับ C ส่งพร้อมกันโดยไม่รู้ว่าอีกฝ่ายส่ง และชนกันที่ B",
+        "ทุก node ได้ยินกันทำให้ส่งเร็วขึ้น",
+        "AP เปลี่ยน MAC address"
+      ],
+      "correct": 1,
+      "explain": "A กับ C ไม่ได้ยินกัน จึงอาจส่งพร้อมกันและเกิด collision ที่ B; ต้องใช้ ACK และ RTS/CTS"
+    },
+    {
+      "q": "Multipath propagation อาจทำให้เกิดอะไร?",
+      "options": [
+        "VLAN hopping",
+        "DHCP starvation",
+        "ISI และ fading",
+        "ARP spoofing"
+      ],
+      "correct": 2,
+      "explain": "สัญญาณหลาย copy มาถึงต่างเวลา/phase อาจเสริมหรือหักล้างกัน และทำให้เกิด inter-symbol interference"
+    },
+    {
+      "q": "802.11 ใช้ CSMA/CA เพราะอะไร?",
+      "options": [
+        "เพราะ Ethernet ใช้ CSMA/CA",
+        "เพราะไม่มี ACK",
+        "เพราะใช้สายทองแดง",
+        "ตรวจจับ collision ขณะส่งได้ยาก และ hidden terminal ทำให้ฟังอย่างเดียวไม่พอ"
+      ],
+      "correct": 3,
+      "explain": "wireless ตรวจจับ collision ระหว่างส่งได้ยาก; CSMA/CA ใช้ avoidance, ACK และ backoff"
+    },
+    {
+      "q": "ACK ใน 802.11 ตอบหลังจากช่วงเวลาใด?",
+      "options": [
+        "SIFS",
+        "DIFS",
+        "Backoff ทั้งช่วง",
+        "ไม่มีช่วงเวลา"
+      ],
+      "correct": 0,
+      "explain": "receiver ตอบ ACK หลัง SIFS ซึ่งสั้นกว่า DIFS มาก"
+    },
+    {
+      "q": "RTS/CTS ช่วยแก้ปัญหาใด?",
+      "options": [
+        "เปลี่ยน IP subnet",
+        "hidden terminal และ collision ของ data frame ขนาดใหญ่",
+        "เพิ่มความเร็ว modulation",
+        "ลดจำนวน MAC address"
+      ],
+      "correct": 1,
+      "explain": "RTS/CTS จอง channel ล่วงหน้า; node ที่ได้ยินจะ defer ทำให้ลด collision ของ data frame"
+    },
+    {
+      "q": "ใน infrastructure mode Address 1 ของ frame ที่ device ส่งไป AP คือ MAC ของใคร?",
+      "options": [
+        "router interface ฝั่ง wired",
+        "broadcast address",
+        "AP",
+        "device"
+      ],
+      "correct": 2,
+      "explain": "Device → AP: Address1 = AP's MAC, Address2 = device's MAC, Address3 = router interface's MAC"
+    },
+    {
+      "q": "Association ใน Wi-Fi ยังไม่ถือว่า authentication จริงเพราะอะไร?",
+      "options": [
+        "เพราะยังไม่ได้ DHCP",
+        "เพราะยังไม่ได้ beacon",
+        "เพราะยังไม่ได้ IP address",
+        "ยังไม่มีการแลกเปลี่ยน identity/credentials จริง; authentication เกิดภายหลัง"
+      ],
+      "correct": 3,
+      "explain": "association เป็นเพียงคำถามว่า Can we talk?; WPA2/WPA3/802.1X authentication เกิดภายหลัง"
+    },
+    {
+      "q": "5G join Phase 2 (PDU Session Establishment) ทำอะไร?",
+      "options": [
+        "allocate IP และสร้าง data-plane path ไปยัง UPF",
+        "ส่ง beacon",
+        "เลือก AP จาก RSSI",
+        "ทำ CSMA/CA"
+      ],
+      "correct": 0,
+      "explain": "SMF เลือก UPF, allocate IP และสร้าง session; PDU = Protocol Data Unit = packet"
+    },
+    {
+      "q": "MIMO spatial diversity ใช้ข้อมูลแบบใด?",
+      "options": [
+        "เฉพาะ MU-MIMO",
+        "ข้อมูลเดียวกันผ่านหลาย path เพื่อ reliability/range",
+        "ข้อมูลต่างกันหลาย stream เพื่อเพิ่ม rate",
+        "เฉพาะ control frame"
+      ],
+      "correct": 1,
+      "explain": "spatial diversity ส่ง redundant stream ข้อมูลเดียวกันผ่าน antenna หลายตัว; receiver รวมสัญญาณ"
+    },
+    {
+      "q": "MU-MIMO ต่างจาก SU-MIMO อย่างไร?",
+      "options": [
+        "SU-MIMO ใช้ได้เฉพาะ 5G",
+        "MU-MIMO ไม่ใช้ beamforming",
+        "MU-MIMO ส่งให้ผู้ใช้หลายคนพร้อมกันเพื่อเพิ่ม capacity รวม",
+        "MU-MIMO ใช้ผู้ใช้คนเดียวเสมอ"
+      ],
+      "correct": 2,
+      "explain": "MU-MIMO ใช้ multiple transmit antennas ส่งให้ผู้ใช้หลายคนพร้อมกันด้วย beamforming/spatial multiplexing"
+    },
+    {
+      "q": "5G handover ขั้นที่ SMF สั่ง UPF ทำอะไร?",
+      "options": [
+        "สร้าง beacon ใหม่",
+        "เลือก SSID",
+        "เปลี่ยน MAC address ของ device",
+        "เปลี่ยน tunnel endpoint ไปยัง target base station"
+      ],
+      "correct": 3,
+      "explain": "SMF สั่ง UPF ให้เปลี่ยน tunnel endpoint ไปยัง target BS; target ตอบ ACK และ source ปล่อย resource"
+    }
+  ],
+  "cheat": [
+    {
+      "term": "Wireless network",
+      "def": "wireless host + base station + wireless link + device radio"
+    },
+    {
+      "term": "Wireless vs mobility",
+      "def": "wireless = ใช้คลื่นวิทยุ; mobility = เปลี่ยน point of attachment และรักษา connection"
+    },
+    {
+      "term": "Base station",
+      "def": "relay ระหว่าง wired network กับ wireless host; เช่น AP, eNodeB/gNodeB"
+    },
+    {
+      "term": "Ad hoc",
+      "def": "ไม่มี base station/AP; device จัดเครือข่ายกันเอง เช่น Bluetooth piconet"
+    },
+    {
+      "term": "f = c / λ",
+      "def": "ความถี่สูง → wavelength สั้น; ความถี่ต่ำ → wavelength ยาว"
+    },
+    {
+      "term": "dBm",
+      "def": "P_dBm = 10·log10(P_mW/1mW); 0 dBm = 1 mW, 30 dBm = 1 W"
+    },
+    {
+      "term": "Radio bandwidth",
+      "def": "ความกว้างของ spectrum/channel หน่วย Hz, kHz, MHz"
+    },
+    {
+      "term": "Link bandwidth",
+      "def": "อัตราการส่งข้อมูล หน่วย bps, Mbps, Gbps"
+    },
+    {
+      "term": "Interference",
+      "def": "พลังงานจาก transmitter อื่นที่ใช้ความถี่เดียวกัน/ใกล้เคียง"
+    },
+    {
+      "term": "Noise",
+      "def": "thermal noise + electronic noise แม้ไม่มี transmitter อื่น"
+    },
+    {
+      "term": "SNR",
+      "def": "SNR(dB) = 10·log10(P_signal/P_noise); SNR สูงแยกสัญญาณได้ง่าย"
+    },
+    {
+      "term": "Shannon",
+      "def": "C = B·log2(1 + S/N); เป็นขีดจำกัดทางทฤษฎี"
+    },
+    {
+      "term": "Path loss",
+      "def": "สัญญาณอ่อนลงตาม (f·d)^n; n = 2 free space, 2.7–3.5 urban, 3–6 indoor"
+    },
+    {
+      "term": "Hidden terminal",
+      "def": "A/C ไม่ได้ยินกัน แต่ชนกันที่ B; ต้องใช้ ACK และ RTS/CTS"
+    },
+    {
+      "term": "Multipath",
+      "def": "สัญญาณหลาย copy มาถึง receiver ต่างเวลา/phase; อาจเกิด ISI และ fading"
+    },
+    {
+      "term": "Coherence time",
+      "def": "ช่วงเวลาที่บิตหนึ่งอยู่ใน channel; แปรผกผันกับ frequency และ receiver velocity"
+    },
+    {
+      "term": "802.11 MAC",
+      "def": "CSMA/CA + DIFS/SIFS + ACK + random backoff; ไม่ทำ collision detection"
+    },
+    {
+      "term": "DIFS / SIFS",
+      "def": "SIFS สั้นกว่า DIFS; ใช้ก่อน ACK/CTS"
+    },
+    {
+      "term": "RTS/CTS",
+      "def": "จอง channel ล่วงหน้า ลด collision ของ data frame และแก้ hidden terminal"
+    },
+    {
+      "term": "802.11 address",
+      "def": "addr1 receiver, addr2 transmitter, addr3 router interface; addr4 ใช้ ad hoc"
+    },
+    {
+      "term": "Association",
+      "def": "ตกลงเชื่อมต่อกับ AP; ยังไม่ใช่ authentication จริง"
+    },
+    {
+      "term": "5G join",
+      "def": "Phase 1 Registration (AMF); Phase 2 PDU Session Establishment (SMF/UPF, IP)"
+    },
+    {
+      "term": "MIMO",
+      "def": "multiple antennas; แลก spatial resource ระหว่าง rate, reliability, range"
+    },
+    {
+      "term": "Handover",
+      "def": "เปลี่ยน point of attachment จาก source BS ไป target BS โดยรักษา connection"
+    },
+    {
+      "term": "ESS",
+      "def": "หลาย BSS ใน subnet เดียวกัน ใช้ SSID เดียวกัน เชื่อมผ่าน DS"
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "องค์ประกอบหลัก 4 อย่างของ wireless network?",
+      "a": "wireless hosts, base station, wireless link, wireless device radio"
+    },
+    {
+      "q": "Wireless กับ mobility ต่างกันอย่างไร?",
+      "a": "wireless = ใช้คลื่นวิทยุ; mobility = เปลี่ยน point of attachment และรักษา connection"
+    },
+    {
+      "q": "0 dBm เท่ากับกี่ mW?",
+      "a": "1 mW; 10 dBm = 10 mW, 20 dBm = 100 mW, 30 dBm = 1 W"
+    },
+    {
+      "q": "สูตร Shannon capacity?",
+      "a": "C = B · log2(1 + S/N) โดย S/N เป็น linear ไม่ใช่ dB"
+    },
+    {
+      "q": "Hidden terminal คืออะไร?",
+      "a": "A กับ C ไม่ได้ยินกัน แต่ส่งพร้อมกันแล้วชนกันที่ B; ต้องใช้ ACK/RTS/CTS"
+    },
+    {
+      "q": "Multipath ทำให้เกิดอะไร?",
+      "a": "สัญญาณหลาย copy มาถึงต่างเวลา/phase → ISI และ fading"
+    },
+    {
+      "q": "Wi-Fi ใช้ MAC อะไร?",
+      "a": "CSMA/CA ไม่ใช่ CSMA/CD"
+    },
+    {
+      "q": "ACK ใน 802.11 ตอบหลัง SIFS หรือ DIFS?",
+      "a": "หลัง SIFS ซึ่งสั้นกว่า DIFS"
+    },
+    {
+      "q": "802.11 Address 3 คืออะไร?",
+      "a": "MAC ของ router interface ที่ AP ต่ออยู่"
+    },
+    {
+      "q": "Association กับ authentication ต่างกันอย่างไร?",
+      "a": "association เป็นการตกลงเชื่อมต่อ; authentication จริงเกิดภายหลัง (WPA2/WPA3/802.1X)"
+    },
+    {
+      "q": "Spatial diversity กับ spatial multiplexing?",
+      "a": "diversity ส่งข้อมูลเดียวกันเพื่อ reliability/range; multiplexing ส่งข้อมูลต่างกันเพื่อ rate"
+    },
+    {
+      "q": "5G handover ให้ SMF สั่ง UPF ทำอะไร?",
+      "a": "เปลี่ยน tunnel endpoint ไปยัง target base station"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Wireless host",
+      "def": "อุปกรณ์ปลายทาง เช่น laptop, smartphone, IoT device ที่รัน application และอาจอยู่นิ่งหรือเคลื่อนที่"
+    },
+    {
+      "term": "Base station",
+      "def": "อุปกรณ์โครงสร้างพื้นฐานที่เชื่อม wired network และ relay packet กับ wireless host ในพื้นที่ของตน"
+    },
+    {
+      "term": "Wireless link",
+      "def": "ช่องทางสื่อสารด้วยคลื่นวิทยุระหว่าง device กับ base station หรือใช้เป็น backbone link"
+    },
+    {
+      "term": "Infrastructure network",
+      "def": "wireless network ที่มี base station/AP เป็นจุดเชื่อมต่อกับเครือข่ายที่ใหญ่กว่า"
+    },
+    {
+      "term": "Ad hoc network",
+      "def": "wireless network ที่ไม่มี base station/AP; device จัดเครือข่ายกันเอง"
+    },
+    {
+      "term": "Mobility",
+      "def": "การที่อุปกรณ์เปลี่ยน point of attachment และยังคงสื่อสารต่อได้"
+    },
+    {
+      "term": "Edge network",
+      "def": "ส่วน access ของ wireless network เช่น AP + Wi-Fi link หรือ RAN ของ 5G"
+    },
+    {
+      "term": "Spectrum",
+      "def": "ช่วงความถี่ทั้งหมดที่พิจารณา"
+    },
+    {
+      "term": "Channel",
+      "def": "ช่วงย่อยที่แบ่งออกมาจาก spectrum"
+    },
+    {
+      "term": "Wavelength",
+      "def": "ความยาวหนึ่งรอบของคลื่น; λ"
+    },
+    {
+      "term": "Frequency",
+      "def": "จำนวนรอบต่อวินาที; f = c / λ"
+    },
+    {
+      "term": "dBm",
+      "def": "หน่วยกำลังแบบลอการิทึมเทียบกับ 1 mW"
+    },
+    {
+      "term": "PSD",
+      "def": "Power Spectral Density — กำลังของสัญญาณที่กระจายอยู่ตามความถี่"
+    },
+    {
+      "term": "Radio bandwidth",
+      "def": "ความกว้างของช่วงความถี่ที่ใช้ หน่วย Hz, kHz, MHz"
+    },
+    {
+      "term": "Link bandwidth",
+      "def": "ความสามารถในการส่งข้อมูล หน่วย bps, Mbps, Gbps"
+    },
+    {
+      "term": "Interference",
+      "def": "พลังงานจาก transmitter อื่นที่ใช้ความถี่เดียวกันหรือใกล้เคียง"
+    },
+    {
+      "term": "Noise",
+      "def": "thermal noise และ electronic noise ที่เกิดแม้ไม่มี transmitter อื่น"
+    },
+    {
+      "term": "SNR",
+      "def": "Signal-to-Noise Ratio — อัตราส่วนกำลังสัญญาณต่อกำลัง noise"
+    },
+    {
+      "term": "Shannon capacity",
+      "def": "อัตราสูงสุดทางทฤษฎี C = B·log2(1+S/N)"
+    },
+    {
+      "term": "Path loss",
+      "def": "การที่สัญญาณอ่อนลงตามระยะทางและความถี่; ∝ (f·d)^n"
+    },
+    {
+      "term": "Hidden terminal",
+      "def": "A กับ C ไม่ได้ยินกัน แต่ส่งพร้อมกันแล้วชนกันที่ B"
+    },
+    {
+      "term": "Multipath",
+      "def": "สัญญาณจาก transmitter เดียวเดินทางถึง receiver ผ่านหลายเส้นทาง"
+    },
+    {
+      "term": "Coherence time",
+      "def": "ช่วงเวลาที่บิตหนึ่งอยู่ใน channel จน receiver รับได้"
+    },
+    {
+      "term": "ISI",
+      "def": "Inter-Symbol Interference — copy ที่มาช้าไปซ้อนทับ symbol ถัดไป"
+    },
+    {
+      "term": "802.11",
+      "def": "มาตรฐาน wireless LAN (Wi-Fi) ระดับ link layer"
+    },
+    {
+      "term": "AP",
+      "def": "Access Point — base station ของ WLAN และเป็น bridge ระหว่าง 802.11 กับ 802.3"
+    },
+    {
+      "term": "BSS / BSSID",
+      "def": "BSS คือกลุ่ม AP กับ station ใต้ AP เดียว; BSSID คือ MAC address ของ AP"
+    },
+    {
+      "term": "SSID / ESS",
+      "def": "SSID คือชื่อเครือข่าย; ESS คือหลาย BSS ที่เชื่อมผ่าน DS ด้วย SSID เดียวกัน"
+    },
+    {
+      "term": "CSMA/CA",
+      "def": "Carrier Sense Multiple Access with Collision Avoidance — MAC ของ 802.11"
+    },
+    {
+      "term": "DIFS / SIFS",
+      "def": "DIFS คือเวลารอก่อน contention; SIFS สั้นกว่าและใช้ก่อน ACK/CTS"
+    },
+    {
+      "term": "RTS / CTS",
+      "def": "Request to Send / Clear to Send — จอง channel ล่วงหน้าก่อนส่ง data"
+    },
+    {
+      "term": "MIMO",
+      "def": "Multiple Input Multiple Output — ใช้ multiple antennas ทั้งฝั่งส่งและรับ"
+    },
+    {
+      "term": "Spatial diversity",
+      "def": "ส่งข้อมูลเดียวกันผ่านหลาย path เพื่อ reliability/range"
+    },
+    {
+      "term": "Spatial multiplexing",
+      "def": "ส่งข้อมูลต่างกันหลาย stream เพื่อเพิ่ม data rate"
+    },
+    {
+      "term": "MU-MIMO",
+      "def": "Multi-User MIMO — ส่งให้ผู้ใช้หลายคนพร้อมกันด้วย beamforming/spatial multiplexing"
+    },
+    {
+      "term": "Handover",
+      "def": "การเปลี่ยน point of attachment จาก source base station ไป target base station"
+    }
+  ]
+};

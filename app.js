@@ -17,11 +17,26 @@
 
   /* Chapter metadata — แต่ละบทแยกหน้าเว็บ จึงใช้ดัชนีสไลด์แบบ local (เริ่มที่ 0) ภายในหน้า */
   var CHS = {
-    1: { start: 0, count: D.slides.length, sections: D.sections, slides: D.slides, cheat: D.cheat, flashcards: D.flashcards, glossary: D.glossary, exam: D.quick, thai: "พื้นฐานการสื่อสารข้อมูลและเครือข่าย", en: "Fundamentals of Computer Network" },
-    2: { start: 0, count: D.ch2.slides.length, sections: D.ch2.sections, slides: D.ch2.slides, cheat: D.ch2.cheat, flashcards: D.ch2.flashcards, glossary: D.ch2.glossary, exam: D.ch2.exam, thai: "Network Models (โมเดลเครือข่าย)", en: "Network Models" },
-    3: { start: 0, count: D.ch3.slides.length, sections: D.ch3.sections, slides: D.ch3.slides, cheat: D.ch3.cheat, flashcards: D.ch3.flashcards, glossary: D.ch3.glossary, exam: D.ch3.exam, thai: "Application Layer (ชั้นโปรแกรมประยุกต์)", en: "Application Layer" },
-    4: { start: 0, count: D.ch4.slides.length, sections: D.ch4.sections, slides: D.ch4.slides, cheat: D.ch4.cheat, flashcards: D.ch4.flashcards, glossary: D.ch4.glossary, exam: D.ch4.exam, thai: "Transport Layer (ชั้นขนส่งข้อมูล)", en: "Transport Layer" }
+    1: { start: 0, count: D.slides.length, sections: D.sections, slides: D.slides, cheat: D.cheat, flashcards: D.flashcards, glossary: D.glossary, exam: D.quick, thai: "พื้นฐานการสื่อสารข้อมูลและเครือข่าย", en: "Fundamentals of Computer Network", file: "chapter1.html", code: "M1", bookChapter: 1 },
+    2: { start: 0, count: D.ch2.slides.length, sections: D.ch2.sections, slides: D.ch2.slides, cheat: D.ch2.cheat, flashcards: D.ch2.flashcards, glossary: D.ch2.glossary, exam: D.ch2.exam, thai: "Network Models (โมเดลเครือข่าย)", en: "Network Models", file: "chapter2.html", code: "M2", bookChapter: 2 },
+    3: { start: 0, count: D.ch3.slides.length, sections: D.ch3.sections, slides: D.ch3.slides, cheat: D.ch3.cheat, flashcards: D.ch3.flashcards, glossary: D.ch3.glossary, exam: D.ch3.exam, thai: "Application Layer (ชั้นโปรแกรมประยุกต์)", en: "Application Layer", file: "chapter3.html", code: "M3", bookChapter: 3 },
+    4: { start: 0, count: D.ch4.slides.length, sections: D.ch4.sections, slides: D.ch4.slides, cheat: D.ch4.cheat, flashcards: D.ch4.flashcards, glossary: D.ch4.glossary, exam: D.ch4.exam, thai: "Transport Layer (ชั้นขนส่งข้อมูล)", en: "Transport Layer", file: "chapter4.html", code: "M4", bookChapter: 4 },
+    5: { start: 0, count: D.ch5.slides.length, sections: D.ch5.sections, slides: D.ch5.slides, cheat: D.ch5.cheat, flashcards: D.ch5.flashcards, glossary: D.ch5.glossary, exam: D.ch5.exam, thai: "Network Layer: Data Plane (ชั้นเครือข่าย — ระนาบข้อมูล)", en: "Network Layer: Data Plane", file: "final-ch4-data-plane.html", code: "F1", bookChapter: 4 },
+    6: { start: 0, count: D.ch6.slides.length, sections: D.ch6.sections, slides: D.ch6.slides, cheat: D.ch6.cheat, flashcards: D.ch6.flashcards, glossary: D.ch6.glossary, exam: D.ch6.exam, thai: "Network Layer: Control Plane (ชั้นเครือข่าย — ระนาบควบคุม)", en: "Network Layer: Control Plane", file: "final-ch5-control-plane.html", code: "F2", bookChapter: 5 },
+    7: { start: 0, count: D.ch7.slides.length, sections: D.ch7.sections, slides: D.ch7.slides, cheat: D.ch7.cheat, flashcards: D.ch7.flashcards, glossary: D.ch7.glossary, exam: D.ch7.exam, thai: "The Link Layer and LANs (ชั้นลิงก์และ LAN)", en: "The Link Layer and LANs", file: "final-ch6-link-layer.html", code: "F3", bookChapter: 6 },
+    8: { start: 0, count: D.ch8.slides.length, sections: D.ch8.sections, slides: D.ch8.slides, cheat: D.ch8.cheat, flashcards: D.ch8.flashcards, glossary: D.ch8.glossary, exam: D.ch8.exam, thai: "Wireless and Mobile Networks (เครือข่ายไร้สายและเคลื่อนที่)", en: "Wireless and Mobile Networks", file: "final-ch7-wireless.html", code: "F4", bookChapter: 7 }
   };
+  /* label ที่ใช้แสดงผล — F1 ต้องไม่ซ้ำกับ M4 ที่เป็น Book Chapter 4 เหมือนกัน */
+  function chapterLabel(n) {
+    var c = CHS[n];
+    if (!c) return "บทที่ " + n;
+    return c.code ? c.code + " · BOOK CH." + c.bookChapter : "บทที่ " + n;
+  }
+  function chapterFullLabel(n) {
+    var c = CHS[n];
+    if (!c) return "บทที่ " + n;
+    return c.code ? c.code + " · BOOK CH." + c.bookChapter + " · " + c.en : "บทที่ " + n + " · " + c.thai;
+  }
   function ch() { return CHS[state.chapter]; }
   var TOTAL = 0; // จำนวนสไลด์ของบทที่กำลังเรียน
 
@@ -55,10 +70,18 @@
     quiz2: LS.get("cn_quiz2", { answers: {} }),
     quiz3: LS.get("cn_quiz3", { answers: {} }),
     quiz4: LS.get("cn_quiz4", { answers: {} }),
+    quiz5: LS.get("cn_quiz5", { answers: {} }),
+    quiz6: LS.get("cn_quiz6", { answers: {} }),
+    quiz7: LS.get("cn_quiz7", { answers: {} }),
+    quiz8: LS.get("cn_quiz8", { answers: {} }),
     exam: LS.get("cn_exam") || LS.get("cn_quick") || { answers: {}, best: null },
     exam2: LS.get("cn_exam2") || { answers: {}, best: null },
     exam3: LS.get("cn_exam3") || { answers: {}, best: null },
     exam4: LS.get("cn_exam4") || { answers: {}, best: null },
+    exam5: LS.get("cn_exam5") || { answers: {}, best: null },
+    exam6: LS.get("cn_exam6") || { answers: {}, best: null },
+    exam7: LS.get("cn_exam7") || { answers: {}, best: null },
+    exam8: LS.get("cn_exam8") || { answers: {}, best: null },
     best: null,
     celebrated: false
   };
@@ -92,7 +115,7 @@
      ========================================================================== */
   function renderMenuProgress() {
     var doneTotal = 0, slideTotal = 0, doneChapters = 0;
-    [1, 2, 3, 4].forEach(function (n) {
+    [1, 2, 3, 4, 5, 6, 7, 8].forEach(function (n) {
       var el = $("ch" + n + "Pct");
       var comp = LS.get("cn_completed_" + n, null);
       if (n === 1 && comp === null) comp = LS.get("cn_completed", []);
@@ -116,27 +139,27 @@
     var ob = $("courseBar");
     if (ob) ob.style.setProperty("--pct", coursePct + "%");
     var od = $("courseDone");
-    if (od) od.textContent = "เรียนแล้ว " + doneTotal + " / " + slideTotal + " สไลด์ · จบแล้ว " + doneChapters + " / 4 บท";
+    if (od) od.textContent = "เรียนแล้ว " + doneTotal + " / " + slideTotal + " สไลด์ · จบแล้ว " + doneChapters + " / 8 บท";
   }
   /* กลับไปเมนูหลัก (index.html) — ใช้จากปุ่ม 🏠 ในหน้าเรียน */
   function goHome() {
     location.href = "index.html";
   }
-  /* เปิดหน้าเรียนของบท (chapterN.html) — ใช้จากเมนูหลัก */
+  /* เปิดหน้าเรียนของบท — ใช้ CHS[n].file เพื่อรองรับ Final Track ที่ชื่อไฟล์ไม่ตรงเลขบท */
   function openChapter(n) {
     if (CHS[n]) {
-      location.href = "chapter" + n + ".html";
+      location.href = CHS[n].file || ("chapter" + n + ".html");
     } else {
-      toast("บทที่ " + n + " กำลังเตรียมเนื้อหา — เร็วๆ นี้ 🔒");
+      toast("บทนี้กำลังเตรียมเนื้อหา — เร็วๆ นี้ 🔒");
     }
   }
   function updateHeaderBrand() {
     var lbl = $("headerChapterLabel");
-    if (lbl) lbl.textContent = "บทที่ " + state.chapter + " · " + CHS[state.chapter].thai;
+    if (lbl) lbl.textContent = chapterFullLabel(state.chapter);
     var st = $("sidebarChapterTitle");
-    if (st) st.textContent = "เมนูบทที่ " + state.chapter;
+    if (st) st.textContent = chapterLabel(state.chapter) + " · " + CHS[state.chapter].en;
     var ss = $("sidebarChapterSub");
-    if (ss) ss.textContent = "หัวข้อในสัปดาห์นี้ · " + TOTAL + " หัวข้อ";
+    if (ss) ss.textContent = (CHS[state.chapter].code.charAt(0) === "F" ? "FINAL" : "MIDTERM") + " · BOOK CH." + CHS[state.chapter].bookChapter + " · " + TOTAL + " หัวข้อ";
   }
   /* เมนูหลัก — กดการ์ดบท 1/2 ไปหน้าเรียน, บท 3/4 แจ้งเตือนเร็วๆ นี้ */
   function bindMenu() {
@@ -354,7 +377,8 @@
   }
   function showCompletion() {
     $("doneSlides").textContent = TOTAL;
-    $("doneScore").textContent = state.best === null ? "–" : state.best + "/10";
+    var doneQuizLen = state.chapter === 5 ? D.ch5.quiz.length : state.chapter === 6 ? D.ch6.quiz.length : state.chapter === 7 ? D.ch7.quiz.length : state.chapter === 8 ? D.ch8.quiz.length : 10;
+    $("doneScore").textContent = state.best === null ? "–" : state.best + "/" + doneQuizLen;
     var ov = $("completionOverlay");
     ov.classList.add("show");
     spawnConfetti(ov);
@@ -1011,7 +1035,11 @@
       1: "ลองนึกถึงตัวอย่างที่เรียนมา เช่น สายทองแดง = ไฟฟ้า, ใยแก้ว = แสง, ทีวี = Simplex",
       2: "ลองนึกถึงลำดับชั้นและ PDU ของแต่ละ Layer เช่น Transport = Segment, Network = Packet",
       3: "ลองนึกถึง Port และหน้าที่ของแต่ละโปรโตคอล เช่น HTTP = 80, HTTPS = 443, DNS = 53",
-      4: "ลองนึกถึง 4-tuple, Three-Way Handshake และความต่างของ TCP vs UDP ประกอบคำตอบ"
+      4: "ลองนึกถึง 4-tuple, Three-Way Handshake และความต่างของ TCP vs UDP ประกอบคำตอบ",
+      5: "ลองนึกถึง Forwarding vs Routing, Data/Control Plane, Longest Prefix Matching, subnet /24 และ DHCP 4 ขั้น",
+      6: "ลองนึกถึง Control Plane, LS↔Dijkstra, DV↔Bellman-Ford, count-to-infinity, OSPF และ BGP selection",
+      7: "ลองนึกถึง node ที่ติดกัน, frame/NIC, parity vs CRC, TDMA/FDMA/ALOHA, CSMA/CD, Ethernet frame, MAC vs IP, ARP, switch learning และ VLAN 802.1Q",
+      8: "ลองนึกถึง wireless ≠ mobility, dBm, SNR/Shannon, hidden terminal/multipath, CSMA/CA + ACK, 802.11 address, association, MIMO และ 5G handover"
     };
     return h[state.chapter] || "ลองทบทวนเนื้อหาจากสไลด์ที่ผ่านมา แล้วค่อยตอบใหม่";
   }
@@ -1037,7 +1065,7 @@
       '<div class="card center fade-up" style="padding:34px 26px">' +
       '<div style="font-size:44px">🔒</div>' +
       "<h3 class='mt-3' style='font-size:20px'>ข้อสอบหลังเรียนยังถูกล็อกอยู่</h3>" +
-      '<p class="text-2 mt-2" style="max-width:430px">เรียนครบทุกสไลด์ของบทที่ ' + n + ' ก่อนถึงจะเข้าสอบได้ — เรียนจบแล้วข้อสอบจะปลดล็อกอัตโนมัติ</p>' +
+      '<p class="text-2 mt-2" style="max-width:430px">เรียนครบทุกสไลด์ของ ' + chapterLabel(n) + ' ก่อนถึงจะเข้าสอบได้ — เรียนจบแล้วข้อสอบจะปลดล็อกอัตโนมัติ</p>' +
       '<div class="progress-track mt-4" style="max-width:320px"><div class="progress-fill" style="width:' + Math.round((done / need) * 100) + '%"></div></div>' +
       '<p class="text-3 mt-2" style="font-size:13px">เรียนแล้ว <b class="cyan">' + done + " / " + need + '</b> สไลด์</p>' +
       '<div class="flex items-center gap-3 mt-5 wrap" style="justify-content:center">' +
@@ -1071,7 +1099,7 @@
     el.innerHTML =
       '<div class="card fade-up" style="padding:26px">' +
       '<div class="flex items-center justify-between mb-3 wrap gap-2">' +
-      '<span class="chip">ข้อที่ ' + (qi + 1) + " / " + qs.length + " · ข้อสอบหลังเรียน · บทที่ " + state.chapter + "</span>" +
+      '<span class="chip">ข้อที่ ' + (qi + 1) + " / " + qs.length + " · ข้อสอบหลังเรียน · " + chapterLabel(state.chapter) + "</span>" +
       '<span class="chip" style="border-color:rgba(56,189,248,.4)">คะแนนตอนนี้: ' + examScore() + " / " + qs.length + "</span></div>" +
       "<h3 style='font-size:19px;line-height:1.5;margin-bottom:18px'>" + esc(q.q) + "</h3>" +
       '<div class="flex" style="flex-direction:column;gap:10px">' + opts + "</div>" +
@@ -1147,7 +1175,7 @@
       '<stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>' +
       '<circle class="ring-bg" cx="75" cy="75" r="62" fill="none" stroke-width="12"/>' +
       '<circle class="ring-fill" id="ringQuick" cx="75" cy="75" r="62" fill="none" stroke-width="12" stroke-linecap="round" ' +
-      'stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
+      'style="stroke:url(#ringGradQ)" stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
       '<div class="ring-num">' + sc + "/" + qs.length + "</div></div>" +
       "<p class='mt-3 text-2' style='font-weight:700'>" + pct + "% · " + msg + "</p>" +
       '<p class="text-3 mt-2" style="font-size:13px">คะแนนดีที่สุด: <b class="cyan">' + (st.best === null ? "–" : st.best + "/" + qs.length) + "</b></p>" +
@@ -1458,7 +1486,13 @@
         '<div class="pp-eyebrow">SLIDE ' + (rel + 1) + " · " + esc(c.slides[rel].title) + "</div>" +
         '<div class="pp-body">' + inner.innerHTML + "</div></div>";
     });
-    html = html.replace(/<svg[\s\S]*?<\/svg>/g, "[แผนภาพ]").replace(/<button[\s\S]*?<\/button>/g, "");
+    html = html.replace(/<svg[\s\S]*?<\/svg>/g, "[แผนภาพ]");
+    if (c.code === "F3" || c.code === "F4") {
+      // F3/F4 ใช้ปุ่มใน interactive หลายจุด: ในโหมดพิมพ์ให้คงข้อความไว้เป็น inline content
+      html = html.replace(/<button([^>]*)>([\s\S]*?)<\/button>/g, '<span class="pp-inline">$2</span>');
+    } else {
+      html = html.replace(/<button[\s\S]*?<\/button>/g, "");
+    }
     html = html.replace(/\sid="[^"]*"/g, "").replace(/\sclass="btn[^"]*"/g, "");
     area.innerHTML = html;
   }
@@ -1567,15 +1601,27 @@
       } else if (n === 4) {
         state.quiz4 = { answers: {} };
         LS.set("cn_quiz4", state.quiz4);
+      } else if (n === 5) {
+        state.quiz5 = { answers: {} };
+        LS.set("cn_quiz5", state.quiz5);
+      } else if (n === 6) {
+        state.quiz6 = { answers: {} };
+        LS.set("cn_quiz6", state.quiz6);
+      } else if (n === 7) {
+        state.quiz7 = { answers: {} };
+        LS.set("cn_quiz7", state.quiz7);
+      } else if (n === 8) {
+        state.quiz8 = { answers: {} };
+        LS.set("cn_quiz8", state.quiz8);
       }
       state["exam" + (n === 1 ? "" : n)] = { answers: {}, best: null };
       LS.set("cn_exam" + (n === 1 ? "" : n), state["exam" + (n === 1 ? "" : n)]);
       LS.set("cn_completed_" + n, []);
       LS.set("cn_celebrated_" + n, false);
       $("completionOverlay").classList.remove("show");
-      if (n === 1) { renderQuiz(0); renderQuiz(1); renderExam(); } else if (n === 2) { renderQuiz2(); renderExam(); } else if (n === 3) { renderQuiz3(); renderExam(); } else { renderQuiz4(); renderExam(); }
+      if (n === 1) { renderQuiz(0); renderQuiz(1); renderExam(); } else if (n === 2) { renderQuiz2(); renderExam(); } else if (n === 3) { renderQuiz3(); renderExam(); } else if (n === 4) { renderQuiz4(); renderExam(); } else if (n === 5) { renderQuiz5(); renderExam(); } else if (n === 6) { renderQuiz6(); renderExam(); } else if (n === 7) { renderQuiz7(); renderExam(); } else { renderQuiz8(); renderExam(); }
       goTo(0, -1);
-      toast("เริ่มเรียนบทที่ " + n + " ใหม่ — สู้ ๆ นะ! 💪");
+      toast("เริ่มเรียน " + chapterLabel(n) + " ใหม่ — สู้ ๆ นะ! 💪");
     });
 
     // slide 3 send data
@@ -1781,6 +1827,229 @@
     // chapter 4 — glossary
     on("glossarySearch4", "input", function () { renderGlossary4(this.value); });
     on("glossaryList4", "click", function (e) {
+      var item = e.target.closest(".gloss-item");
+      if (!item) return;
+      var open = item.classList.toggle("open");
+      item.setAttribute("aria-expanded", open);
+      var def = item.querySelector(".g-def");
+      if (def) def.style.display = open ? "block" : "none";
+    });
+
+    // ===== FINAL F1 — Network Layer: Data Plane =====
+    on("startBtn5", "click", function () { goTo(state.current + 1, 1); });
+
+    on("dcTabs", "click", function (e) {
+      var b = e.target.closest(".tab-btn");
+      if (b) selectDcPlane(b.dataset.dc);
+    });
+    on("planeTabs", "click", function (e) {
+      var b = e.target.closest(".tab-btn");
+      if (b) selectPlane(b.dataset.plane);
+    });
+    document.addEventListener("click", function (e) {
+      var rp = e.target.closest("[data-rpart]");
+      if (rp) selectRouterPart(rp.dataset.rpart);
+    });
+    on("fabricTabs", "click", function (e) {
+      var b = e.target.closest(".tab-btn");
+      if (b) selectFabric(b.dataset.fabric);
+    });
+    on("lpmExampleTabs", "click", function (e) {
+      var b = e.target.closest(".tab-btn");
+      if (b) selectLpmExample(parseInt(b.dataset.lpm, 10));
+    });
+    on("subnetTabs", "click", function (e) {
+      var b = e.target.closest(".tab-btn");
+      if (b) selectSubnet(parseInt(b.dataset.subnet, 10));
+    });
+    on("dhcpSteps", "click", function (e) {
+      var b = e.target.closest(".dhcp-step");
+      if (b) { clearInterval(dhcpTimer); selectDhcpStep(parseInt(b.dataset.dhcp, 10)); }
+    });
+    on("dhcpPlayBtn", "click", playDhcp);
+
+    // F1 — flashcards
+    on("flashcard5", "click", fc5Flip);
+    on("flashcard5", "keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fc5Flip(); }
+    });
+    on("fcPrev5", "click", function () { fc5Step(-1); });
+    on("fcNext5", "click", function () { fc5Step(1); });
+    on("fcShuffle5", "click", function () { fc5Shuffle(); fc5Render(); toast("สับการ์ดใหม่ 🔀"); });
+
+    // F1 — glossary
+    on("glossarySearch5", "input", function () { renderGlossary5(this.value); });
+    on("glossaryList5", "click", function (e) {
+      var item = e.target.closest(".gloss-item");
+      if (!item) return;
+      var open = item.classList.toggle("open");
+      item.setAttribute("aria-expanded", open);
+      var def = item.querySelector(".g-def");
+      if (def) def.style.display = open ? "block" : "none";
+    });
+
+    // ===== FINAL F2 — Network Layer: Control Plane =====
+    on("startBtn6", "click", function () { goTo(state.current + 1, 1); });
+
+    on("cpTabs", "click", function (e) {
+      var b = e.target.closest(".tab-btn");
+      if (b) selectCpPlane(b.dataset.cp);
+    });
+    on("cpStructTabs", "click", function (e) {
+      var b = e.target.closest(".tab-btn");
+      if (b) selectCpStruct(b.dataset.struct);
+    });
+    on("sdnSteps", "click", function (e) {
+      var b = e.target.closest(".dhcp-step");
+      if (b) selectSdnStep6(parseInt(b.dataset.sdn, 10));
+    });
+    on("dijkstraRows", "click", function (e) {
+      var tr = e.target.closest("[data-dij]");
+      if (tr) selectDijkstraStep6(parseInt(tr.dataset.dij, 10));
+    });
+    on("dijkstraRows", "keydown", function (e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var tr = e.target.closest("[data-dij]");
+      if (tr) { e.preventDefault(); selectDijkstraStep6(parseInt(tr.dataset.dij, 10)); }
+    });
+    on("dvNewsTabs", "click", function (e) {
+      var b = e.target.closest(".tab-btn");
+      if (b) selectDvNews6(b.dataset.news);
+    });
+    on("ospfTabs", "click", function (e) {
+      var b = e.target.closest(".tab-btn");
+      if (b) selectOspf6(b.dataset.ospf);
+    });
+    on("bgpSteps", "click", function (e) {
+      var b = e.target.closest(".dhcp-step");
+      if (b) selectBgpStep6(parseInt(b.dataset.bgp, 10));
+    });
+
+    // F2 — flashcards
+    on("flashcard6", "click", fc6Flip);
+    on("flashcard6", "keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fc6Flip(); }
+    });
+    on("fcPrev6", "click", function () { fc6Step(-1); });
+    on("fcNext6", "click", function () { fc6Step(1); });
+    on("fcShuffle6", "click", function () { fc6Shuffle(); fc6Render(); toast("สับการ์ดใหม่ 🔀"); });
+
+    // F2 — glossary
+    on("glossarySearch6", "input", function () { renderGlossary6(this.value); });
+    on("glossaryList6", "click", function (e) {
+      var item = e.target.closest(".gloss-item");
+      if (!item) return;
+      var open = item.classList.toggle("open");
+      item.setAttribute("aria-expanded", open);
+      var def = item.querySelector(".g-def");
+      if (def) def.style.display = open ? "block" : "none";
+    });
+
+    // ===== FINAL F3 — The Link Layer and LANs =====
+    on("startBtn7", "click", function () { goTo(state.current + 1, 1); });
+
+    on("parityGrid7", "click", function (e) {
+      var b = e.target.closest("[data-pr]");
+      if (!b) return;
+      parity7Toggle(parseInt(b.dataset.pr, 10), parseInt(b.dataset.pc, 10));
+    });
+    on("paritySingle7", "click", function () {
+      parity7Reset();
+      parity7Toggle(1, 2);
+    });
+    on("parityRect7", "click", function () {
+      parity7Reset();
+      parity7Toggle(0, 0); parity7Toggle(0, 1);
+      parity7Toggle(1, 0); parity7Toggle(1, 1);
+    });
+    on("parityReset7", "click", parity7Reset);
+
+    on("crcRows7", "click", function (e) {
+      var tr = e.target.closest("[data-crc]");
+      if (tr) selectCrc7(parseInt(tr.dataset.crc, 10));
+    });
+    on("crcRows7", "keydown", function (e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var tr = e.target.closest("[data-crc]");
+      if (tr) { e.preventDefault(); selectCrc7(parseInt(tr.dataset.crc, 10)); }
+    });
+
+    on("backoffTabs7", "click", function (e) {
+      var b = e.target.closest("[data-backoff]");
+      if (b) selectBackoff7(parseInt(b.dataset.backoff, 10));
+    });
+    on("ethFieldTabs7", "click", function (e) {
+      var b = e.target.closest("[data-eth]");
+      if (b) selectEthField7(parseInt(b.dataset.eth, 10));
+    });
+    on("arpSteps7", "click", function (e) {
+      var b = e.target.closest("[data-arp]");
+      if (b) selectArp7(parseInt(b.dataset.arp, 10));
+    });
+    on("switchSteps7", "click", function (e) {
+      var b = e.target.closest("[data-switch]");
+      if (b) selectSwitch7(parseInt(b.dataset.switch, 10));
+    });
+
+    // F3 — flashcards
+    on("flashcard7", "click", fc7Flip);
+    on("flashcard7", "keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fc7Flip(); }
+    });
+    on("fcPrev7", "click", function () { fc7Step(-1); });
+    on("fcNext7", "click", function () { fc7Step(1); });
+    on("fcShuffle7", "click", function () { fc7Shuffle(); fc7Render(); toast("สับการ์ดใหม่ 🔀"); });
+
+    // F3 — glossary
+    on("glossarySearch7", "input", function () { renderGlossary7(this.value); });
+    on("glossaryList7", "click", function (e) {
+      var item = e.target.closest(".gloss-item");
+      if (!item) return;
+      var open = item.classList.toggle("open");
+      item.setAttribute("aria-expanded", open);
+      var def = item.querySelector(".g-def");
+      if (def) def.style.display = open ? "block" : "none";
+    });
+
+    // ===== FINAL F4 — Wireless and Mobile Networks =====
+    on("startBtn8", "click", function () { goTo(state.current + 1, 1); });
+
+    on("dbmPick8", "click", function (e) {
+      var b = e.target.closest("[data-dbm]");
+      if (b) selectDbm8(parseInt(b.dataset.dbm, 10));
+    });
+    on("shB8", "input", updateShannon8);
+    on("shSnr8", "input", updateShannon8);
+
+    on("csmaTabs8", "click", function (e) {
+      var b = e.target.closest("[data-csma]");
+      if (b) selectCsma8(parseInt(b.dataset.csma, 10));
+    });
+    on("frameStrip8", "click", function (e) {
+      var b = e.target.closest("[data-frame]");
+      if (b) selectFrame8(parseInt(b.dataset.frame, 10));
+    });
+    on("discTabs8", "click", function (e) {
+      var b = e.target.closest("[data-disc]");
+      if (b) selectDiscovery8(parseInt(b.dataset.disc, 10));
+    });
+    on("hoSteps8", "click", function (e) {
+      var b = e.target.closest("[data-ho]");
+      if (b) selectHandover8(parseInt(b.dataset.ho, 10));
+    });
+
+    // F4 — flashcards
+    on("flashcard8", "click", fc8Flip);
+    on("flashcard8", "keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fc8Flip(); }
+    });
+    on("fcPrev8", "click", function () { fc8Step(-1); });
+    on("fcNext8", "click", function () { fc8Step(1); });
+    on("fcShuffle8", "click", function () { fc8Shuffle(); fc8Render(); toast("สับการ์ดใหม่ 🔀"); });
+
+    // F4 — glossary
+    on("glossarySearch8", "input", function () { renderGlossary8(this.value); });
+    on("glossaryList8", "click", function (e) {
       var item = e.target.closest(".gloss-item");
       if (!item) return;
       var open = item.classList.toggle("open");
@@ -2002,7 +2271,7 @@
       '<stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>' +
       '<circle class="ring-bg" cx="75" cy="75" r="62" fill="none" stroke-width="12"/>' +
       '<circle class="ring-fill" id="ringC2" cx="75" cy="75" r="62" fill="none" stroke-width="12" stroke-linecap="round" ' +
-      'stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
+      'style="stroke:url(#ringGrad2)" stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
       '<div class="ring-num">' + sc + "/" + qs.length + "</div></div>" +
       "<p class='mt-3 text-2' style='font-weight:700'>" + pct + "% · " + msg + "</p>" +
       '<p class="text-3 mt-2" style="font-size:13px">คะแนนดีที่สุด: <b class="cyan">' + (state.best === null ? "–" : state.best + "/" + qs.length) + "</b></p>" +
@@ -2245,7 +2514,7 @@
       '<stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>' +
       '<circle class="ring-bg" cx="75" cy="75" r="62" fill="none" stroke-width="12"/>' +
       '<circle class="ring-fill" id="ringC3" cx="75" cy="75" r="62" fill="none" stroke-width="12" stroke-linecap="round" ' +
-      'stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
+      'style="stroke:url(#ringGrad3)" stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
       '<div class="ring-num">' + sc + "/" + qs.length + "</div></div>" +
       "<p class='mt-3 text-2' style='font-weight:700'>" + pct + "% · " + msg + "</p>" +
       '<p class="text-3 mt-2" style="font-size:13px">คะแนนดีที่สุด: <b class="cyan">' + (state.best === null ? "–" : state.best + "/" + qs.length) + "</b></p>" +
@@ -2489,7 +2758,7 @@
       '<stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>' +
       '<circle class="ring-bg" cx="75" cy="75" r="62" fill="none" stroke-width="12"/>' +
       '<circle class="ring-fill" id="ringC4" cx="75" cy="75" r="62" fill="none" stroke-width="12" stroke-linecap="round" ' +
-      'stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
+      'style="stroke:url(#ringGrad4)" stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
       '<div class="ring-num">' + sc + "/" + qs.length + "</div></div>" +
       "<p class='mt-3 text-2' style='font-weight:700'>" + pct + "% · " + msg + "</p>" +
       '<p class="text-3 mt-2" style="font-size:13px">คะแนนดีที่สุด: <b class="cyan">' + (state.best === null ? "–" : state.best + "/" + qs.length) + "</b></p>" +
@@ -2540,6 +2809,1381 @@
       return g.term.toLowerCase().indexOf(term) !== -1 || g.def.toLowerCase().indexOf(term) !== -1;
     });
     $("glossaryCount4").textContent = items.length + " คำศัพท์";
+    list.innerHTML = items.map(function (g) {
+      return '<div class="gloss-item" data-term="' + esc(g.term) + '" role="button" tabindex="0" aria-expanded="false">' +
+        "<div><b>" + esc(g.term) + '</b><div class="g-def" style="display:none">' + esc(g.def) + "</div></div>" +
+        '<i data-lucide="chevron-down" class="g-chev"></i></div>';
+    }).join("");
+    icons();
+  }
+
+  /* ==========================================================================
+     FINAL F1 — NETWORK LAYER: DATA PLANE (internal ID 5)
+     ========================================================================== */
+
+  /* ---------- Service model table (slide 7) ---------- */
+  function renderServiceModel() {
+    var table = $("serviceTable");
+    if (!table) return;
+    var tb = table.querySelector("tbody");
+    if (!tb) return;
+    tb.innerHTML = D.ch5.serviceModel.map(function (r) {
+      return "<tr><td>" + esc(r.arch) + "</td><td><b>" + esc(r.model) + "</b></td>" +
+        "<td>" + esc(r.bandwidth) + "</td><td>" + esc(r.loss) + "</td>" +
+        "<td>" + esc(r.order) + "</td><td>" + esc(r.timing) + "</td></tr>";
+    }).join("");
+  }
+
+  /* ---------- Data plane / control plane toggle (slide 5) ---------- */
+  var dcInfo = {
+    data: {
+      title: "Data plane",
+      desc: "ฟังก์ชันระดับ local ต่อ router — ตัดสินใจว่า datagram ที่เข้ามาที่ input port ของ router จะถูก forward ไปยัง output port ใด",
+      scope: "Local · ต่อ router",
+      time: "Hardware · ระดับนาโนวินาที"
+    },
+    control: {
+      title: "Control plane",
+      desc: "logic ระดับ network-wide — ตัดสินใจว่า datagram จะถูก route ระหว่าง router ต่าง ๆ ตามเส้นทาง end-to-end จาก source host ไป destination host อย่างไร",
+      scope: "Network-wide · ทั้งเครือข่าย",
+      time: "Software · ระดับมิลลิวินาที"
+    }
+  };
+  function selectDcPlane(key) {
+    var d = dcInfo[key];
+    if (!d) return;
+    qsa("#dcTabs .tab-btn").forEach(function (b) { b.classList.toggle("active", b.dataset.dc === key); });
+    $("dcTitle").textContent = d.title;
+    $("dcDesc").textContent = d.desc;
+    $("dcScope").textContent = d.scope;
+    $("dcTime").textContent = d.time;
+  }
+
+  /* ---------- Per-router / SDN toggle (slide 6) ---------- */
+  function selectPlane(key) {
+    var isSdn = key === "sdn";
+    qsa("#planeTabs .tab-btn").forEach(function (b) { b.classList.toggle("active", b.dataset.plane === key); });
+    $("planeTitle").textContent = isSdn ? "SDN control plane" : "Per-router control plane";
+    $("planeDesc").textContent = isSdn
+      ? "Remote controller เป็นผู้คำนวณและติดตั้ง forwarding table ลงใน router"
+      : "routing algorithm ในแต่ละ router ทำงานร่วมกันใน control plane";
+    var vis = $("planeVis");
+    if (!vis) return;
+    vis.innerHTML = isSdn
+      ? '<span class="vb-label">REMOTE CONTROLLER คำนวณ + ติดตั้ง FORWARDING TABLE</span>' +
+        '<div class="pipeline" style="padding:16px 10px">' +
+        '<div class="pipe-node hot"><b>Remote controller</b><span>คำนวณ forwarding table</span></div>' +
+        '<span class="flow-arrow">→</span>' +
+        '<div class="pipe-node"><b>Router A</b><span>forwarding table ที่ติดตั้งแล้ว</span></div>' +
+        '<div class="pipe-node"><b>Router B</b><span>forwarding table ที่ติดตั้งแล้ว</span></div>' +
+        '<div class="pipe-node"><b>Router C</b><span>forwarding table ที่ติดตั้งแล้ว</span></div>' +
+        '</div>'
+      : '<span class="vb-label">แต่ละ ROUTER มี ROUTING ALGORITHM ของตัวเอง</span>' +
+        '<div class="pipeline" style="padding:16px 10px">' +
+        '<div class="pipe-node"><b>Router A</b><span>routing algorithm</span></div>' +
+        '<span class="flow-arrow">↔</span>' +
+        '<div class="pipe-node"><b>Router B</b><span>routing algorithm</span></div>' +
+        '<span class="flow-arrow">↔</span>' +
+        '<div class="pipe-node"><b>Router C</b><span>routing algorithm</span></div>' +
+        '</div>';
+    icons();
+  }
+
+  /* ---------- Router architecture (slide 8) ---------- */
+  function selectRouterPart(key) {
+    var p = D.ch5.routerParts.filter(function (x) { return x.key === key; })[0];
+    if (!p) return;
+    qsa("[data-rpart]").forEach(function (b) { b.classList.toggle("hot", b.dataset.rpart === key); });
+    $("routerTitle").textContent = p.label;
+    $("routerDesc").textContent = p.desc;
+  }
+
+  /* ---------- Switching fabrics (slide 13) ---------- */
+  function selectFabric(key) {
+    var f = D.ch5.fabrics.filter(function (x) { return x.key === key; })[0];
+    if (!f) return;
+    qsa("#fabricTabs .tab-btn").forEach(function (b) { b.classList.toggle("active", b.dataset.fabric === key); });
+    $("fabricTitle").textContent = f.label;
+    $("fabricDesc").textContent = f.desc;
+  }
+
+  /* ---------- Longest prefix matching simulator (slide 12) ---------- */
+  function selectLpmExample(idx) {
+    var ex = D.ch5.lpm.examples[idx];
+    if (!ex) return;
+    qsa("#lpmExampleTabs .tab-btn").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.lpm, 10) === idx); });
+    $("lpmDest").textContent = ex.dest.replace(/\s+/g, " ");
+    $("lpmDecimal").textContent = ex.decimal;
+
+    var destBits = ex.dest.replace(/\s+/g, "");
+    var rows = D.ch5.lpm.rows;
+    var matching = [];
+    rows.forEach(function (r, i) {
+      if (i === 3) return;
+      var prefixBits = r.prefix.replace(/\s+/g, "");
+      if (destBits.slice(0, prefixBits.length) === prefixBits) matching.push(i);
+    });
+    var winner = ex.winner;
+    var winnerBits = rows[winner].bits;
+
+    var bitsHTML = "";
+    for (var i = 0; i < destBits.length; i++) {
+      var cls = "bit";
+      if (i < winnerBits) cls += " longest";
+      else {
+        var matchedByOther = matching.some(function (ri) { return i < rows[ri].bits; });
+        if (matchedByOther) cls += " match";
+      }
+      bitsHTML += '<span class="' + cls + '">' + destBits[i] + "</span>";
+      if ((i + 1) % 8 === 0 && i !== destBits.length - 1) bitsHTML += '<span class="gap"></span>';
+    }
+    $("lpmBits").innerHTML = bitsHTML;
+
+    var matchedText = matching.map(function (ri) {
+      return "row " + (ri + 1) + " (" + rows[ri].bits + " บิต)";
+    }).join(" · ");
+    $("lpmResult").className = "lpm-result mt-4 ok";
+    $("lpmResult").innerHTML =
+      "<b>Match:</b> " + matchedText + "<br>" +
+      "<b>Longest prefix:</b> " + winnerBits + " บิต → <b class='cyan'>interface " + ex.iface + "</b><br>" +
+      '<span class="text-3" style="font-size:12.5px">' + esc(ex.explain) + "</span>";
+
+    qsa("#lpmTable tbody tr").forEach(function (tr) {
+      var ri = parseInt(tr.dataset.lpmRow, 10);
+      tr.classList.toggle("match", matching.indexOf(ri) !== -1);
+      tr.classList.toggle("winner", ri === winner);
+    });
+  }
+
+  /* ---------- Subnets (slide 18) ---------- */
+  function decToBin8(n) {
+    var s = Number(n).toString(2);
+    while (s.length < 8) s = "0" + s;
+    return s;
+  }
+  function selectSubnet(idx) {
+    var s = D.ch5.subnets[idx];
+    if (!s) return;
+    qsa("#subnetTabs .tab-btn").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.subnet, 10) === idx); });
+    $("subnetName").textContent = s.cidr;
+    var prefix = parseInt(s.cidr.split("/")[1], 10);
+    var ip = s.cidr.split("/")[0];
+    var bits = ip.split(".").map(decToBin8).join("");
+    var html = "";
+    for (var i = 0; i < bits.length; i++) {
+      html += '<span class="sb' + (i >= prefix ? " host" : "") + '">' + bits[i] + "</span>";
+      if ((i + 1) % 8 === 0 && i !== bits.length - 1) html += '<span class="gap"></span>';
+    }
+    $("subnetBits").innerHTML = html;
+    $("subnetHosts").textContent = "hosts (โฮสต์): " + s.hosts.join(" · ");
+  }
+
+  /* ---------- Hierarchical addressing (slide 21) ---------- */
+  function renderOrgGrid() {
+    var g = $("orgGrid");
+    if (!g) return;
+    g.innerHTML = D.ch5.hierarchy.orgs.map(function (o) {
+      return '<div class="org-item">' + esc(o) + "</div>";
+    }).join("");
+  }
+
+  /* ---------- DHCP player (slide 20) ---------- */
+  var dhcpTimer = null;
+  function renderDhcpSteps() {
+    var g = $("dhcpSteps");
+    if (!g) return;
+    g.innerHTML = D.ch5.dhcp.map(function (d, i) {
+      return '<button class="dhcp-step' + (i === 0 ? " active" : "") + '" data-dhcp="' + i + '">' +
+        '<span class="n">ขั้นที่ ' + d.key + "</span><b>" + esc(d.name) + "</b>" +
+        "<span>" + esc(d.from) + "</span></button>";
+    }).join("");
+  }
+  function selectDhcpStep(i) {
+    var d = D.ch5.dhcp[i];
+    if (!d) return;
+    qsa("#dhcpSteps .dhcp-step").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.dhcp, 10) === i); });
+    var el = $("dhcpDetailText");
+    if (el) {
+      el.innerHTML = "<b>" + esc(d.name) + "</b> · " + esc(d.msg) + "<br>" +
+        '<span class="text-3" style="font-size:12.5px">src ' + esc(d.src) + " → dest " + esc(d.dest) +
+        " · yiaddr " + esc(d.yiaddr) + " · xid " + esc(d.xid) + " · lifetime " + esc(d.lifetime) + "</span>";
+    }
+  }
+  function playDhcp() {
+    clearInterval(dhcpTimer);
+    var i = 0;
+    selectDhcpStep(i);
+    dhcpTimer = setInterval(function () {
+      i++;
+      if (i >= D.ch5.dhcp.length) { clearInterval(dhcpTimer); return; }
+      selectDhcpStep(i);
+    }, 1300);
+  }
+
+  /* ---------- Cheat sheet (slide 23) ---------- */
+  function renderCheat5() {
+    var g = $("cheatGrid5");
+    if (!g) return;
+    g.innerHTML = D.ch5.cheat.map(function (c) {
+      return '<div class="cheat-item"><span class="term">' + esc(c.term) + '</span><span class="arrow">→</span><span class="def">' + esc(c.def) + "</span></div>";
+    }).join("");
+  }
+
+  /* ---------- Quiz 5 (slide 24 · 12 ข้อ) ---------- */
+  function quiz5Score() {
+    var sc = 0;
+    D.ch5.quiz.forEach(function (q, j) { if (state.quiz5.answers[j] === q.correct) sc++; });
+    return sc;
+  }
+  function renderQuiz5() {
+    var el = $("quizC5");
+    if (!el) return;
+    var qs = D.ch5.quiz;
+    var allAnswered = qs.every(function (_, j) { return state.quiz5.answers[j] !== undefined; });
+    if (allAnswered) { renderQuiz5Result(el, qs); return; }
+    var qi = 0;
+    for (var j = 0; j < qs.length; j++) { if (state.quiz5.answers[j] === undefined) { qi = j; break; } }
+    renderQuiz5Question(qi, el, qs);
+  }
+  function renderQuiz5Question(qi, el, qs) {
+    var q = qs[qi];
+    var chosen = state.quiz5.answers[qi];
+    var answered = chosen !== undefined;
+    var opts = q.options.map(function (o, oi) {
+      var cls = "quiz-option";
+      if (answered) {
+        cls += " locked";
+        if (oi === q.correct) cls += " correct";
+        else if (oi === chosen) cls += " incorrect";
+      }
+      return '<button class="' + cls + '" data-opt="' + oi + '"' + (answered ? " disabled" : "") + ">" +
+        '<span class="opt-key">' + "ABCD"[oi] + "</span><span>" + esc(o) + "</span></button>";
+    }).join("");
+
+    el.innerHTML =
+      '<div class="card fade-up" style="padding:26px">' +
+      '<div class="flex items-center justify-between mb-3 wrap gap-2">' +
+      '<span class="chip">ข้อที่ ' + (qi + 1) + " / " + qs.length + " · F1 · BOOK CH.4</span>" +
+      '<span class="chip" style="border-color:rgba(56,189,248,.4)">คะแนนตอนนี้: ' + quiz5Score() + " / " + qs.length + "</span></div>" +
+      "<h3 style='font-size:19px;line-height:1.5;margin-bottom:18px'>" + esc(q.q) + "</h3>" +
+      '<div class="flex" style="flex-direction:column;gap:10px">' + opts + "</div>" +
+      (answered
+        ? '<div class="quiz-explanation mt-4">💡 ' + esc(q.explain) + "</div>" +
+          '<div class="flex items-center gap-3 mt-5 wrap">' +
+          (qi < qs.length - 1
+            ? '<button class="btn btn-primary" id="q5Next">ข้อถัดไป <i data-lucide="arrow-right"></i></button>'
+            : '<button class="btn btn-primary" id="q5Finish">ดูผลลัพธ์ <i data-lucide="flag"></i></button>') +
+          "</div>"
+        : '<div class="tip-box tip-note mt-4" style="margin-top:18px"><i data-lucide="lightbulb"></i><div><b>Hint</b>ลองนึกถึง Forwarding vs Routing, Data/Control Plane, Longest Prefix Matching และ DHCP 4 ขั้น</div></div>')
+      + "</div>";
+    icons();
+
+    el.querySelectorAll(".quiz-option").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var oi = parseInt(b.dataset.opt, 10);
+        if (answered) return;
+        state.quiz5.answers[qi] = oi;
+        LS.set("cn_quiz5", state.quiz5);
+        var correct = oi === q.correct;
+        b.classList.add(correct ? "correct" : "incorrect");
+        if (!correct) {
+          qsa(".quiz-option", el).forEach(function (x) {
+            if (parseInt(x.dataset.opt, 10) === q.correct) x.classList.add("correct");
+          });
+        }
+        qsa(".quiz-option", el).forEach(function (x) { x.classList.add("locked"); x.setAttribute("disabled", "disabled"); });
+        var exp = document.createElement("div");
+        exp.className = "quiz-explanation mt-4";
+        exp.innerHTML = (correct ? "✅ ถูกต้อง! " : "❌ ยังไม่ถูกนะ ") + "💡 " + esc(q.explain);
+        el.querySelector(".quiz-option").closest("div.flex").insertAdjacentElement("afterend", exp);
+        var nav = document.createElement("div");
+        nav.className = "flex items-center gap-3 mt-5 wrap";
+        nav.innerHTML = qi < qs.length - 1
+          ? '<button class="btn btn-primary" id="q5Next">ข้อถัดไป <i data-lucide="arrow-right"></i></button>'
+          : '<button class="btn btn-primary" id="q5Finish">ดูผลลัพธ์ <i data-lucide="flag"></i></button>';
+        exp.insertAdjacentElement("afterend", nav);
+        icons();
+        bindQuiz5Nav();
+        if (correct) toast("✅ ถูกต้อง!", 1200);
+      });
+    });
+    bindQuiz5Nav();
+  }
+  function bindQuiz5Nav() {
+    var n = $("q5Next");
+    if (n) n.addEventListener("click", function () { renderQuiz5(); });
+    var f = $("q5Finish");
+    if (f) f.addEventListener("click", function () { renderQuiz5(); });
+    var r = $("q5Retry");
+    if (r) r.addEventListener("click", function () {
+      state.quiz5.answers = {};
+      LS.set("cn_quiz5", state.quiz5);
+      renderQuiz5();
+    });
+  }
+  function renderQuiz5Result(el, qs) {
+    var sc = quiz5Score();
+    var pct = Math.round((sc / qs.length) * 100);
+    var msg = sc === qs.length ? "Perfect! เก่งมาก! 🏆"
+      : sc >= qs.length - 2 ? "Excellent! เกือบเต็มแล้ว! 💪"
+      : sc >= Math.ceil(qs.length / 2) ? "Good job! ทบทวนอีกนิดก็เพอร์เฟกต์ ✨"
+      : "ยังไม่ผ่าน — ย้อนกลับไปทบทวนสไลด์แล้วลองใหม่นะ 📚";
+    var ring = 2 * Math.PI * 62;
+    var offset = ring - (sc / qs.length) * ring;
+    if (state.best === null || sc > state.best) {
+      state.best = sc;
+      LS.set("cn_best_" + state.chapter, state.best);
+    }
+    el.innerHTML =
+      '<div class="card center fade-up" style="padding:34px 26px">' +
+      '<div class="score-ring"><svg width="150" height="150" viewBox="0 0 150 150">' +
+      '<defs><linearGradient id="ringGrad5" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>' +
+      '<circle class="ring-bg" cx="75" cy="75" r="62" fill="none" stroke-width="12"/>' +
+      '<circle class="ring-fill" id="ringC5" cx="75" cy="75" r="62" fill="none" stroke-width="12" stroke-linecap="round" ' +
+      'style="stroke:url(#ringGrad5)" stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
+      '<div class="ring-num">' + sc + "/" + qs.length + "</div></div>" +
+      "<p class='mt-3 text-2' style='font-weight:700'>" + pct + "% · " + msg + "</p>" +
+      '<p class="text-3 mt-2" style="font-size:13px">คะแนนดีที่สุด: <b class="cyan">' + (state.best === null ? "–" : state.best + "/" + qs.length) + "</b></p>" +
+      '<div class="flex items-center gap-3 mt-5 wrap" style="justify-content:center">' +
+      '<button class="btn btn-ghost" id="q5Retry"><i data-lucide="rotate-ccw"></i> ทำใหม่ทั้งชุด</button>' +
+      '<button class="btn btn-primary" id="q5ToCards"><i data-lucide="square-stack"></i> ไปการ์ดทบทวน</button>' +
+      "</div></div>";
+    icons();
+    setTimeout(function () {
+      var rf = $("ringC5");
+      if (rf) rf.style.strokeDashoffset = offset;
+    }, 120);
+    bindQuiz5Nav();
+    var cards = $("q5ToCards");
+    if (cards) cards.addEventListener("click", function () { goTo(state.current + 1, 1); });
+  }
+
+  /* ---------- Flashcards 5 (slide 25) ---------- */
+  var fc5 = { order: [], idx: 0 };
+  function fc5Shuffle() {
+    fc5.order = D.ch5.flashcards.map(function (_, i) { return i; });
+    for (var i = fc5.order.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = fc5.order[i]; fc5.order[i] = fc5.order[j]; fc5.order[j] = t;
+    }
+    fc5.idx = 0;
+  }
+  function fc5Render() {
+    if (!fc5.order.length) fc5Shuffle();
+    var card = D.ch5.flashcards[fc5.order[fc5.idx]];
+    if (!card) return;
+    $("fcQ5").textContent = card.q;
+    $("fcA5").textContent = card.a;
+    $("fcCounter5").textContent = (fc5.idx + 1) + " / " + D.ch5.flashcards.length;
+  }
+  function fc5Flip() { $("flashcard5").classList.toggle("flipped"); }
+  function fc5Step(d) {
+    fc5.idx = (fc5.idx + d + D.ch5.flashcards.length) % D.ch5.flashcards.length;
+    fc5Render();
+    $("flashcard5").classList.remove("flipped");
+  }
+
+  /* ---------- Glossary 5 (slide 26) ---------- */
+  function renderGlossary5(filter) {
+    var list = $("glossaryList5");
+    if (!list) return;
+    var term = (filter || "").toLowerCase().trim();
+    var items = D.ch5.glossary.filter(function (g) {
+      return g.term.toLowerCase().indexOf(term) !== -1 || g.def.toLowerCase().indexOf(term) !== -1;
+    });
+    $("glossaryCount5").textContent = items.length + " คำศัพท์";
+    list.innerHTML = items.map(function (g) {
+      return '<div class="gloss-item" data-term="' + esc(g.term) + '" role="button" tabindex="0" aria-expanded="false">' +
+        "<div><b>" + esc(g.term) + '</b><div class="g-def" style="display:none">' + esc(g.def) + "</div></div>" +
+        '<i data-lucide="chevron-down" class="g-chev"></i></div>';
+    }).join("");
+    icons();
+  }
+
+  /* ==========================================================================
+     FINAL F2 — NETWORK LAYER: CONTROL PLANE (internal ID 6)
+     ========================================================================== */
+
+  /* ---------- Control plane / data plane toggle (slide 3) ---------- */
+  function selectCpPlane(key) {
+    var d = D.ch6.cpPlanes[key];
+    if (!d) return;
+    qsa("#cpTabs .tab-btn").forEach(function (b) { b.classList.toggle("active", b.dataset.cp === key); });
+    $("cpTitle").textContent = d.title;
+    $("cpDesc").textContent = d.desc;
+    $("cpScope").textContent = d.scope;
+    $("cpTime").textContent = d.time;
+  }
+
+  /* ---------- Per-router / SDN toggle (slide 5) ---------- */
+  function selectCpStruct(key) {
+    var d = D.ch6.cpStruct[key];
+    if (!d) return;
+    qsa("#cpStructTabs .tab-btn").forEach(function (b) { b.classList.toggle("active", b.dataset.struct === key); });
+    $("cpStructTitle").textContent = d.title;
+    $("cpStructDesc").textContent = d.desc;
+    var vis = $("cpStructVis");
+    if (!vis) return;
+    vis.innerHTML = key === "sdn"
+      ? '<span class="vb-label">REMOTE CONTROLLER คำนวณ แล้วติดตั้ง FORWARDING TABLE ผ่าน CONTROL AGENT</span>' +
+        '<div class="pipeline" style="padding:16px 10px">' +
+        '<div class="pipe-node hot"><b>Remote controller</b><span>logically centralized</span></div>' +
+        '<span class="flow-arrow">→</span>' +
+        '<div class="pipe-node"><b>Control Agent (CA)</b><span>ใน router</span></div>' +
+        '<span class="flow-arrow">→</span>' +
+        '<div class="pipe-node"><b>Router</b><span>forwarding table</span></div>' +
+        '</div>'
+      : '<span class="vb-label">แต่ละ ROUTER มี ROUTING ALGORITHM ของตัวเอง</span>' +
+        '<div class="pipeline" style="padding:16px 10px">' +
+        '<div class="pipe-node"><b>Router A</b><span>routing algorithm</span></div>' +
+        '<span class="flow-arrow">↔</span>' +
+        '<div class="pipe-node"><b>Router B</b><span>routing algorithm</span></div>' +
+        '<span class="flow-arrow">↔</span>' +
+        '<div class="pipe-node"><b>Router C</b><span>routing algorithm</span></div>' +
+        '</div>';
+    icons();
+  }
+
+  /* ---------- SDN link-failure player (slide 7) ---------- */
+  function renderSdnSteps6() {
+    var g = $("sdnSteps");
+    if (!g) return;
+    g.innerHTML = D.ch6.sdnSteps.map(function (d, i) {
+      return '<button class="dhcp-step' + (i === 0 ? " active" : "") + '" data-sdn="' + i + '">' +
+        '<span class="n">ขั้นที่ ' + d.key + "</span><b>" + esc(d.name) + "</b>" +
+        "<span>" + esc(d.from) + "</span></button>";
+    }).join("");
+  }
+  function selectSdnStep6(i) {
+    var d = D.ch6.sdnSteps[i];
+    if (!d) return;
+    qsa("#sdnSteps .dhcp-step").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.sdn, 10) === i); });
+    var el = $("sdnStepDetail");
+    if (el) el.innerHTML = "<b>" + esc(d.name) + "</b> · " + esc(d.detail) +
+      '<br><span class="text-3" style="font-size:12.5px">' + esc(d.from) + "</span>";
+  }
+
+  /* ---------- Dijkstra table (slide 14) ---------- */
+  function renderDijkstra6() {
+    var tb = $("dijkstraRows");
+    if (!tb) return;
+    tb.innerHTML = D.ch6.dijkstra.map(function (r, i) {
+      return '<tr class="dij-row' + (i === 0 ? " active" : "") + '" data-dij="' + i + '" tabindex="0">' +
+        "<td><b>" + r.step + "</b></td><td class='mono'>" + esc(r.n) + "</td>" +
+        r.vals.map(function (v) { return "<td class='mono'>" + esc(v) + "</td>"; }).join("") +
+        "</tr>";
+    }).join("");
+    selectDijkstraStep6(0);
+  }
+  function selectDijkstraStep6(i) {
+    var r = D.ch6.dijkstra[i];
+    if (!r) return;
+    qsa("#dijkstraRows .dij-row").forEach(function (tr) { tr.classList.toggle("active", parseInt(tr.dataset.dij, 10) === i); });
+    var el = $("dijkstraDetail");
+    if (el) el.innerHTML = "<b>Step " + r.step + " · N' = {" + esc(r.n) + "}</b><br>" + esc(r.detail);
+  }
+
+  /* ---------- DV good/bad news (slide 18) ---------- */
+  function selectDvNews6(key) {
+    var d = D.ch6.dvNews[key];
+    if (!d) return;
+    qsa("#dvNewsTabs .tab-btn").forEach(function (b) { b.classList.toggle("active", b.dataset.news === key); });
+    $("dvNewsTitle").textContent = d.title;
+    $("dvNewsDesc").textContent = d.desc;
+    var ex = $("dvNewsExample");
+    if (ex) ex.textContent = key === "good"
+      ? "ถ้า x–y ลดจาก 4 เป็น 1 → y ตรวจพบและอัปเดต DV → แจ้ง z → z คำนวณใหม่และแจ้งต่อ ใช้เวลาไม่กี่รอบก็ลู่เข้า"
+      : "เมื่อ x–y เปลี่ยนจาก 4 เป็น 60 → z ยังบอกว่าไป x ได้ที่ cost 5 ผ่าน y → เกิด count-to-infinity";
+  }
+
+  /* ---------- OSPF flat / hierarchical (slide 21) ---------- */
+  function selectOspf6(key) {
+    var isHier = key === "hier";
+    qsa("#ospfTabs .tab-btn").forEach(function (b) { b.classList.toggle("active", b.dataset.ospf === key); });
+    $("ospfTitle").textContent = isHier ? "Hierarchical OSPF (2 ระดับ)" : "OSPF แบบ flat";
+    $("ospfDesc").textContent = isHier
+      ? "แบ่งเป็น local area และ backbone โดย flood LS เฉพาะภายใน area หรือ backbone"
+      : "ทุก router ใน AS อยู่ในโดเมนเดียว แล้ว flood LSA ถึงกันทั้งหมด";
+    var vis = $("ospfVis");
+    if (!vis) return;
+    vis.innerHTML = isHier
+      ? '<span class="vb-label">LOCAL AREA ↔ AREA BORDER ROUTER ↔ BACKBONE</span>' +
+        '<div class="flow-row" style="padding:16px 10px">' +
+        '<div class="pipe-node"><b>Local area</b><span>internal routers</span></div>' +
+        '<span class="flow-arrow">→</span>' +
+        '<div class="pipe-node hot"><b>Area border router</b><span>สรุประยะทาง</span></div>' +
+        '<span class="flow-arrow">→</span>' +
+        '<div class="pipe-node"><b>Backbone</b><span>backbone routers</span></div>' +
+        '</div>'
+      : '<span class="vb-label">ทุก ROUTER อยู่ใน AS เดียวกัน</span>' +
+        '<div class="flow-row" style="padding:16px 10px">' +
+        '<div class="pipe-node hot"><b>Router</b><span>flood LSA</span></div>' +
+        '<span class="flow-arrow">↔</span>' +
+        '<div class="pipe-node"><b>Router</b><span>Dijkstra</span></div>' +
+        '<span class="flow-arrow">↔</span>' +
+        '<div class="pipe-node"><b>Router</b><span>forwarding table</span></div>' +
+        '</div>';
+    icons();
+  }
+
+  /* ---------- BGP selection player (slide 24) ---------- */
+  function renderBgpSteps6() {
+    var g = $("bgpSteps");
+    if (!g) return;
+    g.innerHTML = D.ch6.bgpSteps.map(function (d, i) {
+      return '<button class="dhcp-step' + (i === 0 ? " active" : "") + '" data-bgp="' + i + '">' +
+        '<span class="n">ลำดับ ' + d.key + "</span><b>" + esc(d.name) + "</b></button>";
+    }).join("");
+  }
+  function selectBgpStep6(i) {
+    var d = D.ch6.bgpSteps[i];
+    if (!d) return;
+    qsa("#bgpSteps .dhcp-step").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.bgp, 10) === i); });
+    var el = $("bgpStepDetail");
+    if (el) el.innerHTML = "<b>" + esc(d.name) + "</b><br>" + esc(d.detail);
+  }
+
+  /* ---------- Cheat sheet (slide 27) ---------- */
+  function renderCheat6() {
+    var g = $("cheatGrid6");
+    if (!g) return;
+    g.innerHTML = D.ch6.cheat.map(function (c) {
+      return '<div class="cheat-item"><span class="term">' + esc(c.term) + '</span><span class="arrow">→</span><span class="def">' + esc(c.def) + "</span></div>";
+    }).join("");
+  }
+
+  /* ---------- Quiz 6 (slide 28 · 12 ข้อ) ---------- */
+  function quiz6Score() {
+    var sc = 0;
+    D.ch6.quiz.forEach(function (q, j) { if (state.quiz6.answers[j] === q.correct) sc++; });
+    return sc;
+  }
+  function renderQuiz6() {
+    var el = $("quizC6");
+    if (!el) return;
+    var qs = D.ch6.quiz;
+    var allAnswered = qs.every(function (_, j) { return state.quiz6.answers[j] !== undefined; });
+    if (allAnswered) { renderQuiz6Result(el, qs); return; }
+    var qi = 0;
+    for (var j = 0; j < qs.length; j++) { if (state.quiz6.answers[j] === undefined) { qi = j; break; } }
+    renderQuiz6Question(qi, el, qs);
+  }
+  function renderQuiz6Question(qi, el, qs) {
+    var q = qs[qi];
+    var chosen = state.quiz6.answers[qi];
+    var answered = chosen !== undefined;
+    var opts = q.options.map(function (o, oi) {
+      var cls = "quiz-option";
+      if (answered) {
+        cls += " locked";
+        if (oi === q.correct) cls += " correct";
+        else if (oi === chosen) cls += " incorrect";
+      }
+      return '<button class="' + cls + '" data-opt="' + oi + '"' + (answered ? " disabled" : "") + ">" +
+        '<span class="opt-key">' + "ABCD"[oi] + '</span><span>' + esc(o) + "</span></button>";
+    }).join("");
+
+    el.innerHTML =
+      '<div class="card fade-up" style="padding:26px">' +
+      '<div class="flex items-center justify-between mb-3 wrap gap-2">' +
+      '<span class="chip">ข้อที่ ' + (qi + 1) + " / " + qs.length + " · F2 · BOOK CH.5</span>" +
+      '<span class="chip" style="border-color:rgba(56,189,248,.4)">คะแนนตอนนี้: ' + quiz6Score() + " / " + qs.length + "</span></div>" +
+      "<h3 style='font-size:19px;line-height:1.5;margin-bottom:18px'>" + esc(q.q) + "</h3>" +
+      '<div class="flex" style="flex-direction:column;gap:10px">' + opts + "</div>" +
+      (answered
+        ? '<div class="quiz-explanation mt-4">💡 ' + esc(q.explain) + "</div>" +
+          '<div class="flex items-center gap-3 mt-5 wrap">' +
+          (qi < qs.length - 1
+            ? '<button class="btn btn-primary" id="q6Next">ข้อถัดไป <i data-lucide="arrow-right"></i></button>'
+            : '<button class="btn btn-primary" id="q6Finish">ดูผลลัพธ์ <i data-lucide="flag"></i></button>') +
+          "</div>"
+        : '<div class="tip-box tip-note mt-4" style="margin-top:18px"><i data-lucide="lightbulb"></i><div><b>Hint</b>แยกให้ออกว่า Routing เป็น control plane และ Forwarding เป็น data plane; LS↔Dijkstra, DV↔Bellman-Ford</div></div>')
+      + "</div>";
+    icons();
+
+    el.querySelectorAll(".quiz-option").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var oi = parseInt(b.dataset.opt, 10);
+        if (answered) return;
+        state.quiz6.answers[qi] = oi;
+        LS.set("cn_quiz6", state.quiz6);
+        var correct = oi === q.correct;
+        b.classList.add(correct ? "correct" : "incorrect");
+        if (!correct) {
+          qsa(".quiz-option", el).forEach(function (x) {
+            if (parseInt(x.dataset.opt, 10) === q.correct) x.classList.add("correct");
+          });
+        }
+        qsa(".quiz-option", el).forEach(function (x) { x.classList.add("locked"); x.setAttribute("disabled", "disabled"); });
+        var exp = document.createElement("div");
+        exp.className = "quiz-explanation mt-4";
+        exp.innerHTML = (correct ? "✅ ถูกต้อง! " : "❌ ยังไม่ถูกนะ ") + "💡 " + esc(q.explain);
+        el.querySelector(".quiz-option").closest("div.flex").insertAdjacentElement("afterend", exp);
+        var nav = document.createElement("div");
+        nav.className = "flex items-center gap-3 mt-5 wrap";
+        nav.innerHTML = qi < qs.length - 1
+          ? '<button class="btn btn-primary" id="q6Next">ข้อถัดไป <i data-lucide="arrow-right"></i></button>'
+          : '<button class="btn btn-primary" id="q6Finish">ดูผลลัพธ์ <i data-lucide="flag"></i></button>';
+        exp.insertAdjacentElement("afterend", nav);
+        icons();
+        bindQuiz6Nav();
+        if (correct) toast("✅ ถูกต้อง!", 1200);
+      });
+    });
+    bindQuiz6Nav();
+  }
+  function bindQuiz6Nav() {
+    var n = $("q6Next");
+    if (n) n.addEventListener("click", function () { renderQuiz6(); });
+    var f = $("q6Finish");
+    if (f) f.addEventListener("click", function () { renderQuiz6(); });
+    var r = $("q6Retry");
+    if (r) r.addEventListener("click", function () {
+      state.quiz6.answers = {};
+      LS.set("cn_quiz6", state.quiz6);
+      renderQuiz6();
+    });
+  }
+  function renderQuiz6Result(el, qs) {
+    var sc = quiz6Score();
+    var pct = Math.round((sc / qs.length) * 100);
+    var msg = sc === qs.length ? "Perfect! เก่งมาก! 🏆"
+      : sc >= qs.length - 2 ? "Excellent! เกือบเต็มแล้ว! 💪"
+      : sc >= Math.ceil(qs.length / 2) ? "Good job! ทบทวนอีกนิดก็เพอร์เฟกต์ ✨"
+      : "ยังไม่ผ่าน — ย้อนกลับไปทบทวนสไลด์แล้วลองใหม่นะ 📚";
+    var ring = 2 * Math.PI * 62;
+    var offset = ring - (sc / qs.length) * ring;
+    if (state.best === null || sc > state.best) {
+      state.best = sc;
+      LS.set("cn_best_" + state.chapter, state.best);
+    }
+    el.innerHTML =
+      '<div class="card center fade-up" style="padding:34px 26px">' +
+      '<div class="score-ring"><svg width="150" height="150" viewBox="0 0 150 150">' +
+      '<defs><linearGradient id="ringGrad6" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>' +
+      '<circle class="ring-bg" cx="75" cy="75" r="62" fill="none" stroke-width="12"/>' +
+      '<circle class="ring-fill" id="ringC6" cx="75" cy="75" r="62" fill="none" stroke-width="12" stroke-linecap="round" ' +
+      'style="stroke:url(#ringGrad6)" stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
+      '<div class="ring-num">' + sc + "/" + qs.length + "</div></div>" +
+      "<p class='mt-3 text-2' style='font-weight:700'>" + pct + "% · " + msg + "</p>" +
+      '<p class="text-3 mt-2" style="font-size:13px">คะแนนดีที่สุด: <b class="cyan">' + (state.best === null ? "–" : state.best + "/" + qs.length) + "</b></p>" +
+      '<div class="flex items-center gap-3 mt-5 wrap" style="justify-content:center">' +
+      '<button class="btn btn-ghost" id="q6Retry"><i data-lucide="rotate-ccw"></i> ทำใหม่ทั้งชุด</button>' +
+      '<button class="btn btn-primary" id="q6ToCards"><i data-lucide="square-stack"></i> ไปการ์ดทบทวน</button>' +
+      "</div></div>";
+    icons();
+    setTimeout(function () {
+      var rf = $("ringC6");
+      if (rf) rf.style.strokeDashoffset = offset;
+    }, 120);
+    bindQuiz6Nav();
+    var cards = $("q6ToCards");
+    if (cards) cards.addEventListener("click", function () { goTo(state.current + 1, 1); });
+  }
+
+  /* ---------- Flashcards 6 (slide 29) ---------- */
+  var fc6 = { order: [], idx: 0 };
+  function fc6Shuffle() {
+    fc6.order = D.ch6.flashcards.map(function (_, i) { return i; });
+    for (var i = fc6.order.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = fc6.order[i]; fc6.order[i] = fc6.order[j]; fc6.order[j] = t;
+    }
+    fc6.idx = 0;
+  }
+  function fc6Render() {
+    if (!fc6.order.length) fc6Shuffle();
+    var card = D.ch6.flashcards[fc6.order[fc6.idx]];
+    if (!card) return;
+    $("fcQ6").textContent = card.q;
+    $("fcA6").textContent = card.a;
+    $("fcCounter6").textContent = (fc6.idx + 1) + " / " + D.ch6.flashcards.length;
+  }
+  function fc6Flip() { $("flashcard6").classList.toggle("flipped"); }
+  function fc6Step(d) {
+    fc6.idx = (fc6.idx + d + D.ch6.flashcards.length) % D.ch6.flashcards.length;
+    fc6Render();
+    $("flashcard6").classList.remove("flipped");
+  }
+
+  /* ---------- Glossary 6 (slide 30) ---------- */
+  function renderGlossary6(filter) {
+    var list = $("glossaryList6");
+    if (!list) return;
+    var term = (filter || "").toLowerCase().trim();
+    var items = D.ch6.glossary.filter(function (g) {
+      return g.term.toLowerCase().indexOf(term) !== -1 || g.def.toLowerCase().indexOf(term) !== -1;
+    });
+    $("glossaryCount6").textContent = items.length + " คำศัพท์";
+    list.innerHTML = items.map(function (g) {
+      return '<div class="gloss-item" data-term="' + esc(g.term) + '" role="button" tabindex="0" aria-expanded="false">' +
+        "<div><b>" + esc(g.term) + '</b><div class="g-def" style="display:none">' + esc(g.def) + "</div></div>" +
+        '<i data-lucide="chevron-down" class="g-chev"></i></div>';
+    }).join("");
+    icons();
+  }
+
+  /* ==========================================================================
+     FINAL F3 — The Link Layer and LANs
+     ========================================================================== */
+  var parity7State = { grid: [], row: [], col: [] };
+
+  function parity7Reset() {
+    var p = D.ch7.parity;
+    parity7State.grid = p.rows.map(function (r) { return r.slice(); });
+    parity7State.row = p.rowParity.slice();
+    parity7State.col = p.colParity.slice();
+    parity7Render();
+  }
+
+  function parity7ComputeRow(r) {
+    return parity7State.grid[r].reduce(function (a, b) { return a ^ b; }, 0);
+  }
+  function parity7ComputeCol(c) {
+    return parity7State.grid.reduce(function (a, row) { return a ^ row[c]; }, 0);
+  }
+
+  function parity7Render() {
+    var g = $("parityGrid7");
+    if (!g) return;
+    var badRows = [], badCols = [];
+    var html = '<table class="parity-grid"><thead><tr><th></th>';
+    for (var c = 0; c < 5; c++) html += "<th>c" + (c + 1) + "</th>";
+    html += "<th>row parity</th></tr></thead><tbody>";
+    for (var r = 0; r < 4; r++) {
+      var rp = parity7ComputeRow(r);
+      var rowBad = rp !== parity7State.row[r];
+      if (rowBad) badRows.push(r);
+      html += '<tr><th>r' + (r + 1) + "</th>";
+      for (var cc = 0; cc < 5; cc++) {
+        html += '<td><button class="pbit' + (parity7State.grid[r][cc] ? " on" : "") +
+          '" data-pr="' + r + '" data-pc="' + cc + '" aria-label="บิต r' + (r + 1) + ' c' + (cc + 1) + '">' +
+          parity7State.grid[r][cc] + "</button></td>";
+      }
+      html += '<td class="parity-out' + (rowBad ? " bad" : "") + '">' + parity7State.row[r] + "</td></tr>";
+    }
+    html += '<tr class="parity-bottom"><th>col parity</th>';
+    for (var c2 = 0; c2 < 5; c2++) {
+      var cp = parity7ComputeCol(c2);
+      var colBad = cp !== parity7State.col[c2];
+      if (colBad) badCols.push(c2);
+      html += '<td class="parity-out' + (colBad ? " bad" : "") + '">' + parity7State.col[c2] + "</td>";
+    }
+    html += '<td class="parity-out">0</td></tr></tbody></table>';
+    g.innerHTML = html;
+
+    var info = $("parityInfo7");
+    if (!info) return;
+    if (!badRows.length && !badCols.length) {
+      info.className = "lpm-result ok";
+      info.innerHTML = "<b>parity ตรงทั้งหมด</b> — ไม่พบ error จาก parity รอบนี้ (แต่ error บางรูปแบบอาจหลุดได้)";
+    } else if (badRows.length === 1 && badCols.length === 1) {
+      info.className = "lpm-result";
+      info.innerHTML = "<b>ผิดที่แถว r" + (badRows[0] + 1) + " และคอลัมน์ c" + (badCols[0] + 1) +
+        "</b> — ตัดกันที่ (" + (badRows[0] + 1) + "," + (badCols[0] + 1) + ") จึงแก้ single-bit error ได้";
+    } else {
+      info.className = "lpm-result";
+      info.innerHTML = "<b>ตรวจพบ parity ผิด " + badRows.length + " แถว · " + badCols.length +
+        " คอลัมน์</b> — หลายตำแหน่ง ممکنทำให้ parity ผิดแบบนี้ จึงตรวจพบแต่ยังระบุตำแหน่งเพื่อแก้ไม่ได้";
+    }
+  }
+
+  function parity7Toggle(r, c) {
+    parity7State.grid[r][c] ^= 1;
+    parity7Render();
+  }
+
+  /* ---------- CRC step table (slide 11) ---------- */
+  function renderCrc7() {
+    var g = $("crcRows7");
+    if (!g) return;
+    g.innerHTML = D.ch7.crcSteps.map(function (d, i) {
+      return '<tr class="crc-row' + (i === 0 ? " active" : "") + '" data-crc="' + i + '" tabindex="0">' +
+        "<td>" + esc(d.key) + "</td><td class=\"mono\">" + esc(d.window) + "</td><td>" + esc(d.left) +
+        "</td><td>" + esc(d.xor) + "</td><td class=\"mono\">" + esc(d.result) + "</td></tr>";
+    }).join("");
+  }
+  function selectCrc7(i) {
+    var d = D.ch7.crcSteps[i];
+    if (!d) return;
+    qsa("#crcRows7 .crc-row").forEach(function (tr) { tr.classList.toggle("active", parseInt(tr.dataset.crc, 10) === i); });
+    var el = $("crcDetail7");
+    if (el) el.innerHTML = "<b>ขั้น: " + esc(d.key) + "</b> · Window = <span class=\"mono\">" + esc(d.window) +
+      "</span> · บิตซ้ายสุด = <b>" + esc(d.left) + "</b> · XOR กับ G หรือไม่ = <b>" + esc(d.xor) +
+      "</b> · ผล = <span class=\"mono\">" + esc(d.result) + "</span>";
+  }
+
+  /* ---------- Backoff (slide 18) ---------- */
+  function renderBackoff7() {
+    var g = $("backoffTabs7");
+    if (!g) return;
+    g.innerHTML = D.ch7.backoff.map(function (d, i) {
+      return '<button class="dhcp-step' + (i === 0 ? " active" : "") + '" data-backoff="' + i + '">' +
+        '<span class="n">หลังชนครั้งที่</span><b>' + esc(d.m) + "</b><span>K ∈ 0–" + (d.count - 1) + "</span></button>";
+    }).join("");
+  }
+  function selectBackoff7(i) {
+    var d = D.ch7.backoff[i];
+    if (!d) return;
+    qsa("#backoffTabs7 .dhcp-step").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.backoff, 10) === i); });
+    var el = $("backoffDetail7");
+    if (el) el.innerHTML = "<b>m = " + esc(d.m) + "</b> · K ∈ {" + esc(d.range) + "} · เลือกได้ " + esc(d.count) +
+      " ค่า · รอ <b>K × 512 bit times</b>" + (d.m === "> 10" ? " (cap ที่ 1023)" : "");
+  }
+
+  /* ---------- Ethernet frame fields (slide 21) ---------- */
+  function renderEthFields7() {
+    var g = $("ethFieldTabs7");
+    if (!g) return;
+    g.innerHTML = D.ch7.ethFields.map(function (f, i) {
+      return '<button class="tab-btn' + (i === 0 ? " active" : "") + '" data-eth="' + i + '" role="tab">' +
+        esc(f.field) + " · " + esc(f.size) + "</button>";
+    }).join("");
+  }
+  function selectEthField7(i) {
+    var f = D.ch7.ethFields[i];
+    if (!f) return;
+    qsa("#ethFieldTabs7 .tab-btn").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.eth, 10) === i); });
+    var el = $("ethFieldDetail7");
+    if (el) el.innerHTML = "<b>" + esc(f.field) + "</b> <span class=\"chip\" style=\"margin-left:6px\">" + esc(f.size) + "</span><br>" + esc(f.detail);
+  }
+
+  /* ---------- ARP steps (slide 26) ---------- */
+  function renderArp7() {
+    var g = $("arpSteps7");
+    if (!g) return;
+    g.innerHTML = D.ch7.arpSteps.map(function (d, i) {
+      return '<button class="dhcp-step' + (i === 0 ? " active" : "") + '" data-arp="' + i + '">' +
+        '<span class="n">ขั้นที่ ' + esc(d.key) + '</span><b>' + esc(d.name) + "</b></button>";
+    }).join("");
+  }
+  function selectArp7(i) {
+    var d = D.ch7.arpSteps[i];
+    if (!d) return;
+    qsa("#arpSteps7 .dhcp-step").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.arp, 10) === i); });
+    var el = $("arpDetail7");
+    if (el) el.innerHTML = "<b>" + esc(d.name) + "</b><br>" + esc(d.detail);
+  }
+
+  /* ---------- Switch self-learning simulation (slide 30) ---------- */
+  function renderSwitch7() {
+    var g = $("switchSteps7");
+    if (!g) return;
+    g.innerHTML = D.ch7.switchSteps.map(function (d, i) {
+      return '<button class="dhcp-step' + (i === 0 ? " active" : "") + '" data-switch="' + i + '">' +
+        '<span class="n">ลำดับ ' + esc(d.key) + '</span><b>' + esc(d.event) + "</b>" +
+        "<span>เรียน: " + esc(d.learn) + "</span></button>";
+    }).join("");
+    selectSwitch7(0);
+  }
+  function selectSwitch7(i) {
+    var d = D.ch7.switchSteps[i];
+    if (!d) return;
+    qsa("#switchSteps7 .dhcp-step").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.switch, 10) === i); });
+    var el = $("switchDetail7");
+    if (el) el.innerHTML = "<b>" + esc(d.event) + "</b><br>" +
+      "เรียน: " + esc(d.learn) + " · รู้ destination? " + esc(d.known) + "<br>" +
+      "การกระทำ: <b>" + esc(d.action) + "</b>";
+    var tbl = $("switchTable7");
+    if (tbl) {
+      tbl.innerHTML = d.table.split(",").map(function (x) {
+        return '<span class="chip mono">' + esc(x.trim()) + "</span>";
+      }).join(" ");
+    }
+  }
+
+  /* ---------- Cheat sheet (slide 36) ---------- */
+  function renderCheat7() {
+    var g = $("cheatGrid7");
+    if (!g) return;
+    g.innerHTML = D.ch7.cheat.map(function (c) {
+      return '<div class="cheat-item"><span class="term">' + esc(c.term) + '</span><span class="arrow">→</span><span class="def">' + esc(c.def) + "</span></div>";
+    }).join("");
+  }
+
+  /* ---------- Quiz 7 (slide 37 · 12 ข้อ) ---------- */
+  function quiz7Score() {
+    var sc = 0;
+    D.ch7.quiz.forEach(function (q, j) { if (state.quiz7.answers[j] === q.correct) sc++; });
+    return sc;
+  }
+  function renderQuiz7() {
+    var el = $("quiz7");
+    if (!el) return;
+    var qs = D.ch7.quiz;
+    var allAnswered = qs.every(function (_, j) { return state.quiz7.answers[j] !== undefined; });
+    if (allAnswered) { renderQuiz7Result(el, qs); return; }
+    var qi = 0;
+    for (var j = 0; j < qs.length; j++) { if (state.quiz7.answers[j] === undefined) { qi = j; break; } }
+    renderQuiz7Question(qi, el, qs);
+  }
+  function renderQuiz7Question(qi, el, qs) {
+    var q = qs[qi];
+    var chosen = state.quiz7.answers[qi];
+    var answered = chosen !== undefined;
+    var opts = q.options.map(function (o, oi) {
+      var cls = "quiz-option";
+      if (answered) {
+        cls += " locked";
+        if (oi === q.correct) cls += " correct";
+        else if (oi === chosen) cls += " incorrect";
+      }
+      return '<button class="' + cls + '" data-opt="' + oi + '"' + (answered ? " disabled" : "") + ">" +
+        '<span class="opt-key">' + "ABCD"[oi] + '</span><span>' + esc(o) + "</span></button>";
+    }).join("");
+
+    el.innerHTML =
+      '<div class="card fade-up" style="padding:26px">' +
+      '<div class="flex items-center justify-between mb-3 wrap gap-2">' +
+      '<span class="chip">ข้อที่ ' + (qi + 1) + " / " + qs.length + " · F3 · BOOK CH.6</span>" +
+      '<span class="chip" style="border-color:rgba(56,189,248,.4)">คะแนนตอนนี้: ' + quiz7Score() + " / " + qs.length + "</span></div>" +
+      "<h3 style='font-size:19px;line-height:1.5;margin-bottom:18px'>" + esc(q.q) + "</h3>" +
+      '<div class="flex" style="flex-direction:column;gap:10px">' + opts + "</div>" +
+      (answered
+        ? '<div class="quiz-explanation mt-4">💡 ' + esc(q.explain) + "</div>" +
+          '<div class="flex items-center gap-3 mt-5 wrap">' +
+          (qi < qs.length - 1
+            ? '<button class="btn btn-primary" id="q7Next">ข้อถัดไป <i data-lucide="arrow-right"></i></button>'
+            : '<button class="btn btn-primary" id="q7Finish">ดูผลลัพธ์ <i data-lucide="flag"></i></button>') +
+          "</div>"
+        : '<div class="tip-box tip-note mt-4" style="margin-top:18px"><i data-lucide="lightbulb"></i><div><b>Hint</b>ทบทวน 6 หัวข้อ: link services, parity/CRC, multiple access, Ethernet/MAC/ARP, switch learning และ VLAN 802.1Q</div></div>')
+      + "</div>";
+    icons();
+
+    el.querySelectorAll(".quiz-option").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var oi = parseInt(b.dataset.opt, 10);
+        if (answered) return;
+        state.quiz7.answers[qi] = oi;
+        LS.set("cn_quiz7", state.quiz7);
+        var correct = oi === q.correct;
+        b.classList.add(correct ? "correct" : "incorrect");
+        if (!correct) {
+          qsa(".quiz-option", el).forEach(function (x) {
+            if (parseInt(x.dataset.opt, 10) === q.correct) x.classList.add("correct");
+          });
+        }
+        qsa(".quiz-option", el).forEach(function (x) { x.classList.add("locked"); x.setAttribute("disabled", "disabled"); });
+        var exp = document.createElement("div");
+        exp.className = "quiz-explanation mt-4";
+        exp.innerHTML = (correct ? "✅ ถูกต้อง! " : "❌ ยังไม่ถูกนะ ") + "💡 " + esc(q.explain);
+        el.querySelector(".quiz-option").closest("div.flex").insertAdjacentElement("afterend", exp);
+        var nav = document.createElement("div");
+        nav.className = "flex items-center gap-3 mt-5 wrap";
+        nav.innerHTML = qi < qs.length - 1
+          ? '<button class="btn btn-primary" id="q7Next">ข้อถัดไป <i data-lucide="arrow-right"></i></button>'
+          : '<button class="btn btn-primary" id="q7Finish">ดูผลลัพธ์ <i data-lucide="flag"></i></button>';
+        exp.insertAdjacentElement("afterend", nav);
+        icons();
+        bindQuiz7Nav();
+        if (correct) toast("✅ ถูกต้อง!", 1200);
+      });
+    });
+    bindQuiz7Nav();
+  }
+  function bindQuiz7Nav() {
+    var n = $("q7Next");
+    if (n) n.addEventListener("click", function () { renderQuiz7(); });
+    var f = $("q7Finish");
+    if (f) f.addEventListener("click", function () { renderQuiz7(); });
+    var r = $("q7Retry");
+    if (r) r.addEventListener("click", function () {
+      state.quiz7.answers = {};
+      LS.set("cn_quiz7", state.quiz7);
+      renderQuiz7();
+    });
+  }
+  function renderQuiz7Result(el, qs) {
+    var sc = quiz7Score();
+    var pct = Math.round((sc / qs.length) * 100);
+    var msg = sc === qs.length ? "Perfect! คะแนนเต็ม เก่งมาก! 🏆"
+      : sc >= qs.length - 2 ? "Excellent! เกือบเต็มแล้ว! 💪"
+      : sc >= Math.ceil(qs.length / 2) ? "Good job! ทบทวนอีกนิดก็เพอร์เฟกต์ ✨"
+      : "ยังไม่ผ่าน — ย้อนกลับไปทบทวนสไลด์แล้วลองใหม่นะ 📚";
+    if (state.best === null || sc > state.best) {
+      state.best = sc;
+      LS.set("cn_best_" + state.chapter, state.best);
+    }
+    var ring = 2 * Math.PI * 62;
+    var offset = ring - (sc / qs.length) * ring;
+    el.innerHTML =
+      '<div class="card center fade-up" style="padding:34px 26px">' +
+      '<div class="score-ring"><svg width="150" height="150" viewBox="0 0 150 150">' +
+      '<defs><linearGradient id="ringGrad7" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>' +
+      '<circle class="ring-bg" cx="75" cy="75" r="62" fill="none" stroke-width="12"/>' +
+      '<circle class="ring-fill" id="ringC7" cx="75" cy="75" r="62" fill="none" stroke-width="12" stroke-linecap="round" ' +
+      'style="stroke:url(#ringGrad7)" stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
+      '<div class="ring-num">' + sc + "/" + qs.length + "</div></div>" +
+      "<p class='mt-3 text-2' style='font-weight:700'>" + pct + "% · " + msg + "</p>" +
+      '<p class="text-3 mt-2" style="font-size:13px">คะแนนดีที่สุดของบทนี้: <b class="cyan">' + (state.best === null ? "–" : state.best + "/" + qs.length) + "</b></p>" +
+      '<div class="flex items-center gap-3 mt-5 wrap" style="justify-content:center">' +
+      '<button class="btn btn-ghost" id="q7Retry"><i data-lucide="rotate-ccw"></i> ทำใหม่อีกครั้ง</button>' +
+      '<button class="btn btn-primary" id="q7ToCards"><i data-lucide="square-stack"></i> ไปที่การ์ดทบทวน</button>' +
+      "</div></div>";
+    icons();
+    setTimeout(function () {
+      var rf = $("ringC7");
+      if (rf) rf.style.strokeDashoffset = offset;
+    }, 120);
+    bindQuiz7Nav();
+    var cards = $("q7ToCards");
+    if (cards) cards.addEventListener("click", function () {
+      var ci = -1;
+      ch().slides.forEach(function (s, i) { if (s.title.indexOf("Flashcards") !== -1) ci = i; });
+      if (ci !== -1) goTo(ch().start + ci, 1);
+    });
+  }
+
+  /* ---------- Flashcards 7 (slide 38) ---------- */
+  var fc7 = { order: [], idx: 0 };
+  function fc7Shuffle() {
+    fc7.order = D.ch7.flashcards.map(function (_, i) { return i; });
+    for (var i = fc7.order.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = fc7.order[i]; fc7.order[i] = fc7.order[j]; fc7.order[j] = t;
+    }
+    fc7.idx = 0;
+  }
+  function fc7Render() {
+    if (!fc7.order.length) fc7Shuffle();
+    var card = D.ch7.flashcards[fc7.order[fc7.idx]];
+    if (!card) return;
+    $("fcQ7").textContent = card.q;
+    $("fcA7").textContent = card.a;
+    $("fcCounter7").textContent = (fc7.idx + 1) + " / " + D.ch7.flashcards.length;
+  }
+  function fc7Flip() { $("flashcard7").classList.toggle("flipped"); }
+  function fc7Step(d) {
+    fc7.idx = (fc7.idx + d + D.ch7.flashcards.length) % D.ch7.flashcards.length;
+    fc7Render();
+    $("flashcard7").classList.remove("flipped");
+  }
+
+  /* ---------- Glossary 7 (slide 39) ---------- */
+  function renderGlossary7(filter) {
+    var list = $("glossaryList7");
+    if (!list) return;
+    var term = (filter || "").toLowerCase().trim();
+    var items = D.ch7.glossary.filter(function (g) {
+      return g.term.toLowerCase().indexOf(term) !== -1 || g.def.toLowerCase().indexOf(term) !== -1;
+    });
+    $("glossaryCount7").textContent = items.length + " คำศัพท์";
+    list.innerHTML = items.map(function (g) {
+      return '<div class="gloss-item" data-term="' + esc(g.term) + '" role="button" tabindex="0" aria-expanded="false">' +
+        "<div><b>" + esc(g.term) + '</b><div class="g-def" style="display:none">' + esc(g.def) + "</div></div>" +
+        '<i data-lucide="chevron-down" class="g-chev"></i></div>';
+    }).join("");
+    icons();
+  }
+
+  /* ==========================================================================
+     FINAL F4 — Wireless and Mobile Networks
+     ========================================================================== */
+
+  /* ---------- dBm power selector (slide 10) ---------- */
+  function renderDbm8() {
+    var g = $("dbmPick8");
+    if (!g) return;
+    g.innerHTML = D.ch8.dbm.map(function (d, i) {
+      return '<button class="dbm-btn' + (i === 0 ? " active" : "") + '" data-dbm="' + i + '">' + esc(d.label) + "</button>";
+    }).join("");
+    selectDbm8(0);
+  }
+  function selectDbm8(i) {
+    var d = D.ch8.dbm[i];
+    if (!d) return;
+    qsa("#dbmPick8 .dbm-btn").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.dbm, 10) === i); });
+    var out = $("dbmOut8");
+    if (out) out.textContent = d.mw;
+    var note = $("dbmNote8");
+    if (note) note.textContent = d.note;
+  }
+
+  /* ---------- Shannon calculator (slide 13) ---------- */
+  function updateShannon8() {
+    var b = $("shB8"), s = $("shSnr8");
+    if (!b || !s) return;
+    var Bmhz = parseFloat(b.value);
+    var snrDb = parseFloat(s.value);
+    var linear = Math.pow(10, snrDb / 10);
+    var c = Bmhz * 1e6 * Math.log2(1 + linear);
+    var cap = c >= 1e9 ? (c / 1e9).toFixed(2) + " Gbps" : Math.round(c / 1e6) + " Mbps";
+    var bv = $("shBVal8"), sv = $("shSnrVal8");
+    if (bv) bv.textContent = Bmhz + " MHz";
+    if (sv) sv.textContent = snrDb + " dB";
+    var out = $("shOut8");
+    if (out) out.textContent = cap;
+    var detail = $("shDetail8");
+    if (detail) detail.textContent = "B = " + Bmhz + " MHz · SNR = " + snrDb + " dB → S/N = " + linear.toFixed(2) + " (linear) · C ≈ " + cap;
+  }
+
+  /* ---------- CSMA/CA vs RTS/CTS (slide 20) ---------- */
+  function renderCsma8() {
+    var g = $("csmaTabs8");
+    if (!g) return;
+    g.innerHTML = D.ch8.csmaModes.map(function (m, i) {
+      return '<button class="tab-btn' + (i === 0 ? " active" : "") + '" data-csma="' + i + '" role="tab">' + esc(m.name) + "</button>";
+    }).join("");
+    selectCsma8(0);
+  }
+  function selectCsma8(i) {
+    var m = D.ch8.csmaModes[i];
+    if (!m) return;
+    qsa("#csmaTabs8 .tab-btn").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.csma, 10) === i); });
+    var sum = $("csmaSummary8");
+    if (sum) sum.textContent = m.summary;
+    var list = $("csmaSteps8");
+    if (list) list.innerHTML = m.steps.map(function (s) {
+      return '<div class="csma-step"><span class="n">' + esc(s.n) + '</span><div><b>' + esc(s.label) + '</b><p>' + esc(s.detail) + "</p></div></div>";
+    }).join("");
+    var note = $("csmaNote8");
+    if (note) note.textContent = m.note;
+  }
+
+  /* ---------- 802.11 frame fields (slide 21) ---------- */
+  function renderFrame8() {
+    var g = $("frameStrip8");
+    if (!g) return;
+    g.innerHTML = D.ch8.frameFields.map(function (f, i) {
+      var cls = "frame-seg";
+      if (f.field.indexOf("Address") === 0) cls += " addr";
+      if (f.field === "Payload") cls += " payload";
+      if (f.field === "CRC") cls += " crc";
+      return '<button class="' + cls + '" data-frame="' + i + '"><b>' + esc(f.field) + "</b><span>" + esc(f.size) + "</span></button>";
+    }).join("");
+    selectFrame8(0);
+  }
+  function selectFrame8(i) {
+    var f = D.ch8.frameFields[i];
+    if (!f) return;
+    qsa("#frameStrip8 .frame-seg").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.frame, 10) === i); });
+    var el = $("frameDetail8");
+    if (el) el.innerHTML = "<b>" + esc(f.field) + '</b> <span class="chip" style="margin-left:6px">' + esc(f.size) + "</span><br>" + esc(f.detail);
+  }
+
+  /* ---------- Discovery: beacon vs probe (slide 24) ---------- */
+  function renderDiscovery8() {
+    var g = $("discTabs8");
+    if (!g) return;
+    g.innerHTML = D.ch8.discoveryModes.map(function (m, i) {
+      return '<button class="tab-btn' + (i === 0 ? " active" : "") + '" data-disc="' + i + '" role="tab">' + esc(m.name) + "</button>";
+    }).join("");
+    selectDiscovery8(0);
+  }
+  function selectDiscovery8(i) {
+    var m = D.ch8.discoveryModes[i];
+    if (!m) return;
+    qsa("#discTabs8 .tab-btn").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.disc, 10) === i); });
+    var lab = $("discLabel8");
+    if (lab) lab.textContent = m.label;
+    var steps = $("discSteps8");
+    if (steps) steps.innerHTML = m.steps.map(function (s, j) {
+      return '<div class="disc-step"><i>' + (j + 1) + "</i><span>" + esc(s) + "</span></div>";
+    }).join("");
+    var sum = $("discSummary8");
+    if (sum) sum.textContent = m.summary;
+    var tr = $("discTradeoff8");
+    if (tr) tr.textContent = m.tradeoff;
+  }
+
+  /* ---------- 5G handover steps (slide 34) ---------- */
+  function renderHandover8() {
+    var g = $("hoSteps8");
+    if (!g) return;
+    g.innerHTML = D.ch8.handoverSteps.map(function (d, i) {
+      return '<button class="dhcp-step' + (i === 0 ? " active" : "") + '" data-ho="' + i + '">' +
+        '<span class="n">ขั้นที่ ' + esc(d.n) + '</span><b>' + esc(d.name) + "</b></button>";
+    }).join("");
+    selectHandover8(0);
+  }
+  function selectHandover8(i) {
+    var d = D.ch8.handoverSteps[i];
+    if (!d) return;
+    qsa("#hoSteps8 .dhcp-step").forEach(function (b) { b.classList.toggle("active", parseInt(b.dataset.ho, 10) === i); });
+    var el = $("hoDetail8");
+    if (el) el.innerHTML = "<b>" + esc(d.n) + " · " + esc(d.name) + "</b><br>" + esc(d.detail);
+  }
+
+  /* ---------- Cheat sheet 8 (slide 38) ---------- */
+  function renderCheat8() {
+    var g = $("cheatGrid8");
+    if (!g) return;
+    g.innerHTML = D.ch8.cheat.map(function (c) {
+      return '<div class="cheat-item"><span class="term">' + esc(c.term) + '</span><span class="arrow">→</span><span class="def">' + esc(c.def) + "</span></div>";
+    }).join("");
+  }
+
+  /* ---------- Quiz 8 (slide 39 · 12 ข้อ) ---------- */
+  function quiz8Score() {
+    var sc = 0;
+    D.ch8.quiz.forEach(function (q, j) { if (state.quiz8.answers[j] === q.correct) sc++; });
+    return sc;
+  }
+  function renderQuiz8() {
+    var el = $("quiz8");
+    if (!el) return;
+    var qs = D.ch8.quiz;
+    var allAnswered = qs.every(function (_, j) { return state.quiz8.answers[j] !== undefined; });
+    if (allAnswered) { renderQuiz8Result(el, qs); return; }
+    var qi = 0;
+    for (var j = 0; j < qs.length; j++) { if (state.quiz8.answers[j] === undefined) { qi = j; break; } }
+    renderQuiz8Question(qi, el, qs);
+  }
+  function renderQuiz8Question(qi, el, qs) {
+    var q = qs[qi];
+    var chosen = state.quiz8.answers[qi];
+    var answered = chosen !== undefined;
+    var opts = q.options.map(function (o, oi) {
+      var cls = "quiz-option";
+      if (answered) {
+        cls += " locked";
+        if (oi === q.correct) cls += " correct";
+        else if (oi === chosen) cls += " incorrect";
+      }
+      return '<button class="' + cls + '" data-opt="' + oi + '"' + (answered ? " disabled" : "") + ">" +
+        '<span class="opt-key">' + "ABCD"[oi] + '</span><span>' + esc(o) + "</span></button>";
+    }).join("");
+
+    el.innerHTML =
+      '<div class="card fade-up" style="padding:26px">' +
+      '<div class="flex items-center justify-between mb-3 wrap gap-2">' +
+      '<span class="chip">ข้อที่ ' + (qi + 1) + " / " + qs.length + " · F4 · BOOK CH.7</span>" +
+      '<span class="chip" style="border-color:rgba(56,189,248,.4)">คะแนนตอนนี้: ' + quiz8Score() + " / " + qs.length + "</span></div>" +
+      "<h3 style='font-size:19px;line-height:1.5;margin-bottom:18px'>" + esc(q.q) + "</h3>" +
+      '<div class="flex" style="flex-direction:column;gap:10px">' + opts + "</div>" +
+      (answered
+        ? '<div class="quiz-explanation mt-4">💡 ' + esc(q.explain) + "</div>" +
+          '<div class="flex items-center gap-3 mt-5 wrap">' +
+          (qi < qs.length - 1
+            ? '<button class="btn btn-primary" id="q8Next">ข้อถัดไป <i data-lucide="arrow-right"></i></button>'
+            : '<button class="btn btn-primary" id="q8Finish">ดูผลลัพธ์ <i data-lucide="flag"></i></button>') +
+          "</div>"
+        : '<div class="tip-box tip-note mt-4" style="margin-top:18px"><i data-lucide="lightbulb"></i><div><b>Hint</b>ทบทวน 6 หัวข้อ: components, radio/SNR, CSMA/CA, access/association, MIMO และ mobility/handover</div></div>')
+      + "</div>";
+    icons();
+
+    el.querySelectorAll(".quiz-option").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var oi = parseInt(b.dataset.opt, 10);
+        if (answered) return;
+        state.quiz8.answers[qi] = oi;
+        LS.set("cn_quiz8", state.quiz8);
+        var correct = oi === q.correct;
+        b.classList.add(correct ? "correct" : "incorrect");
+        if (!correct) {
+          qsa(".quiz-option", el).forEach(function (x) {
+            if (parseInt(x.dataset.opt, 10) === q.correct) x.classList.add("correct");
+          });
+        }
+        qsa(".quiz-option", el).forEach(function (x) { x.classList.add("locked"); x.setAttribute("disabled", "disabled"); });
+        var exp = document.createElement("div");
+        exp.className = "quiz-explanation mt-4";
+        exp.innerHTML = (correct ? "✅ ถูกต้อง! " : "❌ ยังไม่ถูกนะ ") + "💡 " + esc(q.explain);
+        el.querySelector(".quiz-option").closest("div.flex").insertAdjacentElement("afterend", exp);
+        var nav = document.createElement("div");
+        nav.className = "flex items-center gap-3 mt-5 wrap";
+        nav.innerHTML = qi < qs.length - 1
+          ? '<button class="btn btn-primary" id="q8Next">ข้อถัดไป <i data-lucide="arrow-right"></i></button>'
+          : '<button class="btn btn-primary" id="q8Finish">ดูผลลัพธ์ <i data-lucide="flag"></i></button>';
+        exp.insertAdjacentElement("afterend", nav);
+        icons();
+        bindQuiz8Nav();
+        if (correct) toast("✅ ถูกต้อง!", 1200);
+      });
+    });
+    bindQuiz8Nav();
+  }
+  function bindQuiz8Nav() {
+    var n = $("q8Next");
+    if (n) n.addEventListener("click", function () { renderQuiz8(); });
+    var f = $("q8Finish");
+    if (f) f.addEventListener("click", function () { renderQuiz8(); });
+    var r = $("q8Retry");
+    if (r) r.addEventListener("click", function () {
+      state.quiz8.answers = {};
+      LS.set("cn_quiz8", state.quiz8);
+      renderQuiz8();
+    });
+  }
+  function renderQuiz8Result(el, qs) {
+    var sc = quiz8Score();
+    var pct = Math.round((sc / qs.length) * 100);
+    var msg = sc === qs.length ? "Perfect! คะแนนเต็ม เก่งมาก! 🏆"
+      : sc >= qs.length - 2 ? "Excellent! เกือบเต็มแล้ว! 💪"
+      : sc >= Math.ceil(qs.length / 2) ? "Good job! ทบทวนอีกนิดก็เพอร์เฟกต์ ✨"
+      : "ยังไม่ผ่าน — ย้อนกลับไปทบทวนสไลด์แล้วลองใหม่นะ 📚";
+    if (state.best === null || sc > state.best) {
+      state.best = sc;
+      LS.set("cn_best_" + state.chapter, state.best);
+    }
+    var ring = 2 * Math.PI * 62;
+    var offset = ring - (sc / qs.length) * ring;
+    el.innerHTML =
+      '<div class="card center fade-up" style="padding:34px 26px">' +
+      '<div class="score-ring"><svg width="150" height="150" viewBox="0 0 150 150">' +
+      '<defs><linearGradient id="ringGrad8" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>' +
+      '<circle class="ring-bg" cx="75" cy="75" r="62" fill="none" stroke-width="12"/>' +
+      '<circle class="ring-fill" id="ringC8" cx="75" cy="75" r="62" fill="none" stroke-width="12" stroke-linecap="round" ' +
+      'style="stroke:url(#ringGrad8)" stroke-dasharray="' + ring + '" stroke-dashoffset="' + ring + '"/></svg>' +
+      '<div class="ring-num">' + sc + "/" + qs.length + "</div></div>" +
+      "<p class='mt-3 text-2' style='font-weight:700'>" + pct + "% · " + msg + "</p>" +
+      '<p class="text-3 mt-2" style="font-size:13px">คะแนนดีที่สุดของบทนี้: <b class="cyan">' + (state.best === null ? "–" : state.best + "/" + qs.length) + "</b></p>" +
+      '<div class="flex items-center gap-3 mt-5 wrap" style="justify-content:center">' +
+      '<button class="btn btn-ghost" id="q8Retry"><i data-lucide="rotate-ccw"></i> ทำใหม่อีกครั้ง</button>' +
+      '<button class="btn btn-primary" id="q8ToCards"><i data-lucide="square-stack"></i> ไปที่การ์ดทบทวน</button>' +
+      "</div></div>";
+    icons();
+    setTimeout(function () {
+      var rf = $("ringC8");
+      if (rf) rf.style.strokeDashoffset = offset;
+    }, 120);
+    bindQuiz8Nav();
+    var cards = $("q8ToCards");
+    if (cards) cards.addEventListener("click", function () {
+      var ci = -1;
+      ch().slides.forEach(function (s, i) { if (s.title.indexOf("Flashcards") !== -1) ci = i; });
+      if (ci !== -1) goTo(ch().start + ci, 1);
+    });
+  }
+
+  /* ---------- Flashcards 8 (slide 40) ---------- */
+  var fc8 = { order: [], idx: 0 };
+  function fc8Shuffle() {
+    fc8.order = D.ch8.flashcards.map(function (_, i) { return i; });
+    for (var i = fc8.order.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = fc8.order[i]; fc8.order[i] = fc8.order[j]; fc8.order[j] = t;
+    }
+    fc8.idx = 0;
+  }
+  function fc8Render() {
+    if (!fc8.order.length) fc8Shuffle();
+    var card = D.ch8.flashcards[fc8.order[fc8.idx]];
+    if (!card) return;
+    $("fcQ8").textContent = card.q;
+    $("fcA8").textContent = card.a;
+    $("fcCounter8").textContent = (fc8.idx + 1) + " / " + D.ch8.flashcards.length;
+  }
+  function fc8Flip() { $("flashcard8").classList.toggle("flipped"); }
+  function fc8Step(d) {
+    fc8.idx = (fc8.idx + d + D.ch8.flashcards.length) % D.ch8.flashcards.length;
+    fc8Render();
+    $("flashcard8").classList.remove("flipped");
+  }
+
+  /* ---------- Glossary 8 (slide 41) ---------- */
+  function renderGlossary8(filter) {
+    var list = $("glossaryList8");
+    if (!list) return;
+    var term = (filter || "").toLowerCase().trim();
+    var items = D.ch8.glossary.filter(function (g) {
+      return g.term.toLowerCase().indexOf(term) !== -1 || g.def.toLowerCase().indexOf(term) !== -1;
+    });
+    $("glossaryCount8").textContent = items.length + " คำศัพท์";
     list.innerHTML = items.map(function (g) {
       return '<div class="gloss-item" data-term="' + esc(g.term) + '" role="button" tabindex="0" aria-expanded="false">' +
         "<div><b>" + esc(g.term) + '</b><div class="g-def" style="display:none">' + esc(g.def) + "</div></div>" +
@@ -2603,12 +4247,75 @@
       fc3Render();
       renderGlossary3("");
       renderExam();
-    } else {
+    } else if (PCH === 4) {
       selectUdpField("src");
       renderQuiz4();
       fc4Shuffle();
       fc4Render();
       renderGlossary4("");
+      renderExam();
+    } else if (PCH === 5) {
+      renderServiceModel();
+      selectDcPlane("data");
+      selectPlane("per");
+      selectRouterPart("input");
+      selectFabric("memory");
+      selectLpmExample(0);
+      selectSubnet(0);
+      renderOrgGrid();
+      renderDhcpSteps();
+      selectDhcpStep(0);
+      renderCheat5();
+      renderQuiz5();
+      fc5Shuffle();
+      fc5Render();
+      renderGlossary5("");
+      renderExam();
+    } else if (PCH === 6) {
+      selectCpPlane("control");
+      selectCpStruct("per");
+      renderSdnSteps6();
+      selectSdnStep6(0);
+      renderDijkstra6();
+      selectDvNews6("good");
+      selectOspf6("flat");
+      renderBgpSteps6();
+      selectBgpStep6(0);
+      renderCheat6();
+      renderQuiz6();
+      fc6Shuffle();
+      fc6Render();
+      renderGlossary6("");
+      renderExam();
+    } else if (PCH === 7) {
+      parity7Reset();
+      renderCrc7();
+      selectCrc7(0);
+      renderBackoff7();
+      selectBackoff7(0);
+      renderEthFields7();
+      selectEthField7(0);
+      renderArp7();
+      selectArp7(0);
+      renderSwitch7();
+      renderCheat7();
+      renderQuiz7();
+      fc7Shuffle();
+      fc7Render();
+      renderGlossary7("");
+      renderExam();
+    } else if (PCH === 8) {
+      renderDbm8();
+      updateShannon8();
+      renderCsma8();
+      renderFrame8();
+      renderDiscovery8();
+      renderHandover8();
+      renderCheat8();
+      renderQuiz8();
+      fc8Shuffle();
+      fc8Render();
+      renderGlossary8("");
       renderExam();
     }
     applyMode();

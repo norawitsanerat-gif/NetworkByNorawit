@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive Digital Textbook — FINAL F4 / Book Chapter 7: Wireless and Mobile Networks (Wireless, Radio, 802.11, CSMA/CA, Association, MIMO, 5G Handover)" />
+  <title>CN · F4 — Wireless and Mobile Networks</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body data-page="chapter" data-chapter="8">
+
+<div id="app">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header id="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="เปิดเมนูบทเรียน" title="เมนู">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <div class="brand">
+      <div class="cn-logo" aria-hidden="true">CN</div>
+      <div class="brand-titles">
+        <h1>เครือข่ายคอมพิวเตอร์และอินเทอร์เน็ต</h1>
+        <p id="headerChapterLabel">F4 · BOOK CH.7 · Wireless and Mobile Networks</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn" id="homeBtn" aria-label="กลับไปเมนูหลัก" title="เมนูหลัก">
+        <i data-lucide="home"></i>
+      </button>
+      <button class="icon-btn" id="notesBtn" aria-label="เปิดบันทึกย่อ" title="บันทึกย่อ (Notes)">
+        <i data-lucide="notebook-pen"></i>
+      </button>
+
+      <div class="header-progress" aria-label="ความคืบหน้า">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="headerProgressBar">
+          <div class="progress-fill" id="headerProgressFill"></div>
+        </div>
+        <span class="progress-count" id="headerProgressCount">1 / 42</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SHELL ================= -->
+  <div class="shell">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside id="sidebar" aria-label="เมนูบทเรียน">
+      <div class="sidebar-head">
+        <div class="sidebar-head-title">
+          <h2 id="sidebarChapterTitle">F4 · Wireless and Mobile Networks</h2>
+          <p id="sidebarChapterSub">FINAL · BOOK CH.7 · 42 หัวข้อ</p>
+        </div>
+        <button class="icon-btn sidebar-close" id="sidebarCloseBtn" aria-label="ปิดเมนูบทเรียน" title="ปิดเมนู">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-info">
+        <i data-lucide="info"></i>
+        <span>คลิกหัวข้อหรือสไลด์เพื่อข้ามไปได้เลย<br />ทุกสไลด์อ้างอิงจาก Chapter 7 Wireless and Mobile Networks</span>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav" aria-label="สารบัญสไลด์"></nav>
+      <div class="sidebar-foot">
+        <div class="sf-top"><span>ความคืบหน้า</span><b id="sidebarPct">0%</b></div>
+        <div class="progress-track"><div class="progress-fill" id="sidebarProgressFill"></div></div>
+        <p class="mt-2 text-3" style="font-size:12px" id="sidebarDone">ยังไม่ได้เรียนสไลด์ใดเลย — เริ่มที่ Cover ได้เลย!</p>
+      </div>
+    </aside>
+
+    <!-- ================= STAGE ================= -->
+    <main class="stage">
+
+      <div class="slide-viewport" id="viewport">
+
+        <!-- ============ SLIDE 1 · Wireless and Mobile Networks ============ -->
+<section class="slide-view" data-title="Wireless and Mobile Networks" aria-label="สไลด์ 1: Wireless and Mobile Networks">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">FINAL · F4 · BOOK CHAPTER 7</p>
+    <h2 class="slide-title">Wireless <span class="grad-text">and Mobile Networks</span></h2>
+    <p class="slide-subtitle">องค์ประกอบของ Wireless Networks · Radio &amp; Channel · Wi-Fi 802.11 · Access &amp; Association · MIMO · Mobility และ 5G Handover</p>
+    <div class="visual-box mt-6" style="max-width:760px;margin-left:auto;margin-right:auto">
+      <span class="vb-label">UE → RADIO LINK → BASE STATION → CORE → INTERNET</span>
+      <div class="flow-row" style="padding:20px 10px">
+        <div class="pipe-node hot"><b>UE</b><span>phone / IoT</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>NR / Wi-Fi</b><span>wireless link</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>gNB / AP</b><span>base station</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Core</b><span>session + mobility</span></div>
+      </div>
+    </div>
+    <div class="grid-3 mt-5" style="grid-template-columns:repeat(3,1fr);gap:10px">
+      <div class="mini-card"><b>1 · Wireless Networks</b><span>hosts, base station, link, radio</span></div>
+      <div class="mini-card"><b>2 · Radio &amp; Channel</b><span>dBm, SNR, Shannon, multipath</span></div>
+      <div class="mini-card"><b>3 · Wi-Fi 802.11</b><span>CSMA/CA, ACK, frame, OFDM</span></div>
+      <div class="mini-card"><b>4 · Access &amp; Association</b><span>beacon, probe, 5G join</span></div>
+      <div class="mini-card"><b>5 · MIMO</b><span>diversity vs multiplexing</span></div>
+      <div class="mini-card"><b>6 · Mobility</b><span>ESS, handover, UPF tunnel</span></div>
+    </div>
+    <div class="flex items-center gap-3 wrap mt-5" style="justify-content:center">
+      <span class="chip">42 สไลด์</span><span class="chip">Quiz 12</span><span class="chip">Exam 20</span><span class="chip">Flashcards 12</span><span class="chip">Glossary 36</span>
+    </div>
+    <div class="mt-6 center"><button class="btn btn-primary btn-lg" id="startBtn8">เริ่มเรียน <i data-lucide="arrow-right"></i></button></div>
+    <p class="source-line center">อ้างอิง: Chapter 7 Wireless and Mobile Networks — 6 หัวข้อหลักตามที่กำหนด</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 2 · บทนี้จะเรียน อะไร ============ -->
+<section class="slide-view" data-title="บทนี้จะเรียน อะไร" aria-label="สไลด์ 2: บทนี้จะเรียน อะไร">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ROADMAP · 6 TOPICS</p>
+    <h2 class="slide-title">บทนี้จะเรียน <span class="grad-text">อะไร</span></h2>
+    <p class="slide-subtitle">เริ่มจากภาพรวม wireless → เข้าใจ radio channel → ลงลึก Wi-Fi → เข้าสู่ association/MIMO → ปิดท้ายด้วย mobility และ handover</p>
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="wifi" class="cyan"></i>1. Wireless Networks <span class="chip" style="margin-left:6px">สไลด์ 3–8</span></h3><p class="card-text small">wireless host, base station, wireless link, device radio, infrastructure vs ad hoc, wireless ≠ mobility, edge/core, applications</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="radio" class="cyan"></i>2. Radio &amp; Channel <span class="chip" style="margin-left:6px">สไลด์ 9–16</span></h3><p class="card-text small">f = c/λ, dBm, PSD/bandwidth, interference, noise, SNR, Shannon, path loss, hidden terminal, multipath, modulation</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="router" class="cyan"></i>3. Wi-Fi &amp; 802.11 <span class="chip" style="margin-left:6px">สไลด์ 17–23</span></h3><p class="card-text small">BSS/ESS, Wi-Fi bands, CSMA/CA, DIFS/SIFS, ACK, backoff, RTS/CTS, frame format, OFDM/OFDMA</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="key-round" class="cyan"></i>4. Access &amp; Association <span class="chip" style="margin-left:6px">สไลด์ 24–27</span></h3><p class="card-text small">beaconing vs probing, association sequence, AP selection, 5G RAN, registration, PDU session, scheduling, DRX</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="antenna" class="cyan"></i>5. MIMO <span class="chip" style="margin-left:6px">สไลด์ 28–31</span></h3><p class="card-text small">2×2 MIMO, spatial diversity, spatial multiplexing, MU-MIMO, beamforming, tradeoffs</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="move" class="cyan"></i>6. Mobility <span class="chip" style="margin-left:6px">สไลด์ 32–36</span></h3><p class="card-text small">mobility spectrum, Wi-Fi ESS, 5G handover 7 ขั้น, timeline, performance, Wi-Fi vs 5G</p></div>
+    </div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="target"></i><div><b>โฟกัส 6 หัวข้อหลัก</b>ส่วน 5G Core Functions, Bluetooth, Satellite และ IoT เป็นหัวข้อเสริมใน source จึงไม่นับเป็นเนื้อหาหลักของ F4 — ใช้เฉพาะ 5G Core/AMF/SMF/UPF ที่จำเป็นต่อ association และ handover</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — สารบัญและหัวข้อ 1–6</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 3 · ทำไม Wireless ถึงสำคัญ ============ -->
+<section class="slide-view" data-title="ทำไม Wireless ถึงสำคัญ" aria-label="สไลด์ 3: ทำไม Wireless ถึงสำคัญ">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WIRELESS · WHY IT MATTERS</p>
+    <h2 class="slide-title">ทำไม Wireless <span class="grad-text">ถึงสำคัญ</span></h2>
+    <p class="slide-subtitle">wireless เปลี่ยนการออกแบบ protocol ตั้งแต่ physical layer ไปจนถึง network layer และ mobility</p>
+    <div class="grid-3 mt-5">
+      <div class="card center"><div class="big-stat">5 : 1</div><p class="card-text small">อุปกรณ์ cellular มากกว่าอุปกรณ์ fixed broadband ประมาณ 5 ต่อ 1 (ปี 2019)</p></div>
+      <div class="card center"><div class="big-stat">~80%</div><p class="card-text small">ของบ้านที่ใช้ broadband ใช้ Wi-Fi</p></div>
+      <div class="card center"><div class="big-stat">~60%</div><p class="card-text small">ของ Internet traffic จากเว็บไซต์ใหญ่ถูกส่งไปยังอุปกรณ์มือถือ</p></div>
+    </div>
+    <div class="card mt-4"><h3 class="card-title"><i data-lucide="circle-help" class="cyan"></i>คำถามสำคัญของบท</h3><p class="card-text">wireless เปลี่ยนการออกแบบ protocol ในชั้นต่าง ๆ อย่างไร — ตั้งแต่ physical layer, link layer ไปจนถึง network layer และการจัดการ mobility</p></div>
+    <div class="grid-2 mt-4">
+      <div class="tip-box tip-note"><i data-lucide="lightbulb"></i><div><b>บริบทของตัวเลข</b>ตัวเลขเหล่านี้เป็นข้อมูลเชิงบริบทจากสไลด์ ไม่ใช่ค่าที่ต้องคำนวณในข้อสอบ</div></div>
+      <div class="tip-box tip-remember"><i data-lucide="arrow-right"></i><div><b>จากคลื่นถึง protocol</b>ข้อจำกัดของ radio (SNR, interference, multipath, mobility) เป็นเหตุผลที่ Wi-Fi ต้องใช้ ACK, backoff, RTS/CTS และ adaptive modulation</div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 1.1</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 4 · องค์ประกอบหลัก 4 อย่าง ============ -->
+<section class="slide-view" data-title="องค์ประกอบหลัก 4 อย่าง" aria-label="สไลด์ 4: องค์ประกอบหลัก 4 อย่าง">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WIRELESS · COMPONENTS</p>
+    <h2 class="slide-title">องค์ประกอบหลัก <span class="grad-text">4 อย่าง</span></h2>
+    <p class="slide-subtitle">wireless network หนึ่งเครือข่ายประกอบด้วย wireless hosts, base station, wireless link และ wireless device radio</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>องค์ประกอบ</th><th>หน้าที่</th><th>ตัวอย่าง</th></tr></thead><tbody>
+      <tr><td><b>Wireless hosts</b></td><td>อุปกรณ์ปลายทางที่รัน application; อาจอยู่นิ่งหรือเคลื่อนที่</td><td>laptop, smartphone, IoT device</td></tr>
+      <tr><td><b>Base station</b></td><td>อุปกรณ์โครงสร้างพื้นฐานที่เชื่อม wired network และ relay packet กับ wireless host ในพื้นที่ของตน</td><td>802.11 AP, 4G eNodeB, 5G gNodeB</td></tr>
+      <tr><td><b>Wireless link</b></td><td>ช่องทางสื่อสารด้วยคลื่นวิทยุ ระหว่าง device กับ base station หรือใช้เป็น backbone link</td><td>Wi-Fi link, 5G NR, Bluetooth, satellite link</td></tr>
+      <tr><td><b>Wireless device radio</b></td><td>วิทยุ/ชิปสื่อสารในอุปกรณ์; อุปกรณ์หนึ่งเครื่องอาจมีหลาย radio</td><td>Wi-Fi radio, cellular modem, Bluetooth radio</td></tr>
+    </tbody></table></div>
+    <div class="visual-box mt-4"><span class="vb-label">HOST ↔ BASE STATION ↔ WIRED NETWORK</span>
+      <div class="flow-row" style="padding:18px 10px">
+        <div class="pipe-node hot"><b>Wireless host</b><span>application</span></div><span class="flow-arrow">↔</span>
+        <div class="pipe-node"><b>Wireless link</b><span>radio</span></div><span class="flow-arrow">↔</span>
+        <div class="pipe-node"><b>Base station</b><span>relay</span></div><span class="flow-arrow">↔</span>
+        <div class="pipe-node"><b>Wired network</b><span>Internet</span></div>
+      </div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 1.2</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 5 · Infrastructure vs Ad Hoc ============ -->
+<section class="slide-view" data-title="Infrastructure vs Ad Hoc" aria-label="สไลด์ 5: Infrastructure vs Ad Hoc">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WIRELESS · NETWORK TYPES</p>
+    <h2 class="slide-title">Infrastructure <span class="grad-text">vs Ad Hoc</span></h2>
+    <p class="slide-subtitle">ไม่ใช่ทุก wireless network ที่เชื่อมต่อกับเครือข่ายใหญ่ — ad hoc network ให้ device จัดเครือข่ายกันเองโดยไม่มีอุปกรณ์กลาง</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="building-2" class="cyan"></i>Infrastructure-based</h3><ul class="clean-list"><li>มี base station/AP เป็นจุดเชื่อมต่อกับเครือข่ายที่ใหญ่กว่า</li><li>device สื่อสารผ่าน AP/BS</li><li>ตัวอย่าง: Wi-Fi ในบ้าน/มหาวิทยาลัย, 4G/5G</li></ul><div class="mini-card mt-3"><b>ข้อดี</b><span>เชื่อมต่อ Internet, จัดการ authentication และ mobility ได้จากโครงข่าย</span></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="users" class="cyan"></i>Ad hoc</h3><ul class="clean-list"><li>ไม่มี base station หรือ AP</li><li>อุปกรณ์จัดเครือข่ายและสื่อสารกันเอง</li><li>ตัวอย่าง: Bluetooth piconet, VANET, sensor network บางแบบ</li></ul><div class="mini-card mt-3"><b>ข้อสังเกต</b><span>อาจไม่เชื่อมกับ Internet เลย — เป็นเครือข่ายเฉพาะกิจระหว่าง device</span></div></div>
+    </div>
+    <div class="visual-box mt-4"><span class="vb-label">INFRASTRUCTURE → AP · AD HOC → DEVICE TO DEVICE</span><div class="flow-row" style="padding:18px 10px">
+      <div class="pipe-node hot"><b>STA 1</b><span>infrastructure</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>AP</b><span>base station</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Wired</b><span>Internet</span></div>
+      <span class="flow-arrow" style="margin:0 14px">|</span>
+      <div class="pipe-node"><b>Device A</b><span>ad hoc</span></div><span class="flow-arrow">↔</span><div class="pipe-node"><b>Device B</b><span>no AP</span></div>
+    </div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 1.3</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 6 · Wireless ≠ Mobility ============ -->
+<section class="slide-view" data-title="Wireless ≠ Mobility" aria-label="สไลด์ 6: Wireless ≠ Mobility">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WIRELESS · COMMON TRAP</p>
+    <h2 class="slide-title">Wireless <span class="grad-text">≠ Mobility</span></h2>
+    <p class="slide-subtitle">wireless และ mobility เป็นคนละมิติ — อุปกรณ์ wireless อาจอยู่นิ่ง และอุปกรณ์ mobile อาจไม่ได้ใช้ wireless ตลอดเวลา</p>
+    <div class="matrix-4x4 mt-5">
+      <div class="mx-head"></div><div class="mx-head">ไม่เคลื่อนที่</div><div class="mx-head">เคลื่อนที่</div>
+      <div class="mx-side">Wireless</div>
+      <div class="mx-cell good"><b>AP, IoT sensor</b><span>Wi-Fi printer</span></div>
+      <div class="mx-cell good"><b>smartphone</b><span>laptop ใช้ Wi-Fi</span></div>
+      <div class="mx-side">Wired</div>
+      <div class="mx-cell"><b>desktop ต่อสาย</b><span>อยู่กับที่</span></div>
+      <div class="mx-cell"><b>laptop ย้ายที่</b><span>แล้วต่อสายใหม่</span></div>
+    </div>
+    <div class="grid-2 mt-4">
+      <div class="tip-box tip-exam"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>อย่าตอบว่า “wireless คือ mobile” — wireless หมายถึงสื่อกลางเป็นคลื่นวิทยุ ส่วน mobility หมายถึงการเปลี่ยน point of attachment และรักษา connection</div></div>
+      <div class="tip-box tip-remember"><i data-lucide="layers"></i><div><b>ผลต่อการออกแบบ</b>wireless กระทบ physical/link layer เป็นหลัก; mobility กระทบ network layer, IP/session และ data path ด้วย</div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 1.4 และ 6.8</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 7 · Edge Network vs Core Network ============ -->
+<section class="slide-view" data-title="Edge Network vs Core Network" aria-label="สไลด์ 7: Edge Network vs Core Network">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WIRELESS · EDGE &amp; CORE</p>
+    <h2 class="slide-title">Edge Network <span class="grad-text">vs Core Network</span></h2>
+    <p class="slide-subtitle">wireless network แบ่งมุมมองได้เป็น edge/access network และ core network — Wi-Fi กับ 5G มีขอบเขตไม่เหมือนกัน</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="wifi" class="cyan"></i>Wi-Fi</h3><div class="pipeline" style="padding:12px 4px"><div class="pipe-node hot"><b>Device</b><span>STA</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>AP</b><span>base station</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Switch / Router</b><span>institutional wired</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Internet</b><span>core ภายนอก</span></div></div><p class="text-3" style="font-size:12px">edge = AP + Wi-Fi link + wired network ขององค์กร; core โดยทั่วไปเป็น wired network ขององค์กร/ISP</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="radio-tower" class="cyan"></i>5G</h3><div class="pipeline" style="padding:12px 4px"><div class="pipe-node hot"><b>UE</b><span>device</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>gNodeB</b><span>RAN</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>5G Core</b><span>AMF / SMF / UPF</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Internet</b><span>data network</span></div></div><p class="text-3" style="font-size:12px">edge = RAN: UE, NR radio, gNodeB; core = 5G Core ที่มี network functions จำนวนมาก</p></div>
+    </div>
+    <div class="table-wrap mt-4"><table class="data-table"><thead><tr><th>ส่วน</th><th>Wi-Fi</th><th>5G</th></tr></thead><tbody>
+      <tr><td><b>Edge / access</b></td><td>AP + Wi-Fi link + institutional wired network</td><td>RAN: UE, NR radio, gNodeB</td></tr>
+      <tr><td><b>Core</b></td><td>โดยทั่วไปเป็น wired network ขององค์กร/ISP</td><td>5G Core: authentication, session, mobility, user-plane forwarding</td></tr>
+    </tbody></table></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 1.5</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 8 · Applications &amp; Requirements ============ -->
+<section class="slide-view" data-title="Applications &amp; Requirements" aria-label="สไลด์ 8: Applications &amp; Requirements">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WIRELESS · APPLICATIONS</p>
+    <h2 class="slide-title">Applications <span class="grad-text">&amp; Requirements</span></h2>
+    <p class="slide-subtitle">application 6 กลุ่มให้น้ำหนักคุณสมบัติต่างกัน — ไม่มีเทคโนโลยีเดียวที่เหมาะกับทุกงาน</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="list" class="cyan"></i>6 กลุ่ม application</h3><ol class="clean-list"><li><b>Wide-area mobile Internet</b> — 4G/5G</li><li><b>Local-area mobile Internet</b> — Wi-Fi</li><li><b>Fixed wireless Internet</b> — wireless ISP สำหรับบ้าน/พื้นที่ห่างไกล</li><li><b>Satellite networks</b> — broadband, remote sensing</li><li><b>Cable replacement</b> — Bluetooth หูฟัง, เมาส์, ลำโพง</li><li><b>IoT</b> — sensor, meter, tracker, เกษตรกรรม, อุตสาหกรรม</li></ol></div>
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>คุณสมบัติ</th><th>ความหมาย</th></tr></thead><tbody>
+        <tr><td>Mobility</td><td>รองรับการเคลื่อนที่ได้แค่ไหน</td></tr><tr><td>User data rate</td><td>ความเร็วที่ผู้ใช้ได้รับ</td></tr><tr><td>Energy efficiency</td><td>ใช้พลังงานต่อ bit ดีแค่ไหน</td></tr><tr><td>Device density</td><td>รองรับอุปกรณ์ต่อพื้นที่ได้มากแค่ไหน</td></tr><tr><td>Latency</td><td>ความหน่วง</td></tr><tr><td>Area traffic capacity</td><td>ปริมาณ traffic ต่อพื้นที่</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="grid-2 mt-4">
+      <div class="tip-box tip-note"><i data-lucide="thermometer-sun"></i><div><b>IoT sensor</b>ต้องการ energy efficiency และ device density สูงมาก แต่ data rate ต่ำ</div></div>
+      <div class="tip-box tip-note"><i data-lucide="video"></i><div><b>Video streaming</b>ต้องการ data rate สูงและ latency ต่ำ</div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 1.7</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 9 · Radio Wave &amp; Spectrum ============ -->
+<section class="slide-view" data-title="Radio Wave &amp; Spectrum" aria-label="สไลด์ 9: Radio Wave &amp; Spectrum">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">RADIO · BASICS</p>
+    <h2 class="slide-title">Radio Wave <span class="grad-text">&amp; Spectrum</span></h2>
+    <p class="slide-subtitle">wireless สื่อสารด้วยคลื่นแม่เหล็กไฟฟ้า: transmitter สร้าง EM field → เดินทางผ่าน space → เหนี่ยวนำกระแสที่ receiver</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="visual-box"><span class="vb-label">TRANSMITTER → SPACE → RECEIVER</span><div class="flow-row" style="padding:18px 8px"><div class="pipe-node hot"><b>Transmitter</b><span>current → EM field</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Space</b><span>propagation</span></div><span class="flow-arrow">→</span><div class="pipe-node"><b>Receiver</b><span>EM field → current</span></div></div><div class="wave-visual mt-2"><div class="wave-line"></div><span>amplitude · phase · frequency</span></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="activity" class="cyan"></i>คุณสมบัติของคลื่น</h3><ul class="clean-list"><li><b>Wavelength (λ)</b> — ความยาวหนึ่งรอบ</li><li><b>Frequency (f)</b> — จำนวนรอบต่อวินาที</li><li><b>Directionality</b> — ทิศการแพร่กระจาย</li><li><b>Amplitude</b> — ขนาดสัญญาณ ณ เวลาหนึ่ง</li><li><b>Phase</b> — ตำแหน่งของคลื่นภายในหนึ่งรอบ (0°–360°)</li></ul></div>
+    </div>
+    <div class="formula-box mt-4"><div><span class="formula-label">ความสัมพันธ์ที่ต้องจำ</span><b class="mono">f = c / λ</b></div><div><span>ความถี่สูง</span><b>wavelength สั้น</b></div><div><span>ความถี่ต่ำ</span><b>wavelength ยาว</b></div></div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="audio-waveform"></i><div><b>Digital modulation</b>bits → modulation → radio wave → channel → demodulation → bits; เปลี่ยน phase ของคลื่นเพื่อแทน bit 0/1</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 2.1–2.2</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 10 · dBm &amp; Power ============ -->
+<section class="slide-view" data-title="dBm &amp; Power" aria-label="สไลด์ 10: dBm &amp; Power">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">RADIO · POWER</p>
+    <h2 class="slide-title">dBm <span class="grad-text">&amp; Power</span></h2>
+    <p class="slide-subtitle">Power คือพลังงานที่ antenna ส่งหรือรับต่อหน่วยเวลา — Watt เป็นหน่วยเชิงเส้น ส่วน dBm เป็นหน่วยลอการิทึมเทียบกับ 1 mW</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="sliders-horizontal" class="cyan"></i>เลือกระดับกำลังส่ง</h3><div class="dbm-btns" id="dbmPick8"></div><div class="calc-out mt-3"><span>เทียบเป็น dBm</span><b id="dbmOut8">—</b><p id="dbmNote8">—</p></div></div>
+      <div><div class="formula-box"><div><span class="formula-label">formula</span><b class="mono">P_dBm = 10 · log10(P_mW / 1 mW)</b></div><div><span>0 dBm</span><b>1 mW</b></div><div><span>10 dBm</span><b>10 mW</b></div><div><span>20 dBm</span><b>100 mW</b></div><div><span>30 dBm</span><b>1 W</b></div></div><div class="tip-box tip-remember mt-3"><i data-lucide="plus"></i><div><b>กฎที่ต้องจำ</b>กำลังเพิ่ม 3 dB ≈ กำลังเพิ่มเป็น 2 เท่า; กำลังเพิ่ม 10 dB = กำลังเพิ่มเป็น 10 เท่า; 250 mW ≈ 24 dBm</div></div></div>
+    </div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="smartphone"></i><div><b>ตัวอย่างจากสไลด์</b>กำลังส่งมือถือสูงสุดทั่วไป 250 mW → P_dBm = 10·log10(250) ≈ 24 dBm</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 2.3</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 11 · PSD &amp; Bandwidth ============ -->
+<section class="slide-view" data-title="PSD &amp; Bandwidth" aria-label="สไลด์ 11: PSD &amp; Bandwidth">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">RADIO · SPECTRUM</p>
+    <h2 class="slide-title">PSD <span class="grad-text">&amp; Bandwidth</span></h2>
+    <p class="slide-subtitle">PSD บอกกำลังที่กระจายตามความถี่; คำว่า bandwidth มีสองความหมายที่ต้องแยกให้ออก</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="chart-area" class="cyan"></i>Power Spectral Density</h3><p class="card-text small">กำลังของสัญญาณที่กระจายอยู่ตามความถี่ — PSD = 0 หมายถึงไม่มีการส่งกำลังที่ความถี่นั้น</p><div class="spec-visual mt-3"><div class="spec-bar"><span style="width:18%"></span><span style="width:28%"></span><span style="width:34%"></span><span style="width:20%"></span></div><div class="spec-labels"><span>2.427 GHz</span><b>center ≈ 2.437 GHz</b><span>2.449 GHz</span></div></div><div class="chip mt-3">Wi-Fi channel 6 · bandwidth ≈ 22 MHz</div></div>
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>คำ</th><th>ความหมาย</th></tr></thead><tbody>
+        <tr><td><b>Spectrum</b></td><td>ช่วงความถี่ทั้งหมดที่พิจารณา</td></tr><tr><td><b>Channel</b></td><td>ช่วงย่อยที่แบ่งจาก spectrum</td></tr><tr><td><b>Radio bandwidth</b></td><td>ความกว้างของ channel (Hz, kHz, MHz)</td></tr><tr><td><b>Link bandwidth</b></td><td>ความสามารถส่งข้อมูล (bps, Mbps, Gbps)</td></tr><tr><td><b>Carrier / center</b></td><td>ความถี่กลางของ channel</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="tip-box tip-exam mt-4"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>Radio bandwidth = ใช้ spectrum กว้างกี่ MHz; Link bandwidth = ส่งข้อมูลได้กี่ Mbps/Gbps — wireless ต้องสนใจทั้งสองพร้อมกัน</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 2.4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 12 · Interference &amp; Noise ============ -->
+<section class="slide-view" data-title="Interference &amp; Noise" aria-label="สไลด์ 12: Interference &amp; Noise">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">RADIO · IMPAIRMENTS</p>
+    <h2 class="slide-title">Interference <span class="grad-text">&amp; Noise</span></h2>
+    <p class="slide-subtitle">สัญญาณ wireless ไม่เคยสะอาด — มี interference จาก transmitter อื่น และ noise ที่เกิดแม้ไม่มีผู้รบกวน</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="radio" class="amber"></i>Interference</h3><p class="card-text small">พลังงานจาก transmitter อื่นที่ใช้ความถี่เดียวกันหรือใกล้เคียง</p><p class="card-text small mt-2">ย่าน <b>2.4 GHz ISM</b> ใช้แบบ unlicensed จึงมีอุปกรณ์แชร์กันมาก:</p><div class="flex gap-2 wrap mt-3"><span class="chip">Wi-Fi</span><span class="chip">Bluetooth</span><span class="chip">Zigbee</span><span class="chip">satellite TV</span><span class="chip">microwave</span><span class="chip">garage door</span><span class="chip">baby monitor</span><span class="chip">cordless phone</span><span class="chip">wireless mic</span><span class="chip">drone</span><span class="chip">amateur radio</span></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="audio-waveform" class="amber"></i>Noise</h3><ul class="clean-list"><li><b>Thermal noise</b> จากอุณหภูมิธรรมชาติ</li><li><b>Electronic noise</b> จากความไม่สมบูรณ์ของวงจร</li></ul><div class="tip-box tip-remember mt-3"><i data-lucide="lightbulb"></i><div><b>แยกให้ออก</b>Interference มาจากผู้ส่งรายอื่น; noise เกิดจากความร้อนและวงจร แม้ไม่มี transmitter อื่นอยู่ในย่าน</div></div></div>
+    </div>
+    <div class="formula-box mt-4"><div><span class="formula-label">ผลรวมของปัญหา</span><b>SNR ลดลง → error เพิ่มขึ้น</b></div><div><span>Interference</span><b>หลีกเลี่ยง frequency / power control / CSMA</b></div><div><span>Noise</span><b>coding + modulation ที่ทนทาน</b></div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 2.5</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 13 · SNR &amp; Shannon Capacity ============ -->
+<section class="slide-view" data-title="SNR &amp; Shannon Capacity" aria-label="สไลด์ 13: SNR &amp; Shannon Capacity">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">RADIO · SNR &amp; SHANNON</p>
+    <h2 class="slide-title">SNR <span class="grad-text">&amp; Shannon Capacity</span></h2>
+    <p class="slide-subtitle">SNR คืออัตราส่วนกำลังสัญญาณต่อ noise; Shannon บอกขีดจำกัดทางทฤษฎีของอัตราส่งข้อมูลเมื่อมี bandwidth และ SNR</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div><div class="formula-box"><div><span class="formula-label">SNR</span><b class="mono">SNR(dB) = 10 · log10(P_signal / P_noise)</b></div><div><span class="formula-label">Shannon</span><b class="mono">C = B · log2(1 + S/N)</b></div></div><div class="tip-box tip-remember mt-3"><i data-lucide="lightbulb"></i><div><b>จุดสำคัญ</b>S/N ในสูตร Shannon เป็นค่า linear ไม่ใช่ dB; SNR สูง → แยกสัญญาณง่าย → ส่งเร็ว/ผิดพลาดน้อย; SNR = 0 dB → กำลังสัญญาณเท่ากับ noise</div></div><div class="tip-box tip-note mt-3"><i data-lucide="bar-chart-3"></i><div><b>ค่าจากสไลด์</b>Cellular SNR ขั้นต่ำประมาณ −10 ถึง −6 dB; Wi-Fi ~20 dB — radio แต่ละชนิดทน noise ได้ต่างกัน</div></div></div>
+      <div class="calc-panel"><div class="calc-row"><label>Bandwidth B <b id="shBVal8">20 MHz</b></label><input id="shB8" type="range" min="5" max="160" step="5" value="20" aria-label="Bandwidth MHz" /></div><div class="calc-row"><label>SNR <b id="shSnrVal8">20 dB</b></label><input id="shSnr8" type="range" min="-10" max="40" step="1" value="20" aria-label="SNR dB" /></div><div class="calc-out"><span>Shannon capacity (ทฤษฎี)</span><b id="shOut8">—</b><p id="shDetail8">—</p></div><p class="text-3 mt-3" style="font-size:12px">C ที่ได้เป็นขีดจำกัดทางทฤษฎี ไม่ใช่ throughput จริง เพราะยังมี protocol overhead, contention, interference และข้อจำกัดอุปกรณ์</p></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 2.6–2.7</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 14 · Path Loss &amp; Hidden Terminal ============ -->
+<section class="slide-view" data-title="Path Loss &amp; Hidden Terminal" aria-label="สไลด์ 14: Path Loss &amp; Hidden Terminal">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">RADIO · RANGE</p>
+    <h2 class="slide-title">Path Loss <span class="grad-text">&amp; Hidden Terminal</span></h2>
+    <p class="slide-subtitle">สัญญาณอ่อนลงตามระยะทางและความถี่ — เมื่อรวมกับสิ่งกีดขวางทำให้เกิด hidden terminal ที่ CSMA ฟังอย่างเดียวแก้ไม่ได้</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="trending-down" class="cyan"></i>Path loss</h3><div class="formula-box mt-2"><div><span class="formula-label">แบบจำลอง</span><b class="mono">Path loss ∝ (f · d)^n</b></div><div><span>กำลังที่ได้รับ</span><b>ลดลงตาม 1/(f·d)^n</b></div></div><table class="data-table mt-3"><thead><tr><th>สภาพแวดล้อม</th><th>n</th></tr></thead><tbody><tr><td>Free space</td><td>2</td></tr><tr><td>Urban</td><td>2.7–3.5</td></tr><tr><td>Inside building</td><td>3–6</td></tr></tbody></table><p class="text-3 mt-2" style="font-size:12px">ระยะไกลขึ้น/ความถี่สูงขึ้น/สิ่งกีดขวางมากขึ้น → สัญญาณอ่อนเร็วขึ้น</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="triangle-alert" class="amber"></i>Hidden terminal</h3><div class="hidden-diagram"><span class="hd-node">A</span><span class="hd-link">ได้ยินกัน</span><span class="hd-node hot">B</span><span class="hd-link">ได้ยินกัน</span><span class="hd-node">C</span></div><p class="center text-3" style="font-size:12px">A กับ C ไม่ได้ยินกัน</p><ul class="clean-list mt-2"><li>A กับ B ได้ยินกัน; B กับ C ได้ยินกัน</li><li>A กับ C ส่งพร้อมกัน → ชนกันที่ B</li><li>A/C อาจไม่รู้ตัว เพราะไม่ได้ยินกัน</li><li>ต้องใช้ ACK และ RTS/CTS; เป็นเหตุผลที่ใช้ CSMA/CA ไม่ใช่ CSMA/CD</li></ul></div>
+    </div>
+    <div class="tip-box tip-exam mt-4"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>hidden terminal เกิดได้ทั้งจาก path loss (สัญญาณอ่อนตามระยะ) และ objects/obstacles (กำแพง อาคาร ต้นไม้) — ไม่ใช่แค่ระยะไกล</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 2.8–2.9</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 15 · Multipath, Coherence &amp; Fading ============ -->
+<section class="slide-view" data-title="Multipath, Coherence &amp; Fading" aria-label="สไลด์ 15: Multipath, Coherence &amp; Fading">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">RADIO · MULTIPATH</p>
+    <h2 class="slide-title">Multipath, Coherence <span class="grad-text">&amp; Fading</span></h2>
+    <p class="slide-subtitle">สัญญาณจาก transmitter เดียวมาถึง receiver หลายเส้นทาง แต่ละ copy มี phase/amplitude ต่างกัน จึงเสริมหรือหักล้างกัน</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="route" class="cyan"></i>Multipath</h3><div class="multipath-visual"><div class="mp-line los">LOS</div><div class="mp-line r1">reflect 1</div><div class="mp-line r2">reflect 2</div><div class="mp-line r3">reflect 3</div></div><ul class="clean-list mt-3"><li>Line-of-sight (LOS) + reflected paths จากพื้น ผนัง อาคาร</li><li>copy มาถึงต่างเวลาเล็กน้อย</li><li>อาจเสริมกัน (constructive) หรือหักล้างกัน (destructive)</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="timer" class="cyan"></i>Coherence time &amp; ISI</h3><ul class="clean-list"><li><b>Coherence time (T_c)</b> = ช่วงเวลาที่บิตหนึ่งอยู่ใน channel จน receiver รับได้</li><li>บิตต่าง ๆ ต้องไม่ทับซ้อนกัน → กำหนดอัตราส่งสูงสุด</li><li>แปรผกผันกับ frequency และ receiver velocity</li><li>ถ้า copy ช้ามาซ้อน symbol ถัดไป → <b>ISI</b></li></ul><div class="flex gap-2 wrap mt-3"><span class="chip">ลด rate</span><span class="chip">equalizer</span><span class="chip">OFDM</span><span class="chip">MIMO / diversity</span></div></div>
+    </div>
+    <div class="grid-3 mt-4" style="gap:10px"><div class="mini-card"><b>Large-scale fading / path loss</b><span>อ่อนลงตามระยะทาง</span></div><div class="mini-card"><b>Shadow fading</b><span>สิ่งกีดขวางบังสัญญาณ ลดลงเป็นหย่อม ๆ</span></div><div class="mini-card"><b>Small-scale fading / Doppler</b><span>แกว่งระยะสั้นจาก multipath; ความถี่เปลี่ยนเมื่อเคลื่อนที่</span></div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 2.10–2.12</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 16 · Modulation &amp; Adaptive Modulation ============ -->
+<section class="slide-view" data-title="Modulation &amp; Adaptive Modulation" aria-label="สไลด์ 16: Modulation &amp; Adaptive Modulation">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">RADIO · MODULATION</p>
+    <h2 class="slide-title">Modulation <span class="grad-text">&amp; Adaptive Modulation</span></h2>
+    <p class="slide-subtitle">แปลง bit เป็น symbol แล้ว modulate บน carrier — ยิ่ง symbol เยอะยิ่งส่งได้เร็ว แต่ต้องมี SNR ดีพอ</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>วิธี</th><th>หลักการ</th><th>symbol</th></tr></thead><tbody><tr><td><b>ASK</b></td><td>เปลี่ยน amplitude</td><td>2 (0/1)</td></tr><tr><td><b>BPSK</b></td><td>เปลี่ยน phase 180°</td><td>2</td></tr><tr><td><b>QPSK</b></td><td>4 phase</td><td>4 (2 bits/symbol)</td></tr><tr><td><b>16-QAM</b></td><td>4 ระดับ I × 4 ระดับ Q</td><td>16 (4 bits/symbol)</td></tr><tr><td><b>64-QAM</b></td><td>8 ระดับ I × 8 ระดับ Q</td><td>64 (6 bits/symbol)</td></tr></tbody></table><div class="tip-box tip-note mt-3"><i data-lucide="component"></i><div><b>Constellation diagram</b>จุด = symbol; ระยะจาก origin = amplitude; มุม = phase; receiver เลือก symbol ใกล้สุด</div></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="gauge" class="cyan"></i>Adaptive modulation</h3><ul class="clean-list"><li>SNR ดี → ใช้ modulation สูง เช่น 64-QAM เพื่อเพิ่ม rate</li><li>SNR แย่ → ใช้ modulation ต่ำ เช่น QPSK เพื่อลด error</li><li>เปลี่ยน scheme ตาม channel แบบ on-the-fly</li></ul><div class="formula-box mt-3"><div><span>16-QAM ตัวอย่าง</span><b>11.5 Mbps</b></div><div><span>64-QAM ตัวอย่าง</span><b>26.9 Mbps</b></div></div><p class="text-3 mt-2" style="font-size:12px">ตัวเลขขึ้นกับ bandwidth และเงื่อนไขระบบ ไม่ใช่ค่าคงที่ตายตัว</p></div>
+    </div>
+    <div class="tip-box tip-exam mt-4"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>modulation สูงไม่ได้ดีเสมอ — ถ้า SNR ต่ำ การใช้ 64-QAM จะทำให้ error สูง จึงต้องลดลงมาใช้ QPSK และยอมส่งช้าลง</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 2.13–2.14</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 17 · 802.11 Architecture ============ -->
+<section class="slide-view slide-compact" data-title="802.11 Architecture" aria-label="สไลด์ 17: 802.11 Architecture">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WI-FI · ARCHITECTURE</p>
+    <h2 class="slide-title">802.11 <span class="grad-text">Architecture</span></h2>
+    <p class="slide-subtitle">IEEE 802.11 คือมาตรฐาน wireless LAN (Wi-Fi) ระดับ link layer — AP ทำหน้าที่ base station และ bridge ระหว่าง 802.11 กับ 802.3</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>องค์ประกอบ</th><th>ความหมาย</th></tr></thead><tbody><tr><td><b>Station (STA)</b></td><td>อุปกรณ์ wireless เช่น laptop, phone</td></tr><tr><td><b>AP</b></td><td>base station ของ WLAN</td></tr><tr><td><b>BSS</b></td><td>กลุ่ม AP กับ station ที่อยู่ใต้ AP เดียว</td></tr><tr><td><b>BSSID</b></td><td>MAC address ของ AP ใช้ระบุ BSS</td></tr><tr><td><b>SSID</b></td><td>ชื่อเครือข่าย Wi-Fi ที่ผู้ใช้เห็น</td></tr><tr><td><b>DS</b></td><td>Distribution System — เชื่อม AP เข้ากับ wired network เช่น Ethernet switch</td></tr><tr><td><b>ESS</b></td><td>หลาย BSS ที่เชื่อมผ่าน DS ด้วย SSID เดียวกัน</td></tr></tbody></table></div>
+    <div class="grid-2 mt-4"><div class="mini-card"><b>Infrastructure mode</b><span>station เชื่อมผ่าน AP — โหมดปกติ</span></div><div class="mini-card"><b>Ad hoc mode (IBSS)</b><span>station สื่อสารกันโดยตรง ไม่มี AP</span></div></div>
+    <div class="visual-box mt-4"><span class="vb-label">ESS · หลาย BSS ผ่าน DS</span><div class="flow-row" style="padding:14px 8px"><div class="pipe-node hot"><b>BSS1</b><span>AP1</span></div><span class="flow-arrow">↘</span><div class="pipe-node"><b>DS / same subnet</b><span>SSID เดียวกัน</span></div><span class="flow-arrow">↙</span><div class="pipe-node"><b>BSS2</b><span>AP2</span></div></div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 3.1–3.2</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 18 · Wi-Fi Bands &amp; Standards ============ -->
+<section class="slide-view" data-title="Wi-Fi Bands &amp; Standards" aria-label="สไลด์ 18: Wi-Fi Bands &amp; Standards">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WI-FI · BANDS &amp; GENERATIONS</p>
+    <h2 class="slide-title">Wi-Fi Bands <span class="grad-text">&amp; Standards</span></h2>
+    <p class="slide-subtitle">2.4 GHz ระยะไกลและทะลุกำแพงได้ดีแต่ interference สูง; 5/6 GHz มี channel มากกว่าและ interference ต่ำกว่า</p>
+    <div class="grid-3 mt-4" style="gap:10px"><div class="mini-card"><b>2.4 GHz</b><span>11–14 channels · 802.11b/g/n/ax · ใช้ร่วมกับ Bluetooth/microwave → interference สูง</span></div><div class="mini-card"><b>5 GHz</b><span>มากกว่า 150 channels · 802.11a/n/ac/ax</span></div><div class="mini-card"><b>6 GHz</b><span>มากกว่า 250 channels · 802.11ax/be</span></div></div>
+    <div class="table-wrap mt-4"><table class="data-table"><thead><tr><th>Standard</th><th>Wi-Fi gen</th><th>ปี</th><th>Max rate (ทฤษฎี)</th><th>Band (GHz)</th><th>Bandwidth (MHz)</th><th>PHY</th></tr></thead><tbody>
+      <tr><td>802.11b</td><td>—</td><td>1999</td><td>11 Mbps</td><td>2.4</td><td>22</td><td>Spread spectrum</td></tr><tr><td>802.11g</td><td>—</td><td>2003</td><td>54 Mbps</td><td>2.4</td><td>20</td><td>OFDM</td></tr><tr><td>802.11n</td><td>Wi-Fi 4</td><td>2009</td><td>600 Mbps</td><td>2.4, 5</td><td>20, 40</td><td>OFDM, MIMO</td></tr><tr><td>802.11ac</td><td>Wi-Fi 5</td><td>2013</td><td>6.9 Gbps</td><td>5</td><td>20, 40, 80, 160</td><td>OFDM, MIMO</td></tr><tr><td>802.11ax</td><td>Wi-Fi 6</td><td>2020</td><td>9.5 Gbps</td><td>2.4, 5</td><td>20, 40, 80, 160</td><td>OFDM, OFDMA, MIMO</td></tr><tr><td>802.11be</td><td>Wi-Fi 7</td><td>2024</td><td>30+ Gbps</td><td>2.4, 5, 6</td><td>20, 40, 80, 160, 320</td><td>OFDM, OFDMA, MIMO</td></tr>
+    </tbody></table></div>
+    <div class="tip-box tip-note mt-3"><i data-lucide="info"></i><div><b>ตัวเลข max data rate</b>เป็นค่าทางทฤษฎี ขึ้นกับจำนวนเสา MIMO, bandwidth, modulation และสภาพ channel</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 3.3–3.4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 19 · CSMA/CA ============ -->
+<section class="slide-view" data-title="CSMA/CA" aria-label="สไลด์ 19: CSMA/CA">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WI-FI · MAC</p>
+    <h2 class="slide-title">CSMA/CA</h2>
+    <p class="slide-subtitle">802.11 ใช้ CSMA/CA ไม่ใช่ CSMA/CD เพราะตรวจจับ collision ขณะส่งได้ยาก, dynamic range สูง และ hidden terminal ทำให้ฟังอย่างเดียวไม่พอ</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="list-ordered" class="cyan"></i>ขั้นตอนส่ง</h3><ol class="clean-list"><li>channel <b>idle</b> เป็นเวลา <b>DIFS</b> → ส่ง frame ทันที; 802.11 ไม่ทำ collision detection ระหว่างส่ง</li><li>channel <b>busy</b> → เริ่ม <b>random backoff</b>; timer นับถอยหลังขณะ idle</li><li>receiver ได้รับ frame ถูกต้อง → ตอบ <b>ACK หลัง SIFS</b></li><li>sender ไม่ได้รับ ACK → เพิ่ม random backoff แล้วลองใหม่</li></ol></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="clock-3" class="cyan"></i>Timeline</h3><div class="csma-timeline"><div class="ct-row"><span>Sender</span><i class="ct-difs"></i><b class="ct-data">DATA</b></div><div class="ct-row"><span>Receiver</span><i class="ct-sifs"></i><b class="ct-ack">ACK</b></div></div><p class="text-3 mt-3" style="font-size:12px">SIFS สั้นกว่า DIFS มาก → ACK/CTS มีสิทธิ์ส่งก่อน station อื่น</p><div class="tip-box tip-remember mt-3"><i data-lucide="badge-check"></i><div><b>ทำไมต้องมี ACK?</b>sender อาจไม่รู้ว่า collision เกิดที่ receiver จาก hidden terminal; ACK เป็นหลักฐานว่า frame ถึงปลายทางจริง</div></div></div>
+    </div>
+    <div class="grid-3 mt-4" style="gap:10px"><div class="mini-card"><b>No collision detection</b><span>wireless ตรวจจับขณะส่งได้ยาก</span></div><div class="mini-card"><b>Random backoff</b><span>ลดโอกาสชนซ้ำ; doubling หลังชนแต่ละครั้ง</span></div><div class="mini-card"><b>ACK after SIFS</b><span>ยืนยันว่า frame ถึง receiver</span></div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 3.5</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 20 · Backoff &amp; RTS/CTS ============ -->
+<section class="slide-view" data-title="Backoff &amp; RTS/CTS" aria-label="สไลด์ 20: Backoff &amp; RTS/CTS">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WI-FI · CHANNEL RESERVATION</p>
+    <h2 class="slide-title">Backoff <span class="grad-text">&amp; RTS/CTS</span></h2>
+    <p class="slide-subtitle">backoff ลดการชนซ้ำ; RTS/CTS จอง channel ล่วงหน้าด้วย packet เล็ก ๆ ก่อนส่ง data ขนาดใหญ่</p>
+    <div class="flex gap-2 wrap mt-4" id="csmaTabs8"></div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="git-commit-horizontal" class="cyan"></i><span id="csmaSummary8">—</span></h3><div class="csma-steps" id="csmaSteps8"></div></div>
+      <div><div class="card"><h3 class="card-title"><i data-lucide="lightbulb" class="cyan"></i>ข้อควรจำ</h3><p class="card-text small" id="csmaNote8">—</p></div><div class="tip-box tip-exam mt-3"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>RTS ยังชนกันได้ เพราะเป็น packet เล็กที่ส่งด้วย CSMA; ประโยชน์หลักคือลด collision ของ <b>data frame ขนาดใหญ่</b> และแก้ hidden terminal</div></div><div class="mini-card mt-3"><b>Random backoff</b><span>สุ่มในช่วง contention window · หลังชนแต่ละครั้งเพิ่มเป็นสองเท่า · ช่วงจากสไลด์ [0, ~200 msec]</span></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 3.5–3.6</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 21 · 802.11 Frame Format ============ -->
+<section class="slide-view" data-title="802.11 Frame Format" aria-label="สไลด์ 21: 802.11 Frame Format">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WI-FI · FRAME</p>
+    <h2 class="slide-title">802.11 <span class="grad-text">Frame Format</span></h2>
+    <p class="slide-subtitle">802.11 frame มี 3–4 MAC addresses เพื่อระบุทั้ง wireless hop และ wired source/destination พร้อมกัน</p>
+    <div class="frame-strip mt-4" id="frameStrip8"></div>
+    <div class="card mt-3"><p class="card-text" id="frameDetail8" style="min-height:56px">—</p></div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>Infrastructure</th><th>Address 1</th><th>Address 2</th><th>Address 3</th></tr></thead><tbody><tr><td>Device → AP</td><td>AP</td><td>device</td><td>router interface</td></tr><tr><td>AP → Device</td><td>device</td><td>AP</td><td>router interface</td></tr></tbody></table></div>
+      <div class="tip-box tip-remember"><i data-lucide="map-pin"></i><div><b>Address 4</b>ใช้เฉพาะ ad hoc mode; <b>Address 3</b> = MAC ของ router interface ที่ AP ต่ออยู่; <b>Sequence Control</b> ช่วย reliable transfer</div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 3.7</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 22 · Frame Types &amp; OFDM/OFDMA ============ -->
+<section class="slide-view" data-title="Frame Types &amp; OFDM/OFDMA" aria-label="สไลด์ 22: Frame Types &amp; OFDM/OFDMA">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WI-FI · TYPES &amp; PHY</p>
+    <h2 class="slide-title">Frame Types <span class="grad-text">&amp; OFDM/OFDMA</span></h2>
+    <p class="slide-subtitle">802.11 มี management/control/data frame; OFDM แบ่ง channel เป็น subcarrier และ OFDMA ต่อยอดด้วยการแบ่ง resource ให้ผู้ใช้หลายคนพร้อมกัน</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>Type</th><th>ตัวอย่าง</th><th>หน้าที่</th></tr></thead><tbody><tr><td><b>Management</b></td><td>Beacon, Probe Request/Response, Association</td><td>discovery, association, authentication</td></tr><tr><td><b>Control</b></td><td>RTS, CTS, ACK</td><td>จัดการการเข้าถึง channel</td></tr><tr><td><b>Data</b></td><td>Data frame</td><td>บรรทุก IP datagram</td></tr></tbody></table><div class="tip-box tip-note mt-3"><i data-lucide="layers"></i><div><b>Two planes</b>Data plane: application → transport → network → 802.11 MAC → PHY; Control plane: MAC management (beaconing, association, RTS/CTS, power mgmt)</div></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="split" class="cyan"></i>OFDM → OFDMA</h3><ul class="clean-list"><li><b>OFDM</b> แบ่ง channel กว้างเป็น subcarrier หลายตัวที่ orthogonal</li><li>แต่ละ subcarrier ส่งช้า ๆ แต่รวมกันได้ throughput สูง</li><li>ช่วยรับมือ multipath</li><li><b>OFDMA</b> แบ่ง subcarrier เป็น Resource Unit (RU) ให้ผู้ใช้หลายคนพร้อมกัน</li><li>ใช้ใน Wi-Fi 6/7 และ 4G/5G</li></ul><div class="flex gap-2 wrap mt-3"><span class="chip">4G: 12 subcarriers × 7 symbols = 84 RE ต่อ RB</span><span class="chip">5G: ยืดหยุ่น เช่น 12 × 14</span></div></div>
+    </div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="radio-tower"></i><div><b>Wi-Fi 6/7 backward compatibility</b>AP ต้องรองรับทั้ง OFDM และ OFDMA; ใช้ <b>MU-RTS</b> ส่งด้วย full channel bandwidth เพื่อให้ device ทุกรุ่นได้ยิน แล้วระบุ OFDMA assignment</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 3.8–3.9</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 23 · 802.11 vs Ethernet ============ -->
+<section class="slide-view slide-compact" data-title="802.11 vs Ethernet" aria-label="สไลด์ 23: 802.11 vs Ethernet">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">WI-FI · COMPARE</p>
+    <h2 class="slide-title">802.11 <span class="grad-text">vs Ethernet</span></h2>
+    <p class="slide-subtitle">Wi-Fi ใช้ CSMA/CA และต้องมี ACK; Ethernet ใช้ CSMA/CD ใน shared segment และ full-duplex switched ไม่มี ACK ระดับ link</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>ประเด็น</th><th>802.11 Wi-Fi</th><th>802.3 Ethernet</th></tr></thead><tbody><tr><td>Medium</td><td>wireless radio</td><td>wired copper/fiber</td></tr><tr><td>MAC</td><td>CSMA/CA</td><td>CSMA/CD (shared), full-duplex switched</td></tr><tr><td>Collision detection</td><td>ทำไม่ได้ง่าย</td><td>ทำได้</td></tr><tr><td>ACK</td><td>ต้องมี (hidden terminal)</td><td>ไม่มี (unreliable)</td></tr><tr><td>Frame address</td><td>3–4 addresses</td><td>2 addresses (src/dst)</td></tr><tr><td>Access</td><td>contention + backoff</td><td>switched, no contention</td></tr><tr><td>AP / switch</td><td>AP เป็น bridge</td><td>switch เป็น link-layer device</td></tr></tbody></table></div>
+    <div class="grid-2 mt-4"><div class="card"><h3 class="card-title"><i data-lucide="globe" class="cyan"></i>A day in the life · HTTP ผ่าน Wi-Fi</h3><ol class="clean-list"><li>HTTP/3 → UDP → IP → 802.11 frame</li><li>frame เข้าคิวรอ MAC scheduling</li><li>device ส่ง RTS; AP ตอบ CTS</li><li>device ส่ง DATA; AP เก็บ buffer</li><li>AP ตอบ ACK; device ลบ frame ออกจาก buffer</li><li>AP forward ผ่าน wired network ไป router</li></ol></div><div class="tip-box tip-remember"><i data-lucide="info"></i><div><b>AP = bridge</b>AP แปลง 802.11 frame ↔ 802.3 frame; MAC address ของ device ยังถูกใช้ใน frame ฝั่ง wired ตาม Address 3</div></div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 3.10–3.11</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 24 · Discovery: Beacon &amp; Probe ============ -->
+<section class="slide-view" data-title="Discovery: Beacon &amp; Probe" aria-label="สไลด์ 24: Discovery: Beacon &amp; Probe">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ACCESS · DISCOVERY</p>
+    <h2 class="slide-title">Discovery: <span class="grad-text">Beacon &amp; Probe</span></h2>
+    <p class="slide-subtitle">ก่อน association อุปกรณ์ต้องค้นหา network — ใช้ beaconing (passive) หรือ probing (active) และในทางปฏิบัติมักใช้ทั้งสองแบบ</p>
+    <div class="flex gap-2 wrap mt-4" id="discTabs8"></div>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="scan-line" class="cyan"></i><span id="discLabel8">—</span></h3><div class="disc-steps" id="discSteps8"></div><p class="card-text small mt-3" id="discSummary8">—</p></div>
+      <div><div class="card"><h3 class="card-title"><i data-lucide="scale" class="cyan"></i>Tradeoff</h3><p class="card-text" id="discTradeoff8">—</p></div><div class="tip-box tip-note mt-3"><i data-lucide="layers"></i><div><b>Beacon frame</b>เป็น management frame ที่ AP ส่งแบบ broadcast เป็นระยะ; <b>probe response</b> เป็นคำตอบจาก AP ที่ได้ยิน probe request</div></div></div>
+    </div>
+    <div class="tip-box tip-exam mt-4"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>Beaconing ประหยัดพลังงานของ device แต่ต้องรอ beacon; Probing ค้นหาเร็ว แต่ device ต้องส่ง probe request และรอ probe response จากหลาย AP</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 4.2</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 25 · Association &amp; AP Selection ============ -->
+<section class="slide-view" data-title="Association &amp; AP Selection" aria-label="สไลด์ 25: Association &amp; AP Selection">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ACCESS · ASSOCIATION</p>
+    <h2 class="slide-title">Association <span class="grad-text">&amp; AP Selection</span></h2>
+    <p class="slide-subtitle">association เป็นเพียงคำถามว่า “Can we talk?” — ยังไม่มีการแลกเปลี่ยน identity/credentials จริง; authentication เกิดภายหลัง</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="list-ordered" class="cyan"></i>ลำดับโดยทั่วไป</h3><ol class="clean-list"><li>Device รับ beacon หรือส่ง probe request</li><li>Device เลือก AP ที่เหมาะสม</li><li>Association Request → AP</li><li>Association Response ← AP</li><li>Authentication (open/WPA2/WPA3/802.1X)</li><li>DHCP → ได้ IP address</li><li>เริ่มส่ง data</li></ol></div>
+      <div><div class="card"><h3 class="card-title"><i data-lucide="signal" class="cyan"></i>AP selection factors</h3><div class="flex gap-2 wrap mt-2"><span class="chip">Signal strength (RSSI)</span><span class="chip">SSID</span><span class="chip">Security type</span><span class="chip">AP load</span><span class="chip">Band 2.4/5/6 GHz</span><span class="chip">roaming history</span></div></div><div class="tip-box tip-exam mt-3"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>Beacon/Probe/Association ยังไม่ใช่ authentication จริง; ในเชิงผู้ใช้ WPA2/WPA3/802.1X authentication เกิดหลัง association ผ่าน EAPoL</div></div></div>
+    </div>
+    <div class="tip-box tip-note mt-4"><i data-lucide="info"></i><div><b>หมายเหตุเชิงมาตรฐาน</b>802.11 มี authenticate (open/shared key) ก่อน association ในระดับ MAC; แต่การ authenticate ผู้ใช้แบบ WPA2/WPA3/802.1X เกิดหลัง association — สไลด์จึงสรุปเชิงผู้ใช้ว่า “association ก่อน authentication”</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 4.1, 4.3–4.4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 26 · 5G RAN &amp; Join ============ -->
+<section class="slide-view" data-title="5G RAN &amp; Join" aria-label="สไลด์ 26: 5G RAN &amp; Join">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ACCESS · 5G</p>
+    <h2 class="slide-title">5G RAN <span class="grad-text">&amp; Join</span></h2>
+    <p class="slide-subtitle">5G RAN เชื่อม UE กับ gNodeB; การ join มี 2 phase: Registration กับ PDU Session Establishment</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="radio-tower" class="cyan"></i>5G RAN</h3><ul class="clean-list"><li><b>UE</b> — smartphone, IoT modem</li><li><b>NR</b> — radio interface ของ 5G</li><li><b>gNodeB (gNB)</b> — base station ของ 5G</li><li>ให้ link-layer service เป็น first hop; ขอบเขต geographic จำกัด; อยู่ภายใต้ผู้ให้บริการรายเดียว</li></ul><div class="formula-box mt-3"><div><span>Phase 1</span><b>Registration → AMF</b></div><div><span>Phase 2</span><b>PDU Session → SMF/UPF</b></div></div></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="key-round" class="cyan"></i>สอง phase</h3><p class="card-text small"><b>Registration:</b> device ระบุตัวตนและ authenticate กับ network (และ network authenticate กลับ) โดยมี AMF เป็นตัวหลัก ตรวจ identity กับ AUSF และ UDM</p><p class="card-text small mt-2"><b>PDU Session Establishment:</b> core allocate IP ให้ device และสร้าง data-plane path ระหว่าง device กับ UPF; PDU = Protocol Data Unit = packet</p><div class="tip-box tip-remember mt-3"><i data-lucide="network"></i><div><b>ลำดับย่อ</b>RRC setup → registration request → authentication (AUSF/UDM) → registration accept → PDU session request → SMF เลือก UPF + allocate IP → session accept → uplink datagram ไป UPF</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 4.5–4.6</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 27 · RAN Stack &amp; Scheduling ============ -->
+<section class="slide-view" data-title="RAN Stack &amp; Scheduling" aria-label="สไลด์ 27: RAN Stack &amp; Scheduling">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">ACCESS · SCHEDULING &amp; ENERGY</p>
+    <h2 class="slide-title">RAN Stack <span class="grad-text">&amp; Scheduling</span></h2>
+    <p class="slide-subtitle">base station/AP ตัดสินใจว่า frame ใดส่งให้ device ใด ใน RB ใด และเมื่อไร; scheduler ใช้ CQI/QCI และนโยบายที่ผู้ให้บริการเลือกเอง</p>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>Layer</th><th>หน้าที่</th></tr></thead><tbody><tr><td>RRC</td><td>control plane; policy, prioritization, security</td></tr><tr><td>SDAP</td><td>map QoS flow → data radio bearer</td></tr><tr><td>PDCP</td><td>header compression; ciphering; integrity</td></tr><tr><td>RLC</td><td>segmentation/reassembly; ARQ</td></tr><tr><td>MAC</td><td>buffering, mux/demux, scheduling ทุก ~1 ms</td></tr><tr><td>PHY</td><td>modulation, coding</td></tr></tbody></table><p class="text-3 mt-2" style="font-size:12px">Control: RRC · User: SDAP → PDCP → RLC → MAC → PHY</p></div>
+      <div><div class="card"><h3 class="card-title"><i data-lucide="calendar-clock" class="cyan"></i>Scheduler</h3><ul class="clean-list"><li>เลือก UE/RB และเวลาส่งทุกช่วงสั้น ๆ (~1 ms)</li><li><b>CQI</b> 4 บิต บอก modulation/throughput ที่คาดหวัง</li><li><b>QCI</b> ระบุ delay, loss, guaranteed bit rate</li></ul></div><div class="card mt-2"><h3 class="card-title"><i data-lucide="scale" class="cyan"></i>Policy ตัวอย่าง</h3><ul class="clean-list"><li><b>Priority</b> — QoS aware แต่อาจ unfair</li><li><b>Round Robin</b> — fair by turns แต่ channel unaware</li><li><b>Max Throughput</b> — throughput สูงแต่อาจ unfair</li><li><b>Proportional Fair</b> — balance throughput/fairness</li></ul></div></div>
+    </div>
+    <div class="tip-box tip-remember mt-3"><i data-lucide="battery-charging"></i><div><b>Energy</b>radio on ~1000–3500 mW; off &lt;15 mW; DRX short/long cycle ช่วยประหยัด แต่ sleep นานขึ้น latency ก็สูงขึ้น</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 4.7–4.9</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 28 · MIMO Basics ============ -->
+<section class="slide-view" data-title="MIMO Basics" aria-label="สไลด์ 28: MIMO Basics">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MIMO · BASICS</p>
+    <h2 class="slide-title">MIMO <span class="grad-text">Basics</span></h2>
+    <p class="slide-subtitle">MIMO ใช้ multiple antennas ทั้งฝั่งส่งและรับ — 2×2 ไม่ได้แปลว่าเร็วขึ้น 2 เท่าเสมอ แต่มี spatial resource เพิ่มขึ้น</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="visual-box"><span class="vb-label">2×2 MIMO · 2 TX × 2 RX</span><div class="mimo-visual"><div class="mimo-side"><span>TX1</span><span>TX2</span></div><div class="mimo-lines"><i></i><i></i><i></i><i></i></div><div class="mimo-side"><span>RX1</span><span>RX2</span></div></div><p class="center text-3" style="font-size:12px">spatial resource แลกได้ระหว่าง rate, reliability และ range</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="antenna" class="cyan"></i>นำ spatial resource ไปใช้</h3><ul class="clean-list"><li><b>Spatial diversity</b> — ข้อมูลเดียวกันหลาย path → reliability/range</li><li><b>Spatial multiplexing</b> — ข้อมูลต่างกันหลาย stream → data rate</li><li><b>MU-MIMO</b> — ส่งให้ผู้ใช้หลายคนพร้อมกัน → capacity รวม</li></ul><div class="flex gap-2 wrap mt-3"><span class="chip">Gigabit LTE 4×4</span><span class="chip">Wi-Fi 6 2×2</span><span class="chip">5G massive MIMO</span></div></div>
+    </div>
+    <div class="tip-box tip-exam mt-4"><i data-lucide="graduation-cap"></i><div><b>Exam Trap</b>2×2 MIMO ไม่ได้หมายถึง 2 เท่าของ throughput โดยอัตโนมัติ — ขึ้นกับว่าใช้ diversity, multiplexing หรือ MU-MIMO และขึ้นกับ channel/SNR</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 5.1</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 29 · Spatial Diversity ============ -->
+<section class="slide-view" data-title="Spatial Diversity" aria-label="สไลด์ 29: Spatial Diversity">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MIMO · DIVERSITY</p>
+    <h2 class="slide-title">Spatial <span class="grad-text">Diversity</span></h2>
+    <p class="slide-subtitle">spatial diversity ส่งข้อมูลเดียวกันผ่านหลาย path — บาง path อาจอ่อน แต่ไม่น่าจะอ่อนพร้อมกันทั้งหมด</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="copy" class="cyan"></i>หลักการ</h3><div class="mimo-visual small"><div class="mimo-side"><span>TX</span></div><div class="mimo-lines"><i></i><i></i></div><div class="mimo-side"><span>RX1</span><span>RX2</span></div></div><p class="text-3 mt-2" style="font-size:12px">x ส่งผ่าน path 1 และ path 2; receiver รวม y1 + y2 อย่างชาญฉลาด</p><ul class="clean-list mt-2"><li>ส่ง redundant stream ข้อมูลเดียวกัน</li><li>receiver รวมสัญญาณจากหลาย path</li><li>ต้องจัด phase และรวมแบบ coherent combining ไม่ใช่บวกตรง ๆ</li></ul></div>
+      <div><div class="formula-box"><div><span class="formula-label">2×2 ตัวอย่าง</span><b class="mono">y1 = H1,1(x) + H2,1(x)</b></div><div><span></span><b class="mono">y2 = H1,2(x) + H2,2(x)</b></div></div><div class="grid-3 mt-3" style="gap:8px"><div class="mini-card"><b>Reliability</b><span>โอกาสทุก path แย่พร้อมกันต่ำ</span></div><div class="mini-card"><b>Range</b><span>รวมสัญญาณได้มากขึ้น</span></div><div class="mini-card"><b>Antenna gain</b><span>เพิ่ม SNR</span></div></div><div class="tip-box tip-note mt-3"><i data-lucide="activity"></i><div><b>H เป็น time-varying stochastic</b>จึงต้องประมาณค่าที่ receiver (อาจได้ความช่วยเหลือจาก sender)</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 5.2</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 30 · Spatial Multiplexing ============ -->
+<section class="slide-view" data-title="Spatial Multiplexing" aria-label="สไลด์ 30: Spatial Multiplexing">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MIMO · MULTIPLEXING</p>
+    <h2 class="slide-title">Spatial <span class="grad-text">Multiplexing</span></h2>
+    <p class="slide-subtitle">spatial multiplexing ส่งข้อมูลต่างกันพร้อมกันคนละ spatial path — เพิ่ม data rate แต่แยก stream ยากขึ้นเมื่อ channel correlated หรือ SNR ต่ำ</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="split" class="cyan"></i>ส่งหลาย stream</h3><div class="mimo-visual small"><div class="mimo-side"><span>x1</span><span>x2</span></div><div class="mimo-lines"><i></i><i></i></div><div class="mimo-side"><span>y1</span><span>y2</span></div></div><div class="formula-box mt-3"><div><span class="formula-label">2 unknowns</span><b class="mono">y1 = H1,1(x1) + H2,1(x2)</b></div><div><span></span><b class="mono">y2 = H1,2(x1) + H2,2(x2)</b></div></div><p class="text-3 mt-2" style="font-size:12px">สองสมการ สอง unknowns → แก้หา x1, x2 ได้</p></div>
+      <div><div class="card"><h3 class="card-title"><i data-lucide="triangle-alert" class="amber"></i>ความยาก</h3><ul class="clean-list"><li>H_i,j เปลี่ยนตลอดเวลา (time-varying)</li><li>ต้องมี channel estimation ที่แม่นยำ</li><li>ถ้า channel correlation สูงหรือ SNR ต่ำ การแยก stream จะยาก</li></ul></div><div class="tip-box tip-remember mt-3"><i data-lucide="scale"></i><div><b>Diversity vs Multiplexing</b>Diversity ส่งข้อมูลเดียวกัน → reliability/range; Multiplexing ส่งข้อมูลต่างกัน → rate</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 5.3</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 31 · MU-MIMO &amp; Tradeoffs ============ -->
+<section class="slide-view" data-title="MU-MIMO &amp; Tradeoffs" aria-label="สไลด์ 31: MU-MIMO &amp; Tradeoffs">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MIMO · MULTI-USER</p>
+    <h2 class="slide-title">MU-MIMO <span class="grad-text">&amp; Tradeoffs</span></h2>
+    <p class="slide-subtitle">MU-MIMO ใช้ multiple transmit antennas ส่งให้ผู้ใช้หลายคนพร้อมกันด้วย beamforming — เป้าหมายคือ capacity รวมของ AP</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>ประเภท</th><th>ผู้รับ</th><th>เป้าหมาย</th></tr></thead><tbody><tr><td><b>SU-MIMO</b></td><td>ผู้ใช้คนเดียว</td><td>เพิ่ม rate/reliability ให้ผู้ใช้คนนั้น</td></tr><tr><td><b>MU-MIMO</b></td><td>หลายผู้ใช้พร้อมกัน</td><td>เพิ่ม capacity รวมของ AP</td></tr></tbody></table></div>
+    <div class="grid-2 mt-4" style="align-items:start"><div class="card"><h3 class="card-title"><i data-lucide="radio-tower" class="cyan"></i>MU-MIMO ทำงานอย่างไร</h3><ul class="clean-list"><li>ใช้ spatial multiplexing ในระดับผู้ใช้</li><li>ใช้ beamforming ส่ง beam ไปผู้ใช้คนละทิศทาง</li><li>AP/base station ส่งให้ device หลายตัวพร้อมกันในเวลาเดียวกัน</li></ul><div class="flex gap-2 wrap mt-3"><span class="chip">Wi-Fi 6: MIMO + OFDMA + MU-MIMO</span><span class="chip">5G: massive MIMO + MU-MIMO + beamforming</span></div></div><div class="table-wrap"><table class="data-table"><thead><tr><th>ข้อจำกัด</th><th>ผลกระทบ</th></tr></thead><tbody><tr><td>Channel correlation</td><td>แยก stream ยาก</td></tr><tr><td>SNR ต่ำ</td><td>ใช้ multiplexing ยาก</td></tr><tr><td>จำนวน antenna</td><td>ต้องมีทั้งส่งและรับ</td></tr><tr><td>Processing / size / energy</td><td>ซับซ้อนขึ้น ใช้พลังงานมากขึ้น</td></tr></tbody></table></div></div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="scale"></i><div><b>สรุป</b>MIMO ให้ spatial resource ซึ่งแลกได้ระหว่าง rate, reliability และ range ตามสภาพ channel และการออกแบบระบบ</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 5.4–5.6</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 32 · Mobility Spectrum ============ -->
+<section class="slide-view" data-title="Mobility Spectrum" aria-label="สไลด์ 32: Mobility Spectrum">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MOBILITY · SPECTRUM</p>
+    <h2 class="slide-title">Mobility <span class="grad-text">Spectrum</span></h2>
+    <p class="slide-subtitle">mobility ในมุมมองเครือข่ายคือการเปลี่ยน point of attachment และยังคงสื่อสารต่อได้ — หัวใจคือ ongoing connection</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>ระดับ</th><th>ลักษณะ</th><th>ความสนใจ</th></tr></thead><tbody><tr><td>No mobility</td><td>อุปกรณ์อยู่นิ่ง</td><td>—</td></tr><tr><td>Moves within same WLAN/RAN</td><td>ย้ายภายใน AP/gNB เดียว หรือ BSS เดียว</td><td>พื้นฐาน</td></tr><tr><td>Moves among WLANs/RANs in one provider</td><td>ย้ายระหว่าง AP/gNB ภายใต้ผู้ให้บริการเดียวกัน</td><td>สนใจ</td></tr><tr><td>Moves among multiple provider networks</td><td>ย้ายข้ามเครือข่ายผู้ให้บริการระหว่าง connection ที่เปิดอยู่</td><td>สนใจมาก</td></tr><tr><td>Moves between networks but powers down</td><td>ย้ายแล้วปิดเครื่องระหว่างทาง</td><td>ไม่ใช่ mobility ที่ต้องรักษา connection</td></tr></tbody></table></div>
+    <div class="grid-3 mt-4" style="gap:10px"><div class="mini-card"><b>Point of attachment</b><span>AP, gNB หรือ subnet ที่ device เกาะอยู่</span></div><div class="mini-card"><b>Ongoing connection</b><span>connection ต้องไม่ขาดระหว่างย้าย</span></div><div class="mini-card"><b>Scope</b><span>ภายใน AP เดียว → ข้าม provider</span></div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 6.1</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 33 · Wi-Fi ESS Mobility ============ -->
+<section class="slide-view" data-title="Wi-Fi ESS Mobility" aria-label="สไลด์ 33: Wi-Fi ESS Mobility">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MOBILITY · WI-FI ESS</p>
+    <h2 class="slide-title">Wi-Fi <span class="grad-text">ESS Mobility</span></h2>
+    <p class="slide-subtitle">802.11 เป็นมาตรฐาน link layer จึงจัดการ mobility ภายใน ESS ด้วย re-association, fast re-auth และ AP suggestion</p>
+    <div class="grid-2 mt-5" style="align-items:start">
+      <div class="visual-box"><span class="vb-label">ESS · หลาย BSS ใน subnet เดียวกัน</span><div class="ess-visual"><div class="ess-node">BSS1<br><small>AP1</small></div><div class="ess-node">BSS2<br><small>AP2</small></div><div class="ess-node">BSS3<br><small>AP3</small></div><div class="ess-ds">DS / same subnet · SSID เดียวกัน</div></div><p class="center text-3" style="font-size:12px">device ตัดสินใจ roam ไป AP ที่สัญญาณดีกว่า</p></div>
+      <div><div class="card"><h3 class="card-title"><i data-lucide="refresh-cw" class="cyan"></i>กลไก</h3><ul class="clean-list"><li>หลาย BSS อยู่ใน layer-3 subnet เดียวกัน</li><li>ทุก BSS ใช้ SSID เดียวกัน</li><li>เชื่อมกันผ่าน DS</li><li><b>Fast re-authentication</b> ลดเวล authenticate ใหม่</li><li>AP สามารถแนะนำ AP ใหม่ให้ device (AP suggestion)</li></ul></div><div class="tip-box tip-warn mt-3"><i data-lucide="triangle-alert"></i><div><b>ข้อจำกัด</b>การ roam ข้าม subnet/ข้ามผู้ให้บริการมักต้องใช้ proprietary/vendor solution; ถ้า IP subnet เปลี่ยนอาจต้องขอ IP ใหม่ → connection อาจสะดุด</div></div></div>
+    </div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 6.2</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 34 · 5G Handover ============ -->
+<section class="slide-view" data-title="5G Handover" aria-label="สไลด์ 34: 5G Handover">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MOBILITY · 5G HANDOVER</p>
+    <h2 class="slide-title">5G <span class="grad-text">Handover</span></h2>
+    <p class="slide-subtitle">handover คือการเปลี่ยน point of attachment จาก source base station ไป target base station — คลิกแต่ละขั้นเพื่อดูรายละเอียด</p>
+    <div class="dhcp-steps mt-4" id="hoSteps8" style="grid-template-columns:repeat(7,1fr)"></div>
+    <div class="grid-3 mt-3" style="align-items:start"><div class="card" style="grid-column:span 2"><h3 class="card-title"><i data-lucide="info" class="cyan"></i>ขั้นที่เลือก</h3><p class="card-text" id="hoDetail8" style="min-height:72px">—</p></div><div class="card"><h3 class="card-title"><i data-lucide="zap" class="cyan"></i>เป้าหมาย</h3><p class="card-text small">ให้ mobile เห็น handover ว่า “เสร็จแล้ว” เร็วที่สุด โดย source ยัง forward data ไป target ระหว่างที่ core เปลี่ยน path</p></div></div>
+    <div class="tip-box tip-note mt-3"><i data-lucide="route"></i><div><b>ทำไมต้อง handover</b>target อาจมีสัญญาณแรงกว่า, มี device/traffic น้อยกว่า หรือเพื่อรักษาคุณภาพบริการเมื่อ device เคลื่อนที่</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 6.3–6.4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 35 · Handover Timeline &amp; Performance ============ -->
+<section class="slide-view" data-title="Handover Timeline &amp; Performance" aria-label="สไลด์ 35: Handover Timeline &amp; Performance">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MOBILITY · TIMELINE</p>
+    <h2 class="slide-title">Handover <span class="grad-text">Timeline &amp; Performance</span></h2>
+    <p class="slide-subtitle">handover หลายขั้นทำให้เกิด packet loss, latency spike, buffering, duplicate/out-of-order packet และ signaling overhead</p>
+    <div class="grid-2 mt-4" style="align-items:start">
+      <div class="card"><h3 class="card-title"><i data-lucide="git-branch" class="cyan"></i>ลำดับ signaling</h3><div class="ho-timeline"><div>Measurement</div><div>Handover decision</div><div>Handover Request → Target</div><div>HR ACK ← Target</div><div>RRC Reconfiguration → Device</div><div>Detach source / Attach target</div><div>Buffer / forward data</div><div>Path Switch Request → AMF/SMF</div><div>PDU Session Update → UPF</div><div>End Marker</div><div>Path Switch ACK</div><div>Release device context</div></div></div>
+      <div class="table-wrap"><table class="data-table"><thead><tr><th>ปัญหา</th><th>สาเหตุ</th><th>ผลกระทบ</th></tr></thead><tbody><tr><td>Packet loss</td><td>data ค้างที่ source ระหว่างเปลี่ยน path</td><td>application เห็น loss</td></tr><tr><td>Latency spike</td><td>RRC reconfiguration, path switch</td><td>TCP ช้าลงชั่วคราว</td></tr><tr><td>Buffering</td><td>target รอ data จาก source</td><td>memory ที่ target</td></tr><tr><td>Duplicate</td><td>forwarding ระหว่าง source/target</td><td>ต้องมี sequence/end marker</td></tr><tr><td>Out-of-order</td><td>เปลี่ยน path กลางทาง</td><td>TCP อาจ retransmit</td></tr><tr><td>Signaling</td><td>handover messages หลายขั้น</td><td>ใช้ resource</td></tr></tbody></table></div>
+    </div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="sparkles"></i><div><b>5G พยายามทำให้ handover “looks complete to mobile”</b>โดย source forward data ไป target ระหว่าง core ยังเปลี่ยน path ไม่เสร็จ — ลดการสะดุดที่ device เห็น</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 6.5–6.6</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 36 · Wi-Fi vs 5G Mobility ============ -->
+<section class="slide-view" data-title="Wi-Fi vs 5G Mobility" aria-label="สไลด์ 36: Wi-Fi vs 5G Mobility">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">MOBILITY · COMPARE</p>
+    <h2 class="slide-title">Wi-Fi <span class="grad-text">vs 5G Mobility</span></h2>
+    <p class="slide-subtitle">Wi-Fi จัดการ mobility ในระดับ link layer ภายใน ESS; 5G ใช้ RAN + core mobility ผ่าน handover และ UPF tunnel switch</p>
+    <div class="table-wrap mt-5"><table class="data-table"><thead><tr><th>ประเด็น</th><th>Wi-Fi (802.11 ESS)</th><th>5G</th></tr></thead><tbody><tr><td>ระดับ</td><td>Link-layer mobility</td><td>RAN + core mobility</td></tr><tr><td>ขอบเขต</td><td>ภายใน ESS / same subnet</td><td>ทั่วเครือข่ายผู้ให้บริการ</td></tr><tr><td>กลไก</td><td>Re-association, fast re-auth, AP suggestion</td><td>Handover, RRC reconfig, UPF tunnel switch</td></tr><tr><td>การจัดการ IP</td><td>มักคง subnet เดิม</td><td>Core คง session/IP</td></tr><tr><td>Cross-provider</td><td>ยาก / ใช้ vendor solution</td><td>รองรับผ่าน core roaming (นอกขอบเขตสไลด์)</td></tr><tr><td>จุดเด่น</td><td>ง่าย, plug-and-play</td><td>seamless กว่า, รองรับความเร็วสูง</td></tr></tbody></table></div>
+    <div class="grid-2 mt-4"><div class="tip-box tip-exam"><i data-lucide="graduation-cap"></i><div><b>ย้ำอีกครั้ง</b>wireless ≠ mobility; mobility ต้องจัดการ point of attachment, IP/session, data path และ handover — wireless link เป็นเพียงส่วนหนึ่ง</div></div><div class="tip-box tip-remember"><i data-lucide="layers"></i><div><b>จำคู่กัน</b>Wi-Fi ESS = same subnet + same SSID + DS; 5G = source BS → target BS → AMF/SMF → UPF tunnel</div></div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 6.7–6.8</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 37 · สรุปบทเรียน ============ -->
+<section class="slide-view" data-title="สรุปบทเรียน" aria-label="สไลด์ 37: สรุปบทเรียน">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">REVIEW · SUMMARY</p>
+    <h2 class="slide-title">สรุปบทเรียน</h2>
+    <p class="slide-subtitle">ทวน 6 หัวข้อหลัก พร้อมสูตรและตัวเลขที่ออกสอบบ่อย</p>
+    <div class="grid-3 mt-5" style="gap:10px">
+      <div class="card"><h3 class="card-title"><i data-lucide="wifi" class="cyan"></i>Wireless</h3><p class="card-text small">wireless host + base station + wireless link + device radio; infrastructure vs ad hoc; wireless ≠ mobility</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="activity" class="cyan"></i>Radio</h3><p class="card-text small">f = c/λ; 0 dBm = 1 mW; SNR = 10log10(S/N); Shannon C = B·log2(1+S/N)</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="router" class="cyan"></i>Wi-Fi</h3><p class="card-text small">CSMA/CA + DIFS/SIFS + ACK + backoff; RTS/CTS; 3–4 addresses; OFDM/OFDMA</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="key-round" class="cyan"></i>Access</h3><p class="card-text small">beacon/probe → association → authentication → DHCP; 5G: registration → PDU session</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="antenna" class="cyan"></i>MIMO</h3><p class="card-text small">diversity = reliability/range; multiplexing = rate; MU-MIMO = capacity รวม</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="move" class="cyan"></i>Mobility</h3><p class="card-text small">ESS same subnet/SSID/DS; 5G handover 7 ขั้น + UPF tunnel switch</p></div>
+    </div>
+    <div class="formula-box mt-4"><div><span class="formula-label">สูตรหลัก</span><b class="mono">f = c/λ</b></div><div><span>กำลัง</span><b class="mono">P_dBm = 10log10(P_mW/1mW)</b></div><div><span>SNR</span><b class="mono">10log10(S/N)</b></div><div><span>Shannon</span><b class="mono">C = B·log2(1+S/N)</b></div></div>
+    <div class="tip-box tip-remember mt-4"><i data-lucide="hash"></i><div><b>ตัวเลขสำคัญ</b>Wi-Fi channel 6 ≈ 2.437 GHz / 22 MHz · 250 mW ≈ 24 dBm · 20 MHz + 20 dB → ≈133 Mbps · 4G RB = 84 RE · 10 MHz ≈ 50 RB</div></div>
+        <p class="source-line">ที่มา: Chapter 7 — หัวข้อ 1–6</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 38 · สูตรจำก่อนสอบ — F4 ============ -->
+<section class="slide-view" data-title="สูตรจำก่อนสอบ — F4" aria-label="สไลด์ 38: สูตรจำก่อนสอบ — F4">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">CHEAT SHEET · F4</p>
+    <h2 class="slide-title">สูตรจำก่อนสอบ <span class="grad-text">— F4</span></h2>
+    <p class="slide-subtitle">25 จุดที่ต้องจำ — สรุปสั้นที่สุดของทั้งบท</p>
+    <div class="cheat-grid mt-4" id="cheatGrid8"></div>
+        <p class="source-line">ที่มา: Chapter 7 — สรุปจากทุกหัวข้อ</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 39 · แบบทดสอบ F4 12 ข้อ ============ -->
+<section class="slide-view quiz-slide" data-title="แบบทดสอบ F4 12 ข้อ" aria-label="สไลด์ 39: แบบทดสอบ F4 12 ข้อ">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">QUIZ · 12 QUESTIONS</p>
+    <h2 class="slide-title">แบบทดสอบ <span class="grad-text">F4 12 ข้อ</span></h2>
+    <p class="slide-subtitle">เลือกคำตอบที่ถูกที่สุด — ตอบแล้วดูเฉลยทันที และกลับไปทบทวนสไลด์ได้</p>
+    <div id="quiz8"></div>
+    <p class="source-line">คะแนนดีที่สุดจะถูกเก็บแยกในบท F4</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 40 · การ์ดทบทวน — F4 ============ -->
+<section class="slide-view" data-title="การ์ดทบทวน — F4" aria-label="สไลด์ 40: การ์ดทบทวน — F4">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">FLASHCARDS · 12</p>
+    <h2 class="slide-title">การ์ดทบทวน <span class="grad-text">— F4</span></h2>
+    <p class="slide-subtitle">คลิกการ์ดเพื่อพลิกดูคำตอบ แล้วเลื่อนไปการ์ดถัดไป</p>
+    <div class="flashcard-wrap mt-4">
+      <div class="flashcard" id="flashcard8" role="button" tabindex="0" aria-label="การ์ดทบทวน พลิกได้">
+        <div class="flashcard-inner">
+          <div class="flashcard-face front"><span class="fc-label">QUESTION</span><p id="fcQ8">—</p></div>
+          <div class="flashcard-face back"><span class="fc-label">ANSWER</span><p id="fcA8">—</p></div>
+        </div>
+      </div>
+      <div class="flex items-center justify-center gap-3 mt-4 wrap">
+        <button class="btn btn-ghost" id="fcPrev8"><i data-lucide="chevron-left"></i> ก่อนหน้า</button>
+        <span class="chip" id="fcCounter8">1 / 12</span>
+        <button class="btn btn-ghost" id="fcNext8">ถัดไป <i data-lucide="chevron-right"></i></button>
+        <button class="btn btn-primary" id="fcShuffle8"><i data-lucide="shuffle"></i> สับการ์ด</button>
+      </div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 7 — 6 หัวข้อหลัก</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 41 · คำศัพท์ — F4 ============ -->
+<section class="slide-view" data-title="คำศัพท์ — F4" aria-label="สไลด์ 41: คำศัพท์ — F4">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">GLOSSARY · 36 TERMS</p>
+    <h2 class="slide-title">คำศัพท์ <span class="grad-text">— F4</span></h2>
+    <p class="slide-subtitle">ค้นหาคำศัพท์หรือคำอธิบาย แล้วคลิกเพื่อเปิด/ปิดคำนิยาม</p>
+    <div class="flex items-center gap-3 mt-4 wrap"><input id="glossarySearch8" class="input" type="search" placeholder="ค้นหา เช่น SNR, CSMA/CA, BSS, MIMO, handover" aria-label="ค้นหาคำศัพท์" /><span class="chip" id="glossaryCount8">36 คำศัพท์</span></div>
+    <div class="glossary-list mt-4" id="glossaryList8"></div>
+    <p class="source-line">ที่มา: Chapter 7 — คำศัพท์จากทุกหัวข้อ</p>
+  </div>
+</section>
+
+        <!-- ============ SLIDE 42 · ข้อสอบหลังเรียน — 20 ข้อ ============ -->
+<section class="slide-view quiz-slide" data-title="ข้อสอบหลังเรียน — 20 ข้อ" aria-label="สไลด์ 42: ข้อสอบหลังเรียน — 20 ข้อ">
+  <div class="slide-inner">
+    <p class="slide-eyebrow">POST-LESSON EXAM · 20 QUESTIONS</p>
+    <h2 class="slide-title">ข้อสอบหลังเรียน <span class="grad-text">— 20 ข้อ</span></h2>
+    <p class="slide-subtitle">เรียนครบทุกสไลด์ก่อนถึงจะเข้าสอบได้ — ตอบแล้วดูเฉลยทันที</p>
+    <div id="quizExam8"></div>
+  </div>
+</section>
+
+</div><!-- /viewport -->
+
+      <!-- ================= BOTTOM BAR ================= -->
+      <footer class="bottombar">
+        <button class="bb-nav-btn" id="prevBtn" aria-label="สไลด์ก่อนหน้า">
+          <i data-lucide="chevron-left"></i><span class="bb-label">ก่อนหน้า</span>
+        </button>
+
+        <div class="bb-center">
+          สไลด์ <b id="bbCounter">1</b> / <b id="bbTotal">42</b>
+        </div>
+
+        <div class="bb-tools">
+          <button class="icon-btn" id="fullscreenBtn" aria-label="ขยายสไลด์เต็มจอ" title="ขยายสไลด์">
+            <i data-lucide="maximize-2"></i>
+          </button>
+          <button class="icon-btn" id="printSlidesBtn" aria-label="พิมพ์สไลด์ทั้งหมด" title="พิมพ์สไลด์ทั้งหมด">
+            <i data-lucide="printer"></i>
+          </button>
+          <button class="icon-btn" id="printCardsBtn" aria-label="พิมพ์การ์ดสรุป" title="พิมพ์การ์ดสรุป">
+            <i data-lucide="file-output"></i>
+          </button>
+        </div>
+
+        <button class="bb-nav-btn next" id="nextBtn" aria-label="สไลด์ถัดไป">
+          <span class="bb-label">ถัดไป</span><i data-lucide="chevron-right"></i>
+        </button>
+      </footer>
+
+    </main>
+  </div><!-- /shell -->
+</div><!-- /app -->
+
+<!-- ================= DRAWER BACKDROP ================= -->
+<div id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- ================= NOTES PANEL ================= -->
+<aside class="notes-panel" id="notesPanel" aria-label="บันทึกย่อ">
+  <div class="flex items-center justify-between" style="padding:16px 20px;border-bottom:1px solid var(--border)">
+    <div>
+      <b style="font-size:15px">📝 บันทึกย่อ (Notes)</b>
+      <p class="text-3" style="font-size:12px" id="notesLabel">สไลด์ที่กำลังเรียน</p>
+    </div>
+    <button class="icon-btn" id="notesCloseBtn" aria-label="ปิดบันทึกย่อ"><i data-lucide="x"></i></button>
+  </div>
+  <textarea id="notesTextarea" placeholder="เขียนสิ่งที่ต้องจำจากสไลด์นี้...&#10;เช่น:&#10;- Wireless ≠ Mobility&#10;- f = c/λ · SNR(dB) = 10·log10(S/N)&#10;- 5G handover: source → target → AMF/SMF → UPF" aria-label="บันทึกย่อ"></textarea>
+  <div class="text-3" style="padding:10px 20px 14px;font-size:12px;border-top:1px solid var(--border)">
+    💾 บันทึกอัตโนมัติลงในเครื่องของคุณ (localStorage)
+  </div>
+</aside>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ================= COMPLETION OVERLAY ================= -->
+<div id="completionOverlay" role="dialog" aria-modal="true" aria-label="จบบทเรียน">
+  <div class="card center" style="max-width:440px;position:relative;padding:40px 32px;z-index:1">
+    <div style="font-size:56px" class="float-y">🎉</div>
+    <h2 class="slide-title mt-4" style="font-size:28px">F4 Complete!</h2>
+    <p class="text-2 mt-2" id="completionMsg">คุณเรียนครบทั้ง 42 สไลด์ของ Wireless and Mobile Networks แล้ว — เยี่ยมมาก! <b class="grad-text">Keep Learning!</b></p>
+    <div class="grid-3 mt-5" style="grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneSlides">42</b><p class="text-3" style="font-size:12px">สไลด์</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneScore">–</b><p class="text-3" style="font-size:12px">คะแนน Quiz</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px">100%</b><p class="text-3" style="font-size:12px">ความคืบหน้า</p></div>
+    </div>
+    <div class="flex items-center gap-3 mt-6 wrap" style="justify-content:center">
+      <button class="btn btn-ghost" id="completionCloseBtn">ปิด 🎊</button>
+      <button class="btn btn-primary" id="completionRestartBtn"><i data-lucide="rotate-ccw"></i> เรียนใหม่อีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PRINT AREA ================= -->
+<div id="printArea" aria-hidden="true"></div>
+
+<!-- App scripts -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

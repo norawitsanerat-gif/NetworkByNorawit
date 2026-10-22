@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive Digital Textbook — FINAL F1 / Book Chapter 4: Network Layer: Data Plane (Forwarding, Longest Prefix Matching, IPv4, Subnetting, DHCP)" />
+  <title>CN · F1 — Network Layer: Data Plane</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body data-page="chapter" data-chapter="5">
+
+<div id="app">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header id="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="เปิดเมนูบทเรียน" title="เมนู">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <div class="brand">
+      <div class="cn-logo" aria-hidden="true">CN</div>
+      <div class="brand-titles">
+        <h1>เครือข่ายคอมพิวเตอร์และอินเทอร์เน็ต</h1>
+        <p id="headerChapterLabel">F1 · BOOK CH.4 · Network Layer: Data Plane</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn" id="homeBtn" aria-label="กลับไปเมนูหลัก" title="เมนูหลัก">
+        <i data-lucide="home"></i>
+      </button>
+      <button class="icon-btn" id="notesBtn" aria-label="เปิดบันทึกย่อ" title="บันทึกย่อ (Notes)">
+        <i data-lucide="notebook-pen"></i>
+      </button>
+
+      <div class="header-progress" aria-label="ความคืบหน้า">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="headerProgressBar">
+          <div class="progress-fill" id="headerProgressFill"></div>
+        </div>
+        <span class="progress-count" id="headerProgressCount">1 / 27</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SHELL ================= -->
+  <div class="shell">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside id="sidebar" aria-label="เมนูบทเรียน">
+      <div class="sidebar-head">
+        <div class="sidebar-head-title">
+          <h2 id="sidebarChapterTitle">F1 · Network Layer: Data Plane</h2>
+          <p id="sidebarChapterSub">FINAL · BOOK CH.4 · 27 หัวข้อ</p>
+        </div>
+        <button class="icon-btn sidebar-close" id="sidebarCloseBtn" aria-label="ปิดเมนูบทเรียน" title="ปิดเมนู">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-info">
+        <i data-lucide="info"></i>
+        <span>คลิกหัวข้อหรือสไลด์เพื่อข้ามไปได้เลย<br />ทุกสไลด์อ้างอิงจาก PPTX Chapter 4 v9.0</span>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav" aria-label="สารบัญสไลด์"></nav>
+      <div class="sidebar-foot">
+        <div class="sf-top"><span>ความคืบหน้า</span><b id="sidebarPct">0%</b></div>
+        <div class="progress-track"><div class="progress-fill" id="sidebarProgressFill"></div></div>
+        <p class="mt-2 text-3" style="font-size:12px" id="sidebarDone">ยังไม่ได้เรียนสไลด์ใดเลย — เริ่มที่ Cover ได้เลย!</p>
+      </div>
+    </aside>
+
+    <!-- ================= STAGE ================= -->
+    <main class="stage">
+
+      <div class="slide-viewport" id="viewport">
+
+        <!-- ============ SLIDE 1 · COVER ============ -->
+        <section class="slide-view" data-title="Cover — F1: Network Layer: Data Plane" aria-label="สไลด์ 1: เปิดบทเรียน">
+          <div class="slide-inner">
+            <div class="center" style="padding:26px 0 6px">
+              <div class="cn-logo small" style="margin:0 auto 18px">CN</div>
+              <p class="menu-kicker" style="margin:0">FINAL · F1 · BOOK CHAPTER 4</p>
+              <h2 class="slide-title" style="font-size:38px">Network Layer: <span class="grad-text">Data Plane</span></h2>
+              <p class="slide-subtitle" style="max-width:640px;margin:10px auto 0">
+                หน้าที่ของ Network Layer · Data Plane vs Control Plane · Packet Forwarding &amp; Forwarding Table ·
+                Longest Prefix Matching · IPv4 Addressing &amp; Subnetting · การส่งข้อมูลผ่าน Router
+              </p>
+
+              <div class="visual-box mt-6" style="max-width:640px;margin-left:auto;margin-right:auto">
+                <span class="vb-label">เส้นทางของ PACKET · HOST → ROUTER → HOST</span>
+                <div class="flow-row" style="padding:20px 10px">
+                  <div class="pipe-node"><b>Host</b><span>segment</span></div>
+                  <span class="flow-arrow">→</span>
+                  <div class="pipe-node hot"><b>Router</b><span>input port</span></div>
+                  <span class="flow-arrow">→</span>
+                  <div class="pipe-node"><b>Fabric</b><span>switch</span></div>
+                  <span class="flow-arrow">→</span>
+                  <div class="pipe-node"><b>Router</b><span>output port</span></div>
+                  <span class="flow-arrow">→</span>
+                  <div class="pipe-node"><b>Host</b><span>datagram</span></div>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 wrap mt-5" style="justify-content:center">
+                <span class="chip">27 สไลด์</span><span class="chip">12 Quiz</span><span class="chip">12 Flashcards</span><span class="chip">20 ข้อสอบ</span>
+              </div>
+              <div class="mt-6">
+                <button class="btn btn-primary btn-lg" id="startBtn5">เริ่มเรียน F1 <i data-lucide="arrow-right"></i></button>
+              </div>
+              <p class="text-3 mt-4" style="font-size:12px">ที่มา: Kurose &amp; Ross, Computer Networking: A Top-Down Approach 9th ed. — Chapter 4 v9.0 (สไลด์ 4-1 … 4-3)</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 2 · ROADMAP ============ -->
+        <section class="slide-view" data-title="บทนี้จะเรียนอะไร" aria-label="สไลด์ 2: ภาพรวมบท">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">F1 · ROADMAP</p>
+            <h2 class="slide-title">บทนี้จะเรียนอะไร</h2>
+            <p class="slide-subtitle">โฟกัส 6 หัวข้อตามที่อาจารย์กำหนด — ทุกหัวข้อมาจาก PPTX Chapter 4 v9.0 เท่านั้น</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="layers" class="cyan"></i>1. Network Layer</h3><p class="card-text small">หน้าที่และหลักการทำงาน — transport segment จากต้นทางถึงปลายทาง, datagram, router</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="split" class="cyan"></i>2. Data Plane / Control Plane</h3><p class="card-text small">Data plane ทำงานแบบ local ต่อ router ส่วน control plane เป็น network-wide logic — เปรียบเทียบ per-router algorithm กับ SDN</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="route" class="cyan"></i>3. Packet Forwarding</h3><p class="card-text small">input port → forwarding table → output port — ใช้หลัก match plus action</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="git-branch" class="cyan"></i>4. Longest Prefix Matching</h3><p class="card-text small">เลือก prefix ที่ยาวที่สุดที่ match destination address; TCAM</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="binary" class="cyan"></i>5. IPv4 &amp; Subnetting</h3><p class="card-text small">address 32 บิต, interface, dotted-decimal, subnet mask /24 และ CIDR</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="network" class="cyan"></i>6. Router &amp; IP in Action</h3><p class="card-text small">สถาปัตยกรรม router, switching fabrics, queuing, DHCP และ route aggregation</p></div>
+            </div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="info"></i>
+              <div><b>ขอบเขตบทนี้</b>NAT, IPv6, Generalized Forwarding/OpenFlow และ Middleboxes อยู่ใน PPTX แต่ <b>ไม่อยู่ใน 6 หัวข้อที่กำหนด</b> จึงไม่นำมาเป็นเนื้อหาหลักของ F1</div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-2, 4-3</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 3 · SERVICES ============ -->
+        <section class="slide-view" data-title="บริการและโปรโตคอลของ Network Layer" aria-label="สไลด์ 3: Network-layer services">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">NETWORK LAYER · SERVICES</p>
+            <h2 class="slide-title">บริการและโปรโตคอลของ Network Layer</h2>
+            <p class="slide-subtitle">Network Layer ส่ง “transport segment” จาก sending host ไปยัง receiving host</p>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label">ENCAPSULATION · ผู้ส่ง → ผู้รับ</span>
+              <div class="flow-row" style="padding:18px 10px">
+                <div class="pipe-node"><b>Transport</b><span>segment</span></div>
+                <span class="flow-arrow">→</span>
+                <div class="pipe-node hot"><b>Network</b><span>datagram</span></div>
+                <span class="flow-arrow">→</span>
+                <div class="pipe-node"><b>Link</b><span>frame</span></div>
+                <span class="flow-arrow">→</span>
+                <div class="pipe-node"><b>Physical</b><span>bits</span></div>
+              </div>
+            </div>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="send" class="cyan"></i>Sender</h3>
+                <p class="card-text small">ห่อหุ้ม segment ให้เป็น datagram แล้วส่งต่อไปยัง link layer</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="inbox" class="cyan"></i>Receiver</h3>
+                <p class="card-text small">ส่ง segment ขึ้นไปให้ transport layer protocol</p>
+              </div>
+            </div>
+
+            <div class="card mt-4">
+              <h3 class="card-title"><i data-lucide="router" class="cyan"></i>Router ทำอะไรกับ datagram?</h3>
+              <ul class="clean-list">
+                <li>ตรวจสอบ header field ของทุก IP datagram ที่ผ่าน router</li>
+                <li>ย้าย datagram จาก input port ไปยัง output port เพื่อส่งต่อไปตามเส้นทาง end-to-end</li>
+              </ul>
+            </div>
+
+            <div class="tip-box tip-remember mt-4">
+              <i data-lucide="lightbulb"></i>
+              <div><b>จำง่าย</b>Network layer protocols อยู่ใน <b>ทุก Internet device</b> — ทั้ง host และ router</div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-4</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 4 · FORWARDING VS ROUTING ============ -->
+        <section class="slide-view" data-title="Forwarding vs Routing" aria-label="สไลด์ 4: Forwarding vs Routing">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">TWO KEY FUNCTIONS</p>
+            <h2 class="slide-title">Forwarding <span class="grad-text">vs</span> Routing</h2>
+            <p class="slide-subtitle">สองหน้าที่หลักของ Network Layer — หนึ่งคือ “ผ่านทางแยก” อีกอันคือ “วางแผนการเดินทาง”</p>
+
+            <div class="grid-2 mt-6">
+              <div class="card" style="border-color:rgba(56,189,248,.45)">
+                <h3 class="card-title"><i data-lucide="arrow-right-left" class="cyan"></i>Forwarding</h3>
+                <p class="card-text">ย้าย packet จาก <b>input link</b> ของ router ไปยัง <b>output link</b> ที่เหมาะสม</p>
+                <div class="mini-note mt-3">อุปมาอุปไมย: การผ่าน <b>ทางแยกเพียงแห่งเดียว</b></div>
+              </div>
+              <div class="card" style="border-color:rgba(129,140,248,.45)">
+                <h3 class="card-title"><i data-lucide="map" class="indigo"></i>Routing</h3>
+                <p class="card-text">กำหนด <b>route</b> ที่ packet จะใช้จาก source ไป destination — ใช้ <b>routing algorithms</b></p>
+                <div class="mini-note mt-3">อุปมาอุปไมย: การ <b>วางแผนการเดินทาง</b> จาก source ไป destination</div>
+              </div>
+            </div>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label">LOCAL VS NETWORK-WIDE (ระดับ local กับทั้งเครือข่าย)</span>
+              <div class="flow-row" style="padding:16px 10px">
+                <div class="pipe-node"><b>Source</b><span>host</span></div>
+                <span class="flow-arrow">→</span>
+                <div class="pipe-node hot"><b>Router A</b><span>forwarding</span></div>
+                <span class="flow-arrow">→</span>
+                <div class="pipe-node hot"><b>Router B</b><span>forwarding</span></div>
+                <span class="flow-arrow">→</span>
+                <div class="pipe-node"><b>Destination</b><span>host</span></div>
+              </div>
+              <p class="center text-3" style="font-size:12px;padding-bottom:12px">Routing วางเส้นทาง Source → Destination · Forwarding พา packet ผ่าน router แต่ละตัว</p>
+            </div>
+
+            <div class="tip-box tip-exam mt-4">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Exam Tip</b>ข้อสอบชอบถามแยกสองคำนี้ — Forwarding = local/input→output, Routing = network-wide/source→destination</div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-5</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 5 · DATA VS CONTROL ============ -->
+        <section class="slide-view" data-title="Data Plane vs Control Plane" aria-label="สไลด์ 5: Data Plane และ Control Plane">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">DATA PLANE · CONTROL PLANE</p>
+            <h2 class="slide-title">Data Plane <span class="grad-text">vs</span> Control Plane</h2>
+            <p class="slide-subtitle">Data Plane ทำงาน “ใน router แต่ละตัว” · Control Plane ทำงาน “ทั้งเครือข่าย”</p>
+
+            <div class="tabs mt-5" id="dcTabs" role="tablist">
+              <button class="tab-btn active" data-dc="data" role="tab">Data Plane</button>
+              <button class="tab-btn" data-dc="control" role="tab">Control Plane</button>
+            </div>
+
+            <div class="card mt-4" id="dcCard">
+              <h3 class="card-title"><i data-lucide="cpu" class="cyan"></i><span id="dcTitle">Data plane</span></h3>
+              <p class="card-text" id="dcDesc">ฟังก์ชันระดับ local ต่อ router — ตัดสินใจว่า datagram ที่เข้ามาที่ input port ของ router จะถูก forward ไปยัง output port ใด</p>
+              <div class="stat-chips mt-4">
+                <span class="stat-chip"><i data-lucide="map-pin"></i><span id="dcScope">Local · ต่อ router</span></span>
+                <span class="stat-chip"><i data-lucide="timer"></i><span id="dcTime">Hardware · ระดับนาโนวินาที</span></span>
+              </div>
+            </div>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label">ค่าต่าง ๆ ใน header ของ packet ที่เข้ามา → การตัดสินใจ forwarding</span>
+              <div class="flow-row" style="padding:18px 10px">
+                <div class="pipe-node"><b>0111</b><span>ค่าใน header</span></div>
+                <span class="flow-arrow">→</span>
+                <div class="pipe-node hot"><b>1</b><span>input port</span></div>
+                <span class="flow-arrow">→</span>
+                <div class="pipe-node"><b>2</b><span>switching fabric</span></div>
+                <span class="flow-arrow">→</span>
+                <div class="pipe-node"><b>3</b><span>output port</span></div>
+              </div>
+            </div>
+
+            <div class="grid-2 mt-4">
+              <div class="tip-box tip-note"><i data-lucide="git-fork"></i><div><b>Control plane 2 แนวทาง</b>traditional routing algorithms: ทำงานอยู่ใน router<br />software-defined networking (SDN): ทำงานอยู่บน (remote) servers</div></div>
+              <div class="tip-box tip-exam"><i data-lucide="graduation-cap"></i><div><b>Exam Tip</b>Data plane = “datagram ที่เข้ามาที่ input port ถูก forward ไปยัง output port อย่างไร” · Control plane = “datagram ถูก route ระหว่าง router ต่าง ๆ ตามเส้นทาง end-to-end อย่างไร”</div></div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-6</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 6 · PER-ROUTER VS SDN ============ -->
+        <section class="slide-view" data-title="Per-router Control Plane vs SDN" aria-label="สไลด์ 6: Per-router และ SDN">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">CONTROL PLANE · TWO APPROACHES</p>
+            <h2 class="slide-title">Per-router <span class="grad-text">vs</span> SDN</h2>
+            <p class="slide-subtitle">ใครเป็นคนคำนวณ forwarding table — router เอง หรือ remote controller</p>
+
+            <div class="tabs mt-5" id="planeTabs" role="tablist">
+              <button class="tab-btn active" data-plane="per" role="tab">Per-router control plane</button>
+              <button class="tab-btn" data-plane="sdn" role="tab">SDN control plane</button>
+            </div>
+
+            <div class="card mt-4">
+              <h3 class="card-title"><i data-lucide="settings-2" class="cyan"></i><span id="planeTitle">Per-router control plane</span></h3>
+              <p class="card-text" id="planeDesc">routing algorithm ในแต่ละ router ทำงานร่วมกันใน control plane</p>
+            </div>
+
+            <div class="visual-box mt-4" id="planeVis">
+              <span class="vb-label">แต่ละ ROUTER มี ROUTING ALGORITHM ของตัวเอง</span>
+              <div class="flow-row" style="padding:18px 10px">
+                <div class="pipe-node"><b>Router A</b><span>routing algorithm</span></div>
+                <span class="flow-arrow">↔</span>
+                <div class="pipe-node"><b>Router B</b><span>routing algorithm</span></div>
+                <span class="flow-arrow">↔</span>
+                <div class="pipe-node"><b>Router C</b><span>routing algorithm</span></div>
+              </div>
+            </div>
+
+            <div class="tip-box tip-remember mt-4">
+              <i data-lucide="lightbulb"></i>
+              <div><b>สรุป</b>Per-router: แต่ละ router มี routing algorithm และสร้าง local forwarding table ของตัวเอง · SDN: remote controller เป็นผู้คำนวณและติดตั้ง forwarding table ลงใน router</div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-7, 4-8</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 7 · SERVICE MODEL ============ -->
+        <section class="slide-view" data-title="Network Service Model &amp; Best-effort" aria-label="สไลด์ 7: Service Model">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">NETWORK SERVICE MODEL</p>
+            <h2 class="slide-title">Service Model <span class="grad-text">&amp; Best-effort</span></h2>
+            <p class="slide-subtitle">“Network สัญญาอะไรกับ datagram ของเรา?” — Internet ตอบว่า best effort</p>
+
+            <div class="table-wrap mt-5">
+              <table class="data-table" id="serviceTable">
+                <thead>
+                  <tr><th>Network Architecture</th><th>Service Model</th><th>Bandwidth</th><th>Loss</th><th>Order</th><th>Timing</th></tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+            <div class="grid-2 mt-4">
+              <div class="card" style="border-color:rgba(245,158,11,.45)">
+                <h3 class="card-title"><i data-lucide="circle-alert" class="warn"></i>Internet “best effort”</h3>
+                <ul class="clean-list">
+                  <li>ไม่รับประกันว่า datagram จะส่งถึง destination สำเร็จ</li>
+                  <li>ไม่รับประกันเรื่องเวลาและลำดับการส่ง</li>
+                  <li>ไม่รับประกัน bandwidth ที่มีให้กับ end-to-end flow</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="sparkles" class="cyan"></i>ทำไม best-effort ถึงสำเร็จ?</h3>
+                <ul class="clean-list">
+                  <li>กลไกเรียบง่าย → ถูกนำไปใช้อย่างแพร่หลาย</li>
+                  <li>จัดสรร bandwidth ให้เพียงพอ</li>
+                  <li>บริการแบบ replicated และ distributed ใน application layer</li>
+                  <li>ควบคุม congestion ของบริการแบบ “elastic”</li>
+                </ul>
+              </div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-9 … 4-12</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 8 · ROUTER ARCHITECTURE ============ -->
+        <section class="slide-view" data-title="Router Architecture Overview" aria-label="สไลด์ 8: Router Architecture">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">WHAT’S INSIDE A ROUTER</p>
+            <h2 class="slide-title">ภาพรวมสถาปัตยกรรม <span class="grad-text">Router</span></h2>
+            <p class="slide-subtitle">router ทั่วไป: input ports → high-speed switching fabric → output ports + routing processor</p>
+
+            <div class="pipeline mt-6" id="routerPipeline">
+              <button class="pipe-node big" data-rpart="input"><b>Input ports</b><span>line termination · link layer · lookup</span></button>
+              <span class="flow-arrow">→</span>
+              <button class="pipe-node big hot" data-rpart="fabric"><b>Switching fabric</b><span>high-speed</span></button>
+              <span class="flow-arrow">→</span>
+              <button class="pipe-node big" data-rpart="output"><b>Output ports</b><span>buffer · scheduling · link layer</span></button>
+            </div>
+            <div class="center mt-3">
+              <button class="pipe-node big" data-rpart="processor" style="display:inline-flex"><b>Routing processor</b><span>control plane (ซอฟต์แวร์)</span></button>
+            </div>
+
+            <div class="card mt-5">
+              <h3 class="card-title"><i data-lucide="mouse-pointer-click" class="cyan"></i><span id="routerTitle">Input ports</span></h3>
+              <p class="card-text" id="routerDesc">line termination → link layer protocol (รับข้อมูล) → lookup, forwarding, queueing — ใช้ forwarding table ในหน่วยความจำของ input port</p>
+            </div>
+
+            <div class="grid-2 mt-4">
+              <div class="tip-box tip-note"><i data-lucide="zap"></i><div><b>Forwarding data plane (ฮาร์ดแวร์)</b>ทำงานในระดับนาโนวินาที</div></div>
+              <div class="tip-box tip-remember"><i data-lucide="settings"></i><div><b>Routing และ management อยู่ใน control plane (ซอฟต์แวร์)</b>ทำงานในระดับมิลลิวินาที</div></div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-14</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 9 · INPUT PORT ============ -->
+        <section class="slide-view" data-title="หน้าที่ของ Input Port" aria-label="สไลด์ 9: Input Port">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">INPUT PORT · FUNCTIONS</p>
+            <h2 class="slide-title">หน้าที่ของ Input Port</h2>
+            <p class="slide-subtitle">จากสัญญาณบนสาย → เป็นบิต → เป็น frame → lookup output port</p>
+
+            <div class="pipeline mt-6">
+              <div class="pipe-node big"><b>Line termination</b><span>physical layer: รับข้อมูลระดับบิต</span></div>
+              <span class="flow-arrow">→</span>
+              <div class="pipe-node big"><b>Link layer</b><span>เช่น Ethernet (รับข้อมูล)</span></div>
+              <span class="flow-arrow">→</span>
+              <div class="pipe-node big hot"><b>Lookup / forwarding</b><span>queueing</span></div>
+            </div>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="search" class="cyan"></i>Decentralized switching</h3>
+                <p class="card-text small">ใช้ค่าต่าง ๆ ใน header เพื่อค้นหา output port จาก <b>forwarding table ในหน่วยความจำของ input port</b> (“match plus action”)</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="gauge" class="cyan"></i>เป้าหมาย: line speed</h3>
+                <p class="card-text small">ประมวลผล input port ให้เสร็จที่ความเร็ว “line speed”</p>
+              </div>
+            </div>
+
+            <div class="tip-box tip-exam mt-4">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Input port queuing</b>ถ้า datagram เข้ามาเร็วกว่าความเร็ว forwarding ไปยัง switch fabric → เกิดคิว, delay และ loss จาก buffer overflow</div>
+            </div>
+
+            <div class="grid-2 mt-3">
+              <div class="mini-card"><b>Destination-based forwarding</b><span>forward โดยดูเฉพาะ destination IP address (แบบ traditional)</span></div>
+              <div class="mini-card"><b>Generalized forwarding</b><span>forward โดยดูจาก header field ใด ๆ ก็ได้</span></div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-15, 4-16</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 10 · FORWARDING TABLE ============ -->
+        <section class="slide-view" data-title="Forwarding Table &amp; Destination-based Forwarding" aria-label="สไลด์ 10: Forwarding Table">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">FORWARDING TABLE</p>
+            <h2 class="slide-title">Forwarding Table <span class="grad-text">และ Destination-based Forwarding</span></h2>
+            <p class="slide-subtitle">ดู destination IP address แล้วเลือก output interface — แต่ละ entry มีช่วง address ที่อาจซ้อนกันได้</p>
+
+            <div class="table-wrap mt-5">
+              <table class="data-table mono-table">
+                <thead><tr><th>ช่วง Destination Address</th><th>Link interface</th></tr></thead>
+                <tbody>
+                  <tr><td>11001000&nbsp;&nbsp;00010111&nbsp;&nbsp;00010***&nbsp;&nbsp;********</td><td class="center"><b>0</b></td></tr>
+                  <tr><td>11001000&nbsp;&nbsp;00010111&nbsp;&nbsp;00011000&nbsp;&nbsp;********</td><td class="center"><b>1</b></td></tr>
+                  <tr><td>11001000&nbsp;&nbsp;00010111&nbsp;&nbsp;00011***&nbsp;&nbsp;********</td><td class="center"><b>2</b></td></tr>
+                  <tr><td>otherwise</td><td class="center"><b>3</b></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grid-2 mt-4">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="crosshair" class="cyan"></i>Destination-based forwarding</h3>
+                <p class="card-text small">forward โดยดูเฉพาะ destination IP address (แบบ traditional)</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="layers" class="cyan"></i>Forwarding entries overlap ได้</h3>
+                <p class="card-text small">ไม่จำเป็นต้องแบ่งเป็นช่วงที่ไม่ซ้อนกันทั้งหมด — จึงต้องมี longest prefix matching</p>
+              </div>
+            </div>
+
+            <div class="tip-box tip-note mt-4">
+              <i data-lucide="help-circle"></i>
+              <div><b>Q:</b> แล้วถ้าช่วง address ไม่ได้แบ่งกันลงตัวแบบนี้ล่ะ? → คำตอบคือ Longest Prefix Matching (สไลด์ถัดไป)</div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-16, 4-17</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 11 · LPM PRINCIPLE ============ -->
+        <section class="slide-view" data-title="Longest Prefix Matching — หลักการ" aria-label="สไลด์ 11: LPM หลักการ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">LONGEST PREFIX MATCHING · PRINCIPLE</p>
+            <h2 class="slide-title">Longest Prefix Matching <span class="grad-text">— หลักการ</span></h2>
+            <p class="slide-subtitle">เมื่อหลาย entry match ได้ ให้เลือก prefix ที่ยาวที่สุด</p>
+
+            <div class="card mt-5" style="border-color:rgba(56,189,248,.45)">
+              <p class="card-text" style="font-size:16px">
+                เมื่อค้นหา forwarding table entry สำหรับ destination address ที่กำหนด
+                <b class="cyan">ให้ใช้ address prefix ที่ยาวที่สุดซึ่ง match กับ destination address</b>
+              </p>
+            </div>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="binary" class="cyan"></i>ทำไมต้อง longest?</h3>
+                <p class="card-text small">forwarding entries สามารถ overlap กันได้ — prefix ที่ยาวกว่าจะเจาะจงกว่า (more specific)</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="memory-stick" class="cyan"></i>TCAM</h3>
+                <p class="card-text small">มักทำด้วย ternary content addressable memories (TCAMs)</p>
+                <ul class="clean-list mt-2">
+                  <li>ส่ง address ให้ TCAM → ดึง address ออกมาได้ใน one clock cycle โดยไม่ขึ้นกับขนาด table</li>
+                  <li>Cisco Catalyst: เก็บ routing table ประมาณ 1M entries ใน TCAM</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="tip-box tip-exam mt-4">
+              <i data-lucide="graduation-cap"></i>
+              <div><b>Exam Tip</b>ถ้ามีหลาย prefix ที่ match อย่าเลือกอันแรก — ต้องเลือก <b>prefix ที่ยาวที่สุด</b></div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-18, 4-22</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 12 · LPM EXAMPLES ============ -->
+        <section class="slide-view" data-title="Longest Prefix Matching — ตัวอย่าง" aria-label="สไลด์ 12: LPM ตัวอย่าง">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">LONGEST PREFIX MATCHING · WORKED EXAMPLES</p>
+            <h2 class="slide-title">Longest Prefix Matching <span class="grad-text">— ตัวอย่าง</span></h2>
+            <p class="slide-subtitle">ไล่ทีละบิตจากตัวอย่างในสไลด์ 4-18 — เลือก prefix ที่ยาวที่สุด</p>
+
+            <div class="tabs mt-5" id="lpmExampleTabs" role="tablist">
+              <button class="tab-btn active" data-lpm="0" role="tab">ตัวอย่างที่ 1</button>
+              <button class="tab-btn" data-lpm="1" role="tab">ตัวอย่างที่ 2</button>
+            </div>
+
+            <div class="card mt-4">
+              <div class="flex items-center justify-between wrap gap-2">
+                <div>
+                  <p class="text-3" style="font-size:12px;margin-bottom:4px">DESTINATION ADDRESS (ที่อยู่ปลายทาง)</p>
+                  <p class="mono" id="lpmDest" style="font-size:18px;font-weight:700">11001000 00010111 00011000 10101010</p>
+                </div>
+                <span class="chip" id="lpmDecimal">200.23.24.170</span>
+              </div>
+              <div class="lpm-bits mt-4" id="lpmBits"></div>
+              <div class="lpm-result mt-4" id="lpmResult">—</div>
+            </div>
+
+            <div class="table-wrap mt-4">
+              <table class="data-table mono-table" id="lpmTable">
+                <thead><tr><th>ช่วง Destination Address</th><th>Link interface</th></tr></thead>
+                <tbody>
+                  <tr data-lpm-row="0"><td>11001000&nbsp;&nbsp;00010111&nbsp;&nbsp;00010***&nbsp;&nbsp;********</td><td class="center"><b>0</b></td></tr>
+                  <tr data-lpm-row="1"><td>11001000&nbsp;&nbsp;00010111&nbsp;&nbsp;00011000&nbsp;&nbsp;********</td><td class="center"><b>1</b></td></tr>
+                  <tr data-lpm-row="2"><td>11001000&nbsp;&nbsp;00010111&nbsp;&nbsp;00011***&nbsp;&nbsp;********</td><td class="center"><b>2</b></td></tr>
+                  <tr data-lpm-row="3"><td>otherwise</td><td class="center"><b>3</b></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-18 … 4-21</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 13 · SWITCHING FABRICS ============ -->
+        <section class="slide-view" data-title="Switching Fabrics (โครงข่ายสลับข้อมูล)" aria-label="สไลด์ 13: Switching Fabrics">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">SWITCHING FABRICS</p>
+            <h2 class="slide-title">Switching Fabrics <span class="grad-text">(โครงข่ายสลับข้อมูล)</span></h2>
+            <p class="slide-subtitle">ย้าย packet จาก input link ไปยัง output link ที่เหมาะสม</p>
+
+            <div class="tabs mt-5" id="fabricTabs" role="tablist">
+              <button class="tab-btn active" data-fabric="memory" role="tab">via memory</button>
+              <button class="tab-btn" data-fabric="bus" role="tab">via bus</button>
+              <button class="tab-btn" data-fabric="net" role="tab">interconnection network</button>
+            </div>
+
+            <div class="card mt-4">
+              <h3 class="card-title"><i data-lucide="boxes" class="cyan"></i><span id="fabricTitle">Switching via memory</span></h3>
+              <p class="card-text" id="fabricDesc">router รุ่นแรก: คอมพิวเตอร์ทั่วไปที่ switching อยู่ภายใต้การควบคุมของ CPU โดยตรง; packet ถูกคัดลอกไปยังหน่วยความจำของระบบ; ความเร็วจำกัดด้วย memory bandwidth (2 bus crossings ต่อ datagram)</p>
+            </div>
+
+            <div class="grid-3 mt-4">
+              <div class="mini-card"><b>Memory</b><span>packet → หน่วยความจำระบบ → output port</span></div>
+              <div class="mini-card"><b>Bus</b><span>shared bus · bus contention (แย่งกันใช้ bus)</span></div>
+              <div class="mini-card"><b>Interconnection</b><span>crossbar · multistage · Clos</span></div>
+            </div>
+
+            <div class="formula-box mt-4">
+              <div><span class="formula-label">Switching rate</span><b>N inputs → ควรได้ N × line rate</b></div>
+              <div><span class="formula-label">Cisco CRS</span><b>8 switching planes · แต่ละอันมี 3-stage · สูงถึงระดับ 100’s Tbps</b></div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-23 … 4-28</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 14 · INPUT QUEUING / HOL ============ -->
+        <section class="slide-view" data-title="Input Port Queuing &amp; HOL Blocking" aria-label="สไลด์ 14: Input Queuing และ HOL">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">INPUT PORT QUEUING</p>
+            <h2 class="slide-title">Input Queuing <span class="grad-text">และ HOL Blocking</span></h2>
+            <p class="slide-subtitle">ถ้า switching fabric ช้ากว่าผลรวมของ input ports → เกิดคิวที่ input</p>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="timer" class="cyan"></i>ทำไมเกิดคิว?</h3>
+                <p class="card-text small">ถ้า switch fabric ช้ากว่าความเร็วรวมของ input ports → อาจเกิด queueing ที่ input queues</p>
+                <p class="card-text small mt-2">เกิด queueing delay และ loss จาก input buffer overflow</p>
+              </div>
+              <div class="card" style="border-color:rgba(245,158,11,.45)">
+                <h3 class="card-title"><i data-lucide="ban" class="warn"></i>HOL Blocking</h3>
+                <p class="card-text small">Head-of-the-Line blocking: datagram ที่อยู่หัวคิวขวาง datagram อื่นในคิวไม่ให้เคลื่อนที่ต่อไป</p>
+              </div>
+            </div>
+
+            <div class="visual-box mt-5">
+              <span class="vb-label">OUTPUT PORT CONTENTION · ถ่ายโอนได้ทีละหนึ่ง RED DATAGRAM เท่านั้น</span>
+              <div class="queue-row">
+                <div class="queue-box"><span class="q-label">input queue (คิวขาเข้า)</span><span class="pkt red">R1</span><span class="pkt green">G1</span><span class="pkt green">G2</span></div>
+                <span class="flow-arrow">→</span>
+                <div class="queue-box fabric"><span class="q-label">switch fabric</span><span class="pkt red">R1</span><span class="pkt ghost">G1 blocked</span></div>
+              </div>
+              <p class="center text-3" style="font-size:12px;padding:10px">หนึ่ง packet time ต่อมา: green packet เจอ HOL blocking</p>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-29</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 15 · OUTPUT QUEUING ============ -->
+        <section class="slide-view" data-title="Output Port Queuing, Buffer &amp; Scheduling" aria-label="สไลด์ 15: Output Queuing">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">OUTPUT PORT QUEUING · BUFFER · SCHEDULING</p>
+            <h2 class="slide-title">Output Queuing <span class="grad-text">และ Scheduling</span></h2>
+            <p class="slide-subtitle">เมื่อ datagram มาจาก fabric เร็วกว่าความเร็วลิงก์ส่งออก → ต้องมี buffer</p>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="database" class="cyan"></i>Buffering</h3>
+                <p class="card-text small">ต้องมี buffering เมื่อ datagram มาจาก fabric เร็วกว่าความเร็วในการส่งของ link</p>
+                <p class="card-text small mt-2">Drop policy: จะทิ้ง datagram ไหนเมื่อ buffer เต็ม?</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="list-ordered" class="cyan"></i>Scheduling discipline</h3>
+                <p class="card-text small">เลือก datagram จากคิวเพื่อส่งออก</p>
+                <p class="card-text small mt-2">datagram อาจหายได้จาก congestion และ buffer ไม่พอ</p>
+              </div>
+            </div>
+
+            <div class="formula-box mt-4">
+              <div><span class="formula-label">RFC 3439 rule of thumb</span><b>average buffering = RTT × C</b></div>
+              <div><span class="formula-label">ตัวอย่าง</span><b>C = 10 Gbps, RTT = 250 msec → 2.5 Gbit buffer</b></div>
+              <div><span class="formula-label">N flows</span><b>buffering = RTT × C / √N</b></div>
+            </div>
+
+            <div class="grid-4 mt-4">
+              <div class="mini-card"><b>FCFS / FIFO</b><span>ส่ง packet ตามลำดับที่มาถึง</span></div>
+              <div class="mini-card"><b>Priority</b><span>คิวที่มี priority สูงสุดก่อน</span></div>
+              <div class="mini-card"><b>Round Robin</b><span>วนสแกน class queues ทีละคิว</span></div>
+              <div class="mini-card"><b>WFQ</b><span>ให้ service ตามน้ำหนักของแต่ละ class</span></div>
+            </div>
+
+            <div class="tip-box tip-note mt-4">
+              <i data-lucide="triangle-alert"></i>
+              <div><b>ข้อควรระวัง</b>buffer มากเกินไปทำให้ delay เพิ่ม (โดยเฉพาะ home router) — RTT ยาว: real-time app ทำงานแย่ลง และ TCP response ช้า</div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-30 … 4-37</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 16 · IP DATAGRAM ============ -->
+        <section class="slide-view" data-title="รูปแบบ IP Datagram" aria-label="สไลด์ 16: IP Datagram">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">IP · THE INTERNET PROTOCOL</p>
+            <h2 class="slide-title">รูปแบบ IP Datagram</h2>
+            <p class="slide-subtitle">Header 20 ไบต์ (ขั้นต่ำ) + payload — ทุกช่องมีหน้าที่ของมัน</p>
+
+            <div class="ip-header mt-5">
+              <div class="ip-row">
+                <div class="ip-field"><b>ver</b><span>เวอร์ชัน IP</span></div>
+                <div class="ip-field"><b>head. len</b><span>ความยาว header</span></div>
+                <div class="ip-field"><b>type of service</b><span>diffserv / ECN</span></div>
+                <div class="ip-field"><b>total length</b><span>ความยาว datagram</span></div>
+              </div>
+              <div class="ip-row">
+                <div class="ip-field wide"><b>16-bit identifier</b><span>fragmentation</span></div>
+                <div class="ip-field"><b>flgs</b><span>flags</span></div>
+                <div class="ip-field"><b>fragment offset</b><span>fragmentation</span></div>
+              </div>
+              <div class="ip-row">
+                <div class="ip-field"><b>TTL</b><span>จำนวน hop สูงสุดที่เหลือ</span></div>
+                <div class="ip-field"><b>upper layer</b><span>TCP / UDP</span></div>
+                <div class="ip-field"><b>header checksum</b><span>ตรวจสอบ header</span></div>
+              </div>
+              <div class="ip-row">
+                <div class="ip-field full"><b>32-bit source IP address</b><span>ต้นทาง</span></div>
+              </div>
+              <div class="ip-row">
+                <div class="ip-field full"><b>32-bit destination IP address</b><span>ปลายทาง</span></div>
+              </div>
+              <div class="ip-row">
+                <div class="ip-field full"><b>options (if any)</b><span>เช่น timestamp, record route</span></div>
+              </div>
+              <div class="ip-row payload">
+                <div class="ip-field full"><b>payload data</b><span>ความยาวไม่คงที่ — โดยทั่วไปเป็น TCP หรือ UDP segment</span></div>
+              </div>
+            </div>
+
+            <div class="grid-3 mt-4">
+              <div class="mini-card"><b>TTL</b><span>ลดลงหนึ่งทุกครั้งที่ผ่าน router</span></div>
+              <div class="mini-card"><b>Maximum length</b><span>64K bytes · โดยทั่วไป 1500 หรือน้อยกว่า</span></div>
+              <div class="mini-card"><b>Overhead</b><span>20 bytes TCP + 20 bytes IP = 40 bytes + application layer</span></div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-43</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 17 · IP ADDRESSING ============ -->
+        <section class="slide-view" data-title="IP Addressing — Interface &amp; Dotted-decimal" aria-label="สไลด์ 17: IP Addressing">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">IP ADDRESSING · INTRODUCTION</p>
+            <h2 class="slide-title">IP Addressing <span class="grad-text">— Interface และ Dotted-decimal</span></h2>
+            <p class="slide-subtitle">IP address = 32-bit identifier ที่ผูกกับแต่ละ host หรือ router interface</p>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="plug" class="cyan"></i>Interface</h3>
+                <p class="card-text small">จุดเชื่อมต่อระหว่าง host/router กับ physical link</p>
+                <ul class="clean-list mt-2">
+                  <li>router โดยทั่วไปมีหลาย interface</li>
+                  <li>host โดยทั่วไปมีหนึ่งหรือสอง interface (เช่น wired Ethernet, wireless 802.11)</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="binary" class="cyan"></i>Dotted-decimal notation (รูปแบบจุดทศนิยม)</h3>
+                <p class="card-text small">223.1.1.1 = 11011111 00000001 00000001 00000001</p>
+                <div class="octet-row mt-3" id="ipOctets">
+                  <span class="octet">223<small>11011111</small></span>
+                  <span class="dot">.</span>
+                  <span class="octet">1<small>00000001</small></span>
+                  <span class="dot">.</span>
+                  <span class="octet">1<small>00000001</small></span>
+                  <span class="dot">.</span>
+                  <span class="octet">1<small>00000001</small></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="visual-box mt-4">
+              <span class="vb-label">HOST และ ROUTER · แต่ละ INTERFACE มี IP ADDRESS</span>
+              <div class="net-diagram">
+                <div class="net-node">223.1.1.1</div>
+                <div class="net-node">223.1.1.2</div>
+                <div class="net-node">223.1.1.3</div>
+                <div class="net-node">223.1.1.4</div>
+                <div class="net-node router">223.1.2.9</div>
+                <div class="net-node">223.1.2.2</div>
+                <div class="net-node">223.1.2.1</div>
+                <div class="net-node router">223.1.3.1</div>
+                <div class="net-node">223.1.3.2</div>
+                <div class="net-node">223.1.3.27</div>
+              </div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-44 … 4-46</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 18 · SUBNETS ============ -->
+        <section class="slide-view" data-title="Subnets &amp; Subnet Mask" aria-label="สไลด์ 18: Subnets">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">SUBNETS</p>
+            <h2 class="slide-title">Subnet <span class="grad-text">และ Subnet Mask</span></h2>
+            <p class="slide-subtitle">device interfaces ที่สามารถ reach ถึงกันได้โดยไม่ผ่าน intervening router</p>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="layers" class="cyan"></i>IP address มีโครงสร้าง</h3>
+                <ul class="clean-list">
+                  <li><b>subnet part:</b> อุปกรณ์ใน subnet เดียวกันมี high-order bits ร่วมกัน</li>
+                  <li><b>host part:</b> low-order bits ที่เหลือ</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="scissors" class="cyan"></i>ขั้นตอนการกำหนด subnet</h3>
+                <ul class="clean-list">
+                  <li>แยกแต่ละ interface ออกจาก host หรือ router เพื่อสร้าง “เกาะ” ของเครือข่ายที่แยกจากกัน</li>
+                  <li>เครือข่ายที่แยกออกมาแต่ละอันเรียกว่า subnet</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="tabs mt-4" id="subnetTabs" role="tablist">
+              <button class="tab-btn active" data-subnet="0" role="tab">223.1.1.0/24</button>
+              <button class="tab-btn" data-subnet="1" role="tab">223.1.2.0/24</button>
+              <button class="tab-btn" data-subnet="2" role="tab">223.1.3.0/24</button>
+            </div>
+            <div class="card mt-3">
+              <div class="flex items-center justify-between wrap gap-2">
+                <div><p class="text-3" style="font-size:12px">SUBNET</p><p class="mono" id="subnetName" style="font-size:18px;font-weight:700">223.1.1.0/24</p></div>
+                <span class="chip">subnet mask /24</span>
+              </div>
+              <p class="text-3 mt-2" style="font-size:13px">high-order 24 บิต: subnet part ของ IP address</p>
+              <div class="subnet-bits mt-3" id="subnetBits"></div>
+              <p class="text-3 mt-2" style="font-size:13px" id="subnetHosts">hosts (โฮสต์): 223.1.1.1 · 223.1.1.2 · 223.1.1.3 · 223.1.1.4</p>
+            </div>
+
+            <p class="source-line">ที่มา: PPTX 4-47 … 4-49</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 19 · CIDR ============ -->
+        <section class="slide-view" data-title="CIDR" aria-label="สไลด์ 19: CIDR">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">IP ADDRESSING · CIDR</p>
+            <h2 class="slide-title">CIDR <span class="grad-text">— Classless InterDomain Routing</span></h2>
+            <p class="slide-subtitle">กำหนดความยาวของ subnet portion ได้อย่างอิสระ ด้วยรูปแบบ a.b.c.d/x</p>
+
+            <div class="card mt-5">
+              <p class="card-text" style="font-size:16px"><b class="cyan">CIDR</b> (อ่านว่า “cider”): subnet portion ของ address ที่มีความยาวเท่าไรก็ได้</p>
+              <p class="card-text mt-2">รูปแบบ address: <b>a.b.c.d/x</b> โดย <b>x</b> คือจำนวนบิตใน subnet portion ของ address</p>
+            </div>
+
+            <div class="visual-box mt-4">
+              <span class="vb-label">200.23.16.0/23 · SUBNET PART 23 BITS · HOST PART 9 BITS</span>
+              <p class="mono center" style="font-size:16px;padding:10px 0 4px">11001000&nbsp;&nbsp;00010111&nbsp;&nbsp;00010000&nbsp;&nbsp;00000000</p>
+              <div class="cidr-bar">
+                <span class="cidr-subnet">subnet part · 23 บิต</span>
+                <span class="cidr-host">host part · 9 บิต</span>
+              </div>
+              <p class="center text-3" style="font-size:12px;padding:8px 0 14px">200.23.16.0/23</p>
+            </div>
+
+            <div class="grid-2 mt-4">
+              <div class="mini-card"><b>/x คืออะไร</b><span>จำนวนบิตของ subnet portion — ไม่ผูกกับ class A/B/C</span></div>
+              <div class="mini-card"><b>ข้อดี</b><span>กำหนดขนาด subnet ได้ตามต้องการ และช่วย route aggregation</span></div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-50</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 20 · DHCP ============ -->
+        <section class="slide-view" data-title="การได้มาซึ่ง IP Address — DHCP" aria-label="สไลด์ 20: DHCP">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">DHCP · DYNAMIC HOST CONFIGURATION PROTOCOL</p>
+            <h2 class="slide-title">การได้มาซึ่ง IP Address <span class="grad-text">— DHCP</span></h2>
+            <p class="slide-subtitle">host ได้ IP address จาก network server เมื่อ “เข้าสู่” network — ไม่ต้องตั้งค่าด้วยมือ</p>
+
+            <div class="grid-2 mt-5">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="target" class="cyan"></i>Goal</h3>
+                <p class="card-text small">host ได้รับ IP address จาก network server แบบ dynamic เมื่อ “เข้าสู่” เครือข่าย</p>
+                <ul class="clean-list mt-2">
+                  <li>สามารถ renew lease ของ address ที่ใช้งานอยู่ได้</li>
+                  <li>ทำให้ reuse address ได้ (ถือ address ไว้เฉพาะขณะเชื่อมต่อ/เปิดอยู่)</li>
+                  <li>รองรับผู้ใช้เคลื่อนที่ที่เข้า/ออกเครือข่าย</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="list-checks" class="cyan"></i>ภาพรวม DHCP</h3>
+                <ul class="clean-list">
+                  <li>host broadcast DHCP discover msg [optional]</li>
+                  <li>DHCP server ตอบกลับด้วย DHCP offer msg [optional]</li>
+                  <li>host ขอ IP address: DHCP request msg</li>
+                  <li>DHCP server ส่ง address กลับ: DHCP ack msg</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 mt-4 wrap">
+              <button class="btn btn-cyan" id="dhcpPlayBtn"><i data-lucide="play"></i> เล่นลำดับ DHCP</button>
+              <span class="chip">server 223.1.2.5 · client 223.1.2.4</span>
+              <span class="chip">ports 67 / 68</span>
+            </div>
+
+            <div class="dhcp-steps mt-4" id="dhcpSteps"></div>
+            <div class="card mt-3" id="dhcpDetail">
+              <p class="card-text small" id="dhcpDetailText">กด “เล่นลำดับ DHCP” เพื่อดูข้อความและค่าต่าง ๆ ทีละขั้น</p>
+            </div>
+
+            <div class="tip-box tip-note mt-4">
+              <i data-lucide="info"></i>
+              <div><b>DHCP: ให้มากกว่าแค่ IP address</b>DHCP สามารถส่ง address ของ first-hop router ให้ client, ชื่อและ IP address ของ DNS server และ network mask</div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-51 … 4-57</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 21 · HIERARCHICAL ============ -->
+        <section class="slide-view" data-title="Hierarchical Addressing &amp; Route Aggregation (การรวมเส้นทาง)" aria-label="สไลด์ 21: Route Aggregation">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">HIERARCHICAL ADDRESSING</p>
+            <h2 class="slide-title">Route Aggregation <span class="grad-text">(การรวมเส้นทาง)</span></h2>
+            <p class="slide-subtitle">โฆษณาเส้นทางแบบสรุป — “ส่งอะไรก็ได้ที่ address ขึ้นต้นด้วย 200.23.16.0/20”</p>
+
+            <div class="card mt-5">
+              <h3 class="card-title"><i data-lucide="building-2" class="cyan"></i>ISP block</h3>
+              <p class="mono" style="font-size:16px;font-weight:700">200.23.16.0/20</p>
+              <p class="card-text small mt-2">ISP สามารถแบ่ง address space ของตนออกเป็น 8 blocks:</p>
+              <div class="org-grid mt-3" id="orgGrid"></div>
+            </div>
+
+            <div class="grid-2 mt-4">
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="merge" class="cyan"></i>Route aggregation</h3>
+                <p class="card-text small">hierarchical addressing ช่วยให้โฆษณา routing information ได้อย่างมีประสิทธิภาพ</p>
+                <p class="card-text small mt-2">Fly-By-Night-ISP: “ส่งอะไรก็ได้ที่ address ขึ้นต้นด้วย 200.23.16.0/20 มาให้ฉัน”</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><i data-lucide="git-branch" class="cyan"></i>More specific route</h3>
+                <p class="card-text small">Organization 1 ย้ายจาก Fly-By-Night-ISP ไปยัง ISPs-R-Us</p>
+                <p class="card-text small mt-2">ISPs-R-Us โฆษณา more specific route: 200.23.18.0/23</p>
+              </div>
+            </div>
+
+            <div class="tip-box tip-remember mt-4">
+              <i data-lucide="lightbulb"></i>
+              <div><b>ทำไมสำคัญ</b>ลดจำนวนเส้นทางที่ต้องโฆษณา — ใช้ prefix เดียวครอบหลาย subnet ได้</div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-58 … 4-62</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 22 · SUMMARY ============ -->
+        <section class="slide-view" data-title="Chapter Summary" aria-label="สไลด์ 22: สรุปบทเรียน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">CHAPTER SUMMARY</p>
+            <h2 class="slide-title">สิ่งที่เราเรียนรู้ <span class="grad-text">(F1)</span></h2>
+            <p class="slide-subtitle">สรุป 6 หัวข้อสำคัญของ Network Layer: Data Plane</p>
+
+            <div class="grid-2 mt-5">
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="layers" class="cyan"></i>Network Layer</h3><p class="card-text small">ส่ง transport segment จาก sending → receiving host · router ตรวจ header และย้าย datagram จาก input → output</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="split" class="cyan"></i>Data / Control Plane</h3><p class="card-text small">data plane = local ต่อ router (ns) · control plane = network-wide (ms) · per-router algorithms หรือ SDN</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="route" class="cyan"></i>Forwarding</h3><p class="card-text small">forwarding table ในหน่วยความจำ input port · match plus action · destination-based forwarding</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="git-branch" class="cyan"></i>Longest Prefix Matching</h3><p class="card-text small">เลือก prefix ที่ยาวที่สุดที่ match · TCAM ดึงข้อมูลได้ใน one clock cycle</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="binary" class="cyan"></i>IPv4 &amp; Subnetting</h3><p class="card-text small">address 32 บิตต่อ interface · subnet part = high-order bits · CIDR a.b.c.d/x</p></div>
+              <div class="card hoverable"><h3 class="card-title"><i data-lucide="network" class="cyan"></i>Router &amp; IP in Action</h3><p class="card-text small">switching fabrics · queuing/HOL · DHCP · route aggregation</p></div>
+            </div>
+
+            <div class="tip-box tip-note mt-5">
+              <i data-lucide="arrow-right-circle"></i>
+              <div><b>ต่อไป</b>คำถาม: forwarding table (destination-based forwarding) หรือ flow table (generalized forwarding) ถูกคำนวณอย่างไร? คำตอบ: โดย <b>control plane</b> (บทถัดไป)</div>
+            </div>
+            <p class="source-line">ที่มา: PPTX 4-98 และสรุปจากทุกสไลด์ที่อ้างข้างต้น</p>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 23 · CHEAT SHEET ============ -->
+        <section class="slide-view" data-title="Exam Cheat Sheet" aria-label="สไลด์ 23: สูตรจำก่อนสอบ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">EXAM CHEAT SHEET</p>
+            <h2 class="slide-title">สูตรจำก่อนสอบ <span class="grad-text">— F1</span></h2>
+            <p class="slide-subtitle">รวบรวมจุดที่ข้อสอบชอบถาม ฉบับย่อ</p>
+            <div class="cheat-grid mt-5" id="cheatGrid5"></div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 24 · QUIZ ============ -->
+        <section class="slide-view quiz-slide" data-title="Quiz — แบบทดสอบ F1" aria-label="สไลด์ 24: แบบทดสอบ F1">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">QUIZ · NETWORK LAYER DATA PLANE</p>
+            <h2 class="slide-title">แบบทดสอบ F1 <span class="grad-text">12 ข้อ</span></h2>
+            <p class="slide-subtitle">ตรวจความเข้าใจ — ตอบแล้วเห็นคำอธิบายและที่มาของคำตอบทันที</p>
+            <div id="quizC5"></div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 25 · FLASHCARDS ============ -->
+        <section class="slide-view" data-title="Flashcards — การ์ดทบทวน" aria-label="สไลด์ 25: การ์ดทบทวน">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REVIEW · FLASHCARDS</p>
+            <h2 class="slide-title">การ์ดทบทวน — F1</h2>
+            <p class="slide-subtitle">กดที่การ์ดเพื่อพลิกดูคำตอบ — ปุ่มสับการ์ดเพื่อเรียงใหม่</p>
+
+            <div class="split mt-6" style="grid-template-columns:1fr">
+              <div class="flashcard-wrap">
+                <div class="flashcard" id="flashcard5" role="button" tabindex="0" aria-label="การ์ดทบทวน กดเพื่อพลิก">
+                  <div class="flashcard-face flashcard-front">
+                    <span class="fc-eyebrow">QUESTION</span>
+                    <p class="fc-q" id="fcQ5">—</p>
+                    <span class="flashcard-hint">คลิกเพื่อพลิกการ์ด 🔄</span>
+                  </div>
+                  <div class="flashcard-face flashcard-back">
+                    <span class="fc-eyebrow" style="color:var(--success)">ANSWER</span>
+                    <p class="fc-a" id="fcA5">—</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-center gap-3 mt-5 wrap">
+                <button class="btn btn-ghost" id="fcPrev5">ก่อนหน้า <i data-lucide="chevron-left"></i></button>
+                <span class="chip" id="fcCounter5">1 / 12</span>
+                <button class="btn btn-ghost" id="fcNext5">ถัดไป <i data-lucide="chevron-right"></i></button>
+                <button class="btn btn-cyan" id="fcShuffle5">สับการ์ด <i data-lucide="shuffle"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 26 · GLOSSARY ============ -->
+        <section class="slide-view" data-title="Glossary — คำศัพท์" aria-label="สไลด์ 26: คำศัพท์">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">REVIEW · GLOSSARY</p>
+            <h2 class="slide-title">คำศัพท์ — F1</h2>
+            <p class="slide-subtitle">ค้นหาคำศัพท์ Network Layer: Data Plane พร้อมคำอธิบายสั้น ๆ</p>
+
+            <div class="search-box mt-5">
+              <i data-lucide="search"></i>
+              <input type="text" id="glossarySearch5" placeholder="ค้นหาคำศัพท์..." autocomplete="off" />
+            </div>
+            <p class="text-3 mt-3" id="glossaryCount5" style="font-size:13px">—</p>
+            <div class="glossary-list mt-2" id="glossaryList5"></div>
+          </div>
+        </section>
+
+        <!-- ============ SLIDE 27 · EXAM ============ -->
+        <section class="slide-view quiz-slide" data-title="ข้อสอบหลังเรียน — 20 ข้อ" aria-label="สไลด์ 27: ข้อสอบหลังเรียน 20 ข้อ">
+          <div class="slide-inner">
+            <p class="slide-eyebrow">POST-LESSON EXAM · 20 QUESTIONS</p>
+            <h2 class="slide-title">ข้อสอบหลังเรียน <span class="grad-text">20 ข้อ</span></h2>
+            <p class="slide-subtitle">สอบเก็บคะแนนท้ายบท — เรียนครบทุกสไลด์ก่อนถึงจะเข้าสอบได้ ตอบแล้วดูเฉลยทันที</p>
+            <div id="quizExam5"></div>
+          </div>
+        </section>
+
+      </div><!-- /viewport -->
+
+      <!-- ================= BOTTOM BAR ================= -->
+      <footer class="bottombar">
+        <button class="bb-nav-btn" id="prevBtn" aria-label="สไลด์ก่อนหน้า">
+          <i data-lucide="chevron-left"></i><span class="bb-label">ก่อนหน้า</span>
+        </button>
+
+        <div class="bb-center">
+          สไลด์ <b id="bbCounter">1</b> / <b id="bbTotal">27</b>
+        </div>
+
+        <div class="bb-tools">
+          <button class="icon-btn" id="fullscreenBtn" aria-label="ขยายสไลด์เต็มจอ" title="ขยายสไลด์">
+            <i data-lucide="maximize-2"></i>
+          </button>
+          <button class="icon-btn" id="printSlidesBtn" aria-label="พิมพ์สไลด์ทั้งหมด" title="พิมพ์สไลด์ทั้งหมด">
+            <i data-lucide="printer"></i>
+          </button>
+          <button class="icon-btn" id="printCardsBtn" aria-label="พิมพ์การ์ดสรุป" title="พิมพ์การ์ดสรุป">
+            <i data-lucide="file-output"></i>
+          </button>
+        </div>
+
+        <button class="bb-nav-btn next" id="nextBtn" aria-label="สไลด์ถัดไป">
+          <span class="bb-label">ถัดไป</span><i data-lucide="chevron-right"></i>
+        </button>
+      </footer>
+
+    </main>
+  </div><!-- /shell -->
+</div><!-- /app -->
+
+<!-- ================= DRAWER BACKDROP ================= -->
+<div id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- ================= NOTES PANEL ================= -->
+<aside class="notes-panel" id="notesPanel" aria-label="บันทึกย่อ">
+  <div class="flex items-center justify-between" style="padding:16px 20px;border-bottom:1px solid var(--border)">
+    <div>
+      <b style="font-size:15px">📝 บันทึกย่อ (Notes)</b>
+      <p class="text-3" style="font-size:12px" id="notesLabel">สไลด์ที่กำลังเรียน</p>
+    </div>
+    <button class="icon-btn" id="notesCloseBtn" aria-label="ปิดบันทึกย่อ"><i data-lucide="x"></i></button>
+  </div>
+  <textarea id="notesTextarea" placeholder="เขียนสิ่งที่ต้องจำจากสไลด์นี้...&#10;เช่น:&#10;- Forwarding = input → output&#10;- LPM = longest prefix wins&#10;- /24 = subnet part 24 bits" aria-label="บันทึกย่อ"></textarea>
+  <div class="text-3" style="padding:10px 20px 14px;font-size:12px;border-top:1px solid var(--border)">
+    💾 บันทึกอัตโนมัติลงในเครื่องของคุณ (localStorage)
+  </div>
+</aside>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ================= COMPLETION OVERLAY ================= -->
+<div id="completionOverlay" role="dialog" aria-modal="true" aria-label="จบบทเรียน">
+  <div class="card center" style="max-width:440px;position:relative;padding:40px 32px;z-index:1">
+    <div style="font-size:56px" class="float-y">🎉</div>
+    <h2 class="slide-title mt-4" style="font-size:28px">F1 Complete!</h2>
+    <p class="text-2 mt-2" id="completionMsg">คุณเรียนครบทุกสไลด์แล้ว — ยอดเยี่ยมมาก! <b class="grad-text">Keep Learning!</b></p>
+    <div class="grid-3 mt-5" style="grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneSlides">27</b><p class="text-3" style="font-size:12px">สไลด์</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneScore">–</b><p class="text-3" style="font-size:12px">คะแนน Quiz</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px">100%</b><p class="text-3" style="font-size:12px">ความคืบหน้า</p></div>
+    </div>
+    <div class="flex items-center gap-3 mt-6 wrap" style="justify-content:center">
+      <button class="btn btn-ghost" id="completionCloseBtn">ปิด 🎊</button>
+      <button class="btn btn-primary" id="completionRestartBtn"><i data-lucide="rotate-ccw"></i> เรียนใหม่อีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PRINT AREA ================= -->
+<div id="printArea" aria-hidden="true"></div>
+
+<!-- App scripts -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive Digital Textbook — FINAL F2 / Book Chapter 5: Network Layer: Control Plane (Routing, SDN, Link-State, Distance-Vector, Dijkstra, Bellman-Ford, OSPF, BGP)" />
+  <title>CN · F2 — Network Layer: Control Plane</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body data-page="chapter" data-chapter="6">
+
+<div id="app">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header id="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="เปิดเมนูบทเรียน" title="เมนู">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <div class="brand">
+      <div class="cn-logo" aria-hidden="true">CN</div>
+      <div class="brand-titles">
+        <h1>เครือข่ายคอมพิวเตอร์และอินเทอร์เน็ต</h1>
+        <p id="headerChapterLabel">F2 · BOOK CH.5 · Network Layer: Control Plane</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn" id="homeBtn" aria-label="กลับไปเมนูหลัก" title="เมนูหลัก">
+        <i data-lucide="home"></i>
+      </button>
+      <button class="icon-btn" id="notesBtn" aria-label="เปิดบันทึกย่อ" title="บันทึกย่อ (Notes)">
+        <i data-lucide="notebook-pen"></i>
+      </button>
+
+      <div class="header-progress" aria-label="ความคืบหน้า">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="headerProgressBar">
+          <div class="progress-fill" id="headerProgressFill"></div>
+        </div>
+        <span class="progress-count" id="headerProgressCount">1 / 31</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SHELL ================= -->
+  <div class="shell">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside id="sidebar" aria-label="เมนูบทเรียน">
+      <div class="sidebar-head">
+        <div class="sidebar-head-title">
+          <h2 id="sidebarChapterTitle">F2 · Network Layer: Control Plane</h2>
+          <p id="sidebarChapterSub">FINAL · BOOK CH.5 · 31 หัวข้อ</p>
+        </div>
+        <button class="icon-btn sidebar-close" id="sidebarCloseBtn" aria-label="ปิดเมนูบทเรียน" title="ปิดเมนู">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-info">
+        <i data-lucide="info"></i>
+        <span>คลิกหัวข้อหรือสไลด์เพื่อข้ามไปได้เลย<br />ทุกสไลด์อ้างอิงจาก Chapter 5 Network Layer: Control Plane</span>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav" aria-label="สารบัญสไลด์"></nav>
+      <div class="sidebar-foot">
+        <div class="sf-top"><span>ความคืบหน้า</span><b id="sidebarPct">0%</b></div>
+        <div class="progress-track"><div class="progress-fill" id="sidebarProgressFill"></div></div>
+        <p class="mt-2 text-3" style="font-size:12px" id="sidebarDone">ยังไม่ได้เรียนสไลด์ใดเลย — เริ่มที่ Cover ได้เลย!</p>
+      </div>
+    </aside>
+
+    <!-- ================= STAGE ================= -->
+    <main class="stage">
+
+      <div class="slide-viewport" id="viewport">
+
+        <!-- ============ SLIDE 1 · Cover — F2: Network Layer: Control Plane ============ -->
+<section class="slide-view" data-title="Cover — F2: Network Layer: Control Plane" aria-label="สไลด์ 1: เปิดบทเรียน">
+  <div class="slide-inner">
+
+    <div class="center" style="padding:26px 0 6px">
+      <div class="cn-logo small" style="margin:0 auto 18px">CN</div>
+      <p class="menu-kicker" style="margin:0">FINAL · F2 · BOOK CHAPTER 5</p>
+      <h2 class="slide-title" style="font-size:38px">Network Layer: <span class="grad-text">Control Plane</span></h2>
+      <p class="slide-subtitle" style="max-width:670px;margin:10px auto 0">
+        หน้าที่และหลักการของ Control Plane · Routing &amp; Forwarding · Link-State &amp; Distance-Vector ·
+        Dijkstra &amp; Bellman-Ford · Routing Protocols และ Autonomous Systems
+      </p>
+
+      <div class="visual-box mt-6" style="max-width:680px;margin-left:auto;margin-right:auto">
+        <span class="vb-label">CONTROL PLANE คำนวณ · DATA PLANE ส่งต่อ</span>
+        <div class="flow-row" style="padding:20px 10px">
+          <div class="pipe-node hot"><b>Routing algorithm</b><span>control plane</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="pipe-node"><b>Forwarding table</b><span>ผลลัพธ์</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="pipe-node"><b>Router</b><span>data plane</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="pipe-node"><b>Output link</b><span>forwarding</span></div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 wrap mt-5" style="justify-content:center">
+        <span class="chip">31 สไลด์</span><span class="chip">12 Quiz</span><span class="chip">12 Flashcards</span><span class="chip">20 ข้อสอบ</span>
+      </div>
+      <div class="mt-6">
+        <button class="btn btn-primary btn-lg" id="startBtn6">เริ่มเรียน F2 <i data-lucide="arrow-right"></i></button>
+      </div>
+      <p class="text-3 mt-4" style="font-size:12px">ที่มา: Kurose &amp; Ross, Computer Networking: A Top-Down Approach 9th ed. — Chapter 5 Control Plane</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 2 · บทนี้จะเรียนอะไร ============ -->
+<section class="slide-view" data-title="บทนี้จะเรียนอะไร" aria-label="สไลด์ 2: ภาพรวมบท">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">F2 · ROADMAP</p>
+    <h2 class="slide-title">บทนี้จะเรียนอะไร</h2>
+    <p class="slide-subtitle">โฟกัส 5 หัวข้อตามที่กำหนด — ทุกเนื้อหาอ้างอิงจาก Chapter 5 Control Plane เท่านั้น</p>
+
+    <div class="grid-2 mt-6">
+      <div class="card hoverable"><h3 class="card-title"><i data-lucide="brain-circuit" class="cyan"></i>1. Control Plane</h3><p class="card-text small">Data plane vs Control plane · Routing · Per-router control · SDN และ control agent</p></div>
+      <div class="card hoverable"><h3 class="card-title"><i data-lucide="route" class="cyan"></i>2. Routing &amp; Forwarding</h3><p class="card-text small">Path · graph abstraction G=(N,E) · link cost · การจำแนก routing algorithm</p></div>
+      <div class="card hoverable"><h3 class="card-title"><i data-lucide="git-branch" class="cyan"></i>3. Link-State &amp; Distance-Vector</h3><p class="card-text small">LS ใช้ topology ทั้งหมด · DV แลกเปลี่ยนกับเพื่อนบ้าน · ข้อดี–ข้อเสีย</p></div>
+      <div class="card hoverable"><h3 class="card-title"><i data-lucide="calculator" class="cyan"></i>4. Dijkstra &amp; Bellman-Ford</h3><p class="card-text small">Dijkstra table · forwarding table · สมการ BF · convergence · count-to-infinity</p></div>
+      <div class="card hoverable"><h3 class="card-title"><i data-lucide="network" class="cyan"></i>5. Protocols &amp; AS</h3><p class="card-text small">AS · intra-AS (RIP, EIGRP, OSPF) · inter-AS (BGP) · policy และ hot potato</p></div>
+    </div>
+
+    <div class="tip-box tip-note mt-5">
+      <i data-lucide="info"></i>
+      <div><b>ขอบเขตบทนี้</b>ICMP, SNMP และ NETCONF/YANG อยู่ในส่วนท้ายของ source แต่ <b>ไม่อยู่ใน 5 หัวข้อที่กำหนด</b> จึงไม่นำมาเป็นเนื้อหาหลักของ F2</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 Control Plane — หัวข้อ 1–5</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 3 · Control Plane คืออะไร ============ -->
+<section class="slide-view" data-title="Control Plane คืออะไร" aria-label="สไลด์ 3: Control plane และ data plane">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">CONTROL PLANE · OVERVIEW</p>
+    <h2 class="slide-title">Control Plane <span class="grad-text">คืออะไร</span></h2>
+    <p class="slide-subtitle">Network layer แบ่งงานเป็น 2 ระนาบ — routing อยู่ใน control plane และ forwarding อยู่ใน data plane</p>
+
+    <div class="seg-tabs mt-5" id="cpTabs" role="tablist">
+      <button class="tab-btn" data-cp="data" role="tab">Data plane · Forwarding</button>
+      <button class="tab-btn active" data-cp="control" role="tab">Control plane · Routing</button>
+    </div>
+
+    <div class="grid-2 mt-4">
+      <div class="card" style="border-color:rgba(56,189,248,.45)">
+        <h3 class="card-title" id="cpTitle">Control plane</h3>
+        <p class="card-text" id="cpDesc">Routing: กำหนดเส้นทางที่ packet จะเดินจากต้นทางถึงปลายทาง — คำนวณนานกว่า แล้วนำผลไปเติมใน forwarding table</p>
+        <div class="flex gap-2 wrap mt-3">
+          <span class="chip" id="cpScope">network-wide</span>
+          <span class="chip" id="cpTime">คำนวณนานกว่า</span>
+        </div>
+      </div>
+
+      <div class="visual-box">
+        <span class="vb-label">ROUTING → FORWARDING TABLE → FORWARDING</span>
+        <div class="flow-row" style="padding:18px 10px">
+          <div class="pipe-node hot"><b>Routing algorithm</b><span>คำนวณเส้นทาง</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="pipe-node"><b>Forwarding table</b><span>ผลลัพธ์</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="pipe-node"><b>Data plane</b><span>ย้าย packet</span></div>
+        </div>
+        <p class="center text-3" style="font-size:12px;padding-bottom:12px">Routing เป็นงานของ control plane · Forwarding เป็นงานของ data plane</p>
+      </div>
+    </div>
+
+    <div class="table-wrap mt-4">
+      <table class="data-table">
+        <thead><tr><th>Plane</th><th>หน้าที่</th><th>ลักษณะ</th></tr></thead>
+        <tbody>
+          <tr><td><b>Data plane</b></td><td>Forwarding — ย้าย packet จาก input ของ router ไปยัง output ที่เหมาะสม</td><td>ทำเป็นรายแพ็กเก็ต ต้องเร็วมาก</td></tr>
+          <tr><td><b>Control plane</b></td><td>Routing — กำหนดเส้นทางที่ packet จะเดินจากต้นทางถึงปลายทาง</td><td>คำนวณนานกว่า ผลลัพธ์ไปเติมใน forwarding table</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tip-box tip-exam mt-4">
+      <i data-lucide="graduation-cap"></i>
+      <div><b>Exam Tip</b>ถ้าคำถามถามถึง “การคำนวณเส้นทาง” ให้ตอบ Control plane / Routing · ถ้าถามถึง “การย้าย packet ใน router” ให้ตอบ Data plane / Forwarding</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 1 (หน้าที่และหลักการทำงานของ Control Plane)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 4 · Routing vs Forwarding ============ -->
+<section class="slide-view" data-title="Routing vs Forwarding" aria-label="สไลด์ 4: Routing และ Forwarding">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">TWO KEY FUNCTIONS</p>
+    <h2 class="slide-title">Routing <span class="grad-text">vs</span> Forwarding</h2>
+    <p class="slide-subtitle">Routing หา “เส้นทางที่ดี” · Forwarding พา packet ผ่าน router แต่ละตัว</p>
+
+    <div class="grid-2 mt-6">
+      <div class="card" style="border-color:rgba(56,189,248,.45)">
+        <h3 class="card-title"><i data-lucide="arrow-right-left" class="cyan"></i>Forwarding</h3>
+        <p class="card-text">ย้าย packet จาก <b>input</b> ของ router ไปยัง <b>output</b> ที่เหมาะสม</p>
+        <div class="mini-note mt-3">ทำเป็นรายแพ็กเก็ต · local ต่อ router · ต้องเร็วมาก</div>
+      </div>
+      <div class="card" style="border-color:rgba(129,140,248,.45)">
+        <h3 class="card-title"><i data-lucide="map" class="indigo"></i>Routing</h3>
+        <p class="card-text">กำหนด <b>path</b> ที่ packet จะเดินจาก source ไป destination</p>
+        <div class="mini-note mt-3">network-wide · ใช้ routing algorithm · ผลลัพธ์ลง forwarding table</div>
+      </div>
+    </div>
+
+    <div class="card mt-5">
+      <h3 class="card-title"><i data-lucide="route" class="cyan"></i>Path และ “เส้นทางที่ดี”</h3>
+      <ul class="clean-list">
+        <li><b>Path</b> = ลำดับของ router ที่ packet ผ่านจากผู้ส่งถึงผู้รับ</li>
+        <li>คำว่า “ดี” อาจหมายถึง <b>cost ต่ำสุด</b>, <b>เร็วสุด</b> หรือ <b>คับคั่งน้อยสุด</b></li>
+        <li>Routing ถูกเรียกว่าเป็นหนึ่งใน <b>top-10 networking challenge</b></li>
+      </ul>
+    </div>
+
+    <div class="visual-box mt-4">
+      <span class="vb-label">LOCAL VS NETWORK-WIDE</span>
+      <div class="flow-row" style="padding:16px 10px">
+        <div class="pipe-node"><b>Source</b><span>host</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node hot"><b>Router A</b><span>forwarding</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node hot"><b>Router B</b><span>forwarding</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Destination</b><span>host</span></div>
+      </div>
+      <p class="center text-3" style="font-size:12px;padding-bottom:12px">Routing วางเส้นทาง Source → Destination · Forwarding พา packet ผ่าน router แต่ละตัว</p>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 1–2</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 5 · Per-router Control ============ -->
+<section class="slide-view" data-title="Per-router Control" aria-label="สไลด์ 5: Per-router control plane">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">CONTROL PLANE STRUCTURE · 1</p>
+    <h2 class="slide-title">Per-router <span class="grad-text">Control</span></h2>
+    <p class="slide-subtitle">แบบดั้งเดิม — router ทุกตัวมี routing algorithm ของตัวเอง แล้วคุยกันเอง</p>
+
+    <div class="seg-tabs mt-5" id="cpStructTabs" role="tablist">
+      <button class="tab-btn active" data-struct="per" role="tab">Per-router control</button>
+      <button class="tab-btn" data-struct="sdn" role="tab">Logically centralized (SDN)</button>
+    </div>
+
+    <div class="card mt-4">
+      <h3 class="card-title" id="cpStructTitle">Per-router control (แบบดั้งเดิม)</h3>
+      <p class="card-text" id="cpStructDesc">router ทุกตัวมี routing algorithm ของตัวเอง แล้วคุยกันเองเพื่อคำนวณ forwarding table</p>
+    </div>
+    <div class="visual-box mt-4" id="cpStructVis">
+      <span class="vb-label">แต่ละ ROUTER มี ROUTING ALGORITHM ของตัวเอง</span>
+      <div class="pipeline" style="padding:16px 10px">
+        <div class="pipe-node"><b>Router A</b><span>routing algorithm</span></div>
+        <span class="flow-arrow">↔</span>
+        <div class="pipe-node"><b>Router B</b><span>routing algorithm</span></div>
+        <span class="flow-arrow">↔</span>
+        <div class="pipe-node"><b>Router C</b><span>routing algorithm</span></div>
+      </div>
+    </div>
+
+    <div class="grid-2 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="cpu" class="cyan"></i>ข้อดีเชิงแนวคิด</h3><p class="card-text small">แต่ละ router ตัดสินใจจากข้อมูลที่ตัวเองมี — ไม่ต้องพึ่ง controller ภายนอก</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="triangle-alert" class="amber"></i>จุดที่ต้องระวัง</h3><p class="card-text small">การตั้งค่า router หลายตัวอาจผิดพลาดได้ง่าย และการจัดการ traffic ทำได้ไม่ยืดหยุ่นเท่า SDN</p></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 1 (วิธีจัดโครงสร้าง control plane)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 6 · SDN Control Plane ============ -->
+<section class="slide-view" data-title="SDN Control Plane" aria-label="สไลด์ 6: SDN และโครงสร้าง controller">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">CONTROL PLANE STRUCTURE · 2</p>
+    <h2 class="slide-title">SDN <span class="grad-text">Control Plane</span></h2>
+    <p class="slide-subtitle">Logically centralized control — remote controller คำนวณ forwarding table แล้วติดตั้งลง router</p>
+
+    <div class="visual-box mt-5">
+      <span class="vb-label">SDN ARCHITECTURE · APP ↔ CONTROLLER ↔ SWITCH</span>
+      <div class="flow-row" style="padding:18px 10px">
+        <div class="pipe-node"><b>Network-control apps</b><span>routing · access control · load balance</span></div>
+        <span class="flow-arrow">↔</span>
+        <div class="pipe-node hot"><b>SDN controller</b><span>logically centralized</span></div>
+        <span class="flow-arrow">↔</span>
+        <div class="pipe-node"><b>Switch / Router</b><span>control agent (CA)</span></div>
+      </div>
+      <div class="flex items-center justify-center gap-2 wrap" style="padding-bottom:12px">
+        <span class="chip">Northbound API = app ↔ controller</span>
+        <span class="chip">Southbound API = controller ↔ switch (เช่น OpenFlow)</span>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <h3 class="card-title"><i data-lucide="sparkles" class="cyan"></i>เหตุผลที่ SDN น่าสนใจ</h3>
+      <ul class="clean-list">
+        <li>จัดการเครือข่ายง่ายขึ้น ลดการตั้งค่า router ผิดพลาด และยืดหยุ่นกว่าในการจัดการ traffic</li>
+        <li>Forwarding แบบ table-based (OpenFlow) ทำให้ “เขียนโปรแกรม” router ได้ — คำนวณที่ศูนย์กลางแล้วกระจายง่ายกว่าให้ทุก router ทำ distributed algorithm</li>
+        <li>เป็น open implementation ส่งเสริมนวัตกรรม เปรียบได้กับการเปลี่ยนจาก mainframe มาเป็น PC</li>
+      </ul>
+    </div>
+
+    <div class="tip-box tip-remember mt-4">
+      <i data-lucide="lightbulb"></i>
+      <div><b>จำง่าย</b>SDN ไม่ได้แปลว่า controller ตัวเดียวทางกายภาพ — แต่เป็น <b>logically centralized</b> คือมองเห็นเป็นศูนย์กลางเดียว</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 1 (SDN และโครงสร้าง)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 7 · SDN เมื่อ Link ล่ม ============ -->
+<section class="slide-view" data-title="SDN เมื่อ Link ล่ม" aria-label="สไลด์ 7: ลำดับการทำงานเมื่อ link failure">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">SDN · LINK FAILURE</p>
+    <h2 class="slide-title">SDN ทำงานอย่างไร <span class="grad-text">เมื่อ Link ล่ม</span></h2>
+    <p class="slide-subtitle">กดแต่ละขั้นเพื่อดูว่าอะไรเกิดขึ้นใน control plane</p>
+
+    <div class="dhcp-steps mt-5" id="sdnSteps"></div>
+    <div class="card mt-4" style="border-color:rgba(34,211,238,.4)">
+      <p class="card-text" id="sdnStepDetail" style="min-height:48px">—</p>
+    </div>
+
+    <div class="grid-2 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="radio" class="cyan"></i>Southbound</h3><p class="card-text small">switch แจ้ง port-status และรับ table ใหม่ผ่าน OpenFlow</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="brain-circuit" class="cyan"></i>Controller</h3><p class="card-text small">อัปเดต topology → เรียก Dijkstra → คำนวณ flow table → ติดตั้ง</p></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 1 (ตัวอย่างการทำงานเมื่อ link ล่ม)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 8 · Graph Abstraction ============ -->
+<section class="slide-view" data-title="Graph Abstraction" aria-label="สไลด์ 8: แบบจำลองเครือข่ายเป็นกราฟ">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">ROUTING · GRAPH</p>
+    <h2 class="slide-title">Graph <span class="grad-text">Abstraction</span></h2>
+    <p class="slide-subtitle">มองเครือข่ายเป็นกราฟ G = (N, E) — router เป็น node และ link เป็น edge</p>
+
+    <div class="grid-2 mt-5">
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="circle-dot" class="cyan"></i>องค์ประกอบ</h3>
+        <ul class="clean-list">
+          <li><b>N</b> = เซตของ router (node) เช่น {u, v, w, x, y, z}</li>
+          <li><b>E</b> = เซตของ link (edge)</li>
+          <li><b>c(a,b)</b> = cost ของ link ตรงระหว่าง a กับ b</li>
+          <li>ถ้าไม่มี link ตรง ให้ถือว่า <b>c(a,b) = ∞</b></li>
+        </ul>
+      </div>
+      <div class="visual-box">
+        <span class="vb-label">ตัวอย่าง · c(u,z) = ∞ แต่ยังไปได้ผ่าน u → x → y → z</span>
+        <div class="flow-row" style="padding:18px 8px">
+          <div class="pipe-node hot"><b>u</b><span>source</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="pipe-node"><b>x</b><span>router</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="pipe-node"><b>y</b><span>router</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="pipe-node"><b>z</b><span>destination</span></div>
+        </div>
+        <p class="center text-3" style="font-size:12px;padding-bottom:12px">ไม่มี direct link ไม่ได้หมายความว่าไปไม่ได้</p>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <h3 class="card-title"><i data-lucide="sliders-horizontal" class="cyan"></i>Cost กำหนดได้หลายแบบ</h3>
+      <div class="flex gap-2 wrap">
+        <span class="chip">1 ทุก link</span><span class="chip">ผกผันกับ bandwidth</span><span class="chip">ผกผันกับความคับคั่ง</span>
+      </div>
+      <p class="mini-note mt-3">ผู้ดูแลเครือข่ายเป็นผู้กำหนด cost — ตัวเลขจึงสะท้อนนโยบายได้ ไม่ใช่แค่ระยะทางกายภาพ</p>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 2 (Graph abstraction)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 9 · จำแนก Routing Algorithm ============ -->
+<section class="slide-view" data-title="จำแนก Routing Algorithm" aria-label="สไลด์ 9: Global, decentralized, static, dynamic">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">ROUTING · CLASSIFICATION</p>
+    <h2 class="slide-title">จำแนก <span class="grad-text">Routing Algorithm</span></h2>
+    <p class="slide-subtitle">มอง 2 แกน: ข้อมูลที่ใช้ตัดสินใจ และความเร็วที่เส้นทางเปลี่ยน</p>
+
+    <div class="grid-2 mt-5">
+      <div class="card" style="border-color:rgba(56,189,248,.45)">
+        <h3 class="card-title"><i data-lucide="globe-2" class="cyan"></i>Global</h3>
+        <p class="card-text">ทุก router รู้ topology และ link cost ทั้งหมด</p>
+        <div class="mini-note mt-3">ตัวอย่าง: <b>Link-State</b></div>
+      </div>
+      <div class="card" style="border-color:rgba(129,140,248,.45)">
+        <h3 class="card-title"><i data-lucide="users" class="indigo"></i>Decentralized</h3>
+        <p class="card-text">router รู้แค่ cost ไปเพื่อนบ้านโดยตรง แล้วคำนวณโดยแลกเปลี่ยนข้อมูลกับเพื่อนบ้าน</p>
+        <div class="mini-note mt-3">ตัวอย่าง: <b>Distance-Vector</b></div>
+      </div>
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="clock-3" class="cyan"></i>Static</h3>
+        <p class="card-text">เส้นทางเปลี่ยนช้า</p>
+      </div>
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="refresh-cw" class="indigo"></i>Dynamic</h3>
+        <p class="card-text">เปลี่ยนเร็ว — อัปเดตเป็นรอบ หรือตอบสนองเมื่อ link cost เปลี่ยน</p>
+      </div>
+    </div>
+
+    <div class="tip-box tip-remember mt-5">
+      <i data-lucide="lightbulb"></i>
+      <div><b>จับคู่ให้แม่น</b>Global ↔ Link-State ↔ Dijkstra · Decentralized ↔ Distance-Vector ↔ Bellman-Ford</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 2 (การจำแนก routing algorithm)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 10 · Link-State (LS) ============ -->
+<section class="slide-view" data-title="Link-State (LS)" aria-label="สไลด์ 10: Link-State routing">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">ROUTING · LINK-STATE</p>
+    <h2 class="slide-title">Link-State <span class="grad-text">(LS)</span></h2>
+    <p class="slide-subtitle">ทุก node รู้ topology ทั้งหมด แล้วแต่ละ router รัน Dijkstra ด้วยตัวเอง</p>
+
+    <div class="visual-box mt-5">
+      <span class="vb-label">LS · BROADCAST → TOPOLOGY เดียวกัน → DIJKSTRA</span>
+      <div class="flow-row" style="padding:18px 10px">
+        <div class="pipe-node hot"><b>Link-state broadcast</b><span>ทุก node ประกาศ link ของตน</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Topology เดียวกัน</b><span>ทุก router รู้ N, E, cost</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Dijkstra</b><span>หา least-cost path</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Forwarding table</b><span>ของแต่ละ router</span></div>
+      </div>
+    </div>
+
+    <div class="grid-2 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="check" class="green"></i>ข้อดี</h3><p class="card-text small">ทุกคนเห็นภาพรวมเดียวกัน — คำนวณเส้นทางที่ถูกต้องตาม topology ปัจจุบันได้ตรงไปตรงมา</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="triangle-alert" class="amber"></i>จุดที่ต้องระวัง</h3><p class="card-text small">ต้อง broadcast link state ไปทุกตัว (รวม O(n²) messages) และอาจเกิด oscillation เมื่อ cost ขึ้นกับ traffic</p></div>
+    </div>
+
+    <div class="tip-box tip-exam mt-4">
+      <i data-lucide="graduation-cap"></i>
+      <div><b>Exam Tip</b>LS ไม่ได้ส่ง “distance vector” — มันส่ง <b>link state</b> ให้ทุกคนสร้าง topology แล้วจึงรัน Dijkstra</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 3 (Link-State)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 11 · Distance-Vector (DV) ============ -->
+<section class="slide-view" data-title="Distance-Vector (DV)" aria-label="สไลด์ 11: Distance-Vector routing">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">ROUTING · DISTANCE-VECTOR</p>
+    <h2 class="slide-title">Distance-Vector <span class="grad-text">(DV)</span></h2>
+    <p class="slide-subtitle">แต่ละ node เก็บค่าประมาณ cost ไปทุกปลายทาง แล้วแลกเปลี่ยนกับเพื่อนบ้าน</p>
+
+    <div class="visual-box mt-5">
+      <span class="vb-label">DV · ส่งให้เพื่อนบ้าน → รับ DV ใหม่ → BELLMAN-FORD → ทำซ้ำ</span>
+      <div class="flow-row" style="padding:18px 10px">
+        <div class="pipe-node hot"><b>Distance vector</b><span>cost ไปทุกปลายทาง</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>ส่งให้เพื่อนบ้าน</b><span>เป็นระยะ</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>Bellman-Ford</b><span>อัปเดตค่า</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>แจ้งเมื่อเปลี่ยน</b><span>self-stopping</span></div>
+      </div>
+    </div>
+
+    <div class="grid-2 mt-4">
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="repeat" class="cyan"></i>คุณสมบัติ</h3>
+        <ul class="clean-list">
+          <li><b>Iterative, asynchronous</b> — แต่ละรอบเกิดจาก link cost เปลี่ยน หรือได้รับ DV จากเพื่อนบ้าน</li>
+          <li><b>Distributed, self-stopping</b> — แจ้งเพื่อนบ้านเฉพาะเมื่อ DV ตัวเองเปลี่ยน</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="calculator" class="indigo"></i>สมการที่ใช้</h3>
+        <div class="formula-box"><div><span>D<sub>x</sub>(y)</span><b>= min<sub>v</sub> { c(x,v) + D<sub>v</sub>(y) }</b></div></div>
+        <p class="mini-note mt-3">v คือเพื่อนบ้านของ x — เลือกตัวที่ให้ค่าต่ำสุด</p>
+      </div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 3 (Distance-Vector)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 12 · LS vs DV ============ -->
+<section class="slide-view" data-title="LS vs DV" aria-label="สไลด์ 12: เปรียบเทียบ Link-State และ Distance-Vector">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">COMPARE · LS VS DV</p>
+    <h2 class="slide-title">Link-State <span class="grad-text">vs</span> Distance-Vector</h2>
+    <p class="slide-subtitle">สรุปความต่างจากมุม message, convergence และ robustness</p>
+
+    <div class="table-wrap mt-5">
+      <table class="data-table">
+        <thead><tr><th>ประเด็น</th><th>Link-State</th><th>Distance-Vector</th></tr></thead>
+        <tbody>
+          <tr><td><b>Message complexity</b></td><td>ส่ง O(n²) messages</td><td>แลกเปลี่ยนเฉพาะกับเพื่อนบ้าน เวลา converge ไม่แน่นอน</td></tr>
+          <tr><td><b>ความเร็ว converge</b></td><td>O(n²) algorithm อาจเกิด oscillation</td><td>เวลาไม่แน่นอน อาจเกิด routing loop และ count-to-infinity</td></tr>
+          <tr><td><b>Robustness</b></td><td>router โกหกได้แค่ link cost ของตัวเอง และแต่ละตัวคำนวณตารางของตัวเองเท่านั้น</td><td>router อาจประกาศ path cost ผิด ทำให้เกิด black-holing และความผิดพลาดแพร่ทั้งเครือข่าย</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2 mt-4">
+      <div class="tip-box tip-remember"><i data-lucide="lightbulb"></i><div><b>LS</b> = เห็นภาพรวม → Dijkstra → เสี่ยง oscillation</div></div>
+      <div class="tip-box tip-warn"><i data-lucide="triangle-alert"></i><div><b>DV</b> = คุยกับเพื่อนบ้าน → Bellman-Ford → เสี่ยง count-to-infinity</div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 3 (เปรียบเทียบ LS กับ DV)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 13 · Dijkstra Algorithm ============ -->
+<section class="slide-view" data-title="Dijkstra Algorithm" aria-label="สไลด์ 13: ตัวแปรและขั้นตอน Dijkstra">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">ALGORITHM · DIJKSTRA</p>
+    <h2 class="slide-title">Dijkstra <span class="grad-text">Algorithm</span></h2>
+    <p class="slide-subtitle">หา least-cost path จาก source ไปทุก node — ใช้ใน Link-State</p>
+
+    <div class="table-wrap mt-5">
+      <table class="data-table">
+        <thead><tr><th>สัญลักษณ์</th><th>ความหมาย</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">c(x,y)</td><td>cost ของ link ตรง x→y (∞ ถ้าไม่ใช่เพื่อนบ้านกัน)</td></tr>
+          <tr><td class="mono">D(v)</td><td>ค่าประมาณปัจจุบันของ cost ต่ำสุดจาก source ไป v</td></tr>
+          <tr><td class="mono">p(v)</td><td>predecessor — node ก่อนหน้า v บน path</td></tr>
+          <tr><td class="mono">N'</td><td>เซตของ node ที่รู้ least-cost path แน่นอนแล้ว</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card mt-4">
+      <h3 class="card-title"><i data-lucide="code-2" class="cyan"></i>ขั้นตอน</h3>
+      <pre class="mono" style="margin:0;padding:14px;border:1px solid var(--border);border-radius:12px;background:rgba(148,163,184,.06);font-size:12.5px;line-height:1.7;overflow-x:auto">Initialization:
+  N' = {u}
+  for all nodes v:
+    if v adjacent to u: D(v) = c(u,v)
+    else:               D(v) = ∞
+
+Loop:
+  find w not in N' such that D(w) is a minimum
+  add w to N'
+  update D(v) for all v adjacent to w and not in N':
+      D(v) = min( D(v), D(w) + c(w,v) )
+until all nodes in N'</pre>
+      <p class="mini-note mt-3">สรุปสั้น ๆ: <b>เลือกตัวที่ใกล้สุด → ยืนยัน → อัปเดตเพื่อนบ้าน → ทำซ้ำ</b></p>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 4.1 (Dijkstra)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 14 · Dijkstra ตัวอย่าง ============ -->
+<section class="slide-view" data-title="Dijkstra ตัวอย่าง" aria-label="สไลด์ 14: ตาราง Dijkstra จาก u">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">ALGORITHM · WORKED EXAMPLE</p>
+    <h2 class="slide-title">Dijkstra <span class="grad-text">ตัวอย่าง</span></h2>
+    <p class="slide-subtitle">กราฟ u, v, w, x, y, z — หาเส้นทางจาก u · คลิกแต่ละแถวเพื่อดูการอัปเดต</p>
+
+    <div class="table-wrap mt-4">
+      <table class="data-table mono-table" id="dijkstraTable">
+        <thead><tr><th>Step</th><th>N'</th><th>D(v),p(v)</th><th>D(w),p(w)</th><th>D(x),p(x)</th><th>D(y),p(y)</th><th>D(z),p(z)</th></tr></thead>
+        <tbody id="dijkstraRows"></tbody>
+      </table>
+    </div>
+
+    <div class="card mt-4" style="border-color:rgba(34,211,238,.4)">
+      <p class="card-text" id="dijkstraDetail" style="min-height:52px">—</p>
+    </div>
+
+    <div class="tip-box tip-note mt-4">
+      <i data-lucide="info"></i>
+      <div><b>อ่านตาราง</b>แถวคือรอบ · N' คือ node ที่ยืนยันแล้ว · ช่อง D(…) แสดงค่า cost และ predecessor ที่ดีที่สุดในขณะนั้น</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 4.1 (ตัวอย่างในสไลด์)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 15 · Dijkstra ผลลัพธ์และข้อจำกัด ============ -->
+<section class="slide-view" data-title="Dijkstra ผลลัพธ์และข้อจำกัด" aria-label="สไลด์ 15: ผลลัพธ์ ความซับซ้อน และ oscillation">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">ALGORITHM · RESULT</p>
+    <h2 class="slide-title">Dijkstra <span class="grad-text">ผลลัพธ์</span></h2>
+    <p class="slide-subtitle">least-cost-path tree · forwarding table · complexity · oscillation</p>
+
+    <div class="grid-2 mt-5">
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="git-fork" class="cyan"></i>Forwarding table ที่ u</h3>
+        <div class="table-wrap">
+          <table class="data-table"><thead><tr><th>Destination</th><th>Link</th></tr></thead><tbody>
+            <tr><td>v</td><td class="mono">(u,v)</td></tr>
+            <tr><td>w</td><td class="mono">(u,x)</td></tr>
+            <tr><td>x</td><td class="mono">(u,x)</td></tr>
+            <tr><td>y</td><td class="mono">(u,x)</td></tr>
+            <tr><td>z</td><td class="mono">(u,x)</td></tr>
+          </tbody></table>
+        </div>
+        <p class="mini-note mt-2">ถ้า cost เท่ากัน (tie) เลือกตัวใดก็ได้</p>
+      </div>
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="gauge" class="indigo"></i>Complexity</h3>
+        <ul class="clean-list">
+          <li><b>Computation:</b> n(n+1)/2 comparisons = <b>O(n²)</b></li>
+          <li>ทำให้เป็น <b>O(n log n)</b> ได้ด้วย implementation ที่ดีกว่า</li>
+          <li><b>Message:</b> แต่ละ router broadcast link state ไปทุกตัว รวม <b>O(n²)</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card mt-4" style="border-color:rgba(245,158,11,.4)">
+      <h3 class="card-title"><i data-lucide="triangle-alert" class="amber"></i>ปัญหา Oscillation</h3>
+      <p class="card-text">ถ้า link cost ขึ้นกับปริมาณ traffic เส้นทางอาจสลับไปมาไม่หยุด เพราะเมื่อย้ายเส้นทางแล้ว cost เปลี่ยน ทำให้ต้องย้ายกลับ</p>
+      <div class="mini-note mt-3">LS หลีกเลี่ยงไม่ได้ด้วยตัว algorithm เอง — ต้องอาศัยกลไกเพิ่มเติม</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 4.1 (ผลลัพธ์, ความซับซ้อน, oscillation)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 16 · Bellman-Ford Equation ============ -->
+<section class="slide-view" data-title="Bellman-Ford Equation" aria-label="สไลด์ 16: สมการ Bellman-Ford">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">ALGORITHM · BELLMAN-FORD</p>
+    <h2 class="slide-title">Bellman-Ford <span class="grad-text">Equation</span></h2>
+    <p class="slide-subtitle">สมการหัวใจของ Distance-Vector — เลือกเพื่อนบ้านที่ให้ cost รวมต่ำสุด</p>
+
+    <div class="formula-box mt-5" style="padding:20px">
+      <div style="font-size:18px;justify-content:center"><span>D<sub>x</sub>(y) = min<sub>v</sub> { c(x,v) + D<sub>v</sub>(y) }</span></div>
+    </div>
+    <p class="center text-2 mt-3" style="font-size:13px">min ครอบคลุมทุกเพื่อนบ้าน v ของ x · v ที่ให้ค่าต่ำสุดคือ <b>next hop</b> ไป y</p>
+
+    <div class="grid-2 mt-5">
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="inbox" class="cyan"></i>เพื่อนบ้านของ u รายงาน</h3>
+        <ul class="clean-list">
+          <li>D<sub>v</sub>(z) = 5</li>
+          <li>D<sub>w</sub>(z) = 3</li>
+          <li>D<sub>x</sub>(z) = 3</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(34,211,238,.45)">
+        <h3 class="card-title"><i data-lucide="calculator" class="cyan"></i>คำนวณ</h3>
+        <div class="formula-box"><div><span>D<sub>u</sub>(z)</span><b>= min{ 2+5, 1+3, 5+3 } = 4</b></div></div>
+        <p class="mini-note mt-3">node ที่ให้ค่าต่ำสุดคือ <b>x</b> จึงเป็น next hop บนเส้นทางไป z</p>
+      </div>
+    </div>
+
+    <div class="tip-box tip-exam mt-4">
+      <i data-lucide="graduation-cap"></i>
+      <div><b>Exam Tip</b>โจทย์ BF มักให้ค่า c(x,v) และ D<sub>v</sub>(y) ของเพื่อนบ้าน แล้วถาม D<sub>x</sub>(y) กับ next hop — บวกให้ครบทุกเพื่อนบ้านแล้วเลือกค่าน้อยสุด</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 4.2 (สมการและตัวอย่างในสไลด์)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 17 · DV Update & Convergence ============ -->
+<section class="slide-view" data-title="DV Update & Convergence" aria-label="สไลด์ 17: การแพร่ข้อมูลใน DV">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">ALGORITHM · DV CONVERGENCE</p>
+    <h2 class="slide-title">DV Update <span class="grad-text">&amp; Convergence</span></h2>
+    <p class="slide-subtitle">ข้อมูลแพร่ทีละ hop — ตัวอย่างกริด 9 node a–i</p>
+
+    <div class="grid-2 mt-5">
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="repeat" class="cyan"></i>หลักการ</h3>
+        <ul class="clean-list">
+          <li><b>t=0:</b> ทุก node รู้ cost ไปเพื่อนบ้านโดยตรงเท่านั้น แล้วส่ง DV ให้เพื่อนบ้าน</li>
+          <li>แต่ละรอบ (t=1, 2, …): รับ DV → คำนวณ DV ใหม่ → ส่งต่อ</li>
+          <li>ข้อมูล “แพร่” ออกไปทีละ hop</li>
+        </ul>
+      </div>
+      <div class="visual-box">
+        <span class="vb-label">การแพร่ของสถานะ c</span>
+        <div class="dhcp-steps" style="grid-template-columns:1fr 1fr">
+          <div class="dhcp-step"><span class="n">t=0</span><b>c</b><span>เริ่มที่ c</span></div>
+          <div class="dhcp-step"><span class="n">t=1</span><b>b</b><span>รับจาก c</span></div>
+          <div class="dhcp-step"><span class="n">t=2</span><b>a, e</b><span>รับจาก b</span></div>
+          <div class="dhcp-step"><span class="n">t=3</span><b>d, f, h</b><span>รับต่อไป</span></div>
+          <div class="dhcp-step"><span class="n">t=4</span><b>g, i</b><span>ปลายทางสุดท้าย</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box tip-remember mt-5">
+      <i data-lucide="lightbulb"></i>
+      <div><b>Converge</b> หมายถึงค่าประมาณลู่เข้าสู่ cost ที่แท้จริง — ภายใต้เงื่อนไขทั่วไป DV จะ converge แต่ใช้เวลาไม่แน่นอน</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 4.2 (ตัวอย่างกริด 9 node)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 18 · Count-to-Infinity ============ -->
+<section class="slide-view" data-title="Count-to-Infinity" aria-label="สไลด์ 18: Good news และ bad news ใน DV">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">DV · BAD NEWS</p>
+    <h2 class="slide-title">Count-to-<span class="grad-text">Infinity</span></h2>
+    <p class="slide-subtitle">ข่าวดีแพร่เร็ว แต่ข่าวร้ายแพร่ช้า — ปัญหาที่ต้องระวังใน Distance-Vector</p>
+
+    <div class="seg-tabs mt-5" id="dvNewsTabs" role="tablist">
+      <button class="tab-btn active" data-news="good" role="tab">Good news travels fast</button>
+      <button class="tab-btn" data-news="bad" role="tab">Bad news travels slow</button>
+    </div>
+
+    <div class="card mt-4" style="border-color:rgba(34,211,238,.4)">
+      <h3 class="card-title" id="dvNewsTitle">Good news travels fast</h3>
+      <p class="card-text" id="dvNewsDesc">ถ้า cost ของ link ลดลง เช่น x–y ลดจาก 4 เป็น 1 → y ตรวจพบและอัปเดต DV → แจ้ง z → z คำนวณใหม่และแจ้งต่อ ใช้เวลาไม่กี่รอบก็ลู่เข้า</p>
+    </div>
+
+    <div class="visual-box mt-4">
+      <span class="vb-label">กราฟ x · y · z</span>
+      <div class="flow-row" style="padding:16px 10px">
+        <div class="pipe-node hot"><b>x</b><span>ปลายทาง</span></div>
+        <span class="flow-arrow">—</span>
+        <div class="pipe-node"><b>y</b><span>router</span></div>
+        <span class="flow-arrow">—</span>
+        <div class="pipe-node"><b>z</b><span>router</span></div>
+      </div>
+      <p class="center text-3" id="dvNewsExample" style="font-size:12px;padding-bottom:12px">เมื่อ x–y เปลี่ยนจาก 4 เป็น 60 → z ยังบอกว่าไป x ได้ที่ cost 5 ผ่าน y → เกิด count-to-infinity</p>
+    </div>
+
+    <div class="tip-box tip-warn mt-4">
+      <i data-lucide="triangle-alert"></i>
+      <div><b>สรุปจากสไลด์</b>วิธีแก้อยู่ในตำราเรียน และ “Distributed algorithms are tricky!” — DV ต้องระวัง routing loop เมื่อ topology เปลี่ยน</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 4.2 (good news / bad news)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 19 · Autonomous System (AS) ============ -->
+<section class="slide-view" data-title="Autonomous System (AS)" aria-label="สไลด์ 19: ทำไมต้องมี Autonomous System">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">SCALE · AUTONOMOUS SYSTEM</p>
+    <h2 class="slide-title">Autonomous System <span class="grad-text">(AS)</span></h2>
+    <p class="slide-subtitle">ทำไมเราไม่ใช้ routing แบบ flat ทั้งอินเทอร์เน็ต</p>
+
+    <div class="grid-2 mt-5">
+      <div class="card"><h3 class="card-title"><i data-lucide="maximize" class="cyan"></i>Scale</h3><p class="card-text">ปลายทางมีเป็นพันล้าน — เก็บทั้งหมดในตารางไม่ได้ และการแลกเปลี่ยนตารางจะท่วม link</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="building-2" class="indigo"></i>Administrative autonomy</h3><p class="card-text">อินเทอร์เน็ตคือ “network of networks” — แต่ละเครือข่ายต้องการควบคุม routing ของตัวเอง</p></div>
+    </div>
+
+    <div class="card mt-4">
+      <h3 class="card-title"><i data-lucide="boxes" class="cyan"></i>วิธีแก้: รวม router เป็น AS / domain</h3>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>ระดับ</th><th>ความหมาย</th></tr></thead>
+          <tbody>
+            <tr><td><b>Intra-AS</b> (intra-domain)</td><td>routing ภายใน AS เดียวกัน — ทุก router ใน AS ต้องรัน protocol เดียวกัน แต่ต่าง AS ใช้ต่างกันได้</td></tr>
+            <tr><td><b>Inter-AS</b> (inter-domain)</td><td>routing ระหว่าง AS โดย <b>gateway router</b> ที่ขอบ AS ทำทั้ง intra และ inter-domain routing</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="visual-box mt-4">
+      <span class="vb-label">AS1 ↔ GATEWAY ↔ AS2</span>
+      <div class="flow-row" style="padding:16px 10px">
+        <div class="pipe-node"><b>AS1</b><span>internal routers</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node hot"><b>Gateway router</b><span>intra + inter</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="pipe-node"><b>AS2</b><span>internal routers</span></div>
+      </div>
+      <p class="center text-3" style="font-size:12px;padding-bottom:12px">Forwarding table ถูกกำหนดจากทั้ง intra-AS และ inter-AS</p>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 5 (ทำไมต้องมี AS)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 20 · Intra-AS Protocols ============ -->
+<section class="slide-view" data-title="Intra-AS Protocols" aria-label="สไลด์ 20: RIP EIGRP OSPF IS-IS">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">PROTOCOLS · INTRA-AS</p>
+    <h2 class="slide-title">Intra-AS <span class="grad-text">Protocols</span></h2>
+    <p class="slide-subtitle">protocol ที่ใช้กันมากภายใน Autonomous System</p>
+
+    <div class="table-wrap mt-5">
+      <table class="data-table">
+        <thead><tr><th>Protocol</th><th>ชนิด</th><th>หมายเหตุ</th></tr></thead>
+        <tbody>
+          <tr><td><b>RIP</b></td><td>DV แบบคลาสสิก</td><td>แลกเปลี่ยน DV ทุก 30 วินาที — ปัจจุบันไม่ค่อยใช้แล้ว</td></tr>
+          <tr><td><b>EIGRP</b></td><td>DV</td><td>เดิมเป็นของ Cisco เปิดเป็นมาตรฐานในปี 2013</td></tr>
+          <tr><td><b>OSPF</b></td><td>Link-state</td><td>IS-IS (มาตรฐาน ISO) ใกล้เคียงกันมาก</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="repeat" class="cyan"></i>DV family</h3><p class="card-text small">RIP และ EIGRP ใช้แนวคิด distance-vector — แลกเปลี่ยนค่าประมาณเส้นทางกับเพื่อนบ้าน</p></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="globe-2" class="indigo"></i>LS family</h3><p class="card-text small">OSPF และ IS-IS ใช้แนวคิด link-state — รู้ topology แล้วรัน shortest path</p></div>
+    </div>
+
+    <div class="tip-box tip-exam mt-4">
+      <i data-lucide="graduation-cap"></i>
+      <div><b>Exam Tip</b>ถามว่า protocol ใดเป็น link-state ให้ตอบ OSPF (หรือ IS-IS) · ถามว่า RIP เป็นแบบใด ให้ตอบ Distance-Vector</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 5 (Intra-AS: protocol ที่พบบ่อย)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 21 · OSPF ============ -->
+<section class="slide-view" data-title="OSPF" aria-label="สไลด์ 21: OSPF และ hierarchical OSPF">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">PROTOCOLS · OSPF</p>
+    <h2 class="slide-title">OSPF <span class="grad-text">(Open Shortest Path First)</span></h2>
+    <p class="slide-subtitle">intra-AS link-state แบบคลาสสิก — flood LSA แล้วใช้ Dijkstra</p>
+
+    <div class="seg-tabs mt-5" id="ospfTabs" role="tablist">
+      <button class="tab-btn active" data-ospf="flat" role="tab">OSPF แบบ flat</button>
+      <button class="tab-btn" data-ospf="hier" role="tab">Hierarchical OSPF</button>
+    </div>
+
+    <div class="card mt-4">
+      <h3 class="card-title" id="ospfTitle">OSPF แบบ flat</h3>
+      <p class="card-text" id="ospfDesc">ทุก router ใน AS อยู่ในโดเมนเดียว แล้ว flood LSA ถึงกันทั้งหมด</p>
+    </div>
+    <div class="visual-box mt-4" id="ospfVis">
+      <span class="vb-label">ทุก ROUTER อยู่ใน AS เดียวกัน</span>
+      <div class="flow-row" style="padding:16px 10px">
+        <div class="pipe-node hot"><b>Router</b><span>flood LSA</span></div>
+        <span class="flow-arrow">↔</span>
+        <div class="pipe-node"><b>Router</b><span>Dijkstra</span></div>
+        <span class="flow-arrow">↔</span>
+        <div class="pipe-node"><b>Router</b><span>forwarding table</span></div>
+      </div>
+    </div>
+
+    <div class="grid-2 mt-4">
+      <div class="card"><h3 class="card-title"><i data-lucide="radio" class="cyan"></i>คุณสมบัติ</h3><ul class="clean-list"><li>“Open” = เปิดเผยสาธารณะ</li><li>flood link-state advertisement ไปทุก router ใน AS โดยส่งตรงบน IP (ไม่ใช้ TCP/UDP)</li><li>เลือก metric ได้หลายแบบ เช่น bandwidth, delay</li><li>ทุก router มี topology ครบ แล้วใช้ Dijkstra</li><li>ข้อความ OSPF มี authentication</li></ul></div>
+      <div class="card"><h3 class="card-title"><i data-lucide="layers" class="indigo"></i>Hierarchical OSPF</h3><p class="card-text small">แบ่งเป็น local area และ backbone โดย flood LS เฉพาะภายใน area หรือ backbone</p><div class="mini-note mt-3">Local/internal · Area border · Backbone · Boundary router</div></div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 5 (OSPF และ Hierarchical OSPF)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 22 · BGP Basics ============ -->
+<section class="slide-view" data-title="BGP Basics" aria-label="สไลด์ 22: BGP eBGP iBGP">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">PROTOCOLS · BGP</p>
+    <h2 class="slide-title">BGP <span class="grad-text">Basics</span></h2>
+    <p class="slide-subtitle">protocol inter-domain ที่ใช้จริง — “กาวที่ยึดอินเทอร์เน็ตไว้ด้วยกัน”</p>
+
+    <div class="visual-box mt-5">
+      <span class="vb-label">AS1 ↔ AS2 ↔ AS3 · eBGP ระหว่าง AS · iBGP ภายใน AS</span>
+      <div class="flow-row" style="padding:18px 10px">
+        <div class="pipe-node"><b>AS1</b><span>gateway 1c</span></div>
+        <span class="flow-arrow">eBGP</span>
+        <div class="pipe-node hot"><b>AS2</b><span>gateway 2a / 2c</span></div>
+        <span class="flow-arrow">eBGP</span>
+        <div class="pipe-node"><b>AS3</b><span>gateway 3a</span></div>
+      </div>
+      <p class="center text-3" style="font-size:12px;padding-bottom:12px">BGP peer แลกเปลี่ยนข้อความผ่าน TCP connection แบบกึ่งถาวร · BGP เป็น path vector protocol</p>
+    </div>
+
+    <div class="grid-2 mt-4">
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="arrow-left-right" class="cyan"></i>eBGP</h3>
+        <p class="card-text small">รับข้อมูล reachability จาก AS เพื่อนบ้าน และประกาศ reachability ให้เพื่อนบ้าน</p>
+      </div>
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="share-2" class="indigo"></i>iBGP</h3>
+        <p class="card-text small">กระจายข้อมูล reachability ให้ router ภายใน AS เดียวกัน</p>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <h3 class="card-title"><i data-lucide="megaphone" class="cyan"></i>การประกาศ path</h3>
+      <p class="card-text">เมื่อ AS3 ประกาศ path <b>“AS3, X”</b> ให้ AS2 หมายถึง AS3 สัญญาว่าจะส่ง datagram ไปยัง X — gateway router รันทั้ง eBGP และ iBGP</p>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 5 (Inter-AS: BGP)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 23 · BGP Messages & Attributes ============ -->
+<section class="slide-view" data-title="BGP Messages & Attributes" aria-label="สไลด์ 23: ข้อความและ attribute ของ BGP">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">PROTOCOLS · BGP MESSAGES</p>
+    <h2 class="slide-title">BGP Messages <span class="grad-text">&amp; Attributes</span></h2>
+    <p class="slide-subtitle">BGP route = prefix + attributes</p>
+
+    <div class="table-wrap mt-5">
+      <table class="data-table">
+        <thead><tr><th>ข้อความ</th><th>หน้าที่</th></tr></thead>
+        <tbody>
+          <tr><td><b>OPEN</b></td><td>เปิด TCP กับ peer และยืนยันตัวตน</td></tr>
+          <tr><td><b>UPDATE</b></td><td>ประกาศ path ใหม่ หรือถอน path เก่า</td></tr>
+          <tr><td><b>KEEPALIVE</b></td><td>รักษา connection และใช้ ACK ต่อ OPEN</td></tr>
+          <tr><td><b>NOTIFICATION</b></td><td>แจ้ง error และปิด connection</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2 mt-4">
+      <div class="card" style="border-color:rgba(56,189,248,.45)">
+        <h3 class="card-title"><i data-lucide="route" class="cyan"></i>AS-PATH</h3>
+        <p class="card-text">รายชื่อ AS ที่ประกาศผ่านมา — ใช้ดูความยาวเส้นทางและตรวจ loop</p>
+      </div>
+      <div class="card" style="border-color:rgba(129,140,248,.45)">
+        <h3 class="card-title"><i data-lucide="map-pin" class="indigo"></i>NEXT-HOP</h3>
+        <p class="card-text">router ภายใน AS ที่เป็นทางออกไปยัง AS ถัดไป</p>
+      </div>
+    </div>
+
+    <div class="tip-box tip-remember mt-4">
+      <i data-lucide="lightbulb"></i>
+      <div><b>จำง่าย</b>AS-PATH = “ผ่าน AS อะไรมาบ้าง” · NEXT-HOP = “ออกไปทาง router ตัวไหน”</div>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 5 (ข้อความ BGP 4 ชนิด และ attributes)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 24 · BGP Policy & Route Selection ============ -->
+<section class="slide-view" data-title="BGP Policy & Route Selection" aria-label="สไลด์ 24: Policy hot potato และลำดับการเลือก route">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">PROTOCOLS · BGP POLICY</p>
+    <h2 class="slide-title">BGP Policy <span class="grad-text">&amp; Route Selection</span></h2>
+    <p class="slide-subtitle">BGP ให้ policy มาก่อน performance — ลองกดดูลำดับการเลือก route</p>
+
+    <div class="grid-2 mt-5">
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="filter" class="cyan"></i>Import / Export policy</h3>
+        <p class="card-text small">gateway ที่รับประกาศใช้ <b>import policy</b> ตัดสินใจรับหรือปฏิเสธ (เช่น “ไม่ผ่าน AS Y เด็ดขาด”) และ policy ยังกำหนดว่าจะประกาศต่อให้เพื่อนบ้านหรือไม่</p>
+      </div>
+      <div class="card">
+        <h3 class="card-title"><i data-lucide="potato" class="amber"></i>Hot potato routing</h3>
+        <p class="card-text small">เมื่อมีหลาย gateway ให้ออกได้ เลือก gateway ที่มี <b>intra-domain cost ต่ำสุด</b> โดยไม่สนใจ cost ฝั่ง inter-domain (เช่น 2d เลือก 2a แม้จะผ่าน AS มากกว่า)</p>
+      </div>
+    </div>
+
+    <div class="dhcp-steps mt-4" id="bgpSteps" style="grid-template-columns:repeat(4,1fr)"></div>
+    <div class="card mt-3" style="border-color:rgba(34,211,238,.4)">
+      <p class="card-text" id="bgpStepDetail" style="min-height:42px">—</p>
+    </div>
+
+    <div class="card mt-4">
+      <h3 class="card-title"><i data-lucide="briefcase" class="cyan"></i>BGP กับ policy ทางธุรกิจ</h3>
+      <p class="card-text small">ISP ส่วนใหญ่ต้องการส่งทราฟฟิกเฉพาะของลูกค้า ไม่อยากเป็น transit ให้เครือข่ายอื่นเพราะไม่ได้รายได้ — เช่น B เลือกไม่ประกาศ B-A-w ให้ C ทำให้ C ต้องไปทาง C-A-w เอง</p>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 5 (Policy-based routing, hot potato, route selection)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 25 · Intra-AS vs Inter-AS ============ -->
+<section class="slide-view" data-title="Intra-AS vs Inter-AS" aria-label="สไลด์ 25: ทำไมต้องแยก intra และ inter">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">COMPARE · INTRA VS INTER</p>
+    <h2 class="slide-title">Intra-AS <span class="grad-text">vs</span> Inter-AS</h2>
+    <p class="slide-subtitle">ทำไมต้องแยก routing ภายในและระหว่าง Autonomous System</p>
+
+    <div class="table-wrap mt-5">
+      <table class="data-table">
+        <thead><tr><th>ประเด็น</th><th>Inter-AS</th><th>Intra-AS</th></tr></thead>
+        <tbody>
+          <tr><td><b>Policy</b></td><td>ผู้ดูแลต้องการควบคุมว่าทราฟฟิกวิ่งอย่างไร ใครผ่านเครือข่ายตนได้</td><td>ผู้ดูแลคนเดียว policy ไม่ค่อยเป็นปัญหา</td></tr>
+          <tr><td><b>Scale</b></td><td>hierarchy ลดขนาดตารางและปริมาณ update</td><td>(เช่นเดียวกัน)</td></tr>
+          <tr><td><b>Performance</b></td><td>policy สำคัญกว่าประสิทธิภาพ</td><td>โฟกัสที่ประสิทธิภาพได้เต็มที่</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2 mt-4">
+      <div class="tip-box tip-remember"><i data-lucide="lightbulb"></i><div><b>Intra-AS</b> = OSPF/IS-IS/RIP/EIGRP · performance นำ</div></div>
+      <div class="tip-box tip-warn"><i data-lucide="landmark"></i><div><b>Inter-AS</b> = BGP · policy นำ · path vector</div></div>
+    </div>
+
+    <div class="card mt-4">
+      <h3 class="card-title"><i data-lucide="table-2" class="cyan"></i>Forwarding table มาจากทั้งสองส่วน</h3>
+      <p class="card-text small">intra-AS กำหนด entry สำหรับปลายทางภายใน AS · ปลายทางภายนอกต้องใช้ทั้ง inter-AS และ intra-AS ร่วมกัน</p>
+    </div>
+    <p class="source-line">ที่มา: Chapter 5 — หัวข้อ 5 (ทำไมต้องแยก Intra-AS กับ Inter-AS)</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 26 · สรุปบทเรียน ============ -->
+<section class="slide-view" data-title="สรุปบทเรียน" aria-label="สไลด์ 26: สรุป F2">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">SUMMARY · F2</p>
+    <h2 class="slide-title">สรุป <span class="grad-text">บทเรียน</span></h2>
+    <p class="slide-subtitle">5 หัวข้อที่ต้องออกสอบ — จำความเชื่อมโยงให้ได้</p>
+
+    <div class="grid-2 mt-5">
+      <div class="card hoverable"><h3 class="card-title"><i data-lucide="brain-circuit" class="cyan"></i>Control Plane</h3><p class="card-text small">routing · per-router control · SDN + northbound/southbound API · link failure workflow</p></div>
+      <div class="card hoverable"><h3 class="card-title"><i data-lucide="route" class="cyan"></i>Routing</h3><p class="card-text small">path · G=(N,E) · c(a,b)=∞ · global/decentralized · static/dynamic</p></div>
+      <div class="card hoverable"><h3 class="card-title"><i data-lucide="git-branch" class="cyan"></i>LS vs DV</h3><p class="card-text small">LS: topology ทั้งหมด + Dijkstra + O(n²) · DV: เพื่อนบ้าน + Bellman-Ford + count-to-infinity</p></div>
+      <div class="card hoverable"><h3 class="card-title"><i data-lucide="calculator" class="cyan"></i>Algorithms</h3><p class="card-text small">Dijkstra: D, p, N' · BF: D<sub>x</sub>(y)=min{c+D} · next hop = ตัวที่ให้ค่าต่ำสุด</p></div>
+      <div class="card hoverable"><h3 class="card-title"><i data-lucide="network" class="cyan"></i>Protocols</h3><p class="card-text small">AS · OSPF intra link-state · BGP inter path vector · policy → AS-PATH → hot potato</p></div>
+    </div>
+
+    <div class="tip-box tip-exam mt-5">
+      <i data-lucide="graduation-cap"></i>
+      <div><b>จุดที่พลาดบ่อย</b>สลับ LS/DV · สลับ Dijkstra/Bellman-Ford · คิดว่า c(u,z)=∞ แปลว่าไปไม่ได้ · ลืมว่า BGP ให้ policy มาก่อน performance</div>
+    </div>
+    <p class="source-line">ที่มา: สรุปจาก Chapter 5 — หัวข้อ 1–5 และ “จุดที่ควรจำสำหรับสอบ”</p>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 27 · สูตรจำก่อนสอบ — F2 ============ -->
+<section class="slide-view" data-title="สูตรจำก่อนสอบ — F2" aria-label="สไลด์ 27: Cheat sheet F2">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">EXAM CHEAT SHEET</p>
+    <h2 class="slide-title">สูตรจำก่อนสอบ <span class="grad-text">— F2</span></h2>
+    <p class="slide-subtitle">รวบรวมจุดที่ข้อสอบชอบถาม ฉบับย่อ</p>
+    <div class="cheat-grid mt-5" id="cheatGrid6"></div>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 28 · แบบทดสอบ F2 12 ข้อ ============ -->
+<section class="slide-view quiz-slide" data-title="แบบทดสอบ F2 12 ข้อ" aria-label="สไลด์ 28: Quiz F2">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">QUIZ · NETWORK LAYER CONTROL PLANE</p>
+    <h2 class="slide-title">แบบทดสอบ F2 <span class="grad-text">12 ข้อ</span></h2>
+    <p class="slide-subtitle">ตรวจความเข้าใจ — ตอบแล้วเห็นคำอธิบายทันที</p>
+    <div id="quizC6"></div>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 29 · การ์ดทบทวน — F2 ============ -->
+<section class="slide-view" data-title="การ์ดทบทวน — F2" aria-label="สไลด์ 29: Flashcards F2">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">REVIEW · FLASHCARDS</p>
+    <h2 class="slide-title">การ์ดทบทวน — F2</h2>
+    <p class="slide-subtitle">กดที่การ์ดเพื่อพลิกดูคำตอบ — ปุ่มสับการ์ดเพื่อเรียงใหม่</p>
+
+    <div class="split mt-6" style="grid-template-columns:1fr">
+      <div class="flashcard-wrap">
+        <div class="flashcard" id="flashcard6" role="button" tabindex="0" aria-label="การ์ดทบทวน กดเพื่อพลิก">
+          <div class="flashcard-face flashcard-front">
+            <span class="fc-eyebrow">QUESTION</span>
+            <p class="fc-q" id="fcQ6">—</p>
+            <span class="flashcard-hint">คลิกเพื่อพลิกการ์ด 🔄</span>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <span class="fc-eyebrow" style="color:var(--success)">ANSWER</span>
+            <p class="fc-a" id="fcA6">—</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center gap-3 mt-5 wrap">
+        <button class="btn btn-ghost" id="fcPrev6">ก่อนหน้า <i data-lucide="chevron-left"></i></button>
+        <span class="chip" id="fcCounter6">1 / 12</span>
+        <button class="btn btn-ghost" id="fcNext6">ถัดไป <i data-lucide="chevron-right"></i></button>
+        <button class="btn btn-cyan" id="fcShuffle6">สับการ์ด <i data-lucide="shuffle"></i></button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 30 · คำศัพท์ — F2 ============ -->
+<section class="slide-view" data-title="คำศัพท์ — F2" aria-label="สไลด์ 30: Glossary F2">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">REVIEW · GLOSSARY</p>
+    <h2 class="slide-title">คำศัพท์ — F2</h2>
+    <p class="slide-subtitle">ค้นหาคำศัพท์ Control Plane พร้อมคำอธิบายสั้น ๆ</p>
+
+    <div class="search-box mt-5">
+      <i data-lucide="search"></i>
+      <input type="text" id="glossarySearch6" placeholder="ค้นหาคำศัพท์..." autocomplete="off" />
+    </div>
+    <p class="text-3 mt-3" id="glossaryCount6" style="font-size:13px">—</p>
+    <div class="glossary-list mt-2" id="glossaryList6"></div>
+
+  </div>
+</section>
+
+<!-- ============ SLIDE 31 · ข้อสอบหลังเรียน — 20 ข้อ ============ -->
+<section class="slide-view quiz-slide" data-title="ข้อสอบหลังเรียน — 20 ข้อ" aria-label="สไลด์ 31: ข้อสอบหลังเรียน 20 ข้อ">
+  <div class="slide-inner">
+
+    <p class="slide-eyebrow">POST-LESSON EXAM · 20 QUESTIONS</p>
+    <h2 class="slide-title">ข้อสอบหลังเรียน <span class="grad-text">20 ข้อ</span></h2>
+    <p class="slide-subtitle">สอบเก็บคะแนนท้ายบท — เรียนครบทุกสไลด์ก่อนถึงจะเข้าสอบได้ ตอบแล้วดูเฉลยทันที</p>
+    <div id="quizExam6"></div>
+
+  </div>
+</section>
+</div><!-- /viewport -->
+
+      <!-- ================= BOTTOM BAR ================= -->
+      <footer class="bottombar">
+        <button class="bb-nav-btn" id="prevBtn" aria-label="สไลด์ก่อนหน้า">
+          <i data-lucide="chevron-left"></i><span class="bb-label">ก่อนหน้า</span>
+        </button>
+
+        <div class="bb-center">
+          สไลด์ <b id="bbCounter">1</b> / <b id="bbTotal">31</b>
+        </div>
+
+        <div class="bb-tools">
+          <button class="icon-btn" id="fullscreenBtn" aria-label="ขยายสไลด์เต็มจอ" title="ขยายสไลด์">
+            <i data-lucide="maximize-2"></i>
+          </button>
+          <button class="icon-btn" id="printSlidesBtn" aria-label="พิมพ์สไลด์ทั้งหมด" title="พิมพ์สไลด์ทั้งหมด">
+            <i data-lucide="printer"></i>
+          </button>
+          <button class="icon-btn" id="printCardsBtn" aria-label="พิมพ์การ์ดสรุป" title="พิมพ์การ์ดสรุป">
+            <i data-lucide="file-output"></i>
+          </button>
+        </div>
+
+        <button class="bb-nav-btn next" id="nextBtn" aria-label="สไลด์ถัดไป">
+          <span class="bb-label">ถัดไป</span><i data-lucide="chevron-right"></i>
+        </button>
+      </footer>
+
+    </main>
+  </div><!-- /shell -->
+</div><!-- /app -->
+
+<!-- ================= DRAWER BACKDROP ================= -->
+<div id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- ================= NOTES PANEL ================= -->
+<aside class="notes-panel" id="notesPanel" aria-label="บันทึกย่อ">
+  <div class="flex items-center justify-between" style="padding:16px 20px;border-bottom:1px solid var(--border)">
+    <div>
+      <b style="font-size:15px">📝 บันทึกย่อ (Notes)</b>
+      <p class="text-3" style="font-size:12px" id="notesLabel">สไลด์ที่กำลังเรียน</p>
+    </div>
+    <button class="icon-btn" id="notesCloseBtn" aria-label="ปิดบันทึกย่อ"><i data-lucide="x"></i></button>
+  </div>
+  <textarea id="notesTextarea" placeholder="เขียนสิ่งที่ต้องจำจากสไลด์นี้...&#10;เช่น:&#10;- Control Plane = routing&#10;- LS = Dijkstra · DV = Bellman-Ford&#10;- BGP = inter-AS path vector" aria-label="บันทึกย่อ"></textarea>
+  <div class="text-3" style="padding:10px 20px 14px;font-size:12px;border-top:1px solid var(--border)">
+    💾 บันทึกอัตโนมัติลงในเครื่องของคุณ (localStorage)
+  </div>
+</aside>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ================= COMPLETION OVERLAY ================= -->
+<div id="completionOverlay" role="dialog" aria-modal="true" aria-label="จบบทเรียน">
+  <div class="card center" style="max-width:440px;position:relative;padding:40px 32px;z-index:1">
+    <div style="font-size:56px" class="float-y">🎉</div>
+    <h2 class="slide-title mt-4" style="font-size:28px">F2 Complete!</h2>
+    <p class="text-2 mt-2" id="completionMsg">คุณเรียนครบทุกสไลด์แล้ว — ยอดเยี่ยมมาก! <b class="grad-text">Keep Learning!</b></p>
+    <div class="grid-3 mt-5" style="grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneSlides">31</b><p class="text-3" style="font-size:12px">สไลด์</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px" id="doneScore">–</b><p class="text-3" style="font-size:12px">คะแนน Quiz</p></div>
+      <div class="card" style="padding:14px"><b style="font-size:20px">100%</b><p class="text-3" style="font-size:12px">ความคืบหน้า</p></div>
+    </div>
+    <div class="flex items-center gap-3 mt-6 wrap" style="justify-content:center">
+      <button class="btn btn-ghost" id="completionCloseBtn">ปิด 🎊</button>
+      <button class="btn btn-primary" id="completionRestartBtn"><i data-lucide="rotate-ccw"></i> เรียนใหม่อีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PRINT AREA ================= -->
+<div id="printArea" aria-hidden="true"></div>
+
+<!-- App scripts -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -40,88 +40,195 @@
       <p class="menu-kicker">INTERACTIVE DIGITAL TEXTBOOK · COMPUTER NETWORK AND INTERNET</p>
       <h1 class="menu-title">เรียน <span class="grad-text">เครือข่ายคอมพิวเตอร์</span><br class="hide-sm" />ตั้งแต่ศูนย์จนรู้พื้นฐาน</h1>
       <div class="menu-hero-stats">
-        <div class="stat"><b>04</b><span>บทเรียน</span></div>
-        <div class="stat"><b>80</b><span>สไลด์ทั้งหมด</span></div>
-        <div class="stat"><b>04</b><span>ข้อสอบ 20 ข้อ</span></div>
+        <div class="stat"><b>09</b><span>โมดูล (M / F)</span></div>
+        <div class="stat"><b>220</b><span>สไลด์ที่เปิดแล้ว</span></div>
+        <div class="stat"><b>08</b><span>บทพร้อมเรียน</span></div>
         <div class="stat"><b>100%</b><span>เรียนฟรี</span></div>
       </div>
 
       <button class="btn btn-primary btn-lg" id="menuCtaBtn">เริ่มเรียนเลย <i data-lucide="arrow-down"></i></button>
     </header>
 
-    <!-- บทเรียน -->
-    <div class="chapter-grid" id="chapterGrid" role="list" aria-label="บทเรียน">
-      <button class="chapter-card unlocked" data-chapter="1" role="listitem">
-        <span class="ch-top"><span class="ch-num">1</span><span class="ch-icon"><i data-lucide="network"></i></span></span>
-        <div class="ch-body">
-          <span class="ch-en">Fundamentals of Computer Network</span>
-          <b class="ch-title">พื้นฐานการสื่อสารข้อมูลและเครือข่าย</b>
-          <p class="ch-desc">องค์ประกอบ 5 อย่าง · การไหลของข้อมูล · Transmission Mode · โทโพโลยี · PAN/LAN/MAN/WAN · สื่อนำสัญญาณ · Protocol &amp; RFC · ประวัติ Internet</p>
-          <div class="ch-meta">
-            <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="1">26</b> สไลด์</span>
-            <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
-          </div>
-          <div class="ch-progress">
-            <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-            <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch1Pct">0%</b></span>
-          </div>
+    <!-- ================= MIDTERM TRACK ================= -->
+    <div class="track-section">
+      <div class="track-head">
+        <span class="track-badge midterm">MIDTERM</span>
+        <div>
+          <h2 class="track-title">Midterm Track</h2>
+          <p class="track-sub">M1–M4 · Book Chapter 1–4 · เนื้อหามิดเทอมเดิม</p>
         </div>
-        <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
-      </button>
+      </div>
 
-      <button class="chapter-card unlocked" data-chapter="2" role="listitem">
-        <span class="ch-top"><span class="ch-num">2</span><span class="ch-icon"><i data-lucide="layers"></i></span></span>
-        <div class="ch-body">
-          <span class="ch-en">Network Models</span>
-          <b class="ch-title">โมเดลเครือข่าย</b>
-          <p class="ch-desc">Physical vs Logical · Network Edge · โมเดล OSI / TCP/IP · หน้าที่แต่ละ Layer · PDU · Encapsulation · Header · Protocol vs Service</p>
-          <div class="ch-meta">
-            <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="2">15</b> สไลด์</span>
-            <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+      <div class="chapter-grid" id="chapterGrid" role="list" aria-label="บทเรียนมิดเทอม">
+        <button class="chapter-card unlocked" data-chapter="1" role="listitem">
+          <span class="ch-top"><span class="ch-num">M1</span><span class="ch-icon"><i data-lucide="network"></i></span></span>
+          <div class="ch-body">
+            <span class="ch-en"><span class="ch-book">BOOK CH.1</span> Fundamentals of Computer Network</span>
+            <b class="ch-title">พื้นฐานการสื่อสารข้อมูลและเครือข่าย</b>
+            <p class="ch-desc">องค์ประกอบ 5 อย่าง · การไหลของข้อมูล · Transmission Mode · โทโพโลยี · PAN/LAN/MAN/WAN · สื่อนำสัญญาณ · Protocol &amp; RFC · ประวัติ Internet</p>
+            <div class="ch-meta">
+              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="1">26</b> สไลด์</span>
+              <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+            </div>
+            <div class="ch-progress">
+              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+              <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch1Pct">0%</b></span>
+            </div>
           </div>
-          <div class="ch-progress">
-            <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-            <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch2Pct">0%</b></span>
-          </div>
-        </div>
-        <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
-      </button>
+          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+        </button>
 
-      <button class="chapter-card unlocked" data-chapter="3" role="listitem">
-        <span class="ch-top"><span class="ch-num">3</span><span class="ch-icon"><i data-lucide="globe"></i></span></span>
-        <div class="ch-body">
-          <span class="ch-en">Application Layer</span>
-          <b class="ch-title">ชั้นโปรแกรมประยุกต์</b>
-          <p class="ch-desc">Client-Server / P2P · Process/Socket/Port · HTTP/HTTPS 80-443 · Stateless · HTTP Methods · DNS &amp; Cache · SMTP/Email · Port มาตรฐาน</p>
-          <div class="ch-meta">
-            <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="3">16</b> สไลด์</span>
-            <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+        <button class="chapter-card unlocked" data-chapter="2" role="listitem">
+          <span class="ch-top"><span class="ch-num">M2</span><span class="ch-icon"><i data-lucide="layers"></i></span></span>
+          <div class="ch-body">
+            <span class="ch-en"><span class="ch-book">BOOK CH.2</span> Network Models</span>
+            <b class="ch-title">โมเดลเครือข่าย</b>
+            <p class="ch-desc">Physical vs Logical · Network Edge · โมเดล OSI / TCP/IP · หน้าที่แต่ละ Layer · PDU · Encapsulation · Header · Protocol vs Service</p>
+            <div class="ch-meta">
+              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="2">15</b> สไลด์</span>
+              <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+            </div>
+            <div class="ch-progress">
+              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+              <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch2Pct">0%</b></span>
+            </div>
           </div>
-          <div class="ch-progress">
-            <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-            <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch3Pct">0%</b></span>
-          </div>
-        </div>
-        <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
-      </button>
+          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+        </button>
 
-      <button class="chapter-card unlocked" data-chapter="4" role="listitem">
-        <span class="ch-top"><span class="ch-num">4</span><span class="ch-icon"><i data-lucide="cpu"></i></span></span>
-        <div class="ch-body">
-          <span class="ch-en">Transport Layer</span>
-          <b class="ch-title">ชั้นขนส่งข้อมูล</b>
-          <p class="ch-desc">Mux/Demux &amp; 4-tuple · TCP vs UDP · UDP Header/Checksum · Three-Way Handshake · Seq/Ack · Flow &amp; Congestion Control · AIMD · Internet Checksum</p>
-          <div class="ch-meta">
-            <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="4">23</b> สไลด์</span>
-            <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+        <button class="chapter-card unlocked" data-chapter="3" role="listitem">
+          <span class="ch-top"><span class="ch-num">M3</span><span class="ch-icon"><i data-lucide="globe"></i></span></span>
+          <div class="ch-body">
+            <span class="ch-en"><span class="ch-book">BOOK CH.3</span> Application Layer</span>
+            <b class="ch-title">ชั้นโปรแกรมประยุกต์</b>
+            <p class="ch-desc">Client-Server / P2P · Process/Socket/Port · HTTP/HTTPS 80-443 · Stateless · HTTP Methods · DNS &amp; Cache · SMTP/Email · Port มาตรฐาน</p>
+            <div class="ch-meta">
+              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="3">16</b> สไลด์</span>
+              <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+            </div>
+            <div class="ch-progress">
+              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+              <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch3Pct">0%</b></span>
+            </div>
           </div>
-          <div class="ch-progress">
-            <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-            <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch4Pct">0%</b></span>
+          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+        </button>
+
+        <button class="chapter-card unlocked" data-chapter="4" role="listitem">
+          <span class="ch-top"><span class="ch-num">M4</span><span class="ch-icon"><i data-lucide="cpu"></i></span></span>
+          <div class="ch-body">
+            <span class="ch-en"><span class="ch-book">BOOK CH.4</span> Transport Layer</span>
+            <b class="ch-title">ชั้นขนส่งข้อมูล</b>
+            <p class="ch-desc">Mux/Demux &amp; 4-tuple · TCP vs UDP · UDP Header/Checksum · Three-Way Handshake · Seq/Ack · Flow &amp; Congestion Control · AIMD · Internet Checksum</p>
+            <div class="ch-meta">
+              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="4">23</b> สไลด์</span>
+              <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+            </div>
+            <div class="ch-progress">
+              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+              <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch4Pct">0%</b></span>
+            </div>
           </div>
+          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= FINAL TRACK ================= -->
+    <div class="track-section">
+      <div class="track-head">
+        <span class="track-badge final">FINAL</span>
+        <div>
+          <h2 class="track-title">Final Track</h2>
+          <p class="track-sub">F1–F5 · Book Chapter 4–8 · F1–F4 เปิดเรียนแล้ว</p>
         </div>
-        <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
-      </button>
+      </div>
+
+      <div class="chapter-grid" id="finalChapterGrid" role="list" aria-label="บทเรียนไฟนอล">
+        <button class="chapter-card unlocked" data-chapter="5" role="listitem">
+          <span class="ch-top"><span class="ch-num">F1</span><span class="ch-icon"><i data-lucide="router"></i></span></span>
+          <div class="ch-body">
+            <span class="ch-en"><span class="ch-book">BOOK CH.4</span> Network Layer: Data Plane</span>
+            <b class="ch-title">ชั้นเครือข่าย — ระนาบข้อมูล</b>
+            <p class="ch-desc">Network Layer Services · Data Plane vs Control Plane · Packet Forwarding &amp; Forwarding Table · Longest Prefix Matching · IPv4 Addressing &amp; Subnetting · Router &amp; DHCP</p>
+            <div class="ch-meta">
+              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="5">27</b> สไลด์</span>
+              <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
+            </div>
+            <div class="ch-progress">
+              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+              <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch5Pct">0%</b></span>
+            </div>
+          </div>
+          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+        </button>
+
+        <button class="chapter-card unlocked" data-chapter="6" role="listitem">
+          <span class="ch-top"><span class="ch-num">F2</span><span class="ch-icon"><i data-lucide="route"></i></span></span>
+          <div class="ch-body">
+            <span class="ch-en"><span class="ch-book">BOOK CH.5</span> Network Layer: Control Plane</span>
+            <b class="ch-title">ชั้นเครือข่าย — ระนาบควบคุม</b>
+            <p class="ch-desc">Control Plane &amp; SDN · Routing &amp; Forwarding · Link-State &amp; Distance-Vector · Dijkstra &amp; Bellman-Ford · OSPF &amp; BGP · Autonomous Systems</p>
+            <div class="ch-meta">
+              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="6">31</b> สไลด์</span>
+              <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
+            </div>
+            <div class="ch-progress">
+              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+              <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch6Pct">0%</b></span>
+            </div>
+          </div>
+          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+        </button>
+
+        <button class="chapter-card unlocked" data-chapter="7" role="listitem">
+          <span class="ch-top"><span class="ch-num">F3</span><span class="ch-icon"><i data-lucide="cable"></i></span></span>
+          <div class="ch-body">
+            <span class="ch-en"><span class="ch-book">BOOK CH.6</span> The Link Layer and LANs</span>
+            <b class="ch-title">ชั้นลิงก์และ LAN</b>
+            <p class="ch-desc">Link Layer Services · Error Detection/Correction · Parity &amp; CRC · Multiple Access Protocols · Ethernet, MAC &amp; ARP · Switches, MAC Learning &amp; VLANs</p>
+            <div class="ch-meta">
+              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="7">40</b> สไลด์</span>
+              <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
+            </div>
+            <div class="ch-progress">
+              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+              <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch7Pct">0%</b></span>
+            </div>
+          </div>
+          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+        </button>
+
+        <button class="chapter-card unlocked" data-chapter="8" role="listitem">
+          <span class="ch-top"><span class="ch-num">F4</span><span class="ch-icon"><i data-lucide="wifi"></i></span></span>
+          <div class="ch-body">
+            <span class="ch-en"><span class="ch-book">BOOK CH.7</span> Wireless and Mobile Networks</span>
+            <b class="ch-title">เครือข่ายไร้สายและเคลื่อนที่</b>
+            <p class="ch-desc">Wireless Components · Radio &amp; Channel · SNR &amp; Shannon · Wi-Fi 802.11 &amp; CSMA/CA · Access &amp; Association · MIMO · 5G Mobility &amp; Handover</p>
+            <div class="ch-meta">
+              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="8">42</b> สไลด์</span>
+              <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
+            </div>
+            <div class="ch-progress">
+              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+              <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch8Pct">0%</b></span>
+            </div>
+          </div>
+          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+        </button>
+
+        <button class="chapter-card locked" data-chapter="9" role="listitem" aria-disabled="true">
+          <span class="ch-top"><span class="ch-num">F5</span><span class="ch-icon"><i data-lucide="shield-check"></i></span></span>
+          <div class="ch-body">
+            <span class="ch-en"><span class="ch-book">BOOK CH.8</span> Security</span>
+            <b class="ch-title">ความปลอดภัยในเครือข่าย</b>
+            <p class="ch-desc">Cryptography · Symmetric/Public Key · Authentication · Digital Signature · TLS · Firewalls · IDS</p>
+            <div class="ch-meta"><span class="chip-sm"><i data-lucide="clock"></i>เร็ว ๆ นี้</span></div>
+            <div class="ch-progress"><span class="ch-status"><i data-lucide="lock"></i>กำลังเตรียมเนื้อหา</span></div>
+          </div>
+          <i data-lucide="lock" class="ch-go" aria-hidden="true"></i>
+        </button>
+      </div>
     </div>
 
     <!-- ข้อสอบรวม 80 ข้อ (Pre-Test) -->
@@ -135,8 +242,19 @@
       <a class="btn btn-primary btn-lg test-entry-btn" href="test.html">ไปทำข้อสอบ <i data-lucide="arrow-right"></i></a>
     </div>
 
+    <!-- ข้อสอบไฟนอล (แยกหน้า) -->
+    <div class="test-entry final-test-entry">
+      <div class="test-entry-icon"><i data-lucide="shield-check"></i></div>
+      <div class="test-entry-body">
+        <span class="menu-kicker">FINAL TEST · ข้อสอบไฟนอล (แยกจากมิดเทอม)</span>
+        <h3 class="test-entry-title">Final Track Exam · เริ่มด้วย F1 จำนวน 20 ข้อ</h3>
+        <p class="test-entry-desc">ข้อสอบไฟนอลแยกหน้าจากข้อสอบมิดเทอมโดยสมบูรณ์ — ชุดนี้เริ่มด้วย F1 Network Layer: Data Plane จำนวน 20 ข้อ ครอบคลุม Forwarding, Longest Prefix Matching, IPv4, Subnetting และ DHCP พร้อมเฉลยและคะแนนเก็บแยก</p>
+      </div>
+      <a class="btn btn-cyan btn-lg test-entry-btn" href="final-test.html">ไปทำ Final Test <i data-lucide="arrow-right"></i></a>
+    </div>
+
     <footer class="menu-foot">
-      <div class="menu-foot-badge"><i data-lucide="sparkles"></i> Chapters 01–04 · ONLINE</div>
+      <div class="menu-foot-badge"><i data-lucide="sparkles"></i> M1-M4 + F1-F4 · ONLINE</div>
       <span>Designed &amp; Developed by นายนรวิชญ์ แสงรัตน์</span>
     </footer>
   </div>
