@@ -2167,7 +2167,7 @@ body.exam .quiz-slide.active { display: block; }
   .brand-titles { flex: 1; min-width: 0; }
   .brand-titles h1 { font-size: 13px; max-width: 40vw; }
   .brand-titles p { display: none; }
-  .cn-logo { width: 38px; height: 38px; font-size: 15px; border-radius: 12px; }
+  #topbar .cn-logo { width: 38px; height: 38px; font-size: 15px; border-radius: 12px; }
   .progress-track { width: 56px; }
   .slide-title { font-size: 25px; }
   .slide-inner { padding: 22px 16px 36px; }
