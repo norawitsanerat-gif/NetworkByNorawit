@@ -1558,7 +1558,7 @@ window.DATA.ch5 = {
       "q": "Network Layer ทำหน้าที่อะไรในมุมมอง end-to-end?",
       "options": [
         "เข้ารหัสข้อมูลทั้งหมดก่อนส่งออก",
-        "แปลงสัญญาณไฟฟ้าให้เป็นบิต 0/1",
+        "แปลงสัญญาณเป็นบิต 0/1",
         "กำหนดหมายเลข port ของแต่ละ process",
         "ส่ง segment ถึง host ปลายทาง"
       ],
@@ -1570,7 +1570,7 @@ window.DATA.ch5 = {
       "options": [
         "ย้าย packet ไป output link",
         "กำหนด route ที่ packet จะใช้จาก source ไป destination",
-        "คำนวณเส้นทางทั้งเครือข่ายล่วงหน้า",
+        "คำนวณเส้นทางล่วงหน้า",
         "เปลี่ยน IP address ต้นทางเป็น NAT address"
       ],
       "correct": 0,
@@ -1579,7 +1579,7 @@ window.DATA.ch5 = {
     {
       "q": "Routing คืออะไร?",
       "options": [
-        "แบ่ง datagram เป็น fragment",
+        "แบ่ง packet เป็นชิ้น",
         "กำหนด route ต้นทาง→ปลายทาง",
         "เก็บ packet ไว้ใน buffer เมื่อคิวเต็ม",
         "move packets from input link to output link ภายใน router เดียว"
@@ -1593,7 +1593,7 @@ window.DATA.ch5 = {
         "เป็นส่วนที่คำนวณ routing table ทั้งเครือข่าย",
         "ฟังก์ชัน local ต่อ router",
         "logic ทั้งเครือข่าย — ตัดสินใจเส้นทางตลอด end-to-end path",
-        "ทำงานใน remote controller เท่านั้น"
+        "ทำงานใน controller"
       ],
       "correct": 1,
       "explain": "สไลด์ 4-6: Data plane = ฟังก์ชัน local ต่อ router; ตัดสินใจว่า datagram ที่เข้ามาที่ input port ของ router จะถูก forward ไปยัง output port ใด"
@@ -1603,7 +1603,7 @@ window.DATA.ch5 = {
       "options": [
         "Control plane เป็นฟังก์ชัน local ต่อ router",
         "logic ทั้งเครือข่าย",
-        "Control plane ทำงานในระดับนาโนวินาที",
+        "ระดับนาโนวินาที",
         "Control plane ทำงานเฉพาะใน host ไม่เกี่ยวกับ router"
       ],
       "correct": 1,
@@ -1626,7 +1626,7 @@ window.DATA.ch5 = {
         "รับประกัน bandwidth ขั้นต่ำให้แต่ละ flow",
         "รับประกันการส่งถึงภายในเวลาไม่เกิน 40 msec",
         "best effort (ไม่รับประกัน)",
-        "ส่ง datagram ตามลำดับทุกกรณี"
+        "ส่งตามลำดับทุกกรณี"
       ],
       "correct": 2,
       "explain": "สไลด์ 4-10: Internet 'best effort' service model — ไม่รับประกันการส่ง datagram, timing หรือลำดับการส่ง และ bandwidth ที่มีให้ end-to-end flow"
@@ -1646,7 +1646,7 @@ window.DATA.ch5 = {
       "q": "Longest prefix matching ใช้หลักการใด?",
       "options": [
         "เลือก interface ที่มีหมายเลขน้อยที่สุด",
-        "เลือก prefix ที่สั้นที่สุดที่ match",
+        "เลือก prefix ที่สั้นที่สุด",
         "prefix ที่ยาวที่สุดที่ match",
         "สุ่มเลือกหนึ่งในรายการที่ match"
       ],
@@ -1667,7 +1667,7 @@ window.DATA.ch5 = {
     {
       "q": "Switching via memory ถูกจำกัดความเร็วด้วยอะไร?",
       "options": [
-        "จำนวน port สูงสุด 8 port",
+        "จำนวน port",
         "ความเร็วของ DNS resolver",
         "memory bandwidth",
         "ความเร็วของลิงก์ภายนอกเท่านั้น"
@@ -1680,7 +1680,7 @@ window.DATA.ch5 = {
       "options": [
         "หัวคิวบล็อก packet อื่น",
         "output port เปลี่ยน IP address ต้นทาง",
-        "packet ถูกส่งออกก่อนกำหนด",
+        "ส่งออกก่อนกำหนด",
         "router ทำการ fragmentation อัตโนมัติ"
       ],
       "correct": 0,
@@ -1717,7 +1717,7 @@ window.DATA.ch5 = {
       "options": [
         "เก็บ packet ใน output buffer",
         "move packet ภายใน router เดียว",
-        "ตรวจ checksum ของ IP header",
+        "ตรวจ checksum",
         "กำหนด route ต้นทาง→ปลายทาง"
       ],
       "correct": 3,
@@ -1728,7 +1728,7 @@ window.DATA.ch5 = {
       "options": [
         "local ต่อ router",
         "ฟังก์ชันใน application layer",
-        "logic ทั้งเครือข่าย",
+        "ทั้งเครือข่าย",
         "ฟังก์ชันของ remote controller"
       ],
       "correct": 0,
@@ -1772,7 +1772,7 @@ window.DATA.ch5 = {
       "options": [
         "line termination → lookup",
         "queueing → lookup → line termination",
-        "lookup → line termination → link layer",
+        "lookup → link layer",
         "link layer → queueing → line termination"
       ],
       "correct": 0,
@@ -1880,7 +1880,7 @@ window.DATA.ch5 = {
     {
       "q": "CIDR 200.23.16.0/23 หมายถึงอะไร?",
       "options": [
-        "มี 23 host ใน subnet",
+        "host 23 ตัว",
         "host portion มี 23 บิต",
         "subnet 23 บิต",
         "เป็น class B address"
@@ -2632,7 +2632,7 @@ window.DATA.ch6 = {
       "options": [
         "Forwarding packet ภายใน router",
         "Routing ต้นทาง→ปลายทาง",
-        "ตรวจ checksum ของ IP header",
+        "ตรวจ checksum",
         "เก็บ packet ไว้ใน output buffer"
       ],
       "correct": 1,
@@ -2644,7 +2644,7 @@ window.DATA.ch6 = {
         "คำนวณ shortest path ด้วย Dijkstra",
         "แลกเปลี่ยน distance vector กับเพื่อนบ้าน",
         "ย้าย packet input→output",
-        "กำหนดเส้นทางทั้งเครือข่าย"
+        "กำหนดเส้นทาง"
       ],
       "correct": 2,
       "explain": "Forwarding เป็นงานรายแพ็กเก็ตของ data plane: ย้าย packet จาก input ไป output ที่เหมาะสม"
@@ -2698,7 +2698,7 @@ window.DATA.ch6 = {
       "options": [
         "Hot potato (forwarding)",
         "Dijkstra (link-state)",
-        "AS-PATH (BGP)",
+        "AS-PATH",
         "Bellman-Ford"
       ],
       "correct": 3,
@@ -2764,7 +2764,7 @@ window.DATA.ch6 = {
     {
       "q": "Data plane มีหน้าที่หลักอะไร?",
       "options": [
-        "แลกเปลี่ยน reachability ระหว่าง AS",
+        "แลกเปลี่ยน route",
         "Forwarding input→output",
         "Routing เพื่อกำหนดเส้นทางทั้งเครือข่าย",
         "คำนวณ forwarding table ด้วย Dijkstra"
@@ -2841,7 +2841,7 @@ window.DATA.ch6 = {
     {
       "q": "เพราะเหตุใดจึงต้องแบ่งเครือข่ายออกเป็น Autonomous System (AS)?",
       "options": [
-        "เพื่อให้ forwarding table ใหญ่ขึ้น",
+        "forwarding table ใหญ่ขึ้น",
         "เพื่อให้ทุก AS ใช้ routing protocol เดียวกันเท่านั้น",
         "ลด scale และรองรับ autonomy",
         "เพื่อเพิ่มจำนวน router ในเครือข่าย"
@@ -2854,7 +2854,7 @@ window.DATA.ch6 = {
       "options": [
         "router ไม่ต้องใช้ forwarding table",
         "router รู้ topology ทั้งหมด",
-        "router ใช้เฉพาะ static route",
+        "ใช้ static route",
         "router รู้เฉพาะ cost ไปเพื่อนบ้านโดยตรง"
       ],
       "correct": 1,
@@ -2863,7 +2863,7 @@ window.DATA.ch6 = {
     {
       "q": "Link-State routing ใช้ algorithm ใดคำนวณเส้นทาง?",
       "options": [
-        "AS-PATH (BGP)",
+        "AS-PATH",
         "Bellman-Ford (DV)",
         "Hot potato (forwarding)",
         "Dijkstra"
@@ -2875,7 +2875,7 @@ window.DATA.ch6 = {
       "q": "Distance-Vector routing ใช้สมการใด?",
       "options": [
         "Bellman-Ford",
-        "BGP (path vector)",
+        "path vector",
         "Dijkstra (link-state)",
         "OSPF (link-state)"
       ],
@@ -2963,7 +2963,7 @@ window.DATA.ch6 = {
       "q": "BGP route selection พิจารณาข้อใดก่อน?",
       "options": [
         "Local preference",
-        "NEXT-HOP ที่ไกลที่สุด",
+        "NEXT-HOP ไกลสุด",
         "จำนวน interface ของ router",
         "AS-PATH ที่ยาวที่สุด"
       ],
@@ -3793,7 +3793,7 @@ window.DATA.ch7 = {
       "q": "Frame ต่างจาก datagram อย่างไร?",
       "options": [
         "Frame ห่อ datagram ที่ layer 2",
-        "Frame เป็นสัญญาณ physical ที่ไม่มี header",
+        "Frame เป็นสัญญาณ physical",
         "Frame เป็น packet layer 3 ที่มี IP address",
         "Frame เป็นตาราง MAC address ของ switch"
       ],
@@ -3804,7 +3804,7 @@ window.DATA.ch7 = {
       "q": "Link-level reliable delivery มักใช้กับ link แบบใด?",
       "options": [
         "ทุก link โดยไม่คำนึงถึง error",
-        "เฉพาะ point-to-point link",
+        "เฉพาะ P2P link",
         "Wireless error สูง",
         "Fiber ที่มี bit error ต่ำ"
       ],
@@ -3826,7 +3826,7 @@ window.DATA.ch7 = {
       "q": "Two-dimensional parity แก้ไข error ได้แบบใด?",
       "options": [
         "single-bit error",
-        "error 3 บิตทุกรูปแบบ",
+        "error 3 บิต",
         "error 2 บิตทุกรูปแบบ",
         "4 บิตที่เรียงเป็นสี่เหลี่ยม"
       ],
@@ -3836,7 +3836,7 @@ window.DATA.ch7 = {
     {
       "q": "CRC ใช้หลักการใด?",
       "options": [
-        "แฮช MAC address ด้วย MD5",
+        "แฮชด้วย MD5",
         "modulo 2 ด้วย XOR",
         "บวกแบบ one's complement 16 บิต",
         "นับจำนวน 1 แล้วเติม parity"
@@ -3848,7 +3848,7 @@ window.DATA.ch7 = {
       "q": "Multiple access protocol ใช้กับ link ประเภทใด?",
       "options": [
         "Router ภายใน backbone",
-        "Point-to-point link",
+        "P2P link",
         "Fiber ที่มี channel เฉพาะ",
         "shared medium"
       ],
@@ -3872,7 +3872,7 @@ window.DATA.ch7 = {
         "เปลี่ยน MAC address ใหม่",
         "รอ ACK จาก receiver",
         "abort และส่ง jam",
-        "ส่ง frame ต่อจนจบ"
+        "ส่งต่อจนจบ"
       ],
       "correct": 2,
       "explain": "CSMA/CD หยุดส่งทันทีเมื่อตรวจพบการส่งอื่น แล้วส่ง jam signal และเข้าสู่ binary exponential backoff"
@@ -3881,7 +3881,7 @@ window.DATA.ch7 = {
       "q": "802.1Q VLAN tag มี VLAN ID กี่บิต?",
       "options": [
         "16 บิต (ใช้งาน 1–65534)",
-        "4 บิต (ใช้งาน 1–14)",
+        "4 บิต (1–14)",
         "8 บิต (ใช้งาน 1–254)",
         "12 บิต (1–4094)"
       ],
@@ -3917,7 +3917,7 @@ window.DATA.ch7 = {
       "options": [
         "host ต้นทางกับ host ปลายทางทั่วอินเทอร์เน็ต",
         "node ที่ติดกันผ่าน link",
-        "application กับ transport layer",
+        "application layer",
         "router สองตัวที่อยู่คนละ AS"
       ],
       "correct": 1,
@@ -4025,7 +4025,7 @@ window.DATA.ch7 = {
     {
       "q": "CRC ตรวจจับ burst error ที่ยาวเท่าใดได้ทั้งหมด?",
       "options": [
-        "ยาว 2r บิตทุกกรณี",
+        "2r บิต",
         "ยาว ≤ r บิต",
         "ยาว > r บิตทุกกรณี",
         "เฉพาะ single-bit"
@@ -4069,7 +4069,7 @@ window.DATA.ch7 = {
     {
       "q": "CSMA ยังเกิด collision ได้เพราะอะไร?",
       "options": [
-        "receiver ไม่ส่ง ACK",
+        "ไม่ส่ง ACK",
         "propagation delay",
         "CSMA ใช้ slot แบบ TDMA",
         "CSMA ไม่ฟัง channel ก่อนส่ง"
@@ -4080,7 +4080,7 @@ window.DATA.ch7 = {
     {
       "q": "หลัง collision ครั้งที่ m ใน Ethernet CSMA/CD เลือก K จากช่วงใด?",
       "options": [
-        "{0, 1, ..., 2m}",
+        "{0..2m}",
         "{1, 2, ..., m}",
         "0 ถึง 2^m−1",
         "{0, 1, ..., m}"
@@ -4909,7 +4909,7 @@ window.DATA.ch8 = {
     {
       "q": "ข้อใดอธิบายความสัมพันธ์ wireless กับ mobility ถูกต้อง?",
       "options": [
-        "wireless ทุกชนิดต้องเคลื่อนที่เสมอ",
+        "ต้องเคลื่อนที่",
         "mobile device ต้องใช้ wireless ตลอดเวลา",
         "mobility หมายถึงใช้คลื่นวิทยุเท่านั้น",
         "wireless ≠ mobility"
@@ -4921,7 +4921,7 @@ window.DATA.ch8 = {
       "q": "ความถี่สูงขึ้นส่งผลต่อ wavelength อย่างไร?",
       "options": [
         "สั้นลง (f = c/λ)",
-        "wavelength ยาวขึ้น",
+        "ยาวขึ้น",
         "wavelength เป็นศูนย์",
         "wavelength ไม่เปลี่ยน"
       ],
@@ -4967,7 +4967,7 @@ window.DATA.ch8 = {
         "ไม่รู้ collision ที่ receiver",
         "เพื่อเปลี่ยน MAC address ของ device",
         "เพื่อเพิ่ม bandwidth ของ channel",
-        "เพื่อให้ AP ปิดการทำงานชั่วคราว"
+        "AP ปิดชั่วคราว"
       ],
       "correct": 0,
       "explain": "ACK เป็นหลักฐานว่า frame ถึงปลายทางจริง; ถ้าไม่มี ACK sender จะสันนิษฐานว่าหาย/ชนแล้ว retransmit"
@@ -4976,7 +4976,7 @@ window.DATA.ch8 = {
       "q": "Address 3 ใน 802.11 frame infrastructure mode คือ MAC ของอะไร?",
       "options": [
         "wireless transmitter",
-        "ตัว AP เองเท่านั้น",
+        "ตัว AP",
         "router interface",
         "wireless receiver"
       ],
@@ -5054,7 +5054,7 @@ window.DATA.ch8 = {
     {
       "q": "ข้อใดถูกเกี่ยวกับ wireless และ mobility?",
       "options": [
-        "mobility คือความเร็วของคลื่นวิทยุ",
+        "ความเร็วคลื่น",
         "wireless ≠ mobile",
         "wireless ทุกอุปกรณ์ต้องเคลื่อนที่",
         "mobile device ใช้ wireless เท่านั้น"
@@ -5087,7 +5087,7 @@ window.DATA.ch8 = {
     {
       "q": "Radio bandwidth กับ link bandwidth ต่างกันอย่างไร?",
       "options": [
-        "ทั้งสองมีหน่วย bps เหมือนกัน",
+        "ทั้งคู่เป็น bps",
         "radio bandwidth = จำนวนเสาอากาศ",
         "radio = Hz; link = bps",
         "link bandwidth = ความกว้าง channel เป็น MHz"
@@ -5133,7 +5133,7 @@ window.DATA.ch8 = {
       "options": [
         "A กับ C ชนกันที่ B",
         "AP เปลี่ยน MAC address",
-        "Channel ว่างตลอดเวลา",
+        "Channel ว่าง",
         "ทุก node ได้ยินกันทำให้ส่งเร็วขึ้น"
       ],
       "correct": 0,
@@ -5178,7 +5178,7 @@ window.DATA.ch8 = {
         "เพิ่มความเร็ว modulation",
         "ลดจำนวน MAC address",
         "hidden terminal",
-        "เปลี่ยน IP subnet"
+        "เปลี่ยน subnet"
       ],
       "correct": 2,
       "explain": "RTS/CTS จอง channel ล่วงหน้า; node ที่ได้ยินจะ defer ทำให้ลด collision ของ data frame"
@@ -5186,10 +5186,10 @@ window.DATA.ch8 = {
     {
       "q": "ใน infrastructure mode Address 1 ของ frame ที่ device ส่งไป AP คือ MAC ของใคร?",
       "options": [
-        "device",
+        "host",
         "router interface ฝั่ง wired",
         "broadcast address",
-        "AP"
+        "ตัว AP เอง"
       ],
       "correct": 3,
       "explain": "Device → AP: Address1 = AP's MAC, Address2 = device's MAC, Address3 = router interface's MAC"
@@ -5232,7 +5232,7 @@ window.DATA.ch8 = {
       "options": [
         "หลาย user พร้อมกัน",
         "MU-MIMO ใช้ผู้ใช้คนเดียวเสมอ",
-        "SU-MIMO ใช้ได้เฉพาะ 5G",
+        "SU-MIMO ใช้ 5G",
         "MU-MIMO ไม่ใช้ beamforming"
       ],
       "correct": 0,
@@ -5971,7 +5971,7 @@ window.DATA.ch9 = {
       "q": "ข้อใดคือเป้าหมายด้าน confidentiality?",
       "options": [
         "ตรวจว่าข้อความไม่ถูกแก้ไข",
-        "ยืนยันว่าผู้ส่งเป็นใคร",
+        "ยืนยันผู้ส่ง",
         "เฉพาะผู้ส่ง/ผู้รับ",
         "ทำให้บริการยังเข้าถึงได้"
       ],
@@ -5992,7 +5992,7 @@ window.DATA.ch9 = {
     {
       "q": "ใน symmetric-key cryptography อะไรคือสิ่งที่ Alice และ Bob ต้องมีร่วมกัน?",
       "options": [
-        "public key คนละดอก",
+        "คนละ key",
         "shared key",
         "certificate จาก CA",
         "private key คนละดอก"
@@ -6016,7 +6016,7 @@ window.DATA.ch9 = {
       "options": [
         "AES ใช้ 128-bit block",
         "AES ใช้ key 56 บิตเท่านั้น",
-        "AES ไม่ใช่ symmetric-key",
+        "ไม่ใช่ symmetric",
         "AES เป็น public-key algorithm"
       ],
       "correct": 0,
@@ -6025,7 +6025,7 @@ window.DATA.ch9 = {
     {
       "q": "ใน public-key cryptography กุญแจใดที่ผู้รับเก็บไว้คนเดียว?",
       "options": [
-        "CA public key",
+        "public key",
         "public encryption key",
         "private key",
         "shared session key"
@@ -6049,7 +6049,7 @@ window.DATA.ch9 = {
       "options": [
         "เพราะใช้ key สั้นกว่า DES",
         "เพราะ public key ถูกเก็บเป็นความลับ",
-        "เพราะไม่ต้องใช้ modular arithmetic",
+        "ไม่ใช้ modular",
         "factor n ขนาดใหญ่ยาก"
       ],
       "correct": 3,
@@ -6092,7 +6092,7 @@ window.DATA.ch9 = {
       "q": "TLS ให้บริการใด according to source?",
       "options": [
         "confidentiality + integrity + authentication",
-        "เฉพาะ confidentiality เท่านั้น ไม่รวม integrity/authentication",
+        "เฉพาะ confidentiality",
         "เฉพาะ authentication เท่านั้น ไม่รวม confidentiality/integrity",
         "เฉพาะ integrity เท่านั้น ไม่รวม confidentiality/authentication"
       ],
@@ -6105,7 +6105,7 @@ window.DATA.ch9 = {
       "q": "ข้อใดไม่ใช่หนึ่งในเป้าหมายความปลอดภัย 4 ข้อที่ source ระบุ?",
       "options": [
         "message integrity",
-        "compression",
+        "compression (zip)",
         "authentication",
         "confidentiality"
       ],
@@ -6139,7 +6139,7 @@ window.DATA.ch9 = {
       "options": [
         "IP address เปลี่ยนทุกวินาที",
         "source IP ถูกเข้ารหัสไม่ได้",
-        "Bob ไม่มี public key",
+        "Bob ไม่มี key",
         "spoof source IP ได้"
       ],
       "correct": 3,
@@ -6160,7 +6160,7 @@ window.DATA.ch9 = {
       "q": "nonce ตาม source หมายถึงอะไร?",
       "options": [
         "key ที่ใช้ตลอดชีวิต",
-        "hash ของ password",
+        "hash รหัส",
         "ใช้ครั้งเดียว",
         "public key ของ CA"
       ],
@@ -6170,7 +6170,7 @@ window.DATA.ch9 = {
     {
       "q": "ap5.0 ยังมีช่องโหว่ใด?",
       "options": [
-        "MITM",
+        "ช่องโหว่ MITM",
         "SYN flooding",
         "brute force DES",
         "truncation attack"
@@ -6184,7 +6184,7 @@ window.DATA.ch9 = {
         "สร้าง symmetric key ให้ทุกคน",
         "ผูก key + certificate",
         "เข้ารหัสข้อมูลทั้งหมดใน Internet",
-        "ตรวจหา virus ใน packet"
+        "หา virus"
       ],
       "correct": 1,
       "explain": "CA binds public key to particular entity, E; certificate มี public key ของ E และถูก digitally signed โดย CA"
@@ -6205,7 +6205,7 @@ window.DATA.ch9 = {
       "options": [
         "160 บิต (SHA-1)",
         "128 บิต",
-        "64 บิต (เก่า)",
+        "64 บิต",
         "56 บิต (DES key)"
       ],
       "correct": 1,
@@ -6282,7 +6282,7 @@ window.DATA.ch9 = {
       "options": [
         "ทำให้ public key ถูกแทนที่",
         "บริการใช้งานไม่ได้",
-        "ทำให้ hash collision",
+        "hash collision",
         "ทำให้ message ถูกอ่าน"
       ],
       "correct": 1,
