@@ -1558,8 +1558,8 @@
         '<div class="pp-body">' + inner.innerHTML + "</div></div>";
     });
     html = html.replace(/<svg[\s\S]*?<\/svg>/g, "[แผนภาพ]");
-    if (c.code === "F3" || c.code === "F4") {
-      // F3/F4 ใช้ปุ่มใน interactive หลายจุด: ในโหมดพิมพ์ให้คงข้อความไว้เป็น inline content
+    if (c.code === "F3" || c.code === "F4" || c.code === "F5") {
+      // F3/F4/F5 ใช้ปุ่มใน interactive หลายจุด: ในโหมดพิมพ์ให้คงข้อความไว้เป็น inline content
       html = html.replace(/<button([^>]*)>([\s\S]*?)<\/button>/g, '<span class="pp-inline">$2</span>');
     } else {
       html = html.replace(/<button[\s\S]*?<\/button>/g, "");

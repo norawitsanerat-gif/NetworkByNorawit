@@ -1,6 +1,6 @@
 # PLAN — F5 · BOOK CH.8: Security
 
-> สถานะ: **เสร็จแล้ว (2026-10-22)** — F5 เปิดเรียนแล้ว; ดู content-map-f5.md
+> สถานะ: **เสร็จแล้ว (2026-10-23)** — F5 เปิดเรียนแล้ว; ดู content-map-f5.md
 > เป้าหมาย: สร้าง Final Track F5 จาก `C:\Users\PC\Downloads\Chapter_8_v9.0_Security.pdf` (123 หน้า) โดยใช้ข้อเท็จจริง/ตัวเลข/ตัวอย่างจาก source เท่านั้น
 > วันที่วางแผน: 22 ต.ค. 2026
 
@@ -147,35 +147,35 @@
 
 ## 7. app.js patch checklist
 
-- [ ] เพิ่ม `CHS[9]` metadata: `D.ch9`, code `F5`, bookChapter 8, file `final-ch8-security.html`
-- [ ] เพิ่ม `quiz9` และ `exam9` ใน `state`
-- [ ] เปลี่ยน menu loop จาก `[1..8]` เป็น `[1..9]`
-- [ ] เปลี่ยน `doneChapters / 8` เป็น `/ 9`
-- [ ] เพิ่ม `doneQuizLen` สำหรับ chapter 9
-- [ ] เพิ่ม restart logic ของ quiz9
-- [ ] เพิ่ม event `startBtn9`
-- [ ] เพิ่ม event สำหรับ interaction ทั้ง 6 จุด
-- [ ] เพิ่ม flashcard9 / glossary9 events
-- [ ] เพิ่ม render functions: `renderEnc9`, `renderRsa9`, `renderAuth9`, `renderHash9`, `renderTls9`, `renderAttack9`, `renderCheat9`
-- [ ] เพิ่ม `quiz9Score`, `renderQuiz9`, `bindQuiz9Nav`, `renderQuiz9Result`
-- [ ] เพิ่ม `fc9*`, `renderGlossary9`
-- [ ] เพิ่ม `else if (PCH === 9)` ใน `init()`
-- [ ] ตรวจ print rules ให้ F5 42 หน้า / cards 3 หน้า
+- [x] เพิ่ม `CHS[9]` metadata: `D.ch9`, code `F5`, bookChapter 8, file `final-ch8-security.html`
+- [x] เพิ่ม `quiz9` และ `exam9` ใน `state`
+- [x] เปลี่ยน menu loop จาก `[1..8]` เป็น `[1..9]`
+- [x] เปลี่ยน `doneChapters / 8` เป็น `/ 9`
+- [x] เพิ่ม `doneQuizLen` สำหรับ chapter 9
+- [x] เพิ่ม restart logic ของ quiz9
+- [x] เพิ่ม event `startBtn9`
+- [x] เพิ่ม event สำหรับ interaction ทั้ง 6 จุด
+- [x] เพิ่ม flashcard9 / glossary9 events
+- [x] เพิ่ม render functions: `renderEnc9`, `renderRsa9`, `renderAuth9`, `renderHash9`, `renderTls9`, `renderAttack9`, `renderCheat9`
+- [x] เพิ่ม `quiz9Score`, `renderQuiz9`, `bindQuiz9Nav`, `renderQuiz9Result`
+- [x] เพิ่ม `fc9*`, `renderGlossary9`
+- [x] เพิ่ม `else if (PCH === 9)` ใน `init()`
+- [x] ตรวจ print rules ให้ F5 42 หน้า / cards 3 หน้า
 
 ---
 
 ## 8. index.html checklist
 
-- [ ] เปลี่ยน F5 card จาก `locked` → `unlocked`
-- [ ] เอา `aria-disabled="true"` ออก
-- [ ] เปลี่ยน `clock / เร็ว ๆ นี้` เป็น `42 สไลด์`
-- [ ] เพิ่ม `data-slides="9"` และ `ch9Pct`
-- [ ] เปลี่ยน `Quiz 12 + Exam 20`
-- [ ] เปลี่ยน `ch-status` เป็น `เริ่มเรียน`
-- [ ] เปลี่ยน stat `220` → `262`
-- [ ] เปลี่ยน stat `08` → `09`
-- [ ] เปลี่ยน track subtitle `F1–F5 · ... F1–F4 เปิดเรียนแล้ว` → `F1–F5 เปิดเรียนแล้ว`
-- [ ] เปลี่ยน footer `M1-M4 + F1-F4` → `M1-M4 + F1-F5`
+- [x] เปลี่ยน F5 card จาก `locked` → `unlocked`
+- [x] เอา `aria-disabled="true"` ออก
+- [x] เปลี่ยน `clock / เร็ว ๆ นี้` เป็น `42 สไลด์`
+- [x] เพิ่ม `data-slides="9"` และ `ch9Pct`
+- [x] เปลี่ยน `Quiz 12 + Exam 20`
+- [x] เปลี่ยน `ch-status` เป็น `เริ่มเรียน`
+- [x] เปลี่ยน stat `220` → `262`
+- [x] เปลี่ยน stat `08` → `09`
+- [x] เปลี่ยน track subtitle `F1–F5 · ... F1–F4 เปิดเรียนแล้ว` → `F1–F5 เปิดเรียนแล้ว`
+- [x] เปลี่ยน footer `M1-M4 + F1-F4` → `M1-M4 + F1-F5`
 
 ---
 
@@ -198,22 +198,22 @@
 
 ## 10. Testing checklist
 
-- [ ] `node --check data.js`
-- [ ] เปิด `final-ch8-security.html` ตรง ๆ
-- [ ] sidebar 42 รายการ + section ถูกต้อง
-- [ ] startBtn9 ไปสไลด์ 2
-- [ ] interactives ทั้ง 6 จุดทำงาน
-- [ ] Quiz 12 ข้อ + retry + best score
-- [ ] Exam 20 ข้อ + lock/unlock
-- [ ] Flashcards 12 ใบ + shuffle
-- [ ] Glossary 36 คำ + search
-- [ ] Completion overlay แสดง 42 สไลด์
-- [ ] Print slides = 42 หน้า
-- [ ] Print cards = 3 หน้า
-- [ ] Responsive 1440×900 และ mobile
-- [ ] Regression M1–M4 / F1–F4
-- [ ] index stats = 262 / 09 / 09
-- [ ] F5 card เปิดได้
+- [x] `node --check data.js`
+- [x] เปิด `final-ch8-security.html` ตรง ๆ
+- [x] sidebar 42 รายการ + section ถูกต้อง
+- [x] startBtn9 ไปสไลด์ 2
+- [x] interactives ทั้ง 6 จุดทำงาน
+- [x] Quiz 12 ข้อ + retry + best score
+- [x] Exam 20 ข้อ + lock/unlock
+- [x] Flashcards 12 ใบ + shuffle
+- [x] Glossary 36 คำ + search
+- [x] Completion overlay แสดง 42 สไลด์
+- [x] Print slides = 42 หน้า
+- [x] Print cards = 3 หน้า
+- [x] Responsive 1440×900 และ mobile
+- [x] Regression M1–M4 / F1–F4
+- [x] index stats = 262 / 09 / 09
+- [x] F5 card เปิดได้
 
 ---
 
