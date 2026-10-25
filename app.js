@@ -132,6 +132,7 @@
      ========================================================================== */
   function renderMenuProgress() {
     var doneTotal = 0, slideTotal = 0, doneChapters = 0;
+    var midDone = 0, midTotal = 0, finDone = 0, finTotal = 0;
     [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(function (n) {
       var el = $("ch" + n + "Pct");
       var comp = LS.get("cn_completed_" + n, null);
@@ -141,6 +142,8 @@
       var pct = compArr.length ? Math.min(100, Math.round((compArr.length / count) * 100)) : 0;
       doneTotal += compArr.length;
       slideTotal += count;
+      if (n <= 4) { midDone += compArr.length; midTotal += count; }
+      else { finDone += compArr.length; finTotal += count; }
       if (pct === 100 && compArr.length) doneChapters++;
       if (el) el.textContent = pct + "%";
       var card = document.querySelector('[data-chapter="' + n + '"]');
@@ -155,8 +158,25 @@
     if (op) op.textContent = coursePct + "%";
     var ob = $("courseBar");
     if (ob) ob.style.setProperty("--pct", coursePct + "%");
+    var ring = $("courseRing");
+    if (ring) ring.style.setProperty("--pct", coursePct + "%");
     var od = $("courseDone");
     if (od) od.textContent = "เรียนแล้ว " + doneTotal + " / " + slideTotal + " สไลด์ · จบแล้ว " + doneChapters + " / 9 บท";
+
+    var midPct = midTotal ? Math.round((midDone / midTotal) * 100) : 0;
+    var finPct = finTotal ? Math.round((finDone / finTotal) * 100) : 0;
+    var mp = $("midtermPct");
+    if (mp) mp.textContent = midPct + "%";
+    var mb = $("midtermBar");
+    if (mb) mb.style.setProperty("--pct", midPct + "%");
+    var md = $("midtermDone");
+    if (md) md.textContent = midDone + " / " + midTotal + " สไลด์";
+    var fp = $("finalPct");
+    if (fp) fp.textContent = finPct + "%";
+    var fb = $("finalBar");
+    if (fb) fb.style.setProperty("--pct", finPct + "%");
+    var fd = $("finalDone");
+    if (fd) fd.textContent = finDone + " / " + finTotal + " สไลด์";
   }
   /* กลับไปเมนูหลัก (index.html) — ใช้จากปุ่ม 🏠 ในหน้าเรียน */
   function goHome() {
@@ -233,6 +253,7 @@
 
   /* ---------- เพลงพื้นหลัง (index.html) ---------- */
   var MUSIC_KEY = "cn_music_on";
+  var menuMusicControl = null;
 
   function bindMenuMusic() {
     var audio = $("menuMusic");
@@ -241,6 +262,9 @@
 
     var label = btn.querySelector(".music-toggle-text");
     try { audio.volume = 0.38; } catch (e) { /* iOS ควบคุมระดับเสียงผ่านเครื่อง */ }
+
+    var wanted = LS.get(MUSIC_KEY, null);
+    if (wanted === null) wanted = true; // ครั้งแรก: ลองเปิดเพลงอัตโนมัติ
 
     function setUI(on) {
       btn.classList.toggle("is-playing", on);
@@ -251,10 +275,20 @@
     }
 
     function remember(on) {
-      LS.set(MUSIC_KEY, !!on);
+      wanted = !!on;
+      LS.set(MUSIC_KEY, wanted);
     }
 
-    function playMusic() {
+    var firstGesture = null;
+
+    function stopWaitingForGesture() {
+      if (!firstGesture) return;
+      document.removeEventListener("pointerdown", firstGesture, true);
+      document.removeEventListener("keydown", firstGesture, true);
+      firstGesture = null;
+    }
+
+    function playMusic(interactive) {
       var p;
       try {
         p = audio.play();
@@ -264,14 +298,29 @@
       if (p && p.catch) {
         p.catch(function () {
           setUI(false);
-          remember(false);
+          if (interactive && !audio.error) {
+            toast("เบราว์เซอร์ยังไม่อนุญาตให้เล่นเสียง — แตะปุ่มเพลงอีกครั้ง");
+          }
         });
       }
     }
 
+    function tryAutoplayOnce(e) {
+      if (e && e.target && e.target.closest && e.target.closest("#musicToggle")) return;
+      stopWaitingForGesture();
+      if (wanted && audio.paused) playMusic(false);
+    }
+
+    function waitForGesture() {
+      if (firstGesture) return;
+      firstGesture = tryAutoplayOnce;
+      document.addEventListener("pointerdown", firstGesture, true);
+      document.addEventListener("keydown", firstGesture, true);
+    }
+
     btn.addEventListener("click", function () {
       if (audio.paused) {
-        playMusic();
+        playMusic(true);
       } else {
         audio.pause();
       }
@@ -280,6 +329,7 @@
     audio.addEventListener("play", function () {
       setUI(true);
       remember(true);
+      stopWaitingForGesture();
     });
     audio.addEventListener("pause", function () {
       setUI(false);
@@ -288,15 +338,221 @@
     audio.addEventListener("error", function () {
       setUI(false);
       remember(false);
+      stopWaitingForGesture();
       toast("ไม่พบไฟล์ music.mp3 หรือไฟล์เพลงเปิดไม่ได้");
     });
 
     setUI(false);
 
-    /* จำสถานะเดิม: ถ้าเคยเปิดไว้ ให้ลองเล่นต่อเมื่อเบราว์เซอร์อนุญาต */
-    if (LS.get(MUSIC_KEY, false)) {
-      window.setTimeout(playMusic, 300);
+    /* ลองเล่นอัตโนมัติก่อน; ถ้าเบราว์เซอร์บล็อก จะรอ gesture แรกของผู้ใช้ */
+    if (wanted) {
+      window.setTimeout(function () {
+        if (wanted && audio.paused) playMusic(false);
+      }, 260);
+      waitForGesture();
     }
+
+    menuMusicControl = {
+      resume: function () {
+        if (wanted && audio.paused) playMusic(true);
+      },
+      isWanted: function () { return wanted; }
+    };
+  }
+
+  /* ---------- Landing page: modal เลือกสาย, visit counter, anchor links ---------- */
+  var LANDING_SEEN_KEY = "cn_landing_seen";
+  var LANDING_TRACK_KEY = "cn_track";
+  var VISIT_CACHE_KEY = "cn_visit_count";
+  var VISIT_SESSION_KEY = "cn_visit_counted";
+  var VISIT_API = "https://abacus.jasoncameron.dev/hit/norawit-cn/landing-views";
+
+  function scrollMenuTo(el, offset) {
+    var menu = $("chapterMenu");
+    if (!el) {
+      scrollMenuTop();
+      return;
+    }
+    if (menu && menu.scrollTo) {
+      var top = el.getBoundingClientRect().top - menu.getBoundingClientRect().top + menu.scrollTop - (offset || 0);
+      menu.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    } else if (el.scrollIntoView) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  function scrollMenuTop() {
+    var menu = $("chapterMenu");
+    if (!menu) return;
+    if (menu.scrollTo) menu.scrollTo({ top: 0, behavior: "smooth" });
+    else menu.scrollTop = 0;
+  }
+
+  function formatVisit(n) {
+    try { return new Intl.NumberFormat("th-TH").format(n); }
+    catch (e) { return String(n); }
+  }
+
+  function bindVisitCounter() {
+    var el = $("visitCount");
+    if (!el) return;
+    var cached = LS.get(VISIT_CACHE_KEY, null);
+    if (cached !== null && isFinite(Number(cached))) el.textContent = formatVisit(Number(cached));
+
+    var counted = false;
+    try { counted = sessionStorage.getItem(VISIT_SESSION_KEY) === "1"; } catch (e) {}
+    if (counted) return;
+    try { sessionStorage.setItem(VISIT_SESSION_KEY, "1"); } catch (e) {}
+
+    if (!window.fetch) return;
+    fetch(VISIT_API, { cache: "no-store" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        var n = Number(data && data.value);
+        if (!isFinite(n)) return;
+        el.textContent = formatVisit(n);
+        LS.set(VISIT_CACHE_KEY, n);
+      })
+      .catch(function () {
+        if (!el.textContent || el.textContent === "—") {
+          el.textContent = cached !== null && isFinite(Number(cached)) ? formatVisit(Number(cached)) : "—";
+        }
+      });
+  }
+
+  function bindLanding() {
+    var menu = $("chapterMenu");
+    var modal = $("trackModal");
+    if (!menu || !modal) return;
+
+    var lastFocus = null;
+
+    function focusables() {
+      return qsa('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', modal)
+        .filter(function (el) { return !el.disabled && el.offsetParent !== null; });
+    }
+
+    function showTrackModal() {
+      lastFocus = document.activeElement;
+      modal.hidden = false;
+      modal.setAttribute("aria-hidden", "false");
+      menu.style.overflow = "hidden";
+      var first = modal.querySelector("[data-track-choice]");
+      if (first) window.setTimeout(function () { first.focus(); }, 50);
+    }
+
+    function hideTrackModal() {
+      if (modal.hidden) return;
+      modal.hidden = true;
+      modal.setAttribute("aria-hidden", "true");
+      menu.style.overflow = "";
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    function dismissTrackModal() {
+      LS.set(LANDING_SEEN_KEY, true);
+      hideTrackModal();
+    }
+
+    function highlightTrack(track) {
+      var card = $(track === "final" ? "finalTrack" : "midtermTrack");
+      if (card) {
+        card.classList.add("is-selected");
+        window.setTimeout(function () { card.classList.remove("is-selected"); }, 2600);
+      }
+    }
+
+    function chooseTrack(track) {
+      if (track !== "final") track = "midterm";
+      LS.set(LANDING_TRACK_KEY, track);
+      LS.set(LANDING_SEEN_KEY, true);
+      hideTrackModal();
+      if (menuMusicControl) menuMusicControl.resume();
+      window.setTimeout(function () {
+        scrollMenuTo($(track === "final" ? "finalSection" : "midtermSection"), 84);
+        highlightTrack(track);
+      }, 160);
+    }
+
+    function startLearning() {
+      var track = LS.get(LANDING_TRACK_KEY, "midterm");
+      scrollMenuTo($(track === "final" ? "finalSection" : "midtermSection"), 84);
+    }
+
+    qsa("[data-scroll-to]").forEach(function (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        scrollMenuTo($(el.getAttribute("data-scroll-to")), 84);
+      });
+    });
+
+    qsa("[data-scroll-top]").forEach(function (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        scrollMenuTop();
+      });
+    });
+
+    qsa("[data-start-learning]").forEach(function (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        startLearning();
+      });
+    });
+
+    qsa("[data-open-track]").forEach(function (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        showTrackModal();
+      });
+    });
+
+    qsa("[data-close-track-modal]").forEach(function (el) {
+      el.addEventListener("click", dismissTrackModal);
+    });
+
+    qsa("[data-track-choice]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        chooseTrack(el.getAttribute("data-track-choice"));
+      });
+    });
+
+    modal.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        dismissTrackModal();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      var list = focusables();
+      if (!list.length) return;
+      var first = list[0];
+      var last = list[list.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    /* ครั้งแรก: ถามว่าจะเริ่ม Midterm หรือ Final */
+    if (!LS.get(LANDING_SEEN_KEY, false)) {
+      window.setTimeout(showTrackModal, 650);
+    }
+
+    /* แสดงเส้นทางที่เคยเลือกไว้ */
+    var savedTrack = LS.get(LANDING_TRACK_KEY, "");
+    if (savedTrack === "midterm" || savedTrack === "final") {
+      var savedCard = $(savedTrack === "final" ? "finalTrack" : "midtermTrack");
+      if (savedCard) savedCard.classList.add("is-selected");
+    }
+
+    bindVisitCounter();
   }
 
   /* เมนูหลัก — กดการ์ดบท 1/2 ไปหน้าเรียน, บท 3/4 แจ้งเตือนเร็วๆ นี้ */
@@ -316,17 +572,11 @@
       var n = parseInt(card.dataset.chapter, 10);
       if (!CHS[n]) { e.preventDefault(); openChapter(n); }
     });
-    // ปุ่ม CTA "เริ่มเรียนเลย" — เลื่อนไปยังการ์ดบทเรียน
+    // ปุ่ม CTA "เริ่มเรียนเลย" — ไปยังเส้นทางที่เลือก (ค่าเริ่มต้น Midterm)
     var cta = $("menuCtaBtn");
     if (cta) cta.addEventListener("click", function () {
-      var g = $("chapterGrid"), menu = $("chapterMenu");
-      if (!g) return;
-      if (menu && menu.scrollTo) {
-        var top = g.getBoundingClientRect().top - menu.getBoundingClientRect().top + menu.scrollTop - 10;
-        menu.scrollTo({ top: top, behavior: "smooth" });
-      } else {
-        g.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      var track = LS.get(LANDING_TRACK_KEY, "midterm");
+      scrollMenuTo($(track === "final" ? "finalSection" : "midtermSection"), 84);
     });
   }
 
@@ -4682,6 +4932,7 @@
       bindMenu();
       bindMenuScrollMemory();
       bindMenuMusic();
+      bindLanding();
       restoreMenuScroll();
       icons();
       return;

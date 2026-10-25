@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Interactive Digital Textbook — Fundamentals of Computer Network / พื้นฐานการสื่อสารข้อมูลและเครือข่าย" />
-  <title>CN · Interactive Digital Textbook — เมนูหลัก</title>
+  <meta name="theme-color" content="#050b18" />
+  <meta name="description" content="CN · Interactive Digital Textbook — เรียนเครือข่ายคอมพิวเตอร์ครบทั้ง Midterm และ Final พร้อมสไลด์ Quiz Exam Flashcards และ Cheat Sheet" />
+  <title>CN · Computer Network — Interactive Learning</title>
 
   <!-- App styles — โหลดก่อนเสมอ (สำคัญต่อการแสดงผล) -->
-  <link rel="stylesheet" href="styles.css?v=20261025-music" />
+  <link rel="stylesheet" href="styles.css?v=20261025-landing" />
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,10 +18,10 @@
   <!-- Lucide icons — defer: ไม่บล็อกการโหลดหน้าและ app.js -->
   <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
-<body data-page="menu">
+<body data-page="menu" class="antialiased">
 
-<!-- ================= CHAPTER MENU (เมนูหลัก) ================= -->
-<div id="chapterMenu" aria-label="เมนูหลัก — เลือกบทเรียน">
+<!-- ================= LANDING PAGE ================= -->
+<div id="chapterMenu" aria-label="หน้าแรก — เลือกเส้นทางการเรียน">
   <!-- พื้นหลังเคลื่อนไหว -->
   <div class="menu-bg" aria-hidden="true">
     <div class="menu-bg-grid"></div>
@@ -30,239 +31,464 @@
     <div class="menu-bg-ring"></div>
   </div>
 
-  <div class="menu-inner">
-    <!-- Hero -->
-    <header class="menu-hero">
-      <div class="menu-logo-wrap">
-        <div class="cn-logo menu-logo">CN</div>
-        <div class="menu-logo-ping" aria-hidden="true"></div>
-      </div>
-      <p class="menu-kicker">INTERACTIVE DIGITAL TEXTBOOK · COMPUTER NETWORK AND INTERNET</p>
-      <h1 class="menu-title">เรียน <span class="grad-text">เครือข่ายคอมพิวเตอร์</span><br class="hide-sm" />ตั้งแต่ศูนย์จนรู้พื้นฐาน</h1>
-      <div class="menu-hero-stats">
-        <div class="stat"><b>09</b><span>โมดูล (M / F)</span></div>
-        <div class="stat"><b>262</b><span>สไลด์ที่เปิดแล้ว</span></div>
-        <div class="stat"><b>09</b><span>บทพร้อมเรียน</span></div>
-        <div class="stat"><b>100%</b><span>เรียนฟรี</span></div>
-      </div>
+  <!-- ================= NAV (full-width) ================= -->
+  <header class="landing-nav">
+    <div class="landing-nav-inner">
+      <a href="#top" class="landing-brand" data-scroll-top="1" aria-label="CN — กลับขึ้นด้านบน">
+        <span class="cn-logo landing-brand-logo">CN</span>
+        <span class="min-w-0">
+          <span class="block truncate text-[13px] font-extrabold tracking-tight text-white">Computer Network</span>
+          <span class="block truncate text-[9px] font-bold tracking-[0.24em] text-sky-300/80">DIGITAL TEXTBOOK</span>
+        </span>
+      </a>
 
-      <button class="btn btn-primary btn-lg" id="menuCtaBtn">เริ่มเรียนเลย <i data-lucide="arrow-down"></i></button>
-    </header>
+      <nav class="hidden items-center gap-1 md:flex" aria-label="เมนูหลัก">
+        <a href="#overview" class="landing-nav-link" data-scroll-to="overview">ภาพรวม</a>
+        <a href="#midtermSection" class="landing-nav-link" data-scroll-to="midtermSection">Midterm</a>
+        <a href="#finalSection" class="landing-nav-link" data-scroll-to="finalSection">Final</a>
+      </nav>
 
-    <!-- ================= MIDTERM TRACK ================= -->
-    <div class="track-section">
-      <div class="track-head">
-        <span class="track-badge midterm">MIDTERM</span>
-        <div>
-          <h2 class="track-title">Midterm Track</h2>
-          <p class="track-sub">M1–M4 · Book Chapter 1–4 · เนื้อหามิดเทอมเดิม</p>
-        </div>
-      </div>
-
-      <div class="chapter-grid" id="chapterGrid" role="list" aria-label="บทเรียนมิดเทอม">
-        <button class="chapter-card unlocked" data-chapter="1" role="listitem">
-          <span class="ch-top"><span class="ch-num">M1</span><span class="ch-icon"><i data-lucide="network"></i></span></span>
-          <div class="ch-body">
-            <span class="ch-en"><span class="ch-book">BOOK CH.1</span> Fundamentals of Computer Network</span>
-            <b class="ch-title">พื้นฐานการสื่อสารข้อมูลและเครือข่าย</b>
-            <p class="ch-desc">องค์ประกอบ 5 อย่าง · การไหลของข้อมูล · Transmission Mode · โทโพโลยี · PAN/LAN/MAN/WAN · สื่อนำสัญญาณ · Protocol &amp; RFC · ประวัติ Internet</p>
-            <div class="ch-meta">
-              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="1">26</b> สไลด์</span>
-              <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
-            </div>
-            <div class="ch-progress">
-              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-              <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch1Pct">0%</b></span>
-            </div>
-          </div>
-          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+      <div class="flex shrink-0 items-center gap-2">
+        <button type="button" class="landing-nav-change hidden sm:inline-flex" data-open-track>
+          <i data-lucide="shuffle" class="h-3.5 w-3.5"></i>
+          เปลี่ยนสาย
         </button>
-
-        <button class="chapter-card unlocked" data-chapter="2" role="listitem">
-          <span class="ch-top"><span class="ch-num">M2</span><span class="ch-icon"><i data-lucide="layers"></i></span></span>
-          <div class="ch-body">
-            <span class="ch-en"><span class="ch-book">BOOK CH.2</span> Network Models</span>
-            <b class="ch-title">โมเดลเครือข่าย</b>
-            <p class="ch-desc">Physical vs Logical · Network Edge · โมเดล OSI / TCP/IP · หน้าที่แต่ละ Layer · PDU · Encapsulation · Header · Protocol vs Service</p>
-            <div class="ch-meta">
-              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="2">15</b> สไลด์</span>
-              <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
-            </div>
-            <div class="ch-progress">
-              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-              <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch2Pct">0%</b></span>
-            </div>
-          </div>
-          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
-        </button>
-
-        <button class="chapter-card unlocked" data-chapter="3" role="listitem">
-          <span class="ch-top"><span class="ch-num">M3</span><span class="ch-icon"><i data-lucide="globe"></i></span></span>
-          <div class="ch-body">
-            <span class="ch-en"><span class="ch-book">BOOK CH.3</span> Application Layer</span>
-            <b class="ch-title">ชั้นโปรแกรมประยุกต์</b>
-            <p class="ch-desc">Client-Server / P2P · Process/Socket/Port · HTTP/HTTPS 80-443 · Stateless · HTTP Methods · DNS &amp; Cache · SMTP/Email · Port มาตรฐาน</p>
-            <div class="ch-meta">
-              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="3">16</b> สไลด์</span>
-              <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
-            </div>
-            <div class="ch-progress">
-              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-              <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch3Pct">0%</b></span>
-            </div>
-          </div>
-          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
-        </button>
-
-        <button class="chapter-card unlocked" data-chapter="4" role="listitem">
-          <span class="ch-top"><span class="ch-num">M4</span><span class="ch-icon"><i data-lucide="cpu"></i></span></span>
-          <div class="ch-body">
-            <span class="ch-en"><span class="ch-book">BOOK CH.4</span> Transport Layer</span>
-            <b class="ch-title">ชั้นขนส่งข้อมูล</b>
-            <p class="ch-desc">Mux/Demux &amp; 4-tuple · TCP vs UDP · UDP Header/Checksum · Three-Way Handshake · Seq/Ack · Flow &amp; Congestion Control · AIMD · Internet Checksum</p>
-            <div class="ch-meta">
-              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="4">23</b> สไลด์</span>
-              <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
-            </div>
-            <div class="ch-progress">
-              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-              <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch4Pct">0%</b></span>
-            </div>
-          </div>
-          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+        <button type="button" class="landing-nav-cta" data-start-learning>
+          เริ่มเรียน
+          <i data-lucide="arrow-down" class="h-3.5 w-3.5"></i>
         </button>
       </div>
     </div>
+  </header>
 
-    <!-- ================= FINAL TRACK ================= -->
-    <div class="track-section">
-      <div class="track-head">
-        <span class="track-badge final">FINAL</span>
-        <div>
-          <h2 class="track-title">Final Track</h2>
-          <p class="track-sub">F1–F5 · Book Chapter 4–8 · F1–F5 เปิดเรียนแล้ว</p>
+  <div class="menu-inner landing-inner" id="top">
+    <main>
+      <!-- ================= HERO ================= -->
+      <section id="overview" class="landing-hero">
+        <div class="landing-hero-solo">
+          <div>
+            <span class="landing-badge">
+              <span class="landing-live-dot"></span>
+              INTERACTIVE DIGITAL TEXTBOOK
+            </span>
+
+            <h1 class="landing-title">
+              เรียน <span class="grad-text">เครือข่ายคอมพิวเตอร์</span><br class="hidden sm:block" />
+              ให้เข้าใจจริง
+            </h1>
+
+            <p class="landing-sub">
+              สรุปเนื้อหา Computer Network ครบทั้ง Midterm และ Final —
+              9 บท 262 สไลด์ พร้อม Quiz, Exam, Flashcards และ Cheat Sheet
+              ที่ออกแบบมาให้อ่านง่าย เข้าใจไว
+            </p>
+
+            <div class="landing-hero-actions mt-7 flex flex-col gap-3 sm:flex-row">
+              <button class="btn btn-primary btn-lg landing-cta-main" id="menuCtaBtn" type="button">
+                เริ่มเรียนเลย
+                <i data-lucide="arrow-down"></i>
+              </button>
+              <button class="btn btn-ghost btn-lg landing-cta-second" type="button" data-open-track>
+                <i data-lucide="route"></i>
+                เลือกเส้นทางการเรียน
+              </button>
+            </div>
+
+            <div class="landing-stats">
+              <div class="landing-stat"><b>09</b><span>โมดูล (M / F)</span></div>
+              <div class="landing-stat"><b>262</b><span>สไลด์พร้อมเรียน</span></div>
+              <div class="landing-stat"><b>09</b><span>บทเรียน</span></div>
+              <div class="landing-stat"><b>100%</b><span>เรียนฟรี</span></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= TRACK SELECTOR ================= -->
+      <section id="tracks" class="landing-section">
+        <div class="landing-section-head">
+          <div>
+            <span class="landing-eyebrow">YOUR LEARNING PATH</span>
+            <h2 class="landing-heading">เลือกเส้นทางที่ใช่สำหรับคุณ</h2>
+            <p class="landing-sub landing-sub-sm">
+              อยากปูพื้นฐานมิดเทอม หรือลุยเนื้อหาไฟนอล? เลือกได้เลย —
+              เปลี่ยนเส้นทางภายหลังได้ตลอด
+            </p>
+          </div>
+          <button type="button" class="btn btn-ghost shrink-0" data-open-track>
+            <i data-lucide="shuffle"></i>
+            เปลี่ยนสาย
+          </button>
+        </div>
+
+        <div class="landing-track-grid">
+          <article class="landing-track-card midterm" id="midtermTrack" data-track-card="midterm">
+            <div class="relative z-[1]">
+              <div class="flex items-start justify-between gap-4">
+                <span class="landing-track-icon midterm"><i data-lucide="book-open"></i></span>
+                <span class="track-badge midterm">MIDTERM</span>
+              </div>
+              <h3 class="mt-5 text-2xl font-extrabold tracking-tight text-white">Midterm Track</h3>
+              <p class="mt-1 text-[11px] font-bold uppercase tracking-[0.16em] text-sky-300/80">M1–M4 · Book Chapter 1–4</p>
+              <p class="mt-3 max-w-md text-[13px] leading-relaxed text-slate-400">
+                ปูพื้นฐานตั้งแต่ศูนย์ — องค์ประกอบเครือข่าย, โมเดล OSI/TCP-IP,
+                Application Layer และ Transport Layer
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="landing-chip">4 บท</span>
+                <span class="landing-chip">80 สไลด์</span>
+                <span class="landing-chip">Quiz + Exam</span>
+              </div>
+
+              <div class="mt-5">
+                <div class="flex items-center justify-between text-[11px] font-bold">
+                  <span class="text-slate-400">ความคืบหน้า</span>
+                  <span class="text-sky-300" id="midtermPct">0%</span>
+                </div>
+                <div class="ch-bar mt-2">
+                  <div class="ch-bar-fill" id="midtermBar"></div>
+                </div>
+                <p class="mt-2 text-[10.5px] text-slate-500" id="midtermDone">0 / 80 สไลด์</p>
+              </div>
+
+              <button type="button" class="landing-track-cta midterm" data-scroll-to="midtermSection">
+                ดูบทเรียน Midterm
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+          </article>
+
+          <article class="landing-track-card final" id="finalTrack" data-track-card="final">
+            <div class="relative z-[1]">
+              <div class="flex items-start justify-between gap-4">
+                <span class="landing-track-icon final"><i data-lucide="shield-check"></i></span>
+                <span class="track-badge final">FINAL</span>
+              </div>
+              <h3 class="mt-5 text-2xl font-extrabold tracking-tight text-white">Final Track</h3>
+              <p class="mt-1 text-[11px] font-bold uppercase tracking-[0.16em] text-cyan-300/80">F1–F5 · Book Chapter 4–8</p>
+              <p class="mt-3 max-w-md text-[13px] leading-relaxed text-slate-400">
+                ต่อยอดสู่ระดับสูง — Network Layer, Control Plane, Link Layer,
+                Wireless &amp; Mobile และ Security
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="landing-chip">5 บท</span>
+                <span class="landing-chip">182 สไลด์</span>
+                <span class="landing-chip">Quiz + Exam</span>
+              </div>
+
+              <div class="mt-5">
+                <div class="flex items-center justify-between text-[11px] font-bold">
+                  <span class="text-slate-400">ความคืบหน้า</span>
+                  <span class="text-cyan-300" id="finalPct">0%</span>
+                </div>
+                <div class="ch-bar mt-2">
+                  <div class="ch-bar-fill" id="finalBar"></div>
+                </div>
+                <p class="mt-2 text-[10.5px] text-slate-500" id="finalDone">0 / 182 สไลด์</p>
+              </div>
+
+              <button type="button" class="landing-track-cta final" data-scroll-to="finalSection">
+                ดูบทเรียน Final
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ================= MIDTERM ================= -->
+      <section id="midtermSection" class="landing-section landing-track-section">
+        <div class="landing-section-head">
+          <div>
+            <span class="track-badge midterm">MIDTERM</span>
+            <h2 class="landing-heading mt-3">Midterm Track</h2>
+            <p class="landing-sub landing-sub-sm">M1–M4 · Book Chapter 1–4 · เนื้อหามิดเทอมเดิม</p>
+          </div>
+          <div class="landing-section-meta">
+            <i data-lucide="presentation"></i>
+            4 บท · 80 สไลด์
+          </div>
+        </div>
+
+        <div class="chapter-grid max-w-none" id="chapterGrid" role="list" aria-label="บทเรียนมิดเทอม">
+          <button class="chapter-card unlocked" data-chapter="1" role="listitem">
+            <span class="ch-top"><span class="ch-num">M1</span><span class="ch-icon"><i data-lucide="network"></i></span></span>
+            <div class="ch-body">
+              <span class="ch-en"><span class="ch-book">BOOK CH.1</span> Fundamentals of Computer Network</span>
+              <b class="ch-title">พื้นฐานการสื่อสารข้อมูลและเครือข่าย</b>
+              <p class="ch-desc">องค์ประกอบ 5 อย่าง · การไหลของข้อมูล · Transmission Mode · โทโพโลยี · PAN/LAN/MAN/WAN · สื่อนำสัญญาณ · Protocol &amp; RFC · ประวัติ Internet</p>
+              <div class="ch-meta">
+                <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="1">26</b> สไลด์</span>
+                <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+              </div>
+              <div class="ch-progress">
+                <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+                <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch1Pct">0%</b></span>
+              </div>
+            </div>
+            <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+          </button>
+
+          <button class="chapter-card unlocked" data-chapter="2" role="listitem">
+            <span class="ch-top"><span class="ch-num">M2</span><span class="ch-icon"><i data-lucide="layers"></i></span></span>
+            <div class="ch-body">
+              <span class="ch-en"><span class="ch-book">BOOK CH.2</span> Network Models</span>
+              <b class="ch-title">โมเดลเครือข่าย</b>
+              <p class="ch-desc">Physical vs Logical · Network Edge · โมเดล OSI / TCP/IP · หน้าที่แต่ละ Layer · PDU · Encapsulation · Header · Protocol vs Service</p>
+              <div class="ch-meta">
+                <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="2">15</b> สไลด์</span>
+                <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+              </div>
+              <div class="ch-progress">
+                <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+                <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch2Pct">0%</b></span>
+              </div>
+            </div>
+            <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+          </button>
+
+          <button class="chapter-card unlocked" data-chapter="3" role="listitem">
+            <span class="ch-top"><span class="ch-num">M3</span><span class="ch-icon"><i data-lucide="globe"></i></span></span>
+            <div class="ch-body">
+              <span class="ch-en"><span class="ch-book">BOOK CH.3</span> Application Layer</span>
+              <b class="ch-title">ชั้นโปรแกรมประยุกต์</b>
+              <p class="ch-desc">Client-Server / P2P · Process/Socket/Port · HTTP/HTTPS 80-443 · Stateless · HTTP Methods · DNS &amp; Cache · SMTP/Email · Port มาตรฐาน</p>
+              <div class="ch-meta">
+                <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="3">16</b> สไลด์</span>
+                <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+              </div>
+              <div class="ch-progress">
+                <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+                <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch3Pct">0%</b></span>
+              </div>
+            </div>
+            <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+          </button>
+
+          <button class="chapter-card unlocked" data-chapter="4" role="listitem">
+            <span class="ch-top"><span class="ch-num">M4</span><span class="ch-icon"><i data-lucide="cpu"></i></span></span>
+            <div class="ch-body">
+              <span class="ch-en"><span class="ch-book">BOOK CH.4</span> Transport Layer</span>
+              <b class="ch-title">ชั้นขนส่งข้อมูล</b>
+              <p class="ch-desc">Mux/Demux &amp; 4-tuple · TCP vs UDP · UDP Header/Checksum · Three-Way Handshake · Seq/Ack · Flow &amp; Congestion Control · AIMD · Internet Checksum</p>
+              <div class="ch-meta">
+                <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="4">23</b> สไลด์</span>
+                <span class="chip-sm"><i data-lucide="file-question"></i>ข้อสอบ 20 ข้อ</span>
+              </div>
+              <div class="ch-progress">
+                <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+                <span class="ch-status"><i data-lucide="play"></i>เรียนต่อ <b class="ch-pct" id="ch4Pct">0%</b></span>
+              </div>
+            </div>
+            <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= FINAL ================= -->
+      <section id="finalSection" class="landing-section landing-track-section">
+        <div class="landing-section-head">
+          <div>
+            <span class="track-badge final">FINAL</span>
+            <h2 class="landing-heading mt-3">Final Track</h2>
+            <p class="landing-sub landing-sub-sm">F1–F5 · Book Chapter 4–8 · F1–F5 เปิดเรียนแล้ว</p>
+          </div>
+          <div class="landing-section-meta">
+            <i data-lucide="presentation"></i>
+            5 บท · 182 สไลด์
+          </div>
+        </div>
+
+        <div class="chapter-grid max-w-none" id="finalChapterGrid" role="list" aria-label="บทเรียนไฟนอล">
+          <button class="chapter-card unlocked" data-chapter="5" role="listitem">
+            <span class="ch-top"><span class="ch-num">F1</span><span class="ch-icon"><i data-lucide="router"></i></span></span>
+            <div class="ch-body">
+              <span class="ch-en"><span class="ch-book">BOOK CH.4</span> Network Layer: Data Plane</span>
+              <b class="ch-title">ชั้นเครือข่าย — ระนาบข้อมูล</b>
+              <p class="ch-desc">Network Layer Services · Data Plane vs Control Plane · Packet Forwarding &amp; Forwarding Table · Longest Prefix Matching · IPv4 Addressing &amp; Subnetting · Router &amp; DHCP</p>
+              <div class="ch-meta">
+                <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="5">27</b> สไลด์</span>
+                <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
+              </div>
+              <div class="ch-progress">
+                <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+                <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch5Pct">0%</b></span>
+              </div>
+            </div>
+            <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+          </button>
+
+          <button class="chapter-card unlocked" data-chapter="6" role="listitem">
+            <span class="ch-top"><span class="ch-num">F2</span><span class="ch-icon"><i data-lucide="route"></i></span></span>
+            <div class="ch-body">
+              <span class="ch-en"><span class="ch-book">BOOK CH.5</span> Network Layer: Control Plane</span>
+              <b class="ch-title">ชั้นเครือข่าย — ระนาบควบคุม</b>
+              <p class="ch-desc">Control Plane &amp; SDN · Routing &amp; Forwarding · Link-State &amp; Distance-Vector · Dijkstra &amp; Bellman-Ford · OSPF &amp; BGP · Autonomous Systems</p>
+              <div class="ch-meta">
+                <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="6">31</b> สไลด์</span>
+                <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
+              </div>
+              <div class="ch-progress">
+                <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+                <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch6Pct">0%</b></span>
+              </div>
+            </div>
+            <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+          </button>
+
+          <button class="chapter-card unlocked" data-chapter="7" role="listitem">
+            <span class="ch-top"><span class="ch-num">F3</span><span class="ch-icon"><i data-lucide="cable"></i></span></span>
+            <div class="ch-body">
+              <span class="ch-en"><span class="ch-book">BOOK CH.6</span> The Link Layer and LANs</span>
+              <b class="ch-title">ชั้นลิงก์และ LAN</b>
+              <p class="ch-desc">Link Layer Services · Error Detection/Correction · Parity &amp; CRC · Multiple Access Protocols · Ethernet, MAC &amp; ARP · Switches, MAC Learning &amp; VLANs</p>
+              <div class="ch-meta">
+                <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="7">40</b> สไลด์</span>
+                <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
+              </div>
+              <div class="ch-progress">
+                <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+                <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch7Pct">0%</b></span>
+              </div>
+            </div>
+            <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+          </button>
+
+          <button class="chapter-card unlocked" data-chapter="8" role="listitem">
+            <span class="ch-top"><span class="ch-num">F4</span><span class="ch-icon"><i data-lucide="wifi"></i></span></span>
+            <div class="ch-body">
+              <span class="ch-en"><span class="ch-book">BOOK CH.7</span> Wireless and Mobile Networks</span>
+              <b class="ch-title">เครือข่ายไร้สายและเคลื่อนที่</b>
+              <p class="ch-desc">Wireless Components · Radio &amp; Channel · SNR &amp; Shannon · Wi-Fi 802.11 &amp; CSMA/CA · Access &amp; Association · MIMO · 5G Mobility &amp; Handover</p>
+              <div class="ch-meta">
+                <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="8">42</b> สไลด์</span>
+                <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
+              </div>
+              <div class="ch-progress">
+                <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+                <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch8Pct">0%</b></span>
+              </div>
+            </div>
+            <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+          </button>
+
+          <button class="chapter-card unlocked" data-chapter="9" role="listitem">
+            <span class="ch-top"><span class="ch-num">F5</span><span class="ch-icon"><i data-lucide="shield-check"></i></span></span>
+            <div class="ch-body">
+              <span class="ch-en"><span class="ch-book">BOOK CH.8</span> Security</span>
+              <b class="ch-title">ความปลอดภัยในเครือข่าย</b>
+              <p class="ch-desc">Cryptography · Symmetric/Public Key · RSA · Authentication · Hash &amp; Integrity · Digital Signature · TLS · Network Attacks</p>
+              <div class="ch-meta">
+                <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="9">42</b> สไลด์</span>
+                <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
+              </div>
+              <div class="ch-progress">
+                <div class="ch-bar"><div class="ch-bar-fill"></div></div>
+                <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch9Pct">0%</b></span>
+              </div>
+            </div>
+            <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="landing-footer" id="siteFooter">
+      <div class="landing-footer-card">
+        <div class="grid gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
+          <div>
+            <div class="flex items-center gap-3">
+              <span class="cn-logo landing-brand-logo">CN</span>
+              <div>
+                <div class="text-sm font-extrabold tracking-tight text-white">Computer Network</div>
+                <div class="text-[10px] font-bold tracking-[0.2em] text-sky-300/75">INTERACTIVE DIGITAL TEXTBOOK</div>
+              </div>
+            </div>
+            <p class="mt-4 max-w-lg text-[12px] leading-relaxed text-slate-400">
+              แหล่งเรียนรู้ออนไลน์สำหรับ Computer Network — สรุปเนื้อหา 9 บท
+              พร้อมแบบทดสอบและสื่อทบทวนที่ออกแบบให้เข้าใจง่าย
+            </p>
+          </div>
+
+          <div class="text-center lg:text-right">
+            <div class="landing-visit-pill">
+              <span class="landing-live-dot"></span>
+              <span class="text-[11px] font-bold text-slate-300">ผู้เข้าชมเว็บไซต์</span>
+              <strong id="visitCount" aria-live="polite">—</strong>
+              <span class="text-[11px] text-slate-500">ครั้ง</span>
+            </div>
+            <p class="mt-2 text-[10px] text-slate-500">นับแบบไม่ระบุตัวตน · อัปเดตอัตโนมัติ</p>
+          </div>
+        </div>
+
+        <div class="landing-footer-bottom">
+          <span class="inline-flex items-center gap-2">
+            <span class="landing-live-dot"></span>
+            M1–M4 + F1–F5 · ONLINE
+          </span>
+          <span>Designed &amp; Developed by นายนรวิชญ์ แสงรัตน์</span>
+          <button type="button" class="landing-footer-link" data-open-track>
+            <i data-lucide="shuffle"></i>
+            เปลี่ยนสายการเรียน
+          </button>
         </div>
       </div>
-
-      <div class="chapter-grid" id="finalChapterGrid" role="list" aria-label="บทเรียนไฟนอล">
-        <button class="chapter-card unlocked" data-chapter="5" role="listitem">
-          <span class="ch-top"><span class="ch-num">F1</span><span class="ch-icon"><i data-lucide="router"></i></span></span>
-          <div class="ch-body">
-            <span class="ch-en"><span class="ch-book">BOOK CH.4</span> Network Layer: Data Plane</span>
-            <b class="ch-title">ชั้นเครือข่าย — ระนาบข้อมูล</b>
-            <p class="ch-desc">Network Layer Services · Data Plane vs Control Plane · Packet Forwarding &amp; Forwarding Table · Longest Prefix Matching · IPv4 Addressing &amp; Subnetting · Router &amp; DHCP</p>
-            <div class="ch-meta">
-              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="5">27</b> สไลด์</span>
-              <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
-            </div>
-            <div class="ch-progress">
-              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-              <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch5Pct">0%</b></span>
-            </div>
-          </div>
-          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
-        </button>
-
-        <button class="chapter-card unlocked" data-chapter="6" role="listitem">
-          <span class="ch-top"><span class="ch-num">F2</span><span class="ch-icon"><i data-lucide="route"></i></span></span>
-          <div class="ch-body">
-            <span class="ch-en"><span class="ch-book">BOOK CH.5</span> Network Layer: Control Plane</span>
-            <b class="ch-title">ชั้นเครือข่าย — ระนาบควบคุม</b>
-            <p class="ch-desc">Control Plane &amp; SDN · Routing &amp; Forwarding · Link-State &amp; Distance-Vector · Dijkstra &amp; Bellman-Ford · OSPF &amp; BGP · Autonomous Systems</p>
-            <div class="ch-meta">
-              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="6">31</b> สไลด์</span>
-              <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
-            </div>
-            <div class="ch-progress">
-              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-              <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch6Pct">0%</b></span>
-            </div>
-          </div>
-          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
-        </button>
-
-        <button class="chapter-card unlocked" data-chapter="7" role="listitem">
-          <span class="ch-top"><span class="ch-num">F3</span><span class="ch-icon"><i data-lucide="cable"></i></span></span>
-          <div class="ch-body">
-            <span class="ch-en"><span class="ch-book">BOOK CH.6</span> The Link Layer and LANs</span>
-            <b class="ch-title">ชั้นลิงก์และ LAN</b>
-            <p class="ch-desc">Link Layer Services · Error Detection/Correction · Parity &amp; CRC · Multiple Access Protocols · Ethernet, MAC &amp; ARP · Switches, MAC Learning &amp; VLANs</p>
-            <div class="ch-meta">
-              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="7">40</b> สไลด์</span>
-              <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
-            </div>
-            <div class="ch-progress">
-              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-              <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch7Pct">0%</b></span>
-            </div>
-          </div>
-          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
-        </button>
-
-        <button class="chapter-card unlocked" data-chapter="8" role="listitem">
-          <span class="ch-top"><span class="ch-num">F4</span><span class="ch-icon"><i data-lucide="wifi"></i></span></span>
-          <div class="ch-body">
-            <span class="ch-en"><span class="ch-book">BOOK CH.7</span> Wireless and Mobile Networks</span>
-            <b class="ch-title">เครือข่ายไร้สายและเคลื่อนที่</b>
-            <p class="ch-desc">Wireless Components · Radio &amp; Channel · SNR &amp; Shannon · Wi-Fi 802.11 &amp; CSMA/CA · Access &amp; Association · MIMO · 5G Mobility &amp; Handover</p>
-            <div class="ch-meta">
-              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="8">42</b> สไลด์</span>
-              <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
-            </div>
-            <div class="ch-progress">
-              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-              <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch8Pct">0%</b></span>
-            </div>
-          </div>
-          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
-        </button>
-
-        <button class="chapter-card unlocked" data-chapter="9" role="listitem">
-          <span class="ch-top"><span class="ch-num">F5</span><span class="ch-icon"><i data-lucide="shield-check"></i></span></span>
-          <div class="ch-body">
-            <span class="ch-en"><span class="ch-book">BOOK CH.8</span> Security</span>
-            <b class="ch-title">ความปลอดภัยในเครือข่าย</b>
-            <p class="ch-desc">Cryptography · Symmetric/Public Key · RSA · Authentication · Hash &amp; Integrity · Digital Signature · TLS · Network Attacks</p>
-            <div class="ch-meta">
-              <span class="chip-sm"><i data-lucide="presentation"></i><b data-slides="9">42</b> สไลด์</span>
-              <span class="chip-sm"><i data-lucide="file-question"></i>Quiz 12 + Exam 20</span>
-            </div>
-            <div class="ch-progress">
-              <div class="ch-bar"><div class="ch-bar-fill"></div></div>
-              <span class="ch-status"><i data-lucide="play"></i>เริ่มเรียน <b class="ch-pct" id="ch9Pct">0%</b></span>
-            </div>
-          </div>
-          <i data-lucide="arrow-right" class="ch-go" aria-hidden="true"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- ข้อสอบรวม 80 ข้อ (Pre-Test) -->
-    <!-- <div class="test-entry">
-      <div class="test-entry-icon"><i data-lucide="graduation-cap"></i></div>
-      <div class="test-entry-body">
-        <span class="menu-kicker">PRE-TEST · ทดสอบความรู้ก่อนเรียน</span>
-        <h3 class="test-entry-title">ข้อสอบ 4 ชุด (A–D) · ชุดละ 80 ข้อ · รวม 320 ข้อ</h3>
-        <p class="test-entry-desc">อยากรู้ว่าตอนนี้ความรู้เครือข่ายอยู่ระดับไหน? มาลองทำข้อสอบก่อนเรียนได้เลย — ข้อสอบ 4 ชุด แต่ละชุดมี 80 ข้อ ครบ 4 บท (บทละ 20 ข้อ) รวม 320 ข้อ ไม่ซ้ำกัน ไม่สุ่มอีกต่อไป ทำเสร็จเก็บคะแนนรายชุด พร้อมสรุประดับความรู้เมื่อทำเสร็จ</p>
-      </div>
-      <a class="btn btn-primary btn-lg test-entry-btn" href="test.html">ไปทำข้อสอบ <i data-lucide="arrow-right"></i></a>
-    </div> -->
-
-    <!-- ข้อสอบไฟนอล (แยกหน้า) -->
-    <!-- <div class="test-entry final-test-entry">
-      <div class="test-entry-icon"><i data-lucide="shield-check"></i></div>
-      <div class="test-entry-body">
-        <span class="menu-kicker">FINAL TEST · ข้อสอบไฟนอล (แยกจากมิดเทอม)</span>
-        <h3 class="test-entry-title">Final Track Exam · เริ่มด้วย F1 จำนวน 20 ข้อ</h3>
-        <p class="test-entry-desc">ข้อสอบไฟนอลแยกหน้าจากข้อสอบมิดเทอมโดยสมบูรณ์ — ชุดนี้เริ่มด้วย F1 Network Layer: Data Plane จำนวน 20 ข้อ ครอบคลุม Forwarding, Longest Prefix Matching, IPv4, Subnetting และ DHCP พร้อมเฉลยและคะแนนเก็บแยก</p>
-      </div>
-      <a class="btn btn-cyan btn-lg test-entry-btn" href="final-test.html">ไปทำ Final Test <i data-lucide="arrow-right"></i></a>
-    </div> -->
-
-    <footer class="menu-foot">
-      <div class="menu-foot-badge"><i data-lucide="sparkles"></i> M1-M4 + F1-F5 · ONLINE</div>
-      <span>Designed &amp; Developed by นายนรวิชญ์ แสงรัตน์</span>
     </footer>
+  </div>
+</div>
+
+<!-- ================= FIRST-VISIT TRACK MODAL ================= -->
+<div id="trackModal" role="dialog" aria-modal="true" aria-labelledby="trackModalTitle" aria-describedby="trackModalDesc" hidden>
+  <div class="track-modal-backdrop" data-close-track-modal></div>
+  <div class="track-modal-card">
+    <button type="button" class="track-modal-close" id="trackModalClose" aria-label="ปิดหน้าต่างเลือกเส้นทาง" data-close-track-modal>
+      <i data-lucide="x"></i>
+    </button>
+
+    <div class="text-center">
+      <span class="landing-badge mx-auto">
+        <span class="landing-live-dot"></span>
+        START HERE
+      </span>
+      <h2 class="track-modal-title" id="trackModalTitle">จะเรียนเนื้อหา<br class="sm:hidden" /> Midterm หรือ Final?</h2>
+      <p class="track-modal-sub" id="trackModalDesc">
+        เลือกเส้นทางที่อยากเริ่มก่อนได้เลย — ระบบจะพาไปยังบทเรียนที่เลือก
+        และเปลี่ยนเส้นทางได้ตลอดจากปุ่ม “เปลี่ยนสาย”
+      </p>
+    </div>
+
+    <div class="mt-7 grid gap-3 sm:grid-cols-2">
+      <button type="button" class="track-choice midterm" data-track-choice="midterm">
+        <span class="track-choice-icon midterm"><i data-lucide="book-open"></i></span>
+        <span class="min-w-0 text-left">
+          <b class="block text-lg font-extrabold text-white">Midterm</b>
+          <span class="mt-0.5 block text-[11px] font-bold text-sky-300/80">M1–M4 · ปูพื้นฐาน</span>
+          <span class="mt-2 block text-[11px] text-slate-400">4 บท · 80 สไลด์</span>
+        </span>
+        <i data-lucide="arrow-right" class="track-choice-arrow"></i>
+      </button>
+
+      <button type="button" class="track-choice final" data-track-choice="final">
+        <span class="track-choice-icon final"><i data-lucide="shield-check"></i></span>
+        <span class="min-w-0 text-left">
+          <b class="block text-lg font-extrabold text-white">Final</b>
+          <span class="mt-0.5 block text-[11px] font-bold text-cyan-300/80">F1–F5 · ต่อยอด</span>
+          <span class="mt-2 block text-[11px] text-slate-400">5 บท · 182 สไลด์</span>
+        </span>
+        <i data-lucide="arrow-right" class="track-choice-arrow"></i>
+      </button>
+    </div>
+
+    <button type="button" class="track-modal-later" id="trackModalLater" data-close-track-modal>
+      ไว้เลือกภายหลัง
+    </button>
+    <p class="mt-3 text-center text-[10px] text-slate-500">
+      เลือกแล้วระบบจะจำเส้นทางไว้ในเครื่องนี้
+    </p>
   </div>
 </div>
 
@@ -281,6 +507,6 @@
 
 <!-- App scripts -->
 <script src="data.js"></script>
-<script src="app.js?v=20261025-music"></script>
+<script src="app.js?v=20261025-landing"></script>
 </body>
 </html>
