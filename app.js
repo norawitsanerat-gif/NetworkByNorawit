@@ -240,7 +240,7 @@
     if (!audio || !btn) return;
 
     var label = btn.querySelector(".music-toggle-text");
-    audio.volume = 0.38;
+    try { audio.volume = 0.38; } catch (e) { /* iOS ควบคุมระดับเสียงผ่านเครื่อง */ }
 
     function setUI(on) {
       btn.classList.toggle("is-playing", on);
