@@ -1873,6 +1873,71 @@ body[data-page="menu"] #app { display: none; }
 }
 .menu-foot-badge svg { width: 14px; height: 14px; color: var(--cyan); }
 
+/* ---------- Background music toggle ---------- */
+.music-toggle {
+  position: fixed;
+  top: max(14px, calc(env(safe-area-inset-top) + 8px));
+  right: max(14px, calc(env(safe-area-inset-right) + 8px));
+  z-index: 95;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 189, 248, 0.32);
+  background: rgba(8, 15, 31, 0.78);
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.music-toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(56, 189, 248, 0.62);
+  color: var(--text);
+}
+.music-toggle:active { transform: translateY(0) scale(0.98); }
+.music-toggle:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.music-toggle.is-playing {
+  border-color: rgba(125, 211, 252, 0.72);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.94), rgba(34, 211, 238, 0.86));
+  color: #fff;
+  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.3), 0 0 0 4px rgba(56, 189, 248, 0.1);
+}
+.music-toggle-icon,
+.music-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.music-toggle-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.music-toggle-icon svg { width: 17px; height: 17px; color: var(--cyan); }
+.music-toggle.is-playing .music-toggle-icon svg { color: #fff; }
+.music-icon-play { display: inline-flex; }
+.music-icon-pause { display: none; }
+.music-toggle.is-playing .music-icon-play { display: none; }
+.music-toggle.is-playing .music-icon-pause { display: inline-flex; }
+
+@media (max-width: 480px) {
+  .music-toggle {
+    top: max(12px, calc(env(safe-area-inset-top) + 6px));
+    right: max(12px, calc(env(safe-area-inset-right) + 6px));
+    gap: 7px;
+    padding: 9px 12px;
+    font-size: 11.5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .music-toggle { transition: none; }
+}
+
 /* ---------- การ์ดข้อสอบรวม 80 ข้อ (Pre-Test) ---------- */
 .test-entry {
   position: relative;

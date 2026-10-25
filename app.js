@@ -231,6 +231,74 @@
     });
   }
 
+  /* ---------- เพลงพื้นหลัง (index.html) ---------- */
+  var MUSIC_KEY = "cn_music_on";
+
+  function bindMenuMusic() {
+    var audio = $("menuMusic");
+    var btn = $("musicToggle");
+    if (!audio || !btn) return;
+
+    var label = btn.querySelector(".music-toggle-text");
+    audio.volume = 0.38;
+
+    function setUI(on) {
+      btn.classList.toggle("is-playing", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.setAttribute("aria-label", on ? "ปิดเพลงพื้นหลัง" : "เปิดเพลงพื้นหลัง");
+      btn.title = on ? "ปิดเพลงพื้นหลัง" : "เปิดเพลงพื้นหลัง";
+      if (label) label.textContent = on ? "ปิดเพลง" : "เปิดเพลง";
+    }
+
+    function remember(on) {
+      LS.set(MUSIC_KEY, !!on);
+    }
+
+    function playMusic() {
+      var p;
+      try {
+        p = audio.play();
+      } catch (e) {
+        p = null;
+      }
+      if (p && p.catch) {
+        p.catch(function () {
+          setUI(false);
+          remember(false);
+        });
+      }
+    }
+
+    btn.addEventListener("click", function () {
+      if (audio.paused) {
+        playMusic();
+      } else {
+        audio.pause();
+      }
+    });
+
+    audio.addEventListener("play", function () {
+      setUI(true);
+      remember(true);
+    });
+    audio.addEventListener("pause", function () {
+      setUI(false);
+      remember(false);
+    });
+    audio.addEventListener("error", function () {
+      setUI(false);
+      remember(false);
+      toast("ไม่พบไฟล์ music.mp3 หรือไฟล์เพลงเปิดไม่ได้");
+    });
+
+    setUI(false);
+
+    /* จำสถานะเดิม: ถ้าเคยเปิดไว้ ให้ลองเล่นต่อเมื่อเบราว์เซอร์อนุญาต */
+    if (LS.get(MUSIC_KEY, false)) {
+      window.setTimeout(playMusic, 300);
+    }
+  }
+
   /* เมนูหลัก — กดการ์ดบท 1/2 ไปหน้าเรียน, บท 3/4 แจ้งเตือนเร็วๆ นี้ */
   function bindMenu() {
     var m = $("chapterMenu");
@@ -4613,6 +4681,7 @@
       renderMenuProgress();
       bindMenu();
       bindMenuScrollMemory();
+      bindMenuMusic();
       restoreMenuScroll();
       icons();
       return;
